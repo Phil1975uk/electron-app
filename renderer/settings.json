@@ -1,0 +1,11 @@
+{
+  "webdav": {
+    "enabled": true,
+    "url": "https://store-c8jhcan2jv.mybigcommerce.com/dav",
+    "username": "harry@e-bikebarn.com",
+    "password": "17834c9d87f021d5d76fc9c935b4efbda044df5b",
+    "path": "/dav",
+    "port": "443"
+  },
+  "debugLogEnabled": true
+} 

@@ -1,0 +1,18 @@
+1. For Development (npm run dev)
+No recompilation is needed after editing JavaScript, HTML, or CSS files in the electron-app/renderer folder or the main Electron files (main.js, etc.).
+Just save your changes and restart the app with:
+  npm run dev
+
+
+Electron will load the latest code every time you start it.
+2. For Distribution (Installer/Portable .exe)
+If you want to create a new installer or portable .exe (to give to others or run on another computer), you DO need to recompile (rebuild) the app.
+Run:
+  npm run build-installer
+
+
+or
+  npm run build-portable
+
+
+This will package all your latest changes into a new .exe in the dist folder.

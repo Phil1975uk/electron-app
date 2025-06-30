@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Thumbnail</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .debug-info { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { color: red; }
+        .success { color: green; }
+        .test-image { max-width: 200px; border: 1px solid #ccc; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Debug Thumbnail Loading</h1>
+    
+    <div class="debug-info">
+        <h3>Test Image Path:</h3>
+        <p id="testPath"></p>
+        <button onclick="testThumbnail()">Test Thumbnail</button>
+    </div>
+    
+    <div id="results"></div>
+    <div id="imageContainer"></div>
+    
+    <script>
+        const testPath = '/dav/product_images/allebikes1_1689538570__22184.jpg';
+        document.getElementById('testPath').textContent = testPath;
+        
+        async function testThumbnail() {
+            const results = document.getElementById('results');
+            const imageContainer = document.getElementById('imageContainer');
+            
+            results.innerHTML = '<div class="debug-info">Testing thumbnail...</div>';
+            imageContainer.innerHTML = '';
+            
+            const encoded = encodeURIComponent(testPath);
+            const url = `/webdav-thumbnail?path=${encoded}`;
+            
+            console.log('Requesting URL:', url);
+            
+            try {
+                // First, test the response headers
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                const contentType = response.headers.get('content-type');
+                const contentLength = response.headers.get('content-length');
+                
+                results.innerHTML += `
+                    <div class="debug-info">
+                        <h4>Response Info:</h4>
+                        <p>Status: ${response.status}</p>
+                        <p>Content-Type: ${contentType}</p>
+                        <p>Content-Length: ${contentLength}</p>
+                    </div>
+                `;
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    results.innerHTML += `<div class="error">Error: ${response.status} - ${errorText}</div>`;
+                    return;
+                }
+                
+                // Test as blob
+                const blob = await response.blob();
+                console.log('Blob size:', blob.size);
+                console.log('Blob type:', blob.type);
+                
+                results.innerHTML += `
+                    <div class="debug-info">
+                        <h4>Blob Info:</h4>
+                        <p>Size: ${blob.size} bytes</p>
+                        <p>Type: ${blob.type}</p>
+                    </div>
+                `;
+                
+                // Create object URL and test image
+                const objectUrl = URL.createObjectURL(blob);
+                
+                const img = document.createElement('img');
+                img.src = objectUrl;
+                img.className = 'test-image';
+                img.onload = () => {
+                    results.innerHTML += `<div class="success">✅ Image loaded successfully!</div>`;
+                    console.log('Image loaded successfully');
+                };
+                img.onerror = (e) => {
+                    results.innerHTML += `<div class="error">❌ Image failed to load: ${e.message}</div>`;
+                    console.error('Image failed to load:', e);
+                };
+                
+                imageContainer.appendChild(img);
+                
+            } catch (error) {
+                results.innerHTML += `<div class="error">❌ Fetch error: ${error.message}</div>`;
+                console.error('Fetch error:', error);
+            }
+        }
+    </script>
+</body>
+</html> 

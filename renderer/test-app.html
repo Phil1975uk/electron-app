@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Thumbnail Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        .test-section { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #007bff; 
+        }
+        .test-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin: 15px 0; 
+        }
+        .test-item { 
+            background: white; 
+            padding: 10px; 
+            border-radius: 5px; 
+            border: 1px solid #ddd; 
+            text-align: center; 
+        }
+        .test-image { 
+            max-width: 100%; 
+            height: 150px; 
+            object-fit: cover; 
+            border-radius: 3px; 
+            margin-bottom: 10px; 
+        }
+        .status { 
+            font-size: 12px; 
+            padding: 5px; 
+            border-radius: 3px; 
+            margin-top: 5px; 
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.loading { background: #fff3cd; color: #856404; }
+        .btn { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px; 
+        }
+        .btn:hover { background: #0056b3; }
+        .summary { 
+            background: #e7f3ff; 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 20px 0; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 WebDAV Thumbnail Fix - Application Test</h1>
+    
+    <div class="summary">
+        <h3>✅ Fix Applied Successfully!</h3>
+        <p>The binary data handling fix has been applied to your server. This test will verify that thumbnails work across all parts of your application.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>1. Direct Thumbnail Test</h2>
+        <p>Testing individual image thumbnails via the /webdav-thumbnail endpoint:</p>
+        <button class="btn" onclick="testDirectThumbnails()">Test Direct Thumbnails</button>
+        <div id="directResults" class="test-grid"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. WebDAV List Test</h2>
+        <p>Testing the WebDAV file listing to see available images:</p>
+        <button class="btn" onclick="testWebDAVList()">Test WebDAV List</button>
+        <div id="listResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. WebDAV Images Test</h2>
+        <p>Testing the WebDAV file listing to see available images:</p>
+        <button class="btn" onclick="testCombinedImages()">Test WebDAV Images</button>
+        <div id="combinedResults" class="test-grid"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Quick Links</h2>
+        <p>Test the main application pages:</p>
+        <a href="/webdav-explorer" class="btn" target="_blank">WebDAV Explorer</a>
+        <a href="/test-thumbnail" class="btn" target="_blank">Original Test Page</a>
+        <a href="/debug-thumbnail" class="btn" target="_blank">Debug Page</a>
+    </div>
+
+    <script>
+        const testImages = [
+            '/dav/product_images/allebikes1_1689538570__22184.jpg',
+            '/dav/product_images/e-bikebarn-logo_1681567226__48474.original.png',
+            '/dav/product_images/ubn-spotimg1_1689538728__65606.jpg'
+        ];
+
+        async function testDirectThumbnails() {
+            const results = document.getElementById('directResults');
+            results.innerHTML = '<div class="status loading">Testing thumbnails...</div>';
+            
+            let successCount = 0;
+            let totalCount = testImages.length;
+            
+            for (const path of testImages) {
+                const item = document.createElement('div');
+                item.className = 'test-item';
+                item.innerHTML = `
+                    <div class="status loading">Loading...</div>
+                    <div>${path.split('/').pop()}</div>
+                `;
+                results.appendChild(item);
+                
+                try {
+                    const encoded = encodeURIComponent(path);
+                    const url = `/webdav-thumbnail?path=${encoded}`;
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const blob = await response.blob();
+                    const objectUrl = URL.createObjectURL(blob);
+                    
+                    const img = document.createElement('img');
+                    img.src = objectUrl;
+                    img.className = 'test-image';
+                    img.onload = () => {
+                        item.innerHTML = `
+                            <img src="${objectUrl}" class="test-image" alt="${path.split('/').pop()}">
+                            <div class="status success">✅ Loaded (${blob.size} bytes)</div>
+                            <div>${path.split('/').pop()}</div>
+                        `;
+                        successCount++;
+                        updateSummary();
+                    };
+                    img.onerror = () => {
+                        item.innerHTML = `
+                            <div class="status error">❌ Failed to load</div>
+                            <div>${path.split('/').pop()}</div>
+                        `;
+                        updateSummary();
+                    };
+                } catch (error) {
+                    item.innerHTML = `
+                        <div class="status error">❌ Error: ${error.message}</div>
+                        <div>${path.split('/').pop()}</div>
+                    `;
+                    updateSummary();
+                }
+            }
+            
+            function updateSummary() {
+                if (successCount + (totalCount - successCount) === totalCount) {
+                    const summary = document.createElement('div');
+                    summary.className = 'summary';
+                    summary.innerHTML = `
+                        <h4>Direct Thumbnail Test Results:</h4>
+                        <p>✅ ${successCount} successful / ❌ ${totalCount - successCount} failed</p>
+                    `;
+                    results.appendChild(summary);
+                }
+            }
+        }
+
+        async function testWebDAVList() {
+            const results = document.getElementById('listResults');
+            results.innerHTML = '<div class="status loading">Loading WebDAV list...</div>';
+            
+            try {
+                const response = await fetch('/webdav-list?path=/dav/product_images');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                const imageFiles = data.files?.filter(file => 
+                    /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)
+                ) || [];
+                
+                results.innerHTML = `
+                    <div class="status success">✅ Found ${data.files?.length || 0} files, ${imageFiles.length} images</div>
+                    <h4>Sample Images:</h4>
+                    <div class="test-grid">
+                        ${imageFiles.slice(0, 6).map(file => `
+                            <div class="test-item">
+                                <div>📁 ${file.name}</div>
+                                <div style="font-size: 12px; color: #666;">
+                                    ${file.sizeFormatted || 'Unknown size'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testCombinedImages() {
+            const results = document.getElementById('combinedResults');
+            results.innerHTML = '<div class="status loading">Loading WebDAV images...</div>';
+            
+            try {
+                const response = await fetch('/webdav-list?path=/dav/product_images');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                const imageFiles = data.files?.filter(file => 
+                    /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)
+                ) || [];
+                
+                results.innerHTML = `
+                    <div class="status success">✅ Found ${data.files?.length || 0} total files, ${imageFiles.length} images</div>
+                    <div class="test-grid">
+                        ${imageFiles.slice(0, 6).map(file => `
+                            <div class="test-item">
+                                <div>📁 ${file.name}</div>
+                                <div style="font-size: 12px; color: #666;">
+                                    ${file.sizeFormatted || 'Unknown size'} (WebDAV)
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html> 

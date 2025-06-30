@@ -1,0 +1,17 @@
+# Node modules and dependencies
+node_modules/
+# OS files
+.DS_Store
+Thumbs.db
+# Logs
+*.log
+debug-log.txt
+# Build and dist folders
+dist/
+build/
+# Backups and manual copies
+backup-*/
+Manual Backup*/
+Manual Bakup*/
+# Environment files
+.env

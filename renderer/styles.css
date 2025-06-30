@@ -1,0 +1,1333 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #f5f5f5;
+    --text-color: #333;
+    --border-color: #ddd;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.editor-section, .preview-section {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+input[type="text"], textarea, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+select {
+    background-color: white;
+    cursor: pointer;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #357abd;
+}
+
+#preview-container {
+    min-height: 200px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#preview-container > div {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#output-code {
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 1.75rem auto;
+    max-width: 500px;
+    z-index: 1051;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+    padding: 1rem;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+}
+
+.modal-backdrop.show {
+    opacity: 0.5;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.close {
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.close:hover {
+    color: var(--primary-color);
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 0.75rem 1rem;
+}
+
+.saved-card-item {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.saved-card-item:hover {
+    background-color: var(--secondary-color);
+}
+
+.saved-card-item h3 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.saved-card-item .card-meta {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Card-specific styles */
+.feature-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.feature-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.option-card {
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.option-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.specs-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.specs-table td {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+.specs-table td:first-child {
+    font-weight: 600;
+    width: 40%;
+}
+
+.cargo-card, .weather-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.price, .rating {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 0.5rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    border-bottom: none;
+    padding: 0.75rem 1rem;
+}
+
+.card-header h5 {
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.table th {
+    background-color: #f8f9fa;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.modal-content {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#exportBtn {
+    min-width: 120px;
+}
+
+.table-responsive {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Navbar Styles */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* Form Styles */
+.form-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.form-control, .form-select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #dee2e6;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    color: #212529;
+}
+
+.btn-light:hover {
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+    color: #212529;
+}
+
+/* Preview Styles */
+#imagePreview {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+#previewImg {
+    max-width: 100%;
+    border-radius: 0.25rem;
+}
+
+/* Card Preview Styles */
+#cardsPreview .card {
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+}
+
+#cardsPreview .card-body {
+    padding: 1rem;
+}
+
+#cardsPreview .card-title {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+#cardsPreview .card-text {
+    color: #6c757d;
+}
+
+/* Variant Check Styles */
+.variant-check {
+    margin-right: 0.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    #cardsPreview .row {
+        flex-direction: column;
+    }
+    
+    #cardsPreview .col-md-4 {
+        margin-bottom: 1rem;
+    }
+}
+
+.variants-container {
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.variants-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+
+.variants-list .form-check {
+    padding: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.variants-list .form-check:last-child {
+    border-bottom: none;
+}
+
+.variants-list .form-check-label {
+    font-size: 0.9rem;
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+.variants-list .form-check-input {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.variants-container h6 {
+    color: #495057;
+    font-weight: 600;
+}
+
+.variants-container hr {
+    margin: 0.5rem 0;
+}
+
+/* Feature Card Styles */
+.product-feature-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+    flex-wrap: nowrap;
+}
+
+.product-feature-card .feature-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.product-feature-card h2 {
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.product-feature-card h3 {
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #666;
+}
+
+.product-feature-card p {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: #333;
+}
+
+.product-feature-card .image-container {
+    flex-shrink: 0;
+    max-width: 40%;
+    text-align: center;
+}
+
+.product-feature-card figure {
+    margin: 0;
+    width: 392px;
+}
+
+.product-feature-card img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+    width: 392px;
+}
+
+/* Card Actions */
+.card-actions {
+    margin-top: 1rem;
+    text-align: right;
+}
+
+.card-actions .btn {
+    margin-left: 0.5rem;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Preview Container */
+#cardsPreview {
+    margin-top: 2rem;
+}
+
+#cardsPreview .col-md-4 {
+    margin-bottom: 2rem;
+}
+
+.feature-card-preview {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 1rem;
+    max-width: 100%;
+    min-height: 150px;
+}
+
+.feature-card-text {
+    flex: 2;
+    padding-right: 1rem;
+}
+
+.feature-card-text h2 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.feature-card-text h3 {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.feature-card-text p {
+    font-size: 0.85rem;
+    color: #444;
+    margin-top: 0;
+}
+
+.feature-card-image {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-card-image img {
+    max-width: 120px;
+    max-height: 90px;
+    border-radius: 4px;
+    object-fit: contain;
+}
+
+@media (max-width: 900px) {
+    .feature-card-preview {
+        flex-direction: column;
+    }
+}
+
+/* Card Type Selection Styles */
+.card-type-option {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.card-type-option:hover {
+    transform: translateY(-2px);
+}
+
+.card-type-option .border {
+    transition: all 0.3s ease;
+}
+
+.card-type-option .border:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-type-option .border-primary {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Toast Styles */
+.toast-container {
+    z-index: 1060;
+}
+
+.toast {
+    min-width: 300px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+/* Form Section Transitions */
+#cardCreationSection {
+    transition: all 0.3s ease;
+}
+
+/* Spec Table Styles */
+#specTable .form-control {
+    font-size: 0.9rem;
+}
+
+.remove-spec-row {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Bike Configuration Styles */
+#bikeConfigSection {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+    margin-bottom: 1rem;
+}
+
+#variantCheckboxes {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    background-color: white;
+}
+
+/* Responsive adjustments for card type selection */
+@media (max-width: 768px) {
+    .card-type-option {
+        margin-bottom: 1rem;
+    }
+    
+    #cardCreationSection {
+        flex-direction: column;
+    }
+    
+    #cardCreationSection .col-md-8,
+    #cardCreationSection .col-md-4 {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Compact Form Styles for Better Page Fit */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Compact form sections */
+.form-section {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+/* Reduce spacing between form elements */
+.mb-3 {
+    margin-bottom: 0.75rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1rem !important;
+}
+
+/* Compact form controls */
+.form-control, .form-select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+/* Compact buttons */
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Compact card headers */
+.card-header {
+    padding: 0.75rem 1rem;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+/* Compact grid spacing */
+.row {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+.col-auto, .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+.col-sm-auto, .col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+.col-md-auto, .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12,
+.col-lg-auto, .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12,
+.col-xl-auto, .col-xxl, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12,
+.col-xxl-auto {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* Compact navbar */
+.navbar {
+    padding: 0.5rem 1rem;
+}
+
+/* Compact main grid */
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Compact editor and preview sections */
+.editor-section, .preview-section {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Compact input groups */
+.input-group {
+    margin-bottom: 1rem;
+}
+
+/* Compact labels */
+label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Compact form labels */
+.form-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+/* Compact button groups */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+/* Compact gaps */
+.gap-2 {
+    gap: 0.5rem !important;
+}
+
+.gap-3 {
+    gap: 0.75rem !important;
+}
+
+/* Compact margins */
+.mt-3 {
+    margin-top: 0.75rem !important;
+}
+
+.mt-4 {
+    margin-top: 1rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 0.75rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1rem !important;
+}
+
+/* Compact padding */
+.p-3 {
+    padding: 0.75rem !important;
+}
+
+.p-4 {
+    padding: 1rem !important;
+}
+
+/* Compact alerts */
+.alert {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Compact tables */
+.table th, .table td {
+    padding: 0.5rem 0.75rem;
+}
+
+/* Compact modal content */
+.modal-content {
+    padding: 1rem;
+}
+
+.modal-header {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.modal-body {
+    padding: 0.75rem 1rem;
+}
+
+.modal-footer {
+    padding: 0.75rem 1rem;
+}
+
+/* Compact card type buttons */
+.card-type-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Compact webdav upload section */
+.webdav-upload-section {
+    padding: 15px;
+    margin-top: 15px;
+}
+
+/* Compact filter status */
+.filter-status {
+    padding: 10px;
+    margin-bottom: 12px;
+}
+
+/* Compact variants info */
+.variants-info {
+    padding: 3px 6px;
+    margin-top: 3px;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+        padding: 0.75rem;
+    }
+    
+    main {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem;
+    }
+    
+    .form-section {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .form-control, .form-select {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Compact settings page specific styles */
+.settings-form .row {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+}
+
+.settings-form .col-md-6 {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+
+/* Compact card creator specific styles */
+.card-creator-form .form-section {
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.card-creator-form .mb-3 {
+    margin-bottom: 0.5rem !important;
+}
+
+/* Compact preview sections */
+#live-preview-wrapper {
+    margin-top: 0.5rem !important;
+}
+
+#savedCardsList {
+    margin-top: 0.5rem;
+}
+
+/* Compact saved card items */
+.saved-card-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Compact toast notifications */
+.toast {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+/* Compact progress bars */
+.progress {
+    height: 0.5rem;
+}
+
+/* Compact form text */
+.form-text {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+/* Compact badges */
+.badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Compact switches */
+.form-check {
+    margin-bottom: 0.5rem;
+}
+
+.form-check-input {
+    margin-top: 0.1rem;
+}
+
+/* Compact file input */
+input[type="file"] {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Compact textarea */
+textarea {
+    min-height: 80px;
+}
+
+/* Compact select dropdowns */
+select.form-select {
+    padding: 0.4rem 0.6rem;
+}
+
+/* Compact input groups */
+.input-group-text {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+}
+
+/* Compact list groups */
+.list-group-item {
+    padding: 0.5rem 0.75rem;
+}
+
+/* Compact breadcrumbs */
+.breadcrumb {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+/* Compact pagination */
+.pagination {
+    margin-bottom: 0.5rem;
+}
+
+.page-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* Compact tooltips */
+.tooltip {
+    font-size: 0.8rem;
+}
+
+/* Compact popovers */
+.popover {
+    font-size: 0.85rem;
+}
+
+.popover-header {
+    padding: 0.5rem 0.75rem;
+}
+
+.popover-body {
+    padding: 0.5rem 0.75rem;
+}
+
+/* Compact form styles for better fit */
+.form-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.form-section .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-color);
+}
+
+.form-section .form-control,
+.form-section .form-select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    border-radius: 0.375rem;
+}
+
+.form-section .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 0.375rem;
+}
+
+.form-section .btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.form-section .mb-3 {
+    margin-bottom: 0.75rem !important;
+}
+
+.form-section .mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.form-section .row {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+
+.form-section .col-md-3,
+.form-section .col-md-4,
+.form-section .col-md-6,
+.form-section .col-md-8,
+.form-section .col-lg-4,
+.form-section .col-lg-8 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .form-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-section .form-label {
+        font-size: 0.8rem;
+    }
+    
+    .form-section .form-control,
+    .form-section .form-select {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    .form-section .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .form-section .btn-sm {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    
+    .form-section .mb-3 {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .form-section .mb-2 {
+        margin-bottom: 0.375rem !important;
+    }
+}
+
+/* Delete confirmation modal styles */
+#delete-confirm-input {
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 2px solid #dc3545;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.1);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#delete-confirm-input:focus {
+    outline: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    background-color: #fff;
+}
+
+#delete-confirm-input::placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.delete-modal-name {
+    padding: 0.25rem 0;
+    color: #333;
+}
+
+.delete-modal-name i {
+    margin-right: 0.5rem;
+    color: #6c757d;
+}
+
+/* Ensure modal inputs are properly visible */
+.modal input[type="text"] {
+    background-color: #fff !important;
+    color: #333 !important;
+    border: 1px solid #ced4da !important;
+    padding: 0.75rem !important;
+    font-size: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.modal input[type="text"]:focus {
+    border-color: #80bdff !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    background-color: #fff !important;
+}
+
+/* Ensure modal is properly layered */
+.modal {
+    z-index: 1050 !important;
+}
+
+.modal-dialog {
+    z-index: 1051 !important;
+}
+
+.modal-backdrop {
+    z-index: 1049 !important;
+}
+
+/* CSV Import Modal Styles */
+#importCsvModal .modal-dialog {
+    max-width: 90%;
+}
+
+#importCsvModal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#importCsvModal .card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+#importCsvModal .card-body {
+    padding: 1rem;
+}
+
+#importCsvModal .table-responsive {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+#importCsvModal .table th {
+    background-color: #343a40;
+    color: white;
+    border-color: #454d55;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#importCsvModal .badge {
+    font-size: 0.75em;
+    padding: 0.35em 0.65em;
+}
+
+#importCsvModal .alert {
+    border-radius: 0.375rem;
+    border: none;
+}
+
+#importCsvModal .alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+#importCsvModal .alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* Toast positioning for import notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1070;
+}
+
+.toast {
+    min-width: 300px;
+} 

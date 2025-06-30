@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thumbnail Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-image {
+            max-width: 200px;
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thumbnail Test</h1>
+    <p>Testing thumbnail loading from WebDAV via backend proxy...</p>
+    
+    <div id="results"></div>
+    
+    <script>
+        const testImages = [
+            '/dav/product_images/allebikes1_1689538570__22184.jpg',
+            '/dav/product_images/e-bikebarn-logo_1681567226__48474.original.png',
+            '/dav/product_images/ubn-spotimg1_1689538728__65606.jpg'
+        ];
+
+        const results = document.getElementById('results');
+        testImages.forEach(path => {
+            const encoded = encodeURIComponent(path);
+            const url = `/webdav-thumbnail?path=${encoded}`;
+            const img = document.createElement('img');
+            img.src = url;
+            img.className = 'test-image';
+            img.onerror = () => {
+                results.innerHTML += `<div class="error">Image failed to load: ${path}</div>`;
+            };
+            img.onload = () => {
+                results.innerHTML += `<div class="success">Image loaded: ${path}</div>`;
+            };
+            results.appendChild(img);
+        });
+    </script>
+</body>
+</html> 
