@@ -1,0 +1,75 @@
+GIT QUICK REFERENCE & INSTRUCTIONS
+==================================
+
+# 1. See what's changed
+
+git status
+
+# 2. Add all changes to be saved (staged)
+
+git add .
+
+# 3. Save a snapshot (commit)
+
+git commit -m "Describe what you changed"
+
+# 4. View commit history
+
+git log
+
+# 5. Restore a file to last committed version
+
+git checkout HEAD -- path/to/file.js
+
+# 6. Restore the whole project to a previous commit (be careful!)
+
+git checkout <commit-hash> -- .
+
+# 7. Create a new branch (for experiments/features)
+
+git checkout -b branch-name
+
+# 8. Switch to another branch
+
+git checkout branch-name
+
+# 9. Merge a branch into your current branch
+
+git merge branch-name
+
+# 10. Tag a release or stable point
+
+git tag v1.0
+
+git push --tags
+
+# 11. Push your commits to GitHub (after setup)
+
+git push
+
+# 12. Pull latest changes from GitHub
+
+git pull
+
+----------------------------------
+
+INSTRUCTIONS
+============
+
+1. Make changes to your files as usual.
+2. When you want to save your work:
+   a. Run `git status` to see what's changed.
+   b. Run `git add .` to stage all changes.
+   c. Run `git commit -m "Describe what you changed"` to save a snapshot.
+3. Repeat as you work. Commit often!
+4. To restore a file or the whole project, use the commands above.
+5. Use branches for experiments or new features.
+6. Use tags to mark important points.
+7. (Optional) Push to GitHub for backup and collaboration.
+
+TIPS
+====
+- Commit small, logical changes with clear messages.
+- Use `git log` to see your history.
+- Use `.gitignore` to avoid tracking files you don't want in Git.
+- You can always ask for help or look up a command if you forget! 
