@@ -1,0 +1,44 @@
+{
+  "id": 1751576404160.2522,
+  "sku": "F01133",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Safe on the road",
+  "subtitle": "See and be seen.",
+  "content": "<div class=\"product-feature-card\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Safe on the road</h2>\n<h3>See and be seen.</h3>\n<p>The powerful headlamp with daytime running light ensures better visibility in road traffic. When you’re on the go in the dark, nothing comes between you and your sporty ride, thanks to even illumination of your way and your surroundings. The Magura disc brakes ensure reliable braking even during sporty rides.</p>\n</div>\n<!-- Image -->\n<div class=\"se-component se-image-container __se__float- __se__float-none\"><figure><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-safe-on-the-road.jpg\" alt=\"Safe on the road\" data-proportion=\"true\" data-align=\"none\" data-index=\"0\" data-file-name=\"roadster-safe-on-the-road.jpg\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\"></figure></div>\n</div>",
+  "description": "The powerful headlamp with daytime running light ensures better visibility in road traffic. When you’re on the go in the dark, nothing comes between you and your sporty ride, thanks to even illumination of your way and your surroundings. The Magura disc brakes ensure reliable braking even during sporty rides.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-safe-on-the-road.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.160Z",
+  "originalHypaData": {
+    "productId": "518",
+    "sourceColumn": "shared.feature-2-card",
+    "position": 2
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario Hs",
+        "sku": "F01133"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01133_feature_2_1751576420520_85o7kxgax.json"
+}

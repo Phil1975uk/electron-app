@@ -1,0 +1,32 @@
+{
+  "id": 1751576404257.0818,
+  "sku": "F01120",
+  "cardType": "feature",
+  "position": 4,
+  "title": "Enjoyable Riding Experience",
+  "subtitle": "From urban streets to rural roads, enjoy every moment.",
+  "content": "<!-- Product feature card container -->\n<div style=\"display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: nowrap;\">\n\n    \n<!-- Text content -->\n    \n<div style=\"flex: 1; min-width: 300px;\">\n        \n<h2>Enjoyable Riding Experience</h2>\n\n        \n<h3>From urban streets to rural roads, enjoy every moment.</h3>\n\n        \n<p>Whether you're riding, charging the batteries, or securing it in the city, this full-suspension low-step-through bike ensures maximum comfort at all times. The charging socket is conveniently positioned ergonomically, allowing for easy charging directly on the bike. Additionally, the specially designed closing cap adds to the convenience. The lock is also ergonomically placed on the carrier, enabling swift locking and unlocking. For those seeking even more comfort, consider the optional comfort kit with curved handlebars and a wide saddle, or a saddle that can be lowered using a remote control.</p>\n\n    </div>\n\n\n    \n<!-- Image -->\n    \n<div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n        </div>\n\n<div class=\"se-component se-image-container __se__float-center\">\n    <figure style=\"margin: 0px; width: 392px;\">\n\n                  <img src=\"https://store-c8jhcan2jv.mybigcommerce.com/product_images/Homage4GT/ComfortableRidingExperience.jpg\" alt=\"Feature Image\" style=\"max-width: 100%; height: auto; display: block; border-radius: 5px; width: 392px;\" data-proportion=\"true\" data-align=\"center\" width=\"392\" height=\"auto\" data-size=\"392px,auto\" data-index=\"1\" data-file-name=\"ComfortableRidingExperience.jpg\" data-file-size=\"0\" origin-size=\"1600,1067\" data-origin=\"392px,auto\">\n\n        </figure>\n</div>\n\n<div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n    <figure style=\"margin: 0;\">\n\n            \n        </figure>\n</div>\n\n<div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n    </div>\n</div>\n<p></p>",
+  "description": "Whether you're riding, charging the batteries, or securing it in the city, this full-suspension low-step-through bike ensures maximum comfort at all times. The charging socket is conveniently positioned ergonomically, allowing for easy charging directly on the bike. Additionally, the specially designed closing cap adds to the convenience. The lock is also ergonomically placed on the carrier, enabling swift locking and unlocking. For those seeking even more comfort, consider the optional comfort kit with curved handlebars and a wide saddle, or a saddle that can be lowered using a remote control.",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Homage4GT/ComfortableRidingExperience.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.257Z",
+  "originalHypaData": {
+    "productId": "300",
+    "sourceColumn": "shared.feature-4-card",
+    "position": 4
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01120_feature_4_1751576420532_83ji1ghc9.json"
+}

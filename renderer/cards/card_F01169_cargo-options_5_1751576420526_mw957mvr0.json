@@ -1,0 +1,32 @@
+{
+  "id": 1751576404183.8333,
+  "sku": "F01169",
+  "cardType": "cargo-options",
+  "position": 5,
+  "title": "Cargo Bag",
+  "subtitle": "£280.00",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card\">\n<!-- Text content -->\n<div class=\"feature-content\">\n<h2>\n\nCargo Bag\n\n</h2>\n\n<h3>\n\n£280.00\n\n</h3>\n\n<p>\n\nThe practical cargo bag with two handles is perfect for loading and unloading your cargo. Alternatively, pre-drilled holes mean that you can screw it permanently to the floor of the Basic Box. The cargo bag holds up to 90 litres. There is also a zipped pocket on its outside that can hold smaller items.\n\n</p>\n</div>\n\n<!-- Image -->\n<div class=\"se-component se-image-container __se__float- __se__float-none\">\n    \n    \n    \n    <figure>\n\n\n\n                        <img src=\"\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/carrie-cargobag.jpg?t=1729346786\n\n\" alt=\"\n\nCarrie Cargo Bag\n\n\" data-proportion=\"true\" data-align=\"none\" data-file-name=\"\n\ncarrie-cargobag.jpg?t=1729346786\n\n\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\" data-index=\"1\">\n\n\n\n    </figure>\n</div>\n</div>",
+  "description": "The practical cargo bag with two handles is perfect for loading and unloading your cargo. Alternatively, pre-drilled holes mean that you can screw it permanently to the floor of the Basic Box. The cargo bag holds up to 90 litres. There is also a zipped pocket on its outside that can hold smaller items.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/carrie-cargobag.jpg?t=1729346786\n\n",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.183Z",
+  "originalHypaData": {
+    "productId": "495",
+    "sourceColumn": "shared.cargo-option-5-card",
+    "position": 5
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "City",
+        "sku": "F01169"
+      }
+    ]
+  },
+  "filename": "card_F01169_cargo-options_5_1751576420526_mw957mvr0.json"
+}

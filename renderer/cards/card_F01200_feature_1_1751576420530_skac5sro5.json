@@ -1,0 +1,32 @@
+{
+  "id": 1751576404206.0618,
+  "sku": "F01200",
+  "cardType": "feature",
+  "position": 1,
+  "title": "",
+  "subtitle": "",
+  "content": "<div class=\"container\">\n    \n\n<h1>What&apos;s Included with the Packster2 70 Family</h1>\n\n\n    \n\n<p>We&apos;re excited to offer you the Packster2 70 Family. Here is everything that comes with your package:</p>\n\n\n    \n  \n  <ul>\n    <li>Powerful Bosch Cargo Line (Smart System) Motor</li>\n    <li>High-Capacity 625Wh Battery for Extended Range</li>\n    <li>Comfortable Passenger Cabin with Safety Belts</li>\n    <li>Integrated Front and Rear Lights for Safety</li>\n    <li>Weatherproof Buggy Option With Roll Cage to Protect Your Cargo and Family</li>\n    <li>Versatile Load Area for Cargo or Child Seating</li>\n    <li>Hydraulic Disc Brakes for Reliable Stopping Power</li>\n    <li>Ergonomic Saddle and Adjustable Handlebar for Comfort</li>\n    <li>Purion 200 Intuitive Controls</li>\n  </ul>\n\n\n    \n\n<p>Everything you need for your family adventures is included, designed for maximum comfort and convenience!</p>\n</div>\n<style>\n.swiper-container {\ndisplay: none;\n}\n.OptionH2 {\nDisplay: none;\n}\n</style>",
+  "description": "We're excited to offer you the Packster2 70 Family. Here is everything that comes with your package:",
+  "imageUrl": "",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.206Z",
+  "originalHypaData": {
+    "productId": "354",
+    "sourceColumn": "shared.feature-1-card",
+    "position": 1
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      }
+    ]
+  },
+  "filename": "card_F01200_feature_1_1751576420530_skac5sro5.json"
+}

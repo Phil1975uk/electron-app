@@ -1,0 +1,36 @@
+{
+  "id": 1751576404200.688,
+  "sku": "F01171",
+  "cardType": "cargo-options",
+  "position": 6,
+  "title": "Rear Carrier",
+  "subtitle": "£94.00",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card\">\n<!-- Text content -->\n<div class=\"feature-content\">\n<h2>\n\nRear Carrier\n\n</h2>\n\n<h3>\n\n£94.00\n\n</h3>\n\n<p>\n\nThe carrier with MIK system provides even more storage space: you can quickly and securely attach pannier racks, baskets, bike accessories, and even a dog basket, to the sturdy adapter plate. Accessories can be obtained from your dealer.\n\n</p>\n</div>\n\n<!-- Image -->\n<div class=\"se-component se-image-container __se__float- __se__float-none\">\n    \n    \n    \n    \n    <figure>\n\n\n\n\n                              <img src=\"\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/carrie-carrier.jpg?t=1729344574\n\n\" alt=\"\n\nCarrie Rear Carrier\n\n\" data-proportion=\"true\" data-align=\"none\" data-file-name=\"\n\ncarrie-carrier.jpg?t=1729344574\n\n\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\" origin-size=\"695,342\" data-index=\"0\">\n\n\n\n\n    </figure>\n</div>\n</div>",
+  "description": "The carrier with MIK system provides even more storage space: you can quickly and securely attach pannier racks, baskets, bike accessories, and even a dog basket, to the sturdy adapter plate. Accessories can be obtained from your dealer.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/carrie-carrier.jpg?t=1729344574\n\n",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.200Z",
+  "originalHypaData": {
+    "productId": "455",
+    "sourceColumn": "shared.cargo-option-6-card",
+    "position": 6
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      }
+    ]
+  },
+  "filename": "card_F01171_cargo-options_6_1751576420529_07v8vtw2i.json"
+}

@@ -1,0 +1,52 @@
+{
+  "id": 1751576404234.6162,
+  "sku": "F01155",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Control Technology",
+  "subtitle": "Unleashing Safety and Vigor with Riese & Müller",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card reverse\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Control Technology</h2>\n<h3>Unleashing Safety and Vigor with Riese &amp; M&uuml;ller</h3>\n<p>Elevate your cycling experience to new heights with Riese &amp; M&uuml;ller&rsquo;s Control Technology. This innovative feature is the epitome of safety and vigor, offering maximum riding enjoyment. At its core, the perfectly tuned full suspension of the rear swing arm ensures a sporty ride and superior traction, even at high speeds. The active rear swing arm, optimized front wheel suspension, and co-sprung luggage carrier form the heart of the Control Technology, delivering powerful propulsion and a dynamic ride without any energy loss. The Suntour suspension fork, with a travel of 120 mm (or 140 mm with the GX option), guarantees a safe ride whether you&rsquo;re traversing forest tracks, gravel, or asphalt roads. With Riese &amp; M&uuml;ller&rsquo;s Control Technology, master the art of cycling and take control of your ride.</p>\n</div>\n<!-- Image -->\n<div class=\"feature-image\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-delite-controltech-1155-1-1-.jpg\" alt=\"Unleashing Safety and Vigor with Riese &amp; M&uuml;ller\"></div>\n</div>",
+  "description": "Elevate your cycling experience to new heights with Riese & Müller’s Control Technology. This innovative feature is the epitome of safety and vigor, offering maximum riding enjoyment. At its core, the perfectly tuned full suspension of the rear swing arm ensures a sporty ride and superior traction, even at high speeds. The active rear swing arm, optimized front wheel suspension, and co-sprung luggage carrier form the heart of the Control Technology, delivering powerful propulsion and a dynamic ride without any energy loss. The Suntour suspension fork, with a travel of 120 mm (or 140 mm with the GX option), guarantees a safe ride whether you’re traversing forest tracks, gravel, or asphalt roads. With Riese & Müller’s Control Technology, master the art of cycling and take control of your ride.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-delite-controltech-1155-1-1-.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.234Z",
+  "originalHypaData": {
+    "productId": "310",
+    "sourceColumn": "shared.feature-2-card",
+    "position": 2
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01155"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01155_feature_2_1751576420531_n7bw5iykd.json"
+}

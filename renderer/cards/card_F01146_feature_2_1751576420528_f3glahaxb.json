@@ -1,0 +1,44 @@
+{
+  "id": 1751576404186.7102,
+  "sku": "F01146",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Transport baskets",
+  "subtitle": "Practical – a perfect look.",
+  "content": "<div class=\"product-feature-card reverse\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Transport baskets</h2>\n<h3>Practical &ndash; a perfect look.</h3>\n<p>The perfectly fitting, optional baskets have been developed with a click system specifically for the Swing. Sturdy, weatherproof and with a sophisticated rattan look, they complete the image of a modern roadster. The front basket holding approximately 12 litres can be loaded with up to 5 kg. The carrier baskets can be fitted to the right, left or on both sides at the same time, like panniers. This leaves the carrier with MIK system free to be used for other things. Their large storage space of approx. 22 litres was designed to carry shopping bags each weighing up to 7 kg.</p>\n</div>\n<!-- Image -->\n<div class=\"feature-image\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-swing-frontkorb-1429.jpg\" alt=\"Swing4 Transport baskets\"></div>\n</div>",
+  "description": "The perfectly fitting, optional baskets have been developed with a click system specifically for the Swing. Sturdy, weatherproof and with a sophisticated rattan look, they complete the image of a modern roadster. The front basket holding approximately 12 litres can be loaded with up to 5 kg. The carrier baskets can be fitted to the right, left or on both sides at the same time, like panniers. This leaves the carrier with MIK system free to be used for other things. Their large storage space of approx. 22 litres was designed to carry shopping bags each weighing up to 7 kg.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-swing-frontkorb-1429.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.186Z",
+  "originalHypaData": {
+    "productId": "470",
+    "sourceColumn": "shared.feature-2-card",
+    "position": 2
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Swing4",
+    "generation": "Swing4",
+    "variants": [
+      {
+        "name": "Vario",
+        "sku": "F01146"
+      },
+      {
+        "name": "Silent",
+        "sku": "F01145"
+      },
+      {
+        "name": "Rucktritt",
+        "sku": "F01144"
+      },
+      {
+        "name": "Automatic",
+        "sku": "F01147"
+      }
+    ]
+  },
+  "filename": "card_F01146_feature_2_1751576420528_f3glahaxb.json"
+}

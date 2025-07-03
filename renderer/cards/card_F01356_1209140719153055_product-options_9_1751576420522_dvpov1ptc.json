@@ -1,0 +1,44 @@
+{
+  "id": 1751576404165.936,
+  "sku": "F01356_1209140719153055",
+  "cardType": "product-options",
+  "position": 9,
+  "title": "Carrier (for Control Technology Package)",
+  "subtitle": "",
+  "content": "<!-- Example of another card -->\n<div class=\"swiper-slide\">\n<div class=\"card\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/44-7-detail.jpg.695x464-q80-upscale.jpg?t=1713443262\" alt=\"Carrier (for Control Technology Package)\">\n<div class=\"card-info\">\n<div class=\"card-title\">Carrier (for Control Technology Package)</div>\n<div class=\"card-description\">If the front storage space is not enough, there is always the optional carrier. It is ideal for attaching panniers, making it perfect for longer bike trips too. The carrier can carry up to 15 kg of weight. Since it is secured directly to the frame, it also benefits from the suspension thanks to Control Technology.</div>\n<div class=\"card-price\">&pound;47.00</div>\n<button class=\"more-info-btn\">More Information</button></div>\n</div>\n</div>\n<!-- Repeat the above card structure for each product -->",
+  "description": "If the front storage space is not enough, there is always the optional carrier. It is ideal for attaching panniers, making it perfect for longer bike trips too. The carrier can carry up to 15 kg of weight. Since it is secured directly to the frame, it also benefits from the suspension thanks to Control Technology.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/44-7-detail.jpg.695x464-q80-upscale.jpg?t=1713443262",
+  "price": "£47.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.165Z",
+  "originalHypaData": {
+    "productId": "515",
+    "sourceColumn": "shared.option-9-card",
+    "position": 9
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Ct Vario",
+        "sku": "F01356_1209140719153055"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      }
+    ]
+  },
+  "filename": "card_F01356_1209140719153055_product-options_9_1751576420522_dvpov1ptc.json"
+}

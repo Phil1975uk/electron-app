@@ -1,0 +1,32 @@
+{
+  "id": 1751576404182.573,
+  "sku": "F01169",
+  "cardType": "cargo-options",
+  "position": 3,
+  "title": "Child Seat with Headrest",
+  "subtitle": "£233.00",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card\">\n<!-- Text content -->\n<div class=\"feature-content\">\n<h2>\n\nChild Seat with Headrest\n\n</h2>\n\n<h3>\n\n£233.00\n\n</h3>\n\n<p>\n\nThe headrest offers additional safety, especially when transporting taller children. A sturdy bench seat that can be suspended in the Flex Box in two different ways serves as a child seat. Depending on its position, it will accommodate either one taller or two smaller children age seven or younger – reliably protected by the five-point seat belts. And the comfortable back cushion automatically folds in when the Flex Box is closed. However, when the headrest is fitted, it cannot be closed. Please observe national regulations for the transport of children on bikes before using.\n\n</p>\n</div>\n\n<!-- Image -->\n<div class=\"se-component se-image-container __se__float- __se__float-none\">\n    \n    \n    \n    <figure>\n\n\n\n                        <img src=\"\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/carrie-childseat-headrest.jpg?t=1729346785\n\n\" alt=\"\n\nCarrie Child Seat with Headrest\n\n\" data-proportion=\"true\" data-align=\"none\" data-file-name=\"\n\ncarrie-childseat-headrest.jpg?t=1729346785\n\n\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\" data-index=\"1\">\n\n\n\n    </figure>\n</div>\n</div>",
+  "description": "The headrest offers additional safety, especially when transporting taller children. A sturdy bench seat that can be suspended in the Flex Box in two different ways serves as a child seat. Depending on its position, it will accommodate either one taller or two smaller children age seven or younger – reliably protected by the five-point seat belts. And the comfortable back cushion automatically folds in when the Flex Box is closed. However, when the headrest is fitted, it cannot be closed. Please observe national regulations for the transport of children on bikes before using.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/carrie-childseat-headrest.jpg?t=1729346785\n\n",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.182Z",
+  "originalHypaData": {
+    "productId": "495",
+    "sourceColumn": "shared.cargo-option-3-card",
+    "position": 3
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "City",
+        "sku": "F01169"
+      }
+    ]
+  },
+  "filename": "card_F01169_cargo-options_3_1751576420526_ye0bo51ab.json"
+}

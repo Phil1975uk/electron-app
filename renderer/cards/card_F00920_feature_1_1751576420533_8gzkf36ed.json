@@ -1,0 +1,32 @@
+{
+  "id": 1751576404268.556,
+  "sku": "F00920",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Control Technology",
+  "subtitle": "Elevate Your Riding Experience.",
+  "content": "<!-- Product feature card container -->\n<div style=\"display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: nowrap;\">\n\n    \n\n\n\n\n\n\n<!-- Text content -->\n    \n\n\n\n\n\n\n<div style=\"flex: 1; min-width: 300px;\">\n        \n\n\n\n\n\n\n<h2>Control Technology</h2>\n\n\n\n\n\n\n\n        \n\n\n\n\n\n\n<h3>Elevate Your Riding Experience.</h3>\n\n\n\n\n\n\n\n        \n\n\n\n\n\n\n<p>Discover the pinnacle of riding pleasure with Riese &amp; Müller's Control Technology. Engineered for maximum safety and dynamism, this advanced system guarantees an exhilarating journey every time. Experience the seamless harmony of the perfectly tuned full suspension rear swing arm, delivering unparalleled sportiness and superior traction, even at top speeds. At the heart of Control Technology lies an active rear swing arm, complemented by optimized front wheel suspension and a co-sprung luggage carrier. Together, they ensure powerful propulsion and a sporty ride, all while minimizing energy loss. Welcome to a new level of riding enjoyment.</p>\n\n\n\n\n\n\n\n    </div>\n\n\n\n\n\n\n\n\n    \n\n\n\n\n\n\n<!-- Image -->\n    \n\n\n\n\n\n\n<div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n        </div>\n\n<div class=\"se-component se-image-container __se__float-center\">\n    \n    \n    \n    \n    \n    \n    <figure style=\"margin: 0px; width: 392px;\">\n\n\n\n\n\n\n\n                                                      <img src=\"https://store-c8jhcan2jv.mybigcommerce.com/product_images/Homage4GT/ControlTechnology.jpg\" alt=\"Feature Image\" style=\"max-width: 100%; height: auto; display: block; border-radius: 5px; width: 392px;\" data-proportion=\"true\" data-align=\"center\" width=\"392\" height=\"auto\" data-size=\"392px,auto\" data-file-name=\"ControlTechnology.jpg\" data-file-size=\"0\" origin-size=\"1600,1067\" data-origin=\"392px,auto\" data-index=\"0\">\n\n\n\n\n\n\n\n        </figure>\n</div>\n\n<div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n    \n    \n    \n    \n    \n    \n    <figure style=\"margin: 0;\">\n\n\n\n\n\n\n\n            \n        </figure>\n</div>\n\n<div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n    </div>\n</div>\n<p></p>",
+  "description": "Discover the pinnacle of riding pleasure with Riese & Müller's Control Technology. Engineered for maximum safety and dynamism, this advanced system guarantees an exhilarating journey every time. Experience the seamless harmony of the perfectly tuned full suspension rear swing arm, delivering unparalleled sportiness and superior traction, even at top speeds. At the heart of Control Technology lies an active rear swing arm, complemented by optimized front wheel suspension and a co-sprung luggage carrier. Together, they ensure powerful propulsion and a sporty ride, all while minimizing energy loss. Welcome to a new level of riding enjoyment.",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Homage4GT/ControlTechnology.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.268Z",
+  "originalHypaData": {
+    "productId": "164",
+    "sourceColumn": "shared.feature-1-card",
+    "position": 1
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "60 Touring",
+        "sku": "F00920"
+      }
+    ]
+  },
+  "filename": "card_F00920_feature_1_1751576420533_8gzkf36ed.json"
+}

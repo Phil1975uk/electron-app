@@ -24,5 +24,18 @@
   "price": "122.00",
   "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01171/84_15_detail.jpg",
   "filename": "card_Riese & Muller_Carrie_RX Chip for RX Services_1751301645154.json",
-  "id": "1751301645154"
+  "id": "1751301645154",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/product-options/Carrie_Carrie_product-options_rx-chip-for-rx-services.jpg",
+  "uploadDate": "2025-07-01T11:42:10.530Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City",
+    "DateCreated": "2025-07-01T11:42:06.292Z",
+    "DateUploaded": "2025-07-01T11:42:06.292Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  }
 }

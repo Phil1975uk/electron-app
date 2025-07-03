@@ -1,0 +1,52 @@
+{
+  "id": 1751576404235.29,
+  "sku": "F01155",
+  "cardType": "feature",
+  "position": 4,
+  "title": "Integrated Cockpit: Your Smart Control Centre",
+  "subtitle": "Seamless Integration and Smart Functionality at Your Fingertips.",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card reverse\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Integrated Cockpit: Your Smart Control Centre</h2>\n<h3>Seamless Integration and Smart Functionality at Your Fingertips.</h3>\n<p>The Delite eBike features a seamlessly integrated cockpit, neatly incorporated into the handlebar, boasting tidy cabling that adds to its sleek design. Whether you&rsquo;re on an everyday commute or tackling challenging terrains, the Kiox 300 or the larger Kiox 500 display serve as your ideal smart companions. These displays allow you to monitor your trip and fitness data on a large, vibrant colour screen. The LED Remote offers a convenient way to select your riding mode, with the colour indicating your chosen mode. The adjustable stem angle allows you to customize your sitting position, ranging from comfortable to sporty, according to your preference. The standard Purion 200 display further enhances the tidy appearance of the cockpit, providing a clear overview of your speed, range, and other essential metrics. Experience smart control with the Delite eBike&rsquo;s integrated cockpit.</p>\n</div>\n<!-- Image -->\n<div class=\"feature-image\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-delite-cockpit-kiox300-0750-1-.jpg\" alt=\"Feature Image\"></div>\n</div>",
+  "description": "The Delite eBike features a seamlessly integrated cockpit, neatly incorporated into the handlebar, boasting tidy cabling that adds to its sleek design. Whether you’re on an everyday commute or tackling challenging terrains, the Kiox 300 or the larger Kiox 500 display serve as your ideal smart companions. These displays allow you to monitor your trip and fitness data on a large, vibrant colour screen. The LED Remote offers a convenient way to select your riding mode, with the colour indicating your chosen mode. The adjustable stem angle allows you to customize your sitting position, ranging from comfortable to sporty, according to your preference. The standard Purion 200 display further enhances the tidy appearance of the cockpit, providing a clear overview of your speed, range, and other essential metrics. Experience smart control with the Delite eBike’s integrated cockpit.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-delite-cockpit-kiox300-0750-1-.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.235Z",
+  "originalHypaData": {
+    "productId": "310",
+    "sourceColumn": "shared.feature-4-card",
+    "position": 4
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01155"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01155_feature_4_1751576420532_g8nhadq7t.json"
+}

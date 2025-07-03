@@ -1,0 +1,44 @@
+{
+  "id": 1751576404160.117,
+  "sku": "F01133",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Sporty design",
+  "subtitle": "Speed gets the right frame.",
+  "content": "<div class=\"product-feature-card\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Sporty design</h2>\n<h3>Speed gets the right frame.</h3>\n<p>Its slim frame design gives the Roadster its sporty character: the frame’s sleek design is reminiscent of conventional bikes, while it meets the highest standards of outstanding German engineering. The Bosch Performance Line CX motor, boasting 85 Nm, and the integrated battery with 625 Wh are installed in a balanced position for top agility and riding enjoyment. The integrated cabling accentuates the linear appearance..</p>\n</div>\n<!-- Image -->\n<div class=\"se-component se-image-container __se__float- __se__float-none\"><figure><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-sporty-design.jpg\" alt=\"Sporty design\" data-proportion=\"true\" data-align=\"none\" data-index=\"0\" data-file-name=\"roadster-sporty-design.jpg\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\"></figure></div>\n</div>",
+  "description": "Its slim frame design gives the Roadster its sporty character: the frame’s sleek design is reminiscent of conventional bikes, while it meets the highest standards of outstanding German engineering. The Bosch Performance Line CX motor, boasting 85 Nm, and the integrated battery with 625 Wh are installed in a balanced position for top agility and riding enjoyment. The integrated cabling accentuates the linear appearance..",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-sporty-design.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.160Z",
+  "originalHypaData": {
+    "productId": "518",
+    "sourceColumn": "shared.feature-1-card",
+    "position": 1
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario Hs",
+        "sku": "F01133"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01133_feature_1_1751576420520_sbrmh44u1.json"
+}

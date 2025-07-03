@@ -82,6 +82,25 @@ async function validateImageUrl(imageUrl) {
     }
 }
 
+// Helper to get the public WebDAV URL from the internal webdavPath
+function getPublicWebDavUrl(webdavPath) {
+    if (!webdavPath) return '';
+    let path = webdavPath.replace(/^\/dav/, '/product_images');
+    // Remove any accidental double /product_images/
+    path = path.replace(/\/product_images\/product_images\//, '/product_images/');
+    // Remove any duplicate slashes (except after https:)
+    path = path.replace(/([^:])\/+/, '$1/');
+    return 'https://store-c8jhcan2jv.mybigcommerce.com' + path;
+}
+
+// Helper to check if an image exists using a hidden <img> (CORS-safe)
+function checkImageExists(url, callback) {
+    const img = new window.Image();
+    img.onload = () => callback(true);
+    img.onerror = () => callback(false);
+    img.src = url + '?cb=' + Date.now(); // cache-busting query param
+}
+
 class CardManager {
     constructor() {
         this.allCards = [];
@@ -97,6 +116,8 @@ class CardManager {
             selectedVariants: [],
             sku: ''
         };
+        this.lastDeletedCard = null; // Store last deleted card for undo
+        this.undoTimeout = null;
         this.init();
     }
 
@@ -162,6 +183,8 @@ class CardManager {
         this.renderCards();
         
         console.log('Card Manager initialization complete!');
+
+        this.setupUndoButtonListener();
     }
 
     async loadConfigurations() {
@@ -671,9 +694,33 @@ class CardManager {
         
         // Check upload status
         const isUploaded = card.webdavPath && card.uploadDate;
-        const uploadStatus = isUploaded ? 'Uploaded' : 'Not Uploaded';
-        const statusColor = isUploaded ? 'success' : 'warning';
-        const statusIcon = isUploaded ? 'fa-check-circle' : 'fa-clock';
+        let uploadStatus = isUploaded ? 'Uploaded' : 'Not Uploaded';
+        let statusColor = isUploaded ? 'success' : 'warning';
+        let statusIcon = isUploaded ? 'fa-check-circle' : 'fa-clock';
+        let statusId = `upload-status-${card.id}`;
+
+        // WebDAV existence check (async, UI only, CORS-safe)
+        if (card.webdavPath) {
+            const publicUrl = getPublicWebDavUrl(card.webdavPath);
+            setTimeout(() => {
+                const badge = document.getElementById(statusId);
+                if (badge) {
+                    badge.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Checking...';
+                    badge.className = 'badge bg-secondary';
+                }
+                checkImageExists(publicUrl, exists => {
+                    if (badge) {
+                        if (exists) {
+                            badge.innerHTML = '<i class="fas fa-check-circle me-1"></i>Uploaded';
+                            badge.className = 'badge bg-success';
+                        } else {
+                            badge.innerHTML = '<i class="fas fa-clock me-1"></i>Not Uploaded';
+                            badge.className = 'badge bg-warning';
+                        }
+                    }
+                });
+            }, 0);
+        }
         
         // Use proxy for external images to bypass CORS
         const imageSrc = card.imageUrl ? 
@@ -733,6 +780,20 @@ class CardManager {
             `;
         }
         
+        let displayTitle = card.title || '';
+        if (card.cardType === 'spec' || card.cardType === 'specification-table') {
+            // Try to extract the h2 title from the HTML content
+            if (card.content) {
+                const h2Match = card.content.match(/<h2[^>]*>([^<]+)<\/h2>/);
+                if (h2Match && h2Match[1]) {
+                    displayTitle = h2Match[1].trim();
+                }
+            }
+            if (!displayTitle) {
+                displayTitle = card.title || `Specifications for ${card.sku}`;
+            }
+        }
+        
         return `
             <div class="card-item">
                 <div class="row">
@@ -743,7 +804,7 @@ class CardManager {
                                  class="card-preview"
                                  onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='; this.onerror=null;">
                             <div class="position-absolute top-0 start-0 m-1">
-                                <span class="badge bg-${statusColor}">
+                                <span class="badge bg-${statusColor}" id="${statusId}">
                                     <i class="fas ${statusIcon} me-1"></i>${uploadStatus}
                                 </span>
                             </div>
@@ -751,7 +812,7 @@ class CardManager {
                     </div>
                     <div class="col-md-7">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="mb-1">${cardType === 'spec' ? 'Specification Table' : card.title}</h5>
+                            <h5 class="mb-1">${displayTitle}</h5>
                             <span class="badge bg-${typeColor} card-type-badge">${typeLabel}</span>
                         </div>
                         ${cardType === 'option' && card.price ? `<p class="text-success mb-2"><strong>${card.price}</strong></p>` : ''}
@@ -820,24 +881,104 @@ class CardManager {
             return;
         }
         
-        // Find the card to delete
-        const cardToDelete = this.allCards.find(card => card.id === cardId);
+        // Debug log for ID comparison
+        console.log('deleteCard called with cardId:', cardId, 'type:', typeof cardId);
+        console.log('All card IDs:', this.allCards.map(card => card.id + ' (type: ' + typeof card.id + ')'));
+
+        // Find the card to delete (compare as strings for robustness)
+        const cardToDelete = this.allCards.find(card => String(card.id) === String(cardId));
         if (!cardToDelete) {
             showToast('Could not find card to delete.', 'danger');
             return;
         }
-        
+        // Get the filename property (required for backend deletion)
+        const filename = cardToDelete.filename;
+        if (!filename) {
+            showToast('Card file name missing. Cannot delete.', 'danger');
+            return;
+        }
+
         try {
+            // Call backend API to delete the file
+            const response = await fetch(`/api/delete-card/${encodeURIComponent(filename)}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                const data = await response.json().catch(() => ({}));
+                const errorMsg = data.error || 'Failed to delete card file.';
+                showToast(errorMsg, 'danger');
+                return;
+            }
+
+            // Store the deleted card for undo
+            this.lastDeletedCard = { ...cardToDelete };
+            if (this.undoTimeout) clearTimeout(this.undoTimeout);
+            this.showPersistentUndoButton();
             // Remove from local array
-            this.allCards = this.allCards.filter(card => card.id !== cardId);
-            this.filteredCards = this.filteredCards.filter(card => card.id !== cardId);
-            
-            showToast('Card deleted successfully', 'success');
+            this.allCards = this.allCards.filter(card => String(card.id) !== String(cardId));
+            this.filteredCards = this.filteredCards.filter(card => String(card.id) !== String(cardId));
+
+            // Reload the card list from the server to ensure UI is in sync
+            await this.loadCards();
             this.applyFilters();
             this.updateStats();
+            this.renderCards();
         } catch (error) {
             console.error('Error deleting card:', error);
             showToast('Failed to delete card', 'danger');
+        }
+    }
+
+    showPersistentUndoButton() {
+        const undoBtn = document.getElementById('undoDeleteBtnPersistent');
+        if (!undoBtn) return;
+        undoBtn.style.display = '';
+        undoBtn.disabled = false;
+    }
+
+    hidePersistentUndoButton() {
+        const undoBtn = document.getElementById('undoDeleteBtnPersistent');
+        if (!undoBtn) return;
+        undoBtn.style.display = 'none';
+        undoBtn.disabled = true;
+    }
+
+    async undoDelete() {
+        if (!this.lastDeletedCard) return;
+        try {
+            // Restore the card by POSTing to the backend
+            const response = await fetch('/api/restore-card', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(this.lastDeletedCard)
+            });
+            if (!response.ok) {
+                showToast('Failed to restore card.', 'danger');
+                return;
+            }
+            showToast('Card restored!', 'success');
+            this.lastDeletedCard = null;
+            this.hidePersistentUndoButton();
+            await this.loadCards();
+            this.applyFilters();
+            this.updateStats();
+            this.renderCards();
+        } catch (error) {
+            showToast('Failed to restore card: ' + error.message, 'danger');
+        }
+    }
+
+    // Call this after any card-changing action except delete
+    clearUndoState() {
+        this.lastDeletedCard = null;
+        this.hidePersistentUndoButton();
+    }
+
+    // In init or after DOMContentLoaded
+    setupUndoButtonListener() {
+        const undoBtn = document.getElementById('undoDeleteBtnPersistent');
+        if (undoBtn) {
+            undoBtn.onclick = () => this.undoDelete();
         }
     }
 
@@ -1845,10 +1986,10 @@ class CardManager {
             this.renderCards();
             
             console.log('Cards refreshed successfully. Total cards:', mergedCards.length);
-            this.showToast(`Cards refreshed successfully. Total: ${mergedCards.length}`, 'success');
+            showToast(`Cards refreshed successfully. Total: ${mergedCards.length}`, 'success');
         } catch (error) {
             console.error('Error refreshing cards:', error);
-            this.showToast('Error refreshing cards: ' + error.message, 'error');
+            showToast('Error refreshing cards: ' + error.message, 'error');
         }
     }
 }

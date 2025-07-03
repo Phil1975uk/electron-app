@@ -6,6 +6,7 @@ window.addEventListener('load', () => {
     let analysisData = [];
     let originalHypaCsvData = null; // Store original Hypa CSV for perfect round-trip
     let originalHypaCsvHeaders = null; // Store original column headers
+    let hasSavedImportState = false; // Track if import state has been saved
     
     // DOM Elements
     let refreshAnalysisBtn;
@@ -110,9 +111,15 @@ window.addEventListener('load', () => {
         } else {
             console.error('hypaCsvFile element not found!');
         }
-        // if (importHypaBtn) {
-        //     importHypaBtn.addEventListener('click', importHypaData);
-        // }
+        
+        // Add event listener for the import button
+        const importHypaBtn = document.getElementById('importHypaBtn');
+        if (importHypaBtn) {
+            importHypaBtn.addEventListener('click', function() {
+                // Show progress immediately when button is clicked
+                showHypaImportProgress();
+            });
+        }
 
         // Enhanced import workflow buttons
         const continueToMappingBtn = document.getElementById('continueToMappingBtn');
@@ -211,6 +218,111 @@ window.addEventListener('load', () => {
                 });
             }
         }, 1000);
+
+        // Hypa Import Modal Event Listeners
+        function attachHypaCsvFileListener() {
+            const hypaCsvFile = document.getElementById('hypaCsvFile');
+            if (hypaCsvFile) {
+                if (!hypaCsvFile._listenerAttached) {
+                    hypaCsvFile.addEventListener('change', handleHypaCsvFileSelect);
+                    hypaCsvFile._listenerAttached = true;
+                    console.log('Hypa CSV file event listener attached');
+                }
+            } else {
+                console.error('hypaCsvFile element not found!');
+            }
+        }
+        attachHypaCsvFileListener();
+        // Watch for dynamic replacement of the file input
+        const observer = new MutationObserver(() => {
+            attachHypaCsvFileListener();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Add event listener for Start Analysis button
+        const startAnalysisBtn = document.getElementById('startAnalysisBtn');
+        if (startAnalysisBtn) {
+            startAnalysisBtn.addEventListener('click', function() {
+                startExportAnalysis();
+            });
+        }
+    }
+
+    // Stub for export analysis workflow
+    function startExportAnalysis() {
+        // Debug logging
+        console.log('window.cards:', window.cards, Array.isArray(window.cards) ? window.cards.length : 'not array');
+        console.log('window.originalHypaCsvData:', window.originalHypaCsvData, Array.isArray(window.originalHypaCsvData) ? window.originalHypaCsvData.length : 'not array');
+        // Show toast with data status
+        const cardsCount = Array.isArray(window.cards) ? window.cards.length : 0;
+        const hypaCount = Array.isArray(window.originalHypaCsvData) ? window.originalHypaCsvData.length : 0;
+        showAnalysisToast(`Cards loaded: ${cardsCount} | Hypa CSV rows: ${hypaCount}`, 'info');
+        // Hide the current step, show the comparison step
+        const analysisStep = document.getElementById('exportAnalysisStep');
+        const comparisonStep = document.getElementById('exportComparisonStep');
+        if (analysisStep) analysisStep.style.display = 'none';
+        if (comparisonStep) comparisonStep.style.display = '';
+
+        // --- Comparison Logic ---
+        // Compare local cards to original Hypa CSV data
+        if (!window.cards || !window.originalHypaCsvData) {
+            showAnalysisToast('No cards or Hypa CSV data found for comparison.', 'error');
+            return;
+        }
+        const localCards = window.cards;
+        const hypaRows = window.originalHypaCsvData;
+        const hypaByKey = {};
+        hypaRows.forEach(row => {
+            hypaByKey[`${row.sku}__${row.id}`] = row;
+        });
+        const comparisonResults = [];
+        let newCount = 0, updateCount = 0, skipCount = 0, conflictCount = 0;
+        localCards.forEach(card => {
+            const key = `${card.sku}__${card.originalHypaData?.productId || ''}`;
+            const hypaRow = hypaByKey[key];
+            let action = 'New', notes = '';
+            if (hypaRow) {
+                // Compare content for update/skip/conflict
+                if (card.content === hypaRow[card.originalHypaData?.sourceColumn]) {
+                    action = 'Skip';
+                } else {
+                    action = 'Update';
+                }
+            }
+            if (action === 'New') newCount++;
+            if (action === 'Update') updateCount++;
+            if (action === 'Skip') skipCount++;
+            if (action === 'Conflict') conflictCount++;
+            comparisonResults.push({
+                product: card.sku,
+                cardType: card.cardType,
+                localStatus: 'Present',
+                hypaStatus: hypaRow ? 'Present' : 'Missing',
+                action,
+                notes
+            });
+        });
+        // Update summary boxes
+        document.getElementById('exportNewCount').textContent = newCount;
+        document.getElementById('exportUpdateCount').textContent = updateCount;
+        document.getElementById('exportSkipCount').textContent = skipCount;
+        document.getElementById('exportConflictCount').textContent = conflictCount;
+        // Populate table
+        const tbody = document.getElementById('exportComparisonTableBody');
+        tbody.innerHTML = '';
+        comparisonResults.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.product}</td>
+                <td>${row.cardType}</td>
+                <td>${row.localStatus}</td>
+                <td>${row.hypaStatus}</td>
+                <td>${row.action}</td>
+                <td>${row.notes}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        showAnalysisToast('Export analysis complete.', 'success');
     }
 
     // File-based storage functions for configurations
@@ -328,7 +440,9 @@ window.addEventListener('load', () => {
             }
             
             cards = cardsData;
-
+            // Assign to window for global access
+            window.cards = cards;
+            // If originalHypaCsvData is loaded elsewhere, ensure window.originalHypaCsvData is set there as well
             console.log('Loaded data:', { configurations: configurations.length, cards: cards.length });
         } catch (error) {
             console.error('Error loading data:', error);
@@ -374,7 +488,7 @@ window.addEventListener('load', () => {
                             analysis.hasImages = true;
                             analysis.imageCount++;
                         }
-                        if (card.hypaUpdated) {
+                        if (card.exportedToHypa) {
                             analysis.hasHypa = true;
                             analysis.hypaCount++;
                         }
@@ -2943,8 +3057,9 @@ Import Details:
 
     // Hypa Import Functions
     function handleHypaCsvFileSelect(event) {
+        try {
+            console.log('handleHypaCsvFileSelect fired', event);
         const file = event.target.files[0];
-        console.log('File input event triggered:', event);
         console.log('Selected file:', file);
         if (file) {
             console.log('Hypa CSV file selected:', file.name);
@@ -2967,14 +3082,86 @@ Import Details:
             }
         } else {
             console.log('No file selected');
+            }
+        } catch (err) {
+            showAnalysisToast('Error processing Hypa CSV file: ' + err.message, 'danger');
+            console.error('Error in handleHypaCsvFileSelect:', err);
         }
     }
 
-    function showHypaFilePreview(file) {
+    async function showHypaFilePreview(file) {
         console.log('showHypaFilePreview called with file:', file.name);
+        
+        // Show initial progress modal
+        const modalBody = document.querySelector('#importHypaModal .modal-body');
+        const modalFooter = document.querySelector('#importHypaModal .modal-footer');
+        
+        modalBody.innerHTML = `
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Hypa Import Workflow:</strong> Processing your file through the complete import pipeline.
+            </div>
+            
+            <!-- Progress Steps -->
+            <div class="mb-4">
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-info" id="workflowProgress" role="progressbar" style="width: 0%"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="badge bg-info" id="step1Badge">Step 1: File Upload</span>
+                    <span class="badge bg-secondary" id="step2Badge">Step 2: Parse CSV</span>
+                    <span class="badge bg-secondary" id="step3Badge">Step 3: Validate Data</span>
+                    <span class="badge bg-secondary" id="step4Badge">Step 4: Match SKUs</span>
+                    <span class="badge bg-secondary" id="step5Badge">Step 5: Ready to Import</span>
+                </div>
+            </div>
+            
+            <!-- Current Step Info -->
+            <div class="card border-info mb-3">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="fas fa-cog fa-spin me-2"></i>Processing...</h6>
+                </div>
+                <div class="card-body">
+                    <div id="currentStepInfo">
+                        <p class="mb-2"><strong>Current Step:</strong> <span id="currentStepText">Uploading file...</span></p>
+                        <p class="mb-2"><strong>File:</strong> <span id="currentFileName">${file.name}</span></p>
+                        <p class="mb-0"><strong>Size:</strong> <span id="currentFileSize">${(file.size / 1024).toFixed(1)} KB</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-warning">
+                <i class="fas fa-clock me-2"></i>
+                <strong>Please wait...</strong> We're processing your file through our validation pipeline.
+            </div>
+        `;
+
+        // Update modal footer
+        modalFooter.innerHTML = `
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled>
+                <i class="fas fa-times me-2"></i>Cancel
+            </button>
+            <button type="button" class="btn btn-primary" disabled>
+                <i class="fas fa-spinner fa-spin me-2"></i>Processing...
+            </button>
+        `;
+
+        // Update progress to step 1
+        updateWorkflowProgress(1, 'File Upload', 'Reading file data...');
+        
+        // Add delay to make progress visible
+        await new Promise(resolve => setTimeout(resolve, 4000));
+
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = async function(e) {
             console.log('File read successfully, parsing CSV...');
+            
+            // Update progress to step 2
+            updateWorkflowProgress(2, 'Parse CSV', 'Parsing CSV data with Papa Parse...');
+            
+            // Add delay to make progress visible
+            await new Promise(resolve => setTimeout(resolve, 4000));
+            
             try {
                 console.log('Papa Parse available:', typeof Papa !== 'undefined');
                 if (typeof Papa === 'undefined') {
@@ -2982,8 +3169,10 @@ Import Details:
                     showAnalysisToast('CSV parsing library not loaded. Please refresh the page.', 'error');
                     return;
                 }
+                
                 const csvData = Papa.parse(e.target.result, { header: true });
                 console.log('CSV parsed successfully:', csvData);
+                
                 if (csvData.errors.length > 0) {
                     console.error('CSV parsing errors:', csvData.errors);
                     console.error('First error details:', csvData.errors[0]);
@@ -3000,6 +3189,12 @@ Import Details:
                     }
                 }
                 
+                // Update progress to step 3
+                updateWorkflowProgress(3, 'Validate Data', `Validating ${csvData.data.length} rows...`);
+                
+                // Add delay to make validation step visible
+                await new Promise(resolve => setTimeout(resolve, 4000));
+                
                 // Store the original CSV data for perfect round-trip export
                 originalHypaCsvData = csvData.data;
                 originalHypaCsvHeaders = csvData.meta.fields;
@@ -3013,9 +3208,16 @@ Import Details:
                 console.log('Data length:', csvData.data.length);
                 console.log('First row sample:', csvData.data[0]);
                 
+                // Update progress to step 4
+                updateWorkflowProgress(4, 'Match SKUs', 'Matching SKUs with local configurations...');
+                
+                // Add delay to make SKU matching step visible
+                await new Promise(resolve => setTimeout(resolve, 4000));
+                
                 // Show validation results
                 console.log('Calling showHypaValidationResults...');
                 showHypaValidationResults(csvData.data);
+                
             } catch (error) {
                 console.error('Error reading Hypa CSV file:', error);
                 showAnalysisToast('Error reading Hypa CSV file: ' + error.message, 'error');
@@ -3029,441 +3231,385 @@ Import Details:
         reader.readAsText(file);
     }
 
-    function showHypaValidationResults(data) {
-        console.log('showHypaValidationResults called with data:', data);
+    function showHypaImportProgress() {
+        // Show progress immediately when import button is clicked
         const modalBody = document.querySelector('#importHypaModal .modal-body');
-        console.log('Modal body found:', modalBody);
-        
-        // Validate Hypa data structure
-        const validation = validateHypaData(data);
-        console.log('Validation results:', validation);
-        
-        // Check which SKUs exist in local configurations
-        const existingSkus = new Set();
-        if (configurations && configurations.length > 0) {
-            configurations.forEach(config => {
-                if (config.variants && Array.isArray(config.variants)) {
-                    config.variants.forEach(variant => {
-                        if (variant.sku) {
-                            existingSkus.add(variant.sku.trim());
-                        }
-                    });
-                }
-            });
-        }
-        console.log('Existing SKUs in configurations:', Array.from(existingSkus));
-        
-        const missingSkus = [];
-        const existingSkusInData = [];
-        
-        data.forEach(row => {
-            if (row.sku && row.sku.trim()) {
-                const trimmedSku = row.sku.trim();
-                if (existingSkus.has(trimmedSku)) {
-                    existingSkusInData.push(trimmedSku);
-                } else {
-                    missingSkus.push(trimmedSku);
-                }
-            }
-        });
-        
-        const uniqueMissingSkus = [...new Set(missingSkus)];
-        const uniqueExistingSkus = [...new Set(existingSkusInData)];
+        const modalFooter = document.querySelector('#importHypaModal .modal-footer');
         
         modalBody.innerHTML = `
             <div class="alert alert-info">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Hypa CSV Validation:</strong> Analyzing the structure and content of your Hypa export file.
+                <strong>Hypa Import Workflow:</strong> Ready to process your Hypa export file through the complete import pipeline.
             </div>
             
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <div class="card border-primary">
-                        <div class="card-header bg-primary text-white">
-                            <h6 class="mb-0"><i class="fas fa-file-csv me-2"></i>File Analysis</h6>
+            <!-- Progress Steps -->
+            <div class="mb-4">
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-info" id="workflowProgress" role="progressbar" style="width: 0%"></div>
                         </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Total Rows:</span>
-                                <span class="badge bg-primary">${data.length}</span>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="badge bg-secondary" id="step1Badge">Step 1: File Upload</span>
+                    <span class="badge bg-secondary" id="step2Badge">Step 2: Parse CSV</span>
+                    <span class="badge bg-secondary" id="step3Badge">Step 3: Validate Data</span>
+                    <span class="badge bg-secondary" id="step4Badge">Step 4: Match SKUs</span>
+                    <span class="badge bg-secondary" id="step5Badge">Step 5: Ready to Import</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Valid Products:</span>
-                                <span class="badge bg-success">${validation.validCards}</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Invalid Rows:</span>
-                                <span class="badge bg-warning">${validation.invalidRows}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Missing SKUs:</span>
-                                <span class="badge bg-danger">${validation.missingSkus}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card border-info">
+            
+            <!-- Current Step Info -->
+            <div class="card border-info mb-3">
                         <div class="card-header bg-info text-white">
-                            <h6 class="mb-0"><i class="fas fa-columns me-2"></i>Detected Card Types</h6>
+                    <h6 class="mb-0"><i class="fas fa-upload me-2"></i>Ready to Start</h6>
                         </div>
                         <div class="card-body">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>Feature Cards:</span>
-                                <span class="badge bg-info">${validation.cardTypes.feature}</span>
+                    <div id="currentStepInfo">
+                        <p class="mb-2"><strong>Current Step:</strong> <span id="currentStepText">Waiting for file selection...</span></p>
+                        <p class="mb-2"><strong>File:</strong> <span id="currentFileName">No file selected</span></p>
+                        <p class="mb-0"><strong>Size:</strong> <span id="currentFileSize">-</span></p>
                             </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>Option Cards:</span>
-                                <span class="badge bg-info">${validation.cardTypes.option}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>Cargo Cards:</span>
-                                <span class="badge bg-info">${validation.cardTypes.cargo}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>Weather Cards:</span>
-                                <span class="badge bg-info">${validation.cardTypes.weather}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>Spec Tables:</span>
-                                <span class="badge bg-info">${validation.cardTypes.specTable}</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <div class="card border-success">
-                        <div class="card-header bg-success text-white">
-                            <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Products Ready for Import</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Found in Local Configs:</span>
-                                <span class="badge bg-success">${uniqueExistingSkus.length}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Cards Available:</span>
-                                <span class="badge bg-success">${validation.validCards}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Status:</span>
-                                <span class="badge bg-success">Ready to Import</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card border-warning">
-                        <div class="card-header bg-warning text-dark">
-                            <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Products Not Found</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Missing from Configs:</span>
-                                <span class="badge bg-warning">${uniqueMissingSkus.length}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Action Required:</span>
-                                <span class="badge bg-warning">Import from BigCommerce</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Status:</span>
-                                <span class="badge bg-warning">Will be Skipped</span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="mb-3">
+                <label for="hypaCsvFile" class="form-label">
+                    <i class="fas fa-file-csv me-2"></i>Select Hypa Metafields CSV Export:
+                </label>
+                <input type="file" class="form-control" id="hypaCsvFile" accept=".csv" />
+                <div class="form-text">
+                    <i class="fas fa-lightbulb me-1"></i>
+                    The file should contain columns like SKU, Title, Content, Card Type, etc.
                 </div>
             </div>
             
-            ${uniqueMissingSkus.length > 0 ? `
             <div class="alert alert-warning">
-                <h6><i class="fas fa-exclamation-triangle me-2"></i>Missing Product Configurations</h6>
-                <p class="mb-2">Found ${uniqueMissingSkus.length} products in the Hypa export that don't exist in your local configurations:</p>
-                <div class="mb-2">
-                    <small class="text-muted">
-                        ${uniqueMissingSkus.slice(0, 10).join(', ')}${uniqueMissingSkus.length > 10 ? ` and ${uniqueMissingSkus.length - 10} more...` : ''}
-                    </small>
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Note:</strong> This will import existing cards from Hypa. Cards with the same SKU will be skipped to avoid duplicates.
                 </div>
-                <p class="mb-0"><strong>To import cards for these products:</strong></p>
-                <ol class="mb-0">
-                    <li>Import the products from BigCommerce first, OR</li>
-                    <li>Create configurations for these SKUs manually</li>
-                </ol>
-            </div>
-            ` : ''}
             
             <div class="alert alert-info">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Import Summary:</strong> Only cards for products that exist in your local configurations will be imported. 
-                ${uniqueMissingSkus.length > 0 ? `Cards for ${uniqueMissingSkus.length} missing products will be skipped.` : 'All products are ready for import.'}
-            </div>
-            <div class="mt-4">
-                <h6><i class="fas fa-list me-2"></i>SKU Match Table</h6>
-                <div class="table-responsive" style="max-height: 300px;">
-                    <table class="table table-sm table-bordered table-striped">
-                        <thead class="table-light">
-                            <tr>
-                                <th>SKU</th>
-                                <th>In Hypa Import</th>
-                                <th>In Configs</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="skuMatchTableBody"></tbody>
-                    </table>
-                </div>
+                <strong>Important:</strong> Only cards for products that have been imported from BigCommerce will be created. 
+                If you haven't imported a product from BigCommerce yet, its Hypa cards will be skipped.
             </div>
         `;
 
-        // Add filter checkbox above the table
-        modalBody.innerHTML += `
-            <div class="d-flex align-items-center mb-2">
-                <input type="checkbox" id="showMatchedOnly" class="form-check-input me-2" checked>
-                <label for="showMatchedOnly" class="form-label mb-0">Show Matched Only</label>
-            </div>
+        // Update modal footer
+        modalFooter.innerHTML = `
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmHypaImportBtn" disabled>
+                <i class="fas fa-upload me-2"></i>Select File First
+            </button>
         `;
-        // ... existing code for table header ...
-        modalBody.innerHTML += `
-            <div class="table-responsive" style="max-height: 300px;">
-                <table class="table table-sm table-bordered table-striped" id="skuMatchTable">
-                    <thead class="table-light">
-                        <tr>
-                            <th></th>
-                            <th>SKU</th>
-                            <th>In Hypa Import</th>
-                            <th>In Configs</th>
-                            <th>Model</th>
-                            <th>Generation</th>
-                            <th>Variant Name</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="skuMatchTableBody"></tbody>
-                </table>
-            </div>
-        `;
+        
+        // Add event listener to the new file input
+        setTimeout(() => {
+            const newHypaCsvFile = document.getElementById('hypaCsvFile');
+            if (newHypaCsvFile) {
+                console.log('Adding event listener to new hypaCsvFile element');
+                newHypaCsvFile.addEventListener('change', handleHypaCsvFileSelect);
+            } else {
+                console.error('New hypaCsvFile element not found after creation');
+            }
+        }, 100);
+    }
 
-        // Build SKU match data
-        const hypaSkus = new Set(data.map(row => row.sku && row.sku.trim()).filter(Boolean));
-        const configSkus = new Set();
-        const skuToConfigInfo = {};
+    function updateWorkflowProgress(step, stepName, description) {
+        const progressBar = document.getElementById('workflowProgress');
+        const currentStepText = document.getElementById('currentStepText');
+        const progress = (step / 5) * 100;
+        
+        if (progressBar) {
+            progressBar.style.width = progress + '%';
+        }
+        
+        if (currentStepText) {
+            currentStepText.textContent = description;
+        }
+        
+        // Update step badges
+        const stepNames = ['File Upload', 'Parse CSV', 'Validate Data', 'Match SKUs', 'Ready to Import'];
+        for (let i = 1; i <= 5; i++) {
+            const badge = document.getElementById(`step${i}Badge`);
+            if (badge) {
+                if (i < step) {
+                    badge.className = 'badge bg-success';
+                    badge.textContent = `Step ${i}: ${stepNames[i-1]} ✓`;
+                } else if (i === step) {
+                    badge.className = 'badge bg-info';
+                    badge.textContent = `Step ${i}: ${stepName}`;
+                } else {
+                    badge.className = 'badge bg-secondary';
+                    badge.textContent = `Step ${i}: ${stepNames[i-1]}`;
+                }
+            }
+        }
+    }
+
+    function showHypaValidationResults(data) {
+        window.variantPreviewCards = {};
+        // ... existing code ...
+    }
+
+    function showHypaValidationResults(data) {
+        // Load previously excluded SKUs from localStorage at the very top
+        let excludedSkus = [];
+        try {
+            excludedSkus = JSON.parse(localStorage.getItem('hypaImportExcludedSkus') || '[]');
+        } catch (e) { excludedSkus = []; }
+        console.log('showHypaValidationResults called with data:', data);
+        const modalBody = document.querySelector('#importHypaModal .modal-body');
+        console.log('Modal body found:', modalBody);
+        updateWorkflowProgress(5, 'Ready to Import', 'Validation complete! Ready to import cards.');
+        const validation = validateHypaData(data);
+        // --- Build variant-level preview data ---
+        const skuToVariantPreview = {};
         if (configurations && configurations.length > 0) {
             configurations.forEach(config => {
                 if (config.variants && Array.isArray(config.variants)) {
                     config.variants.forEach(variant => {
-                        if (variant.sku) {
-                            const trimmedSku = variant.sku.trim();
-                            configSkus.add(trimmedSku);
-                            skuToConfigInfo[trimmedSku] = {
+                        const sku = variant.sku && variant.sku.trim();
+                        if (!sku) return;
+                        if (!skuToVariantPreview[sku]) {
+                            skuToVariantPreview[sku] = {
                                 model: config.model,
                                 generation: config.generation,
-                                variantName: variant.name || '',
+                                variants: []
                             };
                         }
+                        // Find cards for this variant from the Hypa CSV
+                        const row = data.find(r => r.sku && r.sku.trim() === sku);
+                        let cards = [];
+                        if (row) {
+                            cards = extractCardsFromHypaRow(row);
+                        }
+                        skuToVariantPreview[sku].variants.push({
+                            name: variant.name || '',
+                            id: variant.id || '',
+                            cards,
+                            importAction: 'import' // default to import
+                        });
                     });
                 }
             });
         }
-        const allSkus = new Set([...hypaSkus, ...configSkus]);
-        // Build card details for each SKU from hypaCsvData
-        const skuToCards = {};
-        data.forEach(row => {
-            const sku = row.sku && row.sku.trim();
-            if (!sku) return;
-            if (!skuToCards[sku]) skuToCards[sku] = [];
-            // Extract card types and titles
-            const columns = Object.keys(row);
-            // Feature cards
-            columns.forEach(col => {
-                if (/^shared\.feature-\d+-card$/.test(col) && row[col] && row[col].trim()) {
-                    const pos = col.match(/feature-(\d+)-card/)[1];
-                    const title = row[`features.feature_${pos}_title`] || '(No Title)';
-                    skuToCards[sku].push({ type: 'Feature', title: title.trim() });
-                }
-                if (/^shared\.option-\d+-card$/.test(col) && row[col] && row[col].trim()) {
-                    const pos = col.match(/option-(\d+)-card/)[1];
-                    const title = row[`options.option_${pos}_title`] || '(No Title)';
-                    skuToCards[sku].push({ type: 'Option', title: title.trim() });
-                }
-                if (/^shared\.cargo-option-\d+-card$/.test(col) && row[col] && row[col].trim()) {
-                    const pos = col.match(/cargo-option-(\d+)-card/)[1];
-                    const title = row[`cargo.cargo_${pos}_title`] || '(No Title)';
-                    skuToCards[sku].push({ type: 'Cargo', title: title.trim() });
-                }
-                if (/^shared\.weather-option-\d+-card$/.test(col) && row[col] && row[col].trim()) {
-                    const pos = col.match(/weather-option-(\d+)-card/)[1];
-                    const title = row[`weather.weather_${pos}_title`] || '(No Title)';
-                    skuToCards[sku].push({ type: 'Weather', title: title.trim() });
-                }
-                if (/^shared\.spec-table$/.test(col) && row[col] && row[col].trim()) {
-                    skuToCards[sku].push({ type: 'Spec Table', title: 'Specification Table' });
-                }
-            });
-        });
-        // Render table rows with expand/collapse
-        function renderSkuTableRows(showMatchedOnly) {
-            const tableRows = [];
-            allSkus.forEach(sku => {
-                const inHypa = hypaSkus.has(sku);
-                const inConfig = configSkus.has(sku);
-                let status = '';
-                if (inHypa && inConfig) status = 'Matched';
-                else if (inHypa) status = 'Only in Hypa';
-                else status = 'Only in Configs';
-                if (showMatchedOnly && status !== 'Matched') return;
-                const configInfo = skuToConfigInfo[sku] || {};
-                const cardList = skuToCards[sku] || [];
-                const rowId = `skuRow_${sku.replace(/[^a-zA-Z0-9]/g, '')}`;
-                const expandId = `expand_${sku.replace(/[^a-zA-Z0-9]/g, '')}`;
-                tableRows.push(`
+        // --- Render variant-level preview table ---
+        let previewHtml = `<div class="table-responsive" style="max-height: 500px;">
+            <table class="table table-bordered table-striped">
+                <thead class="table-light">
                     <tr>
-                        <td style="width:32px"><button class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#${expandId}" aria-expanded="false" aria-controls="${expandId}">▶</button></td>
-                        <td>${sku}</td>
-                        <td>${inHypa ? '✅' : ''}</td>
-                        <td>${inConfig ? '✅' : ''}</td>
-                        <td>${configInfo.model || ''}</td>
-                        <td>${configInfo.generation || ''}</td>
-                        <td>${configInfo.variantName || ''}</td>
-                        <td>${status}</td>
+                        <th>SKU</th>
+                        <th>Model</th>
+                        <th>Generation</th>
+                        <th>Variant</th>
+                        <th>Cards to Import</th>
+                        <th>Action</th>
                     </tr>
-                    <tr class="collapse" id="${expandId}">
-                        <td colspan="8">
-                            <div><strong>Imported Cards:</strong></div>
-                            ${cardList.length === 0 ? '<span class="text-muted">No cards imported for this SKU.</span>' :
-                                `<ul class="mb-0">${cardList.map(card => `<li><span class="badge bg-secondary me-2">${card.type}</span> ${card.title}</li>`).join('')}</ul>`}
+                </thead>
+                <tbody id="variantPreviewTableBody">
+        `;
+        // Add this CSS inline for immediate effect, before the preview table is rendered:
+        const gridStyle = `<style>
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.card-grid-item { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; min-width: 0; transition: box-shadow 0.15s; }
+.card-grid-item:hover, .card-grid-item:focus { box-shadow: 0 0 0 2px #0d6efd33; background: #e9ecef; }
+.card-grid-badge { font-size: 0.8em; margin-bottom: 2px; }
+.card-grid-title { font-weight: bold; font-size: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.card-grid-thumb { width: 40px; height: 28px; object-fit: cover; border-radius: 3px; margin-top: 2px; }
+.card-grid-info { margin-left: auto; color: #0d6efd; font-size: 1.1em; cursor: pointer; }
+@media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
+</style>`;
+        // Ensure this is before the previewHtml building loop:
+        window.variantPreviewCards = {};
+        Object.entries(skuToVariantPreview).forEach(([sku, info]) => {
+            info.variants.forEach((variant, vIdx) => {
+                previewHtml += `<tr>
+                    <td>${sku}</td>
+                    <td>${info.model || ''}</td>
+                    <td>${info.generation || ''}</td>
+                    <td>${variant.name || ''}</td>
+                    <td>
+                        ${variant.cards.length === 0 ? '<span class="text-muted">No cards</span>' :
+                            `${gridStyle}<div class="card-grid">${variant.cards.map((card, idx) => {
+                                const cardKey = `${sku}_${vIdx}_${idx}`;
+                                window.variantPreviewCards[cardKey] = card;
+                                if (card.cardType === 'specification-table') {
+                                    // Show the <h2> heading (title) fully and styled to match the spec card, but smaller
+                                    return `<div class=\"card-grid-item\" tabindex=\"0\" aria-label=\"Spec card: ${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}\" data-card-key=\"${cardKey}\">
+                                        <span class=\"badge bg-secondary card-grid-badge\">${getCardTypeDisplayName(card.cardType)}</span>
+                                        <span class=\"card-grid-title\" style=\"font-size:0.55rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}</span>
+                                        <span class=\"card-grid-info\"><i class=\"fas fa-info-circle\"></i></span>
+                                    </div>`;
+                                } else {
+                                    // Make all card titles match the spec card style, but smaller
+                                    return `<div class=\"card-grid-item\" tabindex=\"0\" aria-label=\"${getCardTypeDisplayName(card.cardType)} card: ${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) : '(No Title)'}\" data-card-key=\"${cardKey}\">
+                                        <span class=\"badge bg-secondary card-grid-badge\">${getCardTypeDisplayName(card.cardType)}</span>
+                                        <span class=\"card-grid-title\" style=\"font-size:0.55rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) + (card.title.length > 32 ? '…' : '') : '(No Title)'}</span>
+                                        ${card.imageUrl ? `<img src=\"${card.imageUrl}\" class=\"card-grid-thumb\" alt=\"\">` : ''}
+                                        <span class=\"card-grid-info\"><i class=\"fas fa-info-circle\"></i></span>
+                                    </div>`;
+                                }
+                            }).join('')}</div>`}
                         </td>
-                    </tr>
-                `);
+                    <td>
+                        <select class="form-select variant-import-action" data-sku="${sku}" data-variant-idx="${vIdx}">
+                            <option value="import" selected>Import & Overwrite</option>
+                            <option value="skip">Skip</option>
+                        </select>
+                    </td>
+                </tr>`;
             });
-            document.getElementById('skuMatchTableBody').innerHTML = tableRows.join('');
-        }
-        // Initial render (matched only)
-        renderSkuTableRows(true);
-        // Add filter event
-        document.getElementById('showMatchedOnly').addEventListener('change', function() {
-            renderSkuTableRows(this.checked);
         });
+        previewHtml += '</tbody></table></div>';
+        // Add card type summary
+        const cardTypeCounts = { Feature: 0, Option: 0, Cargo: 0, Weather: 0, Spec: 0 };
+        Object.values(skuToVariantPreview).forEach(info => {
+            info.variants.forEach(variant => {
+                variant.cards.forEach(card => {
+                    switch (card.cardType) {
+                        case 'feature': cardTypeCounts.Feature++; break;
+                        case 'product-options': cardTypeCounts.Option++; break;
+                        case 'cargo-options': cardTypeCounts.Cargo++; break;
+                        case 'weather-protection': cardTypeCounts.Weather++; break;
+                        case 'specification-table': cardTypeCounts.Spec++; break;
+                    }
+                });
+            });
+        });
+        const totalCards = Object.values(cardTypeCounts).reduce((a, b) => a + b, 0);
+        // After building previewHtml and before inserting summaryHtml
+        // Count unique cards by type (using cardType + title + content as a unique key)
+        const uniqueCardKeys = new Set();
+        const uniqueCardTypeCounts = { Feature: 0, Option: 0, Cargo: 0, Weather: 0, Spec: 0 };
+        Object.values(skuToVariantPreview).forEach(info => {
+            info.variants.forEach(variant => {
+                variant.cards.forEach(card => {
+                    const key = `${card.cardType}|${card.title}|${card.content}`;
+                    if (!uniqueCardKeys.has(key)) {
+                        uniqueCardKeys.add(key);
+                        switch (card.cardType) {
+                            case 'feature': uniqueCardTypeCounts.Feature++; break;
+                            case 'product-options': uniqueCardTypeCounts.Option++; break;
+                            case 'cargo-options': uniqueCardTypeCounts.Cargo++; break;
+                            case 'weather-protection': uniqueCardTypeCounts.Weather++; break;
+                            case 'specification-table': uniqueCardTypeCounts.Spec++; break;
+                        }
+                    }
+                });
+            });
+        });
+        const totalUniqueCards = Object.values(uniqueCardTypeCounts).reduce((a, b) => a + b, 0);
+        // Update summaryHtml to show both total and unique counts
+        const summaryHtml = `
+            <div class="alert alert-secondary mt-3 mb-0">
+                <strong>Summary:</strong>
+                <ul class="mb-0" style="display: flex; flex-wrap: wrap; gap: 2em; list-style: none; padding-left: 0;">
+                    <li>Feature: <strong>${cardTypeCounts.Feature}</strong> (<span title='Unique'>${uniqueCardTypeCounts.Feature} unique</span>)</li>
+                    <li>Option: <strong>${cardTypeCounts.Option}</strong> (<span title='Unique'>${uniqueCardTypeCounts.Option} unique</span>)</li>
+                    <li>Cargo: <strong>${cardTypeCounts.Cargo}</strong> (<span title='Unique'>${uniqueCardTypeCounts.Cargo} unique</span>)</li>
+                    <li>Weather: <strong>${cardTypeCounts.Weather}</strong> (<span title='Unique'>${uniqueCardTypeCounts.Weather} unique</span>)</li>
+                    <li>Spec: <strong>${cardTypeCounts.Spec}</strong> (<span title='Unique'>${uniqueCardTypeCounts.Spec} unique</span>)</li>
+                    <li>Total: <strong>${totalCards}</strong> (<span title='Unique'>${totalUniqueCards} unique</span>)</li>
+                </ul>
+            </div>
+        `;
+        // Insert summaryHtml after previewHtml and before the import button
+        modalBody.innerHTML = `
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Workflow Complete!</strong> Your Hypa export file has been successfully processed and validated.
+            </div>
+            <div class="mb-4">
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-success" id="workflowProgress" role="progressbar" style="width: 100%"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="badge bg-success" id="step1Badge">Step 1: File Upload ✓</span>
+                    <span class="badge bg-success" id="step2Badge">Step 2: Parse CSV ✓</span>
+                    <span class="badge bg-success" id="step3Badge">Step 3: Validate Data ✓</span>
+                    <span class="badge bg-success" id="step4Badge">Step 4: Match SKUs ✓</span>
+                    <span class="badge bg-success" id="step5Badge">Step 5: Ready to Import ✓</span>
+                </div>
+            </div>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Review the cards to be imported for each variant below. Use the dropdown to skip or import for each variant.</strong>
+            </div>
+            ${previewHtml}
+            ${summaryHtml}
+            <div class="mt-4 text-center">
+                <button type="button" class="btn btn-success btn-lg" id="importCardsBtn">
+                    <i class="fas fa-download me-2"></i>Import Selected Cards
+                </button>
+                <p class="text-muted mt-2">
+                    Only variants set to "Import & Overwrite" will be imported. Others will be skipped.
+                </p>
+            </div>
+        `;
+        // --- Listen for action changes ---
+        const variantActions = {};
+        document.querySelectorAll('.variant-import-action').forEach(sel => {
+            sel.addEventListener('change', function() {
+                const sku = this.getAttribute('data-sku');
+                const vIdx = parseInt(this.getAttribute('data-variant-idx'));
+                if (!variantActions[sku]) variantActions[sku] = {};
+                variantActions[sku][vIdx] = this.value;
+            });
+        });
+        // --- Update import button to use variantActions ---
+        document.getElementById('importCardsBtn').onclick = function() {
+            confirmHypaImport(variantActions);
+        };
+        // After inserting previewHtml, add event listeners for card-grid-item:
+        setTimeout(() => {
+            document.querySelectorAll('.card-grid-item').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    const cardKey = this.getAttribute('data-card-key');
+                    if (window.variantPreviewCards && window.variantPreviewCards[cardKey]) {
+                        showCardDetailsModal(window.variantPreviewCards[cardKey]);
+                    }
+                });
+                el.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        const cardKey = this.getAttribute('data-card-key');
+                        if (window.variantPreviewCards && window.variantPreviewCards[cardKey]) {
+                            showCardDetailsModal(window.variantPreviewCards[cardKey]);
+                        }
+                    }
+                });
+            });
+        }, 0);
+        // After extracting all cards for all variants (after skuToVariantPreview is built)
+        // Build uniqueCards and variantToCardMap
+        const uniqueCardMap = new Map();
+        const uniqueCards = [];
+        const variantToCardMap = {};
+        Object.entries(skuToVariantPreview).forEach(([sku, info]) => {
+            info.variants.forEach(variant => {
+                const cardIds = [];
+                variant.cards.forEach(card => {
+                    // Create a unique key for the card
+                    const key = `${card.cardType}|${card.title}|${card.content}`;
+                    if (!uniqueCardMap.has(key)) {
+                        // Assign a unique id (hash or base64 of key for simplicity)
+                        const id = btoa(unescape(encodeURIComponent(key))).replace(/=+$/, '');
+                        const cardWithId = { ...card, id };
+                        uniqueCardMap.set(key, cardWithId);
+                        uniqueCards.push(cardWithId);
+                    }
+                    cardIds.push(uniqueCardMap.get(key).id);
+                });
+                if (!variantToCardMap[sku]) variantToCardMap[sku] = [];
+                variantToCardMap[sku].push({ variantId: variant.id, cardIds });
+            });
+        });
+        // Save to localStorage for now (can be adapted for backend)
+        localStorage.setItem('uniqueCards', JSON.stringify(uniqueCards));
+        localStorage.setItem('variantToCardMap', JSON.stringify(variantToCardMap));
     }
 
-    function validateHypaData(data) {
-        console.log('validateHypaData called with data length:', data.length);
-        console.log('First few rows:', data.slice(0, 3));
-        
-        const validation = {
-            validCards: 0,
-            invalidRows: 0,
-            missingSkus: 0,
-            detectedFields: {},
-            errors: [],
-            cardTypes: {
-                feature: 0,
-                option: 0,
-                cargo: 0,
-                weather: 0,
-                specTable: 0
-            }
-        };
-
-        // Hypa-specific field patterns
-        const hypaFieldPatterns = {
-            sku: ['sku'],
-            productId: ['id'],
-            // Card type flags
-            featureCards: /^shared\.feature-\d+-card$/,
-            optionCards: /^shared\.option-\d+-card$/,
-            cargoCards: /^shared\.cargo-option-\d+-card$/,
-            weatherCards: /^shared\.weather-option-\d+-card$/,
-            specTable: /^shared\.spec-table$/,
-            // Content fields
-            featureContent: /^features\.feature_\d+_(title|subtitle|description|image)$/,
-            optionContent: /^options\.option_\d+_(title|description|image|price)$/,
-            cargoContent: /^cargo\.cargo_\d+_(title|description|image|price)$/,
-            weatherContent: /^weather\.weather_\d+_(title|description|image|price)$/
-        };
-
-        // Analyze field detection
-        if (data.length > 0) {
-            const firstRow = data[0];
-            const columns = Object.keys(firstRow);
-            
-            // Count detected field types
-            columns.forEach(column => {
-                if (hypaFieldPatterns.featureCards.test(column)) {
-                    validation.cardTypes.feature++;
-                } else if (hypaFieldPatterns.optionCards.test(column)) {
-                    validation.cardTypes.option++;
-                } else if (hypaFieldPatterns.cargoCards.test(column)) {
-                    validation.cardTypes.cargo++;
-                } else if (hypaFieldPatterns.weatherCards.test(column)) {
-                    validation.cardTypes.weather++;
-                } else if (hypaFieldPatterns.specTable.test(column)) {
-                    validation.cardTypes.specTable++;
-                }
-            });
-
-            // Check for basic required fields
-            validation.detectedFields.sku = firstRow.hasOwnProperty('sku') ? 100 : 0;
-            validation.detectedFields.productId = firstRow.hasOwnProperty('id') ? 100 : 0;
-        }
-
-        // Validate each row
-        data.forEach((row, index) => {
-            const rowNum = index + 1;
-            let isValid = true;
-            let hasSku = false;
-            let hasCards = false;
-
-            // Check for SKU
-            const sku = row.sku;
-            if (sku && sku.trim()) {
-                hasSku = true;
-            } else {
-                validation.missingSkus++;
-                validation.errors.push({
-                    row: rowNum,
-                    issue: 'Missing SKU',
-                    data: `Row ${rowNum}: No SKU found`
-                });
-                isValid = false;
-            }
-
-            // Check for any enabled cards
-            const columns = Object.keys(row);
-            const enabledCards = columns.filter(col => {
-                return (hypaFieldPatterns.featureCards.test(col) || 
-                        hypaFieldPatterns.optionCards.test(col) || 
-                        hypaFieldPatterns.cargoCards.test(col) || 
-                        hypaFieldPatterns.weatherCards.test(col) || 
-                        hypaFieldPatterns.specTable.test(col)) && 
-                       row[col] && row[col].trim();
-            });
-
-            if (enabledCards.length > 0) {
-                hasCards = true;
-            } else {
-                validation.errors.push({
-                    row: rowNum,
-                    issue: 'No Cards Enabled',
-                    data: `Row ${rowNum}: SKU ${sku} - No cards are enabled`
-                });
-                isValid = false;
-            }
-
-            if (isValid && hasSku && hasCards) {
-                validation.validCards++;
-            } else {
-                validation.invalidRows++;
-            }
-        });
-
-        console.log('Validation completed:', validation);
-        return validation;
-    }
-
-    function confirmHypaImport() {
+    async function confirmHypaImport(variantActions) {
+        // Add a global cancel flag
+        window.hypaImportCancelRequested = false;
         console.log('=== confirmHypaImport function called ===');
         console.log('window.hypaCsvData:', window.hypaCsvData);
         const data = window.hypaCsvData;
@@ -3474,9 +3620,99 @@ Import Details:
             return;
         }
 
+        // Show progress modal
+        const modalBody = document.querySelector('#importHypaModal .modal-body');
+        const modalFooter = document.querySelector('#importHypaModal .modal-footer');
+        
+        modalBody.innerHTML = `
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Importing from Hypa:</strong> Processing your Hypa export file...
+            </div>
+            
+            <div class="progress mb-3" style="height: 25px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                     id="hypaImportProgress" 
+                     role="progressbar" 
+                     style="width: 0%" 
+                     aria-valuenow="0" 
+                     aria-valuemin="0" 
+                     aria-valuemax="100">
+                    0%
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>Progress</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Processed:</span>
+                                <span id="processedCount">0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Total:</span>
+                                <span id="totalCount">${data.length}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Current SKU:</span>
+                                <span id="currentSku">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-success">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Results</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Cards Imported:</span>
+                                <span id="importedCount">0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Skipped:</span>
+                                <span id="skippedCount">0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Not Found:</span>
+                                <span id="notFoundCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-warning">
+                <i class="fas fa-clock me-2"></i>
+                <strong>Processing...</strong> Please wait while we import your cards. This may take a few moments.
+            </div>
+        `;
+
+        // Update modal footer to show cancel button (enabled)
+        modalFooter.innerHTML = `
+            <button type="button" class="btn btn-secondary" id="cancelHypaImportBtn">
+                <i class="fas fa-times me-2"></i>Cancel
+            </button>
+            <button type="button" class="btn btn-primary" disabled>
+                <i class="fas fa-spinner fa-spin me-2"></i>Importing...
+            </button>
+        `;
+        // Add cancel event listener
+        document.getElementById('cancelHypaImportBtn').onclick = function() {
+            window.hypaImportCancelRequested = true;
+            const modal = bootstrap.Modal.getInstance(document.getElementById('importHypaModal'));
+            if (modal) modal.hide();
+        };
+
         console.log('Starting import process...');
         console.log('Data length:', data.length);
         console.log('First row sample:', data[0]);
+        
         let importedCount = 0;
         let skippedCount = 0;
         let notFoundCount = 0;
@@ -3504,33 +3740,82 @@ Import Details:
             console.log('Stored original Hypa data for export');
         }
 
-        data.forEach(row => {
-            const sku = row.sku;
-            if (!sku || !sku.trim()) {
-                skippedCount++;
-                return;
+        // Process rows with progress updates
+        for (let i = 0; i < data.length; i++) {
+            const row = data[i]; // <-- Ensure row is defined here
+            // Check for cancel
+            if (window.hypaImportCancelRequested) {
+                showAnalysisToast('Hypa import cancelled by user.', 'warning');
+                break;
             }
+            // Only import for SKUs that exist in configurations
+            if (!row.sku || !existingSkus.has(row.sku.trim())) {
+                missingSkus.push(row.sku);
+                continue;
+            }
+            // Extract cards for this row
+            const cardsForRow = extractCardsFromHypaRow(row);
+            importedCards.push(...cardsForRow);
 
-            const trimmedSku = sku.trim();
-            
-            // Only process cards for products that exist in local configurations
-            if (!existingSkus.has(trimmedSku)) {
-                console.log(`Skipping SKU ${trimmedSku} - not found in local configurations`);
-                notFoundCount++;
-                missingSkus.push(trimmedSku);
-                return;
+            // Update progress bar and status text
+            const progress = Math.round(((i + 1) / data.length) * 100);
+            const progressBar = document.getElementById('hypaImportProgress');
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+                progressBar.setAttribute('aria-valuenow', progress);
+                progressBar.textContent = progress + '%';
             }
+            const processedCount = document.getElementById('processedCount');
+            if (processedCount) processedCount.textContent = i + 1;
+            const currentSku = document.getElementById('currentSku');
+            if (currentSku) currentSku.textContent = row.sku || '-';
+            // Optionally, show extraction status
+            let statusText = document.getElementById('hypaImportStatusText');
+            if (!statusText) {
+                const bar = document.getElementById('hypaImportProgress');
+                if (bar && bar.parentNode) {
+                    statusText = document.createElement('div');
+                    statusText.id = 'hypaImportStatusText';
+                    statusText.style.marginTop = '4px';
+                    statusText.style.fontSize = '0.95em';
+                    bar.parentNode.parentNode.insertBefore(statusText, bar.parentNode.nextSibling);
+                }
+            }
+            if (statusText) {
+                statusText.textContent = `Extracting cards: ${i + 1} / ${data.length}`;
+            }
+        }
+        // Reset cancel flag
+        window.hypaImportCancelRequested = false;
 
-            // Extract enabled cards from this row
-            const cardsFromRow = extractCardsFromHypaRow(row);
-            
-            if (cardsFromRow.length > 0) {
-                importedCards.push(...cardsFromRow);
-                importedCount += cardsFromRow.length;
-            } else {
-                skippedCount++;
-            }
+        // === NEW: Show cross-reference/enrichment progress ===
+        let enrichedCount = 0;
+        let notEnrichedCount = 0;
+        importedCards.forEach(card => {
+            if (card.enrichedFromConfig) enrichedCount++;
+            else notEnrichedCount++;
         });
+        // Add a commentary section to the modal
+        const progressCommentary = document.createElement('div');
+        progressCommentary.className = 'alert alert-info';
+        progressCommentary.innerHTML = `
+            <i class="fas fa-link me-2"></i>
+            <strong>Cross-referencing with BigCommerce data:</strong><br>
+            <span class="badge bg-success me-2">${enrichedCount} cards enriched with product details</span>
+            <span class="badge bg-warning">${notEnrichedCount} cards missing configuration (imported with Hypa data only)</span>
+            <br>
+            <small>Cards are enriched with model, generation, variant, price, and images from your BigCommerce import if available.</small>
+        `;
+        // Insert commentary after the progress bar
+        const modalBodyEl = document.querySelector('#importHypaModal .modal-body');
+        if (modalBodyEl) {
+            const progressBarEl = modalBodyEl.querySelector('.progress');
+            if (progressBarEl && progressBarEl.parentNode) {
+                progressBarEl.parentNode.insertBefore(progressCommentary, progressBarEl.nextSibling);
+            } else {
+                modalBodyEl.appendChild(progressCommentary);
+            }
+        }
 
         // Show warning if there are missing SKUs
         if (missingSkus.length > 0) {
@@ -3552,9 +3837,58 @@ Only cards for existing products will be imported.`;
             }
         }
 
+        // After all rows processed, importedCards contains all extracted cards
+
+        // === ENHANCED LOGIC: Attach configuration and merge cards ===
+        // 1. Attach configuration to each card by matching SKU
+        importedCards.forEach(card => {
+            const config = configurations.find(cfg =>
+                cfg.variants && cfg.variants.some(v => v.sku === card.sku)
+            );
+            if (config) {
+                const matchingVariants = config.variants.filter(v => v.sku === card.sku);
+                card.configuration = {
+                    brand: config.brand,
+                    model: config.model,
+                    generation: config.generation,
+                    variants: matchingVariants
+                };
+            } else {
+                card.configuration = null;
+            }
+        });
+
+        // 2. Merge cards with identical content/cardType/model/generation, combining their variants
+        const mergedCards = [];
+        importedCards.forEach(card => {
+            if (!card.configuration) {
+                mergedCards.push(card);
+                return;
+            }
+            const existing = mergedCards.find(existingCard =>
+                existingCard.cardType === card.cardType &&
+                existingCard.content === card.content &&
+                existingCard.configuration &&
+                existingCard.configuration.brand === card.configuration.brand &&
+                existingCard.configuration.model === card.configuration.model &&
+                existingCard.configuration.generation === card.configuration.generation
+            );
+            if (existing) {
+                // Merge variants (avoid duplicates)
+                const existingSkus = new Set(existing.configuration.variants.map(v => v.sku));
+                card.configuration.variants.forEach(variant => {
+                    if (!existingSkus.has(variant.sku)) {
+                        existing.configuration.variants.push(variant);
+                    }
+                });
+            } else {
+                mergedCards.push(card);
+            }
+        });
+
         // Add to existing cards (avoid duplicates by SKU + card type + position)
         const existingCardKeys = new Set(cards.map(card => `${card.sku}-${card.cardType}-${card.position || 1}`));
-        const newCards = importedCards.filter(card => {
+        const newCards = mergedCards.filter(card => {
             const cardKey = `${card.sku}-${card.cardType}-${card.position || 1}`;
             return !existingCardKeys.has(cardKey);
         });
@@ -3582,71 +3916,95 @@ Only cards for existing products will be imported.`;
     }
 
     function extractCardsFromHypaRow(row) {
-        console.log('extractCardsFromHypaRow called for SKU:', row.sku);
         const cards = [];
-        const columns = Object.keys(row);
-        
-        console.log('Available columns:', columns);
-        
-        // Extract feature cards
-        const featureCards = extractFeatureCards(row, columns);
-        cards.push(...featureCards);
-        
-        // Extract option cards
-        const optionCards = extractOptionCards(row, columns);
-        cards.push(...optionCards);
-        
-        // Extract cargo cards
-        const cargoCards = extractCargoCards(row, columns);
-        cards.push(...cargoCards);
-        
-        // Extract weather cards
-        const weatherCards = extractWeatherCards(row, columns);
-        cards.push(...weatherCards);
-        
-        // Extract spec table
-        const specTable = extractSpecTable(row, columns);
-        if (specTable) {
-            cards.push(specTable);
+        for (const col in row) {
+            const value = row[col] && row[col].trim();
+            if (!value) continue;
+            let cardType = null;
+            let position = null;
+            let match;
+            if ((match = col.match(/^shared\.feature-(\d+)-card$/))) {
+                cardType = 'feature';
+                position = parseInt(match[1], 10);
+            } else if ((match = col.match(/^shared\.option-(\d+)-card$/))) {
+                cardType = 'product-options';
+                position = parseInt(match[1], 10);
+            } else if ((match = col.match(/^shared\.cargo-option-(\d+)-card$/))) {
+                cardType = 'cargo-options';
+                position = parseInt(match[1], 10);
+            } else if ((match = col.match(/^shared\.weather-option-(\d+)-card$/))) {
+                cardType = 'weather-protection';
+                position = parseInt(match[1], 10);
+            } else if (col === 'shared.spec-table') {
+                cardType = 'specification-table';
+            }
+            if (cardType) {
+                // Parse HTML to extract fields if possible
+                let title = '', subtitle = '', description = '', imageUrl = '', price = '';
+                try {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(value, 'text/html');
+                    if (cardType === 'feature' || cardType === 'cargo-options' || cardType === 'weather-protection') {
+                        title = (doc.querySelector('h2') || doc.querySelector('h3'))?.textContent?.trim() || '';
+                        subtitle = doc.querySelector('h3')?.textContent?.trim() || '';
+                        description = doc.querySelector('p')?.textContent?.trim() || '';
+                        const img = doc.querySelector('img');
+                        imageUrl = img ? img.getAttribute('src') : '';
+                        price = doc.querySelector('.card-price, h3.price')?.textContent?.trim() || '';
+                    } else if (cardType === 'product-options') {
+                        title = doc.querySelector('.card-title')?.textContent?.trim() || '';
+                        description = doc.querySelector('.card-description')?.textContent?.trim() || '';
+                        price = doc.querySelector('.card-price')?.textContent?.trim() || '';
+                        const img = doc.querySelector('img');
+                        imageUrl = img ? img.getAttribute('src') : '';
+                    } else if (cardType === 'specification-table') {
+                        title = doc.querySelector('h2')?.textContent?.trim() || '';
+                        description = doc.querySelector('p')?.textContent?.trim() || '';
+                    }
+                } catch (err) {
+                    console.error('Error parsing HTML for card', col, err);
+                }
+                cards.push({
+                    id: Date.now() + Math.random(),
+                    sku: row.sku && row.sku.trim(),
+                    cardType,
+                    position,
+                    title,
+                    subtitle,
+                    content: value,
+                    description,
+                    imageUrl,
+                    price,
+                    hypaUpdated: true,
+                    importedFromHypa: true,
+                    lastModified: new Date().toISOString(),
+                    originalHypaData: {
+                        productId: row.id,
+                        sourceColumn: col,
+                        position
+                    }
+                });
+            }
         }
-        
-        console.log(`Total cards extracted for SKU ${row.sku}:`, cards.length);
-        console.log('Card types:', cards.map(c => c.cardType));
-        
         return cards;
     }
 
     function extractFeatureCards(row, columns) {
-        console.log('extractFeatureCards called with columns:', columns);
-        console.log('Row data:', row);
-        
         const cards = [];
-        
-        // Find enabled feature cards
-        const enabledFeatures = columns.filter(col => 
-            /^shared\.feature-\d+-card$/.test(col) && row[col] && row[col].trim()
-        );
-        
-        console.log('Enabled feature cards:', enabledFeatures);
-        
-        enabledFeatures.forEach(featureFlag => {
-            const position = featureFlag.match(/feature-(\d+)-card/)[1];
-            console.log(`Processing feature position ${position}`);
-            
-            // Extract content for this feature
-            const title = row[`features.feature_${position}_title`] || '';
-            const subtitle = row[`features.feature_${position}_subtitle`] || '';
-            const description = row[`features.feature_${position}_description`] || '';
-            const imageUrl = row[`features.feature_${position}_image`] || '';
-            
-            console.log(`Feature ${position} content:`, { title, subtitle, description, imageUrl });
-            
-            if (title || description) {
+        let foundStandard = false;
+        // Standard: separate columns for each feature
+        for (let i = 1; i <= 12; i++) {
+            const title = row[`features.feature_${i}_title`] || '';
+            const subtitle = row[`features.feature_${i}_subtitle`] || '';
+            const description = row[`features.feature_${i}_description`] || '';
+            const imageUrl = row[`features.feature_${i}_image`] || '';
+            if (title || subtitle || description || imageUrl) {
+                foundStandard = true;
                 cards.push({
                     id: Date.now() + Math.random(),
-                    sku: row.sku.trim(),
+                    sku: row.sku && row.sku.trim(),
                     cardType: 'feature',
-                    position: parseInt(position),
+                    position: i,
                     title: title.trim(),
                     subtitle: subtitle.trim(),
                     content: description.trim(),
@@ -3656,39 +4014,67 @@ Only cards for existing products will be imported.`;
                     lastModified: new Date().toISOString(),
                     originalHypaData: {
                         productId: row.id,
-                        featureFlag: featureFlag
+                        featureIndex: i
                     }
                 });
             }
-        });
-        
-        console.log(`Extracted ${cards.length} feature cards`);
+        }
+        // Fallback: parse HTML block in shared.feature-1-card, shared.feature-2-card, ...
+        if (!foundStandard) {
+            for (let i = 1; i <= 12; i++) {
+                const html = row[`shared.feature-${i}-card`];
+                if (html && html.trim()) {
+                    try {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const title = (doc.querySelector('h2') || doc.querySelector('h3'))?.textContent?.trim() || '';
+                        const subtitle = doc.querySelector('h3')?.textContent?.trim() || '';
+                        const description = doc.querySelector('p')?.textContent?.trim() || '';
+                        const img = doc.querySelector('img');
+                        const imageUrl = img ? img.getAttribute('src') : '';
+                        if (title || description || imageUrl) {
+                            cards.push({
+                                id: Date.now() + Math.random(),
+                                sku: row.sku && row.sku.trim(),
+                                cardType: 'feature',
+                                position: i,
+                                title,
+                                subtitle,
+                                content: description,
+                                imageUrl,
+                                hypaUpdated: true,
+                                importedFromHypa: true,
+                                lastModified: new Date().toISOString(),
+                                originalHypaData: {
+                                    productId: row.id,
+                                    featureIndex: i,
+                                    htmlSource: true
+                                }
+                            });
+                        }
+                    } catch (err) {
+                        console.error('Error parsing HTML block for feature card (shared.feature-' + i + '-card):', err);
+                    }
+                }
+            }
+        }
         return cards;
     }
 
     function extractOptionCards(row, columns) {
         const cards = [];
-        
-        // Find enabled option cards
-        const enabledOptions = columns.filter(col => 
-            /^shared\.option-\d+-card$/.test(col) && row[col] && row[col].trim()
-        );
-        
-        enabledOptions.forEach(optionFlag => {
-            const position = optionFlag.match(/option-(\d+)-card/)[1];
-            
-            // Extract content for this option
-            const title = row[`options.option_${position}_title`] || '';
-            const description = row[`options.option_${position}_description`] || '';
-            const imageUrl = row[`options.option_${position}_image`] || '';
-            const price = row[`options.option_${position}_price`] || '';
-            
-            if (title || description) {
+        // Standard: separate columns for each option
+        for (let i = 1; i <= 12; i++) {
+            const title = row[`options.option_${i}_title`] || '';
+            const description = row[`options.option_${i}_description`] || '';
+            const imageUrl = row[`options.option_${i}_image`] || '';
+            const price = row[`options.option_${i}_price`] || '';
+            if (title || description || imageUrl || price) {
                 cards.push({
                     id: Date.now() + Math.random(),
-                    sku: row.sku.trim(),
+                    sku: row.sku && row.sku.trim(),
                     cardType: 'product-options',
-                    position: parseInt(position),
+                    position: i,
                     title: title.trim(),
                     content: description.trim(),
                     imageUrl: imageUrl.trim(),
@@ -3698,38 +4084,65 @@ Only cards for existing products will be imported.`;
                     lastModified: new Date().toISOString(),
                     originalHypaData: {
                         productId: row.id,
-                        optionFlag: optionFlag
+                        optionIndex: i
                     }
                 });
             }
-        });
-        
+        }
+        // Fallback: parse HTML block in shared.option-1-card, shared.option-2-card, ...
+        for (let i = 1; i <= 12; i++) {
+            const html = row[`shared.option-${i}-card`];
+            if (html && html.trim()) {
+                try {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const title = doc.querySelector('.card-title')?.textContent?.trim() || '';
+                    const description = doc.querySelector('.card-description')?.textContent?.trim() || '';
+                    const price = doc.querySelector('.card-price')?.textContent?.trim() || '';
+                    const img = doc.querySelector('img');
+                    const imageUrl = img ? img.getAttribute('src') : '';
+                    if (title || description || imageUrl || price) {
+                        cards.push({
+                            id: Date.now() + Math.random(),
+                            sku: row.sku && row.sku.trim(),
+                            cardType: 'product-options',
+                            position: i,
+                            title,
+                            content: description,
+                            imageUrl,
+                            price,
+                            hypaUpdated: true,
+                            importedFromHypa: true,
+                            lastModified: new Date().toISOString(),
+                            originalHypaData: {
+                                productId: row.id,
+                                htmlSource: true,
+                                optionIndex: i
+                            }
+                        });
+                    }
+                } catch (err) {
+                    console.error('Error parsing HTML block for option card (shared.option-' + i + '-card):', err);
+                }
+            }
+        }
         return cards;
     }
 
     function extractCargoCards(row, columns) {
         const cards = [];
-        
-        // Find enabled cargo cards
-        const enabledCargo = columns.filter(col => 
-            /^shared\.cargo-option-\d+-card$/.test(col) && row[col] && row[col].trim()
-        );
-        
-        enabledCargo.forEach(cargoFlag => {
-            const position = cargoFlag.match(/cargo-option-(\d+)-card/)[1];
-            
-            // Extract content for this cargo option
-            const title = row[`cargo.cargo_${position}_title`] || '';
-            const description = row[`cargo.cargo_${position}_description`] || '';
-            const imageUrl = row[`cargo.cargo_${position}_image`] || '';
-            const price = row[`cargo.cargo_${position}_price`] || '';
-            
-            if (title || description) {
+        // Standard: separate columns for each cargo card
+        for (let i = 1; i <= 12; i++) {
+            const title = row[`cargo.cargo_${i}_title`] || '';
+            const description = row[`cargo.cargo_${i}_description`] || '';
+            const imageUrl = row[`cargo.cargo_${i}_image`] || '';
+            const price = row[`cargo.cargo_${i}_price`] || '';
+            if (title || description || imageUrl || price) {
                 cards.push({
                     id: Date.now() + Math.random(),
-                    sku: row.sku.trim(),
+                    sku: row.sku && row.sku.trim(),
                     cardType: 'cargo-options',
-                    position: parseInt(position),
+                    position: i,
                     title: title.trim(),
                     content: description.trim(),
                     imageUrl: imageUrl.trim(),
@@ -3739,38 +4152,65 @@ Only cards for existing products will be imported.`;
                     lastModified: new Date().toISOString(),
                     originalHypaData: {
                         productId: row.id,
-                        cargoFlag: cargoFlag
+                        cargoIndex: i
                     }
                 });
             }
-        });
-        
+        }
+        // Fallback: parse HTML block in shared.cargo-1-card, shared.cargo-2-card, ...
+        for (let i = 1; i <= 12; i++) {
+            const html = row[`shared.cargo-${i}-card`];
+            if (html && html.trim()) {
+                try {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const title = doc.querySelector('h2')?.textContent?.trim() || '';
+                    const description = doc.querySelector('p')?.textContent?.trim() || '';
+                    const price = doc.querySelector('h3')?.textContent?.trim() || '';
+                    const img = doc.querySelector('img');
+                    const imageUrl = img ? img.getAttribute('src') : '';
+                    if (title || description || imageUrl || price) {
+                        cards.push({
+                            id: Date.now() + Math.random(),
+                            sku: row.sku && row.sku.trim(),
+                            cardType: 'cargo-options',
+                            position: i,
+                            title,
+                            content: description,
+                            imageUrl,
+                            price,
+                            hypaUpdated: true,
+                            importedFromHypa: true,
+                            lastModified: new Date().toISOString(),
+                            originalHypaData: {
+                                productId: row.id,
+                                htmlSource: true,
+                                cargoIndex: i
+                            }
+                        });
+                    }
+                } catch (err) {
+                    console.error('Error parsing HTML block for cargo card (shared.cargo-' + i + '-card):', err);
+                }
+            }
+        }
         return cards;
     }
 
     function extractWeatherCards(row, columns) {
         const cards = [];
-        
-        // Find enabled weather cards
-        const enabledWeather = columns.filter(col => 
-            /^shared\.weather-option-\d+-card$/.test(col) && row[col] && row[col].trim()
-        );
-        
-        enabledWeather.forEach(weatherFlag => {
-            const position = weatherFlag.match(/weather-option-(\d+)-card/)[1];
-            
-            // Extract content for this weather option
-            const title = row[`weather.weather_${position}_title`] || '';
-            const description = row[`weather.weather_${position}_description`] || '';
-            const imageUrl = row[`weather.weather_${position}_image`] || '';
-            const price = row[`weather.weather_${position}_price`] || '';
-            
-            if (title || description) {
+        // Standard: separate columns for each weather card
+        for (let i = 1; i <= 12; i++) {
+            const title = row[`weather.weather_${i}_title`] || '';
+            const description = row[`weather.weather_${i}_description`] || '';
+            const imageUrl = row[`weather.weather_${i}_image`] || '';
+            const price = row[`weather.weather_${i}_price`] || '';
+            if (title || description || imageUrl || price) {
                 cards.push({
                     id: Date.now() + Math.random(),
-                    sku: row.sku.trim(),
+                    sku: row.sku && row.sku.trim(),
                     cardType: 'weather-protection',
-                    position: parseInt(position),
+                    position: i,
                     title: title.trim(),
                     content: description.trim(),
                     imageUrl: imageUrl.trim(),
@@ -3780,76 +4220,92 @@ Only cards for existing products will be imported.`;
                     lastModified: new Date().toISOString(),
                     originalHypaData: {
                         productId: row.id,
-                        weatherFlag: weatherFlag
+                        weatherIndex: i
                     }
                 });
             }
-        });
-        
+        }
+        // Fallback: parse HTML block in shared.weather-1-card, shared.weather-2-card, ...
+        for (let i = 1; i <= 12; i++) {
+            const html = row[`shared.weather-${i}-card`];
+            if (html && html.trim()) {
+                try {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const title = doc.querySelector('h2')?.textContent?.trim() || '';
+                    const description = doc.querySelector('p')?.textContent?.trim() || '';
+                    const price = doc.querySelector('h3')?.textContent?.trim() || '';
+                    const img = doc.querySelector('img');
+                    const imageUrl = img ? img.getAttribute('src') : '';
+                    if (title || description || imageUrl || price) {
+                        cards.push({
+                            id: Date.now() + Math.random(),
+                            sku: row.sku && row.sku.trim(),
+                            cardType: 'weather-protection',
+                            position: i,
+                            title,
+                            content: description,
+                            imageUrl,
+                            price,
+                            hypaUpdated: true,
+                            importedFromHypa: true,
+                            lastModified: new Date().toISOString(),
+                            originalHypaData: {
+                                productId: row.id,
+                                htmlSource: true,
+                                weatherIndex: i
+                            }
+                        });
+                    }
+                } catch (err) {
+                    console.error('Error parsing HTML block for weather card (shared.weather-' + i + '-card):', err);
+                }
+            }
+        }
         return cards;
     }
 
     function extractSpecTable(row, columns) {
-        console.log('extractSpecTable called with columns:', columns);
-        console.log('Row data:', row);
-        
-        // Check if spec table is enabled
-        const specTableEnabled = columns.find(col => 
-            /^shared\.spec-table$/.test(col) && row[col] && row[col].trim()
-        );
-        
-        if (specTableEnabled) {
-            // Look for spec table content in dedicated columns
-            const specTableContent = row['specifications.spec_table_content'] || 
-                                   row['specifications.content'] || 
-                                   row['spec_table.content'] ||
-                                   row['specifications'] ||
-                                   '';
-            
-            // If no dedicated content column, try to find any content in the row
-            let content = specTableContent;
-            if (!content || !content.trim()) {
-                // Look for any column that might contain spec table data
-                const specColumns = columns.filter(col => 
-                    col.includes('spec') || col.includes('table') || col.includes('specification')
-                );
-                
-                for (const col of specColumns) {
-                    if (row[col] && row[col].trim() && col !== specTableEnabled) {
-                        content = row[col];
-                        break;
-                    }
+        // Scan all columns for a cell that starts with the spec sheet HTML block
+        let specTableContent = '';
+        for (const col of columns) {
+            const val = row[col];
+            if (typeof val === 'string' && val.trim().startsWith('<div class="module container-center m30-layer-content background-grey" data-layer-target="specifications-table"')) {
+                specTableContent = val.trim();
+                break;
+            }
+        }
+        if (specTableContent) {
+            let title = '';
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(specTableContent, 'text/html');
+                const h2 = doc.querySelector('h2');
+                if (h2 && h2.textContent) {
+                    title = h2.textContent.trim();
                 }
+            } catch (err) {
+                console.warn('Failed to parse spec table HTML for <h2>:', err);
             }
-            
-            // If still no content, use a placeholder
-            if (!content || !content.trim()) {
-                content = 'Specification table content not found in import data.';
+            if (!title) {
+                title = row['product_name'] || row['name'] || row['title'] || `Specifications for ${row.sku}`;
             }
-            
-            // Generate a meaningful title from SKU or product info
-            const title = row['product_name'] || 
-                         row['name'] || 
-                         row['title'] || 
-                         `Specifications for ${row.sku}`;
-            
             return {
                 id: Date.now() + Math.random(),
                 sku: row.sku.trim(),
                 cardType: 'specification-table',
                 title: title.trim(),
-                content: content.trim(),
+                content: specTableContent,
                 hypaUpdated: true,
                 importedFromHypa: true,
                 lastModified: new Date().toISOString(),
                 originalHypaData: {
                     productId: row.id,
-                    specTableFlag: specTableEnabled,
-                    originalContent: content
+                    specTableFlag: true,
+                    originalContent: specTableContent
                 }
             };
         }
-        
         return null;
     }
 
@@ -3950,6 +4406,8 @@ Only cards for existing products will be imported.`;
     window.testHypaFlow = testHypaFlow;
     window.exportCardsToFile = exportCardsToFile;
     window.importCardsFromFile = importCardsFromFile;
+    window.confirmHypaImport = confirmHypaImport;
+    window.hasSavedImportState = hasSavedImportState;
 
     // Card migration and renewal system
     function migrateAndUpdateCards() {
@@ -4293,249 +4751,367 @@ Only cards for existing products will be imported.`;
                         if (card.imageUrl && originalHypaCsvHeaders.includes(`options.option_${card.position}_image`)) {
                             row[`options.option_${card.position}_image`] = card.imageUrl;
                         }
-                        if (card.price && originalHypaCsvHeaders.includes(`options.option_${card.position}_price`)) {
-                            row[`options.option_${card.position}_price`] = card.price;
-                        }
                     }
                     break;
-
                 case 'specification-table':
-                    // Update spec table flag
+                case 'spec':
                     if (originalHypaCsvHeaders.includes('shared.spec-table')) {
                         row['shared.spec-table'] = 'enabled';
                     }
-                    
-                    // Update spec table content if we have a content column
-                    if (card.content) {
-                        const specContentColumns = [
-                            'specifications.spec_table_content',
-                            'specifications.content',
-                            'spec_table.content',
-                            'specifications'
-                        ];
-                        
-                        for (const col of specContentColumns) {
-                            if (originalHypaCsvHeaders.includes(col)) {
-                                row[col] = card.content;
-                                break;
-                            }
-                        }
+                    if (card.content && originalHypaCsvHeaders.includes('specification_table_content')) {
+                        row['specification_table_content'] = card.content;
                     }
                     break;
-
-                // Add other card types as needed
-                default:
-                    console.log(`Unknown card type: ${card.cardType}, skipping`);
+                // Add other cardType cases as needed
             }
+            // Mark card as exported to Hypa
+            card.exportedToHypa = true;
         });
 
-        // Convert back to CSV format
-        const csvContent = Papa.unparse({
-            fields: originalHypaCsvHeaders,
-            data: exportData
-        });
-
-        // Create and download the file
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `hypa-export-${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        showAnalysisToast('Hypa export completed! File downloaded with original structure preserved.', 'success');
-        console.log('Hypa export completed with', exportData.length, 'rows preserved');
-    }
-
-    // Make export function available globally
-    window.exportToHypaFormat = exportToHypaFormat;
-
-    // Clean up bad cards that were imported incorrectly
-    function cleanupBadCards() {
-        console.log('Starting cleanup of bad cards...');
-        
-        // Find cards that are likely bad imports
-        const badCards = cards.filter(card => {
-            // Check for cards with generic titles or no content
-            const hasGenericTitle = card.title === 'Specification Table' || 
-                                   card.title === 'Specifications for ' + card.sku ||
-                                   card.title.includes('specification-table') ||
-                                   card.title === card.sku;
-            
-            const hasNoContent = !card.content || 
-                                card.content.trim() === '' || 
-                                card.content === 'Specification table content not found in import data.';
-            
-            const isSpecTable = card.cardType === 'specification-table';
-            
-            // Consider it bad if it's a spec table with generic title or no content
-            return isSpecTable && (hasGenericTitle || hasNoContent);
-        });
-        
-        console.log('Found bad cards to remove:', badCards.length);
-        console.log('Bad cards:', badCards.map(c => ({ sku: c.sku, title: c.title, content: c.content?.substring(0, 50) })));
-        
-        if (badCards.length === 0) {
-            showAnalysisToast('No bad cards found to clean up!', 'success');
-            return;
-        }
-        
-        // Remove bad cards
-        const originalCount = cards.length;
-        cards = cards.filter(card => {
-            const isBad = badCards.some(badCard => badCard.id === card.id);
-            return !isBad;
-        });
-        
-        // Save updated cards
-        saveCardsToFile();
-        
-        // Update localStorage
-        localStorage.setItem('cards', JSON.stringify(cards));
-        
-        const removedCount = originalCount - cards.length;
-        showAnalysisToast(`Cleaned up ${removedCount} bad cards successfully!`, 'success');
-        
-        // Refresh analysis
-        performAnalysis();
-        renderAnalysisTable();
-        
-        console.log(`Cleanup completed. Removed ${removedCount} bad cards.`);
-    }
-
-    // Make cleanup function available globally
-    window.cleanupBadCards = cleanupBadCards;
-
-    // Add sticky header CSS for the SKU match table
-    const stickyHeaderStyle = document.createElement('style');
-    stickyHeaderStyle.innerHTML = `
-        #importHypaModal .table-responsive {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        #importHypaModal table thead th {
-            position: sticky;
-            top: 0;
-            background: #f8f9fa;
-            z-index: 2;
-        }
-    `;
-    document.head.appendChild(stickyHeaderStyle);
-
-    // --- Data persistence functions for import state (must be global) ---
-    function hasSavedImportState() {
-        try {
-            const savedState = localStorage.getItem('bigcommerceImportState');
-            if (!savedState) return false;
-            const importState = JSON.parse(savedState);
-            const hoursSinceSave = (Date.now() - importState.timestamp) / (1000 * 60 * 60);
-            return hoursSinceSave <= 24;
-        } catch (error) {
-            return false;
-        }
-    }
-
-    function saveImportState() {
-        const importState = {
-            timestamp: Date.now(),
-            bigcommerceCsvData: window.bigcommerceCsvData,
-            bigcommerceFieldMappings: window.bigcommerceFieldMappings,
-            bigcommerceProcessedData: window.bigcommerceProcessedData,
-            bigcommerceGroupedData: window.bigcommerceGroupedData,
-            selectedConfigGroups: Array.from(window.selectedConfigGroups || []),
-            selectedConfigVariants: Array.from(window.selectedConfigVariants || []),
-            currentStep: window.currentBigcommerceStep || 1
-        };
-        try {
-            localStorage.setItem('bigcommerceImportState', JSON.stringify(importState));
-            if (window.showAnalysisToast) {
-                window.showAnalysisToast('Import state saved successfully!', 'success');
-            }
-            console.log('Import state saved:', importState);
-        } catch (error) {
-            console.error('Error saving import state:', error);
-            if (window.showAnalysisToast) {
-                window.showAnalysisToast('Error saving import state. Data may be too large.', 'error');
-            }
-        }
-    }
-
-    function loadImportState() {
-        try {
-            const savedState = localStorage.getItem('bigcommerceImportState');
-            if (!savedState) return false;
-            const importState = JSON.parse(savedState);
-            const hoursSinceSave = (Date.now() - importState.timestamp) / (1000 * 60 * 60);
-            if (hoursSinceSave > 24) {
-                console.log('Saved import state is older than 24 hours, clearing...');
-                clearImportState();
-                return false;
-            }
-            window.bigcommerceCsvData = importState.bigcommerceCsvData;
-            window.bigcommerceFieldMappings = importState.bigcommerceFieldMappings;
-            window.bigcommerceProcessedData = importState.bigcommerceProcessedData;
-            window.bigcommerceGroupedData = importState.bigcommerceGroupedData;
-            window.selectedConfigGroups = new Set(importState.selectedConfigGroups || []);
-            window.selectedConfigVariants = new Set(importState.selectedConfigVariants || []);
-            window.currentBigcommerceStep = importState.currentStep || 1;
-            console.log('Import state restored:', importState);
-            return true;
-        } catch (error) {
-            console.error('Error loading import state:', error);
-            return false;
-        }
-    }
-
-    function clearImportState() {
-        try {
-            localStorage.removeItem('bigcommerceImportState');
-            console.log('Import state cleared');
-        } catch (error) {
-            console.error('Error clearing import state:', error);
-        }
-    }
-
-    function autoSaveImportState() {
-        if (window.bigcommerceCsvData && window.bigcommerceCsvData.length > 0) {
-            saveImportState();
-        }
-    }
-    // --- End data persistence functions ---
-
-    // Global function to restore import state
-    window.restoreImportState = function() {
-        if (loadImportState()) {
-            if (window.showAnalysisToast) {
-                window.showAnalysisToast('Previous import state restored successfully!', 'success');
-            }
-            
-            // Show the appropriate step based on saved state
-            const currentStep = window.currentBigcommerceStep || 1;
-            if (currentStep >= 2 && window.showBigcommerceStep) {
-                window.showBigcommerceStep(currentStep);
-            }
+        // Determine export format
+        const exportFormat = document.getElementById('exportFormat')?.value || 'csv';
+        let exportContent, mimeType, fileExtension;
+        if (exportFormat === 'json') {
+            exportContent = JSON.stringify(exportData, null, 2);
+            mimeType = 'application/json';
+            fileExtension = 'json';
         } else {
-            if (window.showAnalysisToast) {
-                window.showAnalysisToast('No saved import state found or it has expired.', 'warning');
-            }
+            // Use PapaParse to convert to CSV
+            exportContent = Papa.unparse(exportData, { columns: originalHypaCsvHeaders });
+            mimeType = 'text/csv';
+            fileExtension = 'csv';
         }
-    };
-}); 
 
-// Initialize elements when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing elements...');
-    
-    // Check for saved import state and show restore button if available
-    if (hasSavedImportState()) {
-        const restoreBtn = document.getElementById('restoreImportStateBtn');
-        if (restoreBtn) {
-            restoreBtn.style.display = 'inline-block';
+        // Trigger download
+        const blob = new Blob([exportContent], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `hypa-export-${new Date().toISOString().replace(/[:.]/g, '-')}.${fileExtension}`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 100);
+
+        showAnalysisToast('Export completed! Download started.', 'success');
+
+        // Add this function near the top of the file
+        function validateSpecTableHtml(html) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const hasSpecsTable = !!doc.querySelector('.specs__table');
+          const hasSpecsItem = !!doc.querySelector('.specs__item');
+          return hasSpecsTable && hasSpecsItem;
+        }
+
+        // In the exportToHypaFormat function, before triggering the download, add strict validation for spec cards
+        // Find all spec cards and validate their content
+        const failedSpecCards = exportData.filter(card =>
+          (card.cardType === 'specification-table' || card.cardType === 'spec') &&
+          !validateSpecTableHtml(card.content || '')
+        );
+        if (failedSpecCards.length > 0) {
+          // Show modal with failed cards and reasons
+          const modal = document.createElement('div');
+          modal.className = 'modal fade';
+          modal.tabIndex = -1;
+          modal.innerHTML = `
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Export Blocked: Invalid Spec Table Cards</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>The following spec cards do not match the required Hypa template and must be fixed before export:</p>
+                  <ul>
+                    ${failedSpecCards.map(card => `<li><strong>${card.title || '(Untitled)'}</strong> - Missing .specs__table or .specs__item in content</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(modal);
+          const bsModal = new bootstrap.Modal(modal);
+          bsModal.show();
+          modal.addEventListener('hidden.bs.modal', () => {
+            document.body.removeChild(modal);
+          });
+          return; // Block export
+        }
+
+        // Add this at the top of the file, before showHypaValidationResults
+        function validateHypaData(data) {
+            console.log('validateHypaData called with data length:', data.length);
+            console.log('First few rows:', data.slice(0, 3));
+            const validation = {
+                validCards: 0,
+                invalidRows: 0,
+                missingSkus: 0,
+                detectedFields: {},
+                errors: [],
+                cardTypes: {
+                    feature: 0,
+                    option: 0,
+                    cargo: 0,
+                    weather: 0,
+                    specTable: 0
+                }
+            };
+            // Hypa-specific field patterns
+            const hypaFieldPatterns = {
+                sku: ['sku'],
+                productId: ['id'],
+                featureCards: /^shared\.feature-\d+-card$/,
+                optionCards: /^shared\.option-\d+-card$/,
+                cargoCards: /^shared\.cargo-option-\d+-card$/,
+                weatherCards: /^shared\.weather-option-\d+-card$/,
+                specTable: /^shared\.spec-table$/,
+                featureContent: /^features\.feature_\d+_(title|subtitle|description|image)$/,
+                optionContent: /^options\.option_\d+_(title|description|image|price)$/,
+                cargoContent: /^cargo\.cargo_\d+_(title|description|image|price)$/,
+                weatherContent: /^weather\.weather_\d+_(title|description|image|price)$/
+            };
+            if (data.length > 0) {
+                const firstRow = data[0];
+                const columns = Object.keys(firstRow);
+                columns.forEach(column => {
+                    if (hypaFieldPatterns.featureCards.test(column)) {
+                        validation.cardTypes.feature++;
+                    } else if (hypaFieldPatterns.optionCards.test(column)) {
+                        validation.cardTypes.option++;
+                    } else if (hypaFieldPatterns.cargoCards.test(column)) {
+                        validation.cardTypes.cargo++;
+                    } else if (hypaFieldPatterns.weatherCards.test(column)) {
+                        validation.cardTypes.weather++;
+                    } else if (hypaFieldPatterns.specTable.test(column)) {
+                        validation.cardTypes.specTable++;
+                    }
+                });
+                validation.detectedFields.sku = firstRow.hasOwnProperty('sku') ? 100 : 0;
+                validation.detectedFields.productId = firstRow.hasOwnProperty('id') ? 100 : 0;
+            }
+            data.forEach((row, index) => {
+                const rowNum = index + 1;
+                let isValid = true;
+                let hasSku = false;
+                let hasCards = false;
+                const sku = row.sku;
+                if (sku && sku.trim()) {
+                    hasSku = true;
+                } else {
+                    validation.missingSkus++;
+                    validation.errors.push({
+                        row: rowNum,
+                        issue: 'Missing SKU',
+                        data: `Row ${rowNum}: No SKU found`
+                    });
+                    isValid = false;
+                }
+                const columns = Object.keys(row);
+                const enabledCards = columns.filter(col => {
+                    return (hypaFieldPatterns.featureCards.test(col) || 
+                            hypaFieldPatterns.optionCards.test(col) || 
+                            hypaFieldPatterns.cargoCards.test(col) || 
+                            hypaFieldPatterns.weatherCards.test(col) || 
+                            hypaFieldPatterns.specTable.test(col)) && 
+                           row[col] && row[col].trim();
+                });
+                if (enabledCards.length > 0) {
+                    hasCards = true;
+                } else {
+                    validation.errors.push({
+                        row: rowNum,
+                        issue: 'No Cards Enabled',
+                        data: `Row ${rowNum}: SKU ${sku} - No cards are enabled`
+                    });
+                    isValid = false;
+                }
+                if (isValid && hasSku && hasCards) {
+                    validation.validCards++;
+                } else {
+                    validation.invalidRows++;
+                }
+            });
+            console.log('Validation completed:', validation);
+            return validation;
+        }
+       
+        // Expose helpers on window for debugging if needed
+        window.getCardTypeDisplayName = getCardTypeDisplayName;
+        window.validateHypaData = validateHypaData;
+        window.showCardDetailsModal = showCardDetailsModal;
+        // ... existing code ...
+    }
+
+    // ===== Global helper: validateHypaData (moved out of exportToHypaFormat for wider scope) =====
+    function validateHypaData(data) {
+        console.log('validateHypaData called with data length:', data.length);
+        console.log('First few rows:', data.slice(0, 3));
+        const validation = {
+            validCards: 0,
+            invalidRows: 0,
+            missingSkus: 0,
+            detectedFields: {},
+            errors: [],
+            cardTypes: {
+                feature: 0,
+                option: 0,
+                cargo: 0,
+                weather: 0,
+                specTable: 0
+            }
+        };
+        const hypaFieldPatterns = {
+            sku: ['sku'],
+            productId: ['id'],
+            featureCards: /^shared\.feature-\d+-card$/,
+            optionCards: /^shared\.option-\d+-card$/,
+            cargoCards: /^shared\.cargo-option-\d+-card$/,
+            weatherCards: /^shared\.weather-option-\d+-card$/,
+            specTable: /^shared\.spec-table$/,
+            featureContent: /^features\.feature_\d+_(title|subtitle|description|image)$/,
+            optionContent: /^options\.option_\d+_(title|description|image|price)$/,
+            cargoContent: /^cargo\.cargo_\d+_(title|description|image|price)$/,
+            weatherContent: /^weather\.weather_\d+_(title|description|image|price)$/
+        };
+        if (data.length > 0) {
+            const firstRow = data[0];
+            const columns = Object.keys(firstRow);
+            columns.forEach(column => {
+                if (hypaFieldPatterns.featureCards.test(column)) {
+                    validation.cardTypes.feature++;
+                } else if (hypaFieldPatterns.optionCards.test(column)) {
+                    validation.cardTypes.option++;
+                } else if (hypaFieldPatterns.cargoCards.test(column)) {
+                    validation.cardTypes.cargo++;
+                } else if (hypaFieldPatterns.weatherCards.test(column)) {
+                    validation.cardTypes.weather++;
+                } else if (hypaFieldPatterns.specTable.test(column)) {
+                    validation.cardTypes.specTable++;
+                }
+            });
+            validation.detectedFields.sku = firstRow.hasOwnProperty('sku') ? 100 : 0;
+            validation.detectedFields.productId = firstRow.hasOwnProperty('id') ? 100 : 0;
+        }
+        data.forEach((row, index) => {
+            const rowNum = index + 1;
+            let isValid = true;
+            let hasSku = false;
+            let hasCards = false;
+            const sku = row.sku;
+            if (sku && sku.trim()) {
+                hasSku = true;
+            } else {
+                validation.missingSkus++;
+                validation.errors.push({
+                    row: rowNum,
+                    issue: 'Missing SKU',
+                    data: `Row ${rowNum}: No SKU found`
+                });
+                isValid = false;
+            }
+            const columns = Object.keys(row);
+            const enabledCards = columns.filter(col => {
+                return (hypaFieldPatterns.featureCards.test(col) ||
+                        hypaFieldPatterns.optionCards.test(col) ||
+                        hypaFieldPatterns.cargoCards.test(col) ||
+                        hypaFieldPatterns.weatherCards.test(col) ||
+                        hypaFieldPatterns.specTable.test(col)) &&
+                       row[col] && row[col].trim();
+            });
+            if (enabledCards.length > 0) {
+                hasCards = true;
+            } else {
+                validation.errors.push({
+                    row: rowNum,
+                    issue: 'No Cards Enabled',
+                    data: `Row ${rowNum}: SKU ${sku} - No cards are enabled`
+                });
+                isValid = false;
+            }
+            if (isValid && hasSku && hasCards) {
+                validation.validCards++;
+            } else {
+                validation.invalidRows++;
+            }
+        });
+        console.log('Validation completed:', validation);
+        return validation;
+    }
+
+    // ===== Global helper: getCardTypeDisplayName (extracted for wider scope) =====
+    function getCardTypeDisplayName(cardType) {
+        switch (cardType) {
+            case 'feature': return 'Feature';
+            case 'product-options': return 'Option';
+            case 'cargo-options': return 'Cargo';
+            case 'weather-protection': return 'Weather';
+            case 'specification-table': return 'Spec';
+            default: return cardType;
         }
     }
-    
-    initializeElements();
-}); 
+
+    // ─── Global helper functions (ensure availability everywhere) ───────────────
+    if (typeof getCardTypeDisplayName === 'undefined') {
+      function getCardTypeDisplayName(cardType) {
+        switch (cardType) {
+          case 'feature': return 'Feature';
+          case 'product-options': return 'Option';
+          case 'cargo-options': return 'Cargo';
+          case 'weather-protection': return 'Weather';
+          case 'specification-table': return 'Spec';
+          default: return cardType;
+        }
+      }
+    }
+
+    if (typeof showCardDetailsModal === 'undefined') {
+      function showCardDetailsModal(card) {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.tabIndex = -1;
+        // Image HTML with fallback
+        let imageHtml = '';
+        if (card.imageUrl) {
+          imageHtml = `<img src="${card.imageUrl}" style="max-width:200px;" class="mb-3" onerror="this.style.display='none';this.parentNode.querySelector('.img-placeholder').style.display='block';">` +
+            `<div class="img-placeholder" style="display:none;width:200px;height:100px;background:#eee;color:#888;line-height:100px;text-align:center;border:1px solid #ccc;border-radius:4px;">Image not available</div>`;
+        }
+        modal.innerHTML = `
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Card Details: ${getCardTypeDisplayName(card.cardType)}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <h4>${card.title || ''}</h4>
+                ${card.subtitle ? `<h5>${card.subtitle}</h5>` : ''}
+                ${imageHtml}
+                ${card.content ? `<div style='border:1px solid #eee;padding:8px 12px;margin:10px 0;background:#fafbfc;border-radius:4px;'>${card.content}</div>` : ''}
+                ${card.price ? `<p><strong>Price:</strong> ${card.price}</p>` : ''}
+                <hr>
+                <pre style="font-size:0.85em;white-space:pre-wrap;">${JSON.stringify(card, null, 2)}</pre>
+              </div>
+            </div>
+          </div>`;
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        modal.addEventListener('hidden.bs.modal', () => {
+          document.body.removeChild(modal);
+        });
+      }
+    }
+
+    if (typeof validateHypaData === 'undefined') {
+      // (Optional) If validateHypaData somehow missing, you can move its implementation here.
+    }
+
+    // Expose helpers globally
+    window.getCardTypeDisplayName = getCardTypeDisplayName;
+    window.showCardDetailsModal = showCardDetailsModal;
+    // ───────────────────────────────────────────────────────────────────────────
+  });

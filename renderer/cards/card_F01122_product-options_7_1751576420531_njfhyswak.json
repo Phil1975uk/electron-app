@@ -1,0 +1,36 @@
+{
+  "id": 1751576404229.6492,
+  "sku": "F01122",
+  "cardType": "product-options",
+  "position": 7,
+  "title": "Front carrier",
+  "subtitle": "",
+  "content": "<!-- Example of another card -->\n<div class=\"swiper-slide\">\n<div class=\"se-component se-image-container __se__float- __se__float-none\"><figure><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/riese-and-muller-homage4-front-carrier.jpg?t=1710947961\" alt=\"Front carrier\" data-proportion=\"true\" data-align=\"none\" data-index=\"0\" data-file-name=\"riese-and-muller-homage4-front-carrier.jpg?t=1710947961\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\"></figure></div>\n<div class=\"card\">\n<div class=\"card-info\">\n<div class=\"card-title\">Front carrier</div>\n<div class=\"card-description\">Stay active while having all your essentials at hand. The front carrier allows you to safely secure up to 5 kg of luggage directly to the frame, ensuring it's protected from impacts and vibrations. With bungee cords, items like a sleeping bag, sports bag, or provisions can be quickly and securely fastened in place. You'll soon find the front luggage carrier to be an invaluable asset for your adventures.</div>\n<div class=\"card-price\">£94.00</div>\n<button class=\"more-info-btn\">More Information</button></div>\n</div></div>\n<!-- Repeat the above card structure for each product -->",
+  "description": "Stay active while having all your essentials at hand. The front carrier allows you to safely secure up to 5 kg of luggage directly to the frame, ensuring it's protected from impacts and vibrations. With bungee cords, items like a sleeping bag, sports bag, or provisions can be quickly and securely fastened in place. You'll soon find the front luggage carrier to be an invaluable asset for your adventures.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/riese-and-muller-homage4-front-carrier.jpg?t=1710947961",
+  "price": "£94.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.229Z",
+  "originalHypaData": {
+    "productId": "312",
+    "sourceColumn": "shared.option-7-card",
+    "position": 7
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01122_product-options_7_1751576420531_njfhyswak.json"
+}

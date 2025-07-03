@@ -122,65 +122,112 @@ class CardCreator {
         });
 
         // Form field changes
-        document.getElementById('brand').addEventListener('change', (e) => {
+        const brandSelect = document.getElementById('brand');
+        if (brandSelect) {
+            brandSelect.addEventListener('change', (e) => {
             this.populateModelSelect(e.target.value);
             this.renderSavedCards(); // Update saved cards list when brand changes
             this.checkConfigurationAvailability(); // Check availability
         });
+        } else {
+            console.warn('Element with id "brand" not found during event listener setup');
+        }
 
-        document.getElementById('model').addEventListener('change', (e) => {
+        const modelSelect = document.getElementById('model');
+        if (modelSelect) {
+            modelSelect.addEventListener('change', (e) => {
             this.populateGenerationSelect(e.target.value);
             this.renderSavedCards(); // Update saved cards list when model changes
             this.checkConfigurationAvailability(); // Check availability
         });
+        } else {
+            console.warn('Element with id "model" not found during event listener setup');
+        }
 
-        document.getElementById('generation').addEventListener('change', () => {
+        const generationSelect = document.getElementById('generation');
+        if (generationSelect) {
+            generationSelect.addEventListener('change', () => {
             this.populateVariantCheckboxes();
             this.renderSavedCards(); // Update saved cards list when generation changes
             this.checkConfigurationAvailability(); // Check availability
         });
+        } else {
+            console.warn('Element with id "generation" not found during event listener setup');
+        }
 
         // Variant checkbox changes
-        document.getElementById('variantCheckboxes').addEventListener('change', (e) => {
+        const variantCheckboxes = document.getElementById('variantCheckboxes');
+        if (variantCheckboxes) {
+            variantCheckboxes.addEventListener('change', (e) => {
             if (e.target.type === 'checkbox') {
                 this.renderSavedCards(); // Update saved cards list when variants change
                 this.checkConfigurationAvailability(); // Check availability
             }
         });
+        } else {
+            console.warn('Element with id "variantCheckboxes" not found during event listener setup');
+        }
 
         // Form submission
-        document.getElementById('cardForm').addEventListener('submit', (e) => {
+        const cardForm = document.getElementById('cardForm');
+        if (cardForm) {
+            cardForm.addEventListener('submit', (e) => {
             this.handleFormSubmit(e);
         });
+        } else {
+            console.warn('Element with id "cardForm" not found during event listener setup');
+        }
 
         // Saved card actions
-        document.getElementById('savedCardsList').addEventListener('click', (e) => {
+        const savedCardsList = document.getElementById('savedCardsList');
+        if (savedCardsList) {
+            savedCardsList.addEventListener('click', (e) => {
             this.handleSavedCardAction(e);
         });
+        } else {
+            console.warn('Element with id "savedCardsList" not found during event listener setup');
+        }
 
         // WebDAV upload
-        document.getElementById('uploadToWebDAV').addEventListener('click', () => {
+        const uploadToWebDAVBtn = document.getElementById('uploadToWebDAV');
+        if (uploadToWebDAVBtn) {
+            uploadToWebDAVBtn.addEventListener('click', () => {
             this.uploadImagesToWebDAV();
         });
+        } else {
+            console.warn('Element with id "uploadToWebDAV" not found during event listener setup');
+        }
 
         // Real-time preview updates
         ['title', 'subtitle', 'description', 'price', 'imageUrl'].forEach(fieldId => {
-            document.getElementById(fieldId).addEventListener('input', () => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                element.addEventListener('input', () => {
                 this.updatePreview();
             });
+            } else {
+                console.warn(`Element with id '${fieldId}' not found during event listener setup`);
+            }
         });
 
         // Listener for the preview's "More Information" button
-        document.getElementById('live-preview-wrapper').addEventListener('click', (e) => {
+        const livePreviewWrapper = document.getElementById('live-preview-wrapper');
+        if (livePreviewWrapper) {
+            livePreviewWrapper.addEventListener('click', (e) => {
             if (e.target.classList.contains('more-info-btn')) {
                 e.preventDefault();
                 console.log('[Preview] .more-info-btn clicked, data-target:', e.target.getAttribute('data-target'));
                 this.toggleCardDescription(e.target);
             }
         });
+        } else {
+            console.warn('Element with id "live-preview-wrapper" not found during event listener setup');
+        }
 
         // Reset Form button
-        document.getElementById('resetFormBtn').addEventListener('click', () => {
+        const resetFormBtn = document.getElementById('resetFormBtn');
+        if (resetFormBtn) {
+            resetFormBtn.addEventListener('click', () => {
             this.editingCardId = null;
             document.getElementById('cardForm').reset();
             // Clear variant checkboxes
@@ -188,6 +235,9 @@ class CardCreator {
             // Keep the current card type
             this.updatePreview();
         });
+        } else {
+            console.warn('Element with id "resetFormBtn" not found during event listener setup');
+        }
 
         // Cancel Edit button
         const cancelBtn = document.getElementById('cancelEditBtn');
@@ -248,6 +298,11 @@ class CardCreator {
         this.updateFormFields(type);
         // Update the preview
         this.updatePreview();
+        
+        // Debug: Check if renderSavedCards is being called
+        console.log('[selectCardType] About to call renderSavedCards...');
+        this.renderSavedCards();
+        console.log('[selectCardType] renderSavedCards called');
     }
 
     updateFormFields(cardType) {
@@ -1106,13 +1161,18 @@ class CardCreator {
             const response = await fetch('/api/load-cards');
             if (!response.ok) throw new Error('Failed to fetch cards.');
             let cards = await response.json();
+            console.log('[loadSavedCards] Raw cards from server:', cards.map(c => ({ id: c.id, cardType: c.cardType, type: c.type, title: c.title })));
+            
             // Migrate any 'option' type cards to 'product-options'
             cards = cards.map(card => {
                 if (card.cardType === 'option' || card.type === 'option') {
+                    console.log(`[loadSavedCards] Migrating card ${card.id} from 'option' to 'product-options'`);
                     card.cardType = 'product-options';
                 }
                 return card;
             });
+            
+            console.log('[loadSavedCards] Cards after migration:', cards.map(c => ({ id: c.id, cardType: c.cardType, type: c.type, title: c.title })));
             this.savedCards = cards;
             this.renderSavedCards();
             this.checkConfigurationAvailability(); // Check availability after loading cards
@@ -1123,7 +1183,12 @@ class CardCreator {
     }
 
     renderSavedCards() {
+        console.log('[renderSavedCards] Method called');
         const listContainer = document.getElementById('savedCardsList');
+        if (!listContainer) {
+            console.error('[renderSavedCards] savedCardsList element not found!');
+            return;
+        }
         listContainer.innerHTML = '';
 
         if (this.savedCards.length === 0) {
@@ -1143,10 +1208,18 @@ class CardCreator {
         const validTypes = cardTypeMap[currentCardType] || [currentCardType];
 
         // Only filter by card type
+        console.log('[renderSavedCards] Current card type:', currentCardType);
+        console.log('[renderSavedCards] Valid types for filtering:', validTypes);
+        console.log('[renderSavedCards] All saved cards:', this.savedCards.map(c => ({ id: c.id, cardType: c.cardType, type: c.type, title: c.title })));
+        
         const filteredCards = this.savedCards.filter(card => {
             const cardType = card.cardType || card.type;
-            return validTypes.includes(cardType);
+            const isIncluded = validTypes.includes(cardType);
+            console.log(`[renderSavedCards] Card ${card.id} (${card.title}): cardType=${cardType}, included=${isIncluded}`);
+            return isIncluded;
         });
+        
+        console.log('[renderSavedCards] Filtered cards:', filteredCards.length);
 
         if (filteredCards.length === 0) {
             listContainer.innerHTML = '<p class="text-muted">No cards of this type saved yet.</p>';
@@ -1166,6 +1239,7 @@ class CardCreator {
             // Always use 'Product Options' for both 'option' and 'product-options'
             const cardType = card.cardType || card.type || 'Unknown';
             const cardTypeName = cardTypeNames[cardType] || (cardType === 'option' ? 'Product Options' : cardType);
+            console.log(`[renderSavedCards] Card ${card.id}: cardType=${cardType}, displayName=${cardTypeName}`);
             
             // For specification table cards, extract the meaningful title from HTML content
             let displayTitle = card.title;
@@ -1179,7 +1253,7 @@ class CardCreator {
             }
             
             // Format variants for display
-            const variants = card.configuration.variants || [];
+            const variants = (card.configuration && card.configuration.variants) ? card.configuration.variants : [];
             let variantsText = 'No variants selected';
             
             if (variants.length > 0) {
@@ -1203,7 +1277,7 @@ class CardCreator {
                             <strong>${displayTitle}</strong>
                         </div>
                         <div class="text-muted small">
-                            <strong>Configuration:</strong> ${card.configuration.brand} - ${card.configuration.model} - ${card.configuration.generation}
+                            <strong>Configuration:</strong> ${card.configuration ? `${card.configuration.brand || 'Unknown'} - ${card.configuration.model || 'Unknown'} - ${card.configuration.generation || 'Unknown'}` : 'No configuration'}
                         </div>
                         ${variants.length > 0 ? `<div class="variants-info"><small><strong>Variants:</strong> ${variantsText}</small></div>` : ''}
                         ${cardType === 'product-options' && card.price ? `<div class="text-success small mt-1"><strong>${card.price}</strong></div>` : ''}

@@ -1,0 +1,44 @@
+{
+  "id": 1751576404164.4248,
+  "sku": "F01356_1209140719153055",
+  "cardType": "feature",
+  "position": 3,
+  "title": "Safe handling",
+  "subtitle": "Simply and safely through everyday life.",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Safe handling</h2>\n<h3>Simply and safely through everyday life.</h3>\n<p>Whether you are riding or parking, getting on and off or loading &ndash; the Packster 70 is incredibly simple to use at all times. Its small turning circle means that it is ideal for riding and manoeuvring in tight spaces. And its optional Bosch eBike ABS 2.0 with Magura disc brakes ensures that you retain control even if you have to brake suddenly: it reliably prevents tires from sliding, the rear wheel from lifting, and the whole bike from skidding out to the side. But even its standard Tektro disc brakes pack quite a punch if you have to stop quickly. The combination of high-performance headlight with daytime running light and well distributed reflectors guarantees that you can see and be seen.</p>\n</div>\n<!-- Image -->\n<div class=\"feature-image\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-abs-smart-cargo-0375.jpg?t=1713436208\" alt=\"Packster2 70 Safe handling\"></div>\n</div>",
+  "description": "Whether you are riding or parking, getting on and off or loading – the Packster 70 is incredibly simple to use at all times. Its small turning circle means that it is ideal for riding and manoeuvring in tight spaces. And its optional Bosch eBike ABS 2.0 with Magura disc brakes ensures that you retain control even if you have to brake suddenly: it reliably prevents tires from sliding, the rear wheel from lifting, and the whole bike from skidding out to the side. But even its standard Tektro disc brakes pack quite a punch if you have to stop quickly. The combination of high-performance headlight with daytime running light and well distributed reflectors guarantees that you can see and be seen.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-abs-smart-cargo-0375.jpg?t=1713436208",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.164Z",
+  "originalHypaData": {
+    "productId": "515",
+    "sourceColumn": "shared.feature-3-card",
+    "position": 3
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Ct Vario",
+        "sku": "F01356_1209140719153055"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      }
+    ]
+  },
+  "filename": "card_F01356_1209140719153055_feature_3_1751576420520_a8n9obng7.json"
+}

@@ -1,0 +1,32 @@
+{
+  "id": 1751576404167.9355,
+  "sku": "F01387",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Transporting people",
+  "subtitle": "Safe riding enjoyment for the young and not-so-young.",
+  "content": "<!-- Product feature card container -->\n<div style=\"display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: nowrap;\">\n\n    <!-- Text content -->\n    <div style=\"flex: 1; min-width: 300px;\">\n        <h2>Transporting people</h2>\n        <h3>Safe riding enjoyment for the young and not-so-young.</h3>\n        <p>You can safely carry up to two children or a larger passenger on the back: anyone aged 8 years or older and weighing no more than 70 kg can be carried on the Passenger kit with its foam seat, handles, and footrests. The Safety bar kit is suitable for up to two children aged 1 to 7: it will carry a maximum of 50 kg and up to two child seats (DIN EN 14344). And your passengers will be well protected in all weather, thanks to the optional weather protection for the Safety bar kit. (Please observe national regulations for the transport of children on bikes before using.)</p>\n    </div>\n\n    <!-- Image -->\n    <div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n        </div><div class=\"se-component se-image-container __se__float-center\"><figure style=\"margin: 0;\">\n            <img src=\"https://store-c8jhcan2jv.mybigcommerce.com/product_images/Multitinker/TransportingPeople.jpg\" alt=\"Feature Image\" style=\"display: block; border-radius: 5px;\" data-proportion=\"true\" data-align=\"center\" data-file-name=\"TransportingPeople.jpg\" data-file-size=\"0\" data-origin=\",auto\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\" origin-size=\"1600,1067\" data-index=\"0\">\n        </figure></div><div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\"><figure style=\"margin: 0;\">\n            \n        </figure></div>\n\n<div style=\"flex-shrink: 0; max-width: 40%; text-align: center;\">\n    </div></div>\n<p></p>",
+  "description": "You can safely carry up to two children or a larger passenger on the back: anyone aged 8 years or older and weighing no more than 70 kg can be carried on the Passenger kit with its foam seat, handles, and footrests. The Safety bar kit is suitable for up to two children aged 1 to 7: it will carry a maximum of 50 kg and up to two child seats (DIN EN 14344). And your passengers will be well protected in all weather, thanks to the optional weather protection for the Safety bar kit. (Please observe national regulations for the transport of children on bikes before using.)",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Multitinker/TransportingPeople.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.167Z",
+  "originalHypaData": {
+    "productId": "509",
+    "sourceColumn": "shared.feature-1-card",
+    "position": 1
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Multitinker",
+    "generation": "Multitinker",
+    "variants": [
+      {
+        "name": "Silent",
+        "sku": "F01387"
+      }
+    ]
+  },
+  "filename": "card_F01387_feature_1_1751576420523_ebkinugv4.json"
+}

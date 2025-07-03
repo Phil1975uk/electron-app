@@ -1,0 +1,52 @@
+{
+  "id": 1751576404236.0615,
+  "sku": "F01155",
+  "cardType": "product-options",
+  "position": 9,
+  "title": "Front carrier with bag",
+  "subtitle": "",
+  "content": "<!-- Example of another card -->\n<div class=\"swiper-slide\">\n<div class=\"card\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/10-18-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282577\" alt=\"Front carrier with bag\">\n<div class=\"card-info\">\n<div class=\"card-title\">Front carrier with bag</div>\n<div class=\"card-description\">Keep on the move and still have everything with you. You can secure up to 5 kg of luggage on the front carrier, which is fixed to the frame and hence benefits from the bike&rsquo;s full suspension, perfectly protecting your cargo from knocks and bumps. The bag offers space for a volume of up to 18 litres. Thanks to the zipper and roll closure, your transported goods are perfectly protected from dirt and rain. The bag can be removed quickly and easily and becomes a shoulder bag using the strap supplied. You can safely store smaller items in the two outer pockets equipped with waterproof zippers.<br>The headlight is fitted to the handlebar as standard, so that the light illuminates the road ahead as you turn the handlebar. On request, the headlight can also be fitted to the front luggage carrier. This alternative mounting position also guarantees outstanding illumination of the road ahead, thanks to the powerful headlight..</div>\n<div class=\"card-price\">&pound;187.00</div>\n<button class=\"more-info-btn\">More Information</button></div>\n</div>\n</div>\n<!-- Repeat the above card structure for each product -->",
+  "description": "Keep on the move and still have everything with you. You can secure up to 5 kg of luggage on the front carrier, which is fixed to the frame and hence benefits from the bike’s full suspension, perfectly protecting your cargo from knocks and bumps. The bag offers space for a volume of up to 18 litres. Thanks to the zipper and roll closure, your transported goods are perfectly protected from dirt and rain. The bag can be removed quickly and easily and becomes a shoulder bag using the strap supplied. You can safely store smaller items in the two outer pockets equipped with waterproof zippers.The headlight is fitted to the handlebar as standard, so that the light illuminates the road ahead as you turn the handlebar. On request, the headlight can also be fitted to the front luggage carrier. This alternative mounting position also guarantees outstanding illumination of the road ahead, thanks to the powerful headlight..",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/10-18-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282577",
+  "price": "£187.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.236Z",
+  "originalHypaData": {
+    "productId": "310",
+    "sourceColumn": "shared.option-9-card",
+    "position": 9
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01155"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01155_product-options_9_1751576420532_g2q4hkwni.json"
+}

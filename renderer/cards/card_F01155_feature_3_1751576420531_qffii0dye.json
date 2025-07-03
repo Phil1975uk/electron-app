@@ -1,0 +1,52 @@
+{
+  "id": 1751576404234.915,
+  "sku": "F01155",
+  "cardType": "feature",
+  "position": 3,
+  "title": "Safety First",
+  "subtitle": "Stay in Control and Visible with Advanced Safety Features",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Safety First</h2>\n<h3>Stay in Control and Visible with Advanced Safety Features</h3>\n<p>The Delite eBike prioritizes your safety, ensuring you&rsquo;re secure on the road at all times. Its standout feature is the optional Bosch eBike ABS 2.0, which provides you with control during sudden braking scenarios. This advanced system reliably prevents tire slippage, rear wheel lifting, and sideways skidding. The bike&rsquo;s standard Magura disc brakes also deliver a strong stopping force when needed. Visibility is key to safety, and with Delite&rsquo;s powerful headlight featuring daytime running lights, you&rsquo;re always clearly visible in traffic. The headlight not only illuminates the road evenly in the dark but also features a main beam with an extra-wide opening angle for clear visibility during out-of-town rides. With the Delite eBike, safety is never compromised.</p>\n</div>\n<!-- Image -->\n<div class=\"feature-image\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-abs-smart-1-.jpg\" alt=\"Feature Image\"></div>\n</div>",
+  "description": "The Delite eBike prioritizes your safety, ensuring you’re secure on the road at all times. Its standout feature is the optional Bosch eBike ABS 2.0, which provides you with control during sudden braking scenarios. This advanced system reliably prevents tire slippage, rear wheel lifting, and sideways skidding. The bike’s standard Magura disc brakes also deliver a strong stopping force when needed. Visibility is key to safety, and with Delite’s powerful headlight featuring daytime running lights, you’re always clearly visible in traffic. The headlight not only illuminates the road evenly in the dark but also features a main beam with an extra-wide opening angle for clear visibility during out-of-town rides. With the Delite eBike, safety is never compromised.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-abs-smart-1-.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.234Z",
+  "originalHypaData": {
+    "productId": "310",
+    "sourceColumn": "shared.feature-3-card",
+    "position": 3
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01155"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01155_feature_3_1751576420531_qffii0dye.json"
+}

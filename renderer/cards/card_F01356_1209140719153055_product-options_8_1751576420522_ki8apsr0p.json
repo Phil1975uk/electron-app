@@ -1,0 +1,44 @@
+{
+  "id": 1751576404165.8657,
+  "sku": "F01356_1209140719153055",
+  "cardType": "product-options",
+  "position": 8,
+  "title": "Pannier rack",
+  "subtitle": "",
+  "content": "<!-- Example of another card -->\n<div class=\"swiper-slide\">\n<div class=\"card\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/44-5-detail.jpg.695x464-q80-upscale.jpg?t=1713443261\" alt=\"Pannier rack\">\n<div class=\"card-info\">\n<div class=\"card-title\">Pannier rack</div>\n<div class=\"card-description\">The minimalist pannier rack is ideal for fixing panniers weighing up to 5 kg each. The rear and brake lights are unobtrusively integrated into it. The &ldquo;Form follows function&rdquo; design principle has been exceptionally well executed with the pannier rack</div>\n<div class=\"card-price\">&pound;0.00</div>\n<button class=\"more-info-btn\">More Information</button></div>\n</div>\n</div>\n<!-- Repeat the above card structure for each product -->",
+  "description": "The minimalist pannier rack is ideal for fixing panniers weighing up to 5 kg each. The rear and brake lights are unobtrusively integrated into it. The “Form follows function” design principle has been exceptionally well executed with the pannier rack",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/44-5-detail.jpg.695x464-q80-upscale.jpg?t=1713443261",
+  "price": "£0.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.165Z",
+  "originalHypaData": {
+    "productId": "515",
+    "sourceColumn": "shared.option-8-card",
+    "position": 8
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Ct Vario",
+        "sku": "F01356_1209140719153055"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      }
+    ]
+  },
+  "filename": "card_F01356_1209140719153055_product-options_8_1751576420522_ki8apsr0p.json"
+}

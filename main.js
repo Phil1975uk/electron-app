@@ -991,6 +991,22 @@ function startServer() {
     }
   });
 
+  // Restore a deleted card (for undo)
+  app.post('/api/restore-card', async (req, res) => {
+    try {
+      const card = req.body;
+      if (!card || !card.filename) {
+        return res.status(400).json({ error: 'Missing card or filename.' });
+      }
+      const filepath = path.join(__dirname, 'renderer', 'cards', card.filename);
+      await fs.writeFile(filepath, JSON.stringify(card, null, 2));
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error restoring card:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Helper function to format file size
   function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';

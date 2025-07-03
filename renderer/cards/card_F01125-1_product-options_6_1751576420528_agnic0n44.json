@@ -1,0 +1,40 @@
+{
+  "id": 1751576404184.3325,
+  "sku": "F01125-1",
+  "cardType": "product-options",
+  "position": 6,
+  "title": "Lowerable saddle",
+  "subtitle": "",
+  "content": "<!-- Example of another card -->\n<div class=\"swiper-slide\">\n<div class=\"card\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/riese-and-muller-homage4-lowerable-sadle.jpg?t=1710947939\" alt=\"Lowerable saddle\">\n<div class=\"card-info\">\n<div class=\"card-title\">Lowerable saddle</div>\n<div class=\"card-description\">With the lowered saddle, you can easily come to a comfortable stop without needing to dismount. Controlled remotely, the saddle adjusts, allowing your feet to reach the ground effortlessly.</div>\n<div class=\"card-price\">&pound;94.00</div>\n<button class=\"more-info-btn\">More Information</button></div>\n</div>\n</div>\n<!-- Repeat the above card structure for each product -->",
+  "description": "With the lowered saddle, you can easily come to a comfortable stop without needing to dismount. Controlled remotely, the saddle adjusts, allowing your feet to reach the ground effortlessly.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/riese-and-muller-homage4-lowerable-sadle.jpg?t=1710947939",
+  "price": "£94.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.184Z",
+  "originalHypaData": {
+    "productId": "494",
+    "sourceColumn": "shared.option-6-card",
+    "position": 6
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125-1"
+      },
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      }
+    ]
+  },
+  "filename": "card_F01125-1_product-options_6_1751576420528_agnic0n44.json"
+}

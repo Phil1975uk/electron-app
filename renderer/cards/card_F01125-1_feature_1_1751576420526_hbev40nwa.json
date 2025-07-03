@@ -1,0 +1,32 @@
+{
+  "id": 1751576404183.8003,
+  "sku": "F01125-1",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Control Technology",
+  "subtitle": "Maximum riding enjoyment.",
+  "content": "<!-- Product feature card container -->\n<div class=\"product-feature-card\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Control Technology</h2>\n<h3>Maximum riding enjoyment.</h3>\n<p>Riese &amp; M&uuml;ller Control Technology is synonymous with safety and dynamism: the perfectly tuned full suspension of the rear swing arm ensures a sporty riding experience and the best traction even at high speeds. The active rear swing arm, optimized front wheel suspension and co-sprung luggage carrier form the core of the Control Technology. The result is powerful propulsion and sporty riding without any loss of energy.</p>\n</div>\n<!-- Image -->\n<div class=\"feature-image\"><img src=\"https://www.r-m.de/media/filer_public/9a/bf/9abfbff9-0082-4356-af1c-3038f0865a86/21_hlf_hom_federung_5597.jpg\" alt=\"Feature Image\"></div>\n</div>",
+  "description": "Riese & Müller Control Technology is synonymous with safety and dynamism: the perfectly tuned full suspension of the rear swing arm ensures a sporty riding experience and the best traction even at high speeds. The active rear swing arm, optimized front wheel suspension and co-sprung luggage carrier form the core of the Control Technology. The result is powerful propulsion and sporty riding without any loss of energy.",
+  "imageUrl": "https://www.r-m.de/media/filer_public/9a/bf/9abfbff9-0082-4356-af1c-3038f0865a86/21_hlf_hom_federung_5597.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.183Z",
+  "originalHypaData": {
+    "productId": "494",
+    "sourceColumn": "shared.feature-1-card",
+    "position": 1
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125-1"
+      }
+    ]
+  },
+  "filename": "card_F01125-1_feature_1_1751576420526_hbev40nwa.json"
+}

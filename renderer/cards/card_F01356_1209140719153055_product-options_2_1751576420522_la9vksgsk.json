@@ -1,0 +1,44 @@
+{
+  "id": 1751576404164.9976,
+  "sku": "F01356_1209140719153055",
+  "cardType": "product-options",
+  "position": 2,
+  "title": "DualBattery 1500",
+  "subtitle": "",
+  "content": "<!-- Example of another card -->\n<div class=\"swiper-slide\">\n<div class=\"card\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/73-16-detail.jpg.695x464-q80-upscale.jpg?t=1713443257\" alt=\"DualBattery 1500\">\n<div class=\"card-info\">\n<div class=\"card-title\">DualBattery 1500</div>\n<div class=\"card-description\">DualBattery Technology perfected by Riese &amp; M&uuml;ller ensures twice the range or far higher climbs, fewer charging breaks and longer-lasting riding pleasure. With the 1,500 Wh available, completely new destinations can be reached and you no longer have to worry about the range in your daily routine.</div>\n<div class=\"card-price\">&pound;1,212.00</div>\n<button class=\"more-info-btn\">More Information</button></div>\n</div>\n</div>\n<!-- Repeat the above card structure for each product -->",
+  "description": "DualBattery Technology perfected by Riese & Müller ensures twice the range or far higher climbs, fewer charging breaks and longer-lasting riding pleasure. With the 1,500 Wh available, completely new destinations can be reached and you no longer have to worry about the range in your daily routine.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/73-16-detail.jpg.695x464-q80-upscale.jpg?t=1713443257",
+  "price": "£1,212.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.164Z",
+  "originalHypaData": {
+    "productId": "515",
+    "sourceColumn": "shared.option-2-card",
+    "position": 2
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Ct Vario",
+        "sku": "F01356_1209140719153055"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      }
+    ]
+  },
+  "filename": "card_F01356_1209140719153055_product-options_2_1751576420522_la9vksgsk.json"
+}

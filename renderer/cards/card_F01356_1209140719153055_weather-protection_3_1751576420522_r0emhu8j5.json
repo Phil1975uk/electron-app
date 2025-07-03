@@ -1,0 +1,36 @@
+{
+  "id": 1751576404167.931,
+  "sku": "F01356_1209140719153055",
+  "cardType": "weather-protection",
+  "position": 3,
+  "title": "Flat box cover",
+  "subtitle": "£159.00",
+  "content": "<div class=\"product-feature-card\"><!-- Text content -->\n<div class=\"feature-content\">\n<h2>Flat box cover</h2>\n<h3>&pound;159.00</h3>\n<p>The flat, lockable box cover allows you to protect transported goods with a volume of up to 240 L against wind and weather. The folding polypropylene cover allows for easy loading and unloading.</p>\n</div>\n<!-- Image -->\n<div class=\"feature-image\"><img src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/99-28-detail.jpg.695x464-q80-upscale.jpg?t=1713439536\" alt=\"Packster2 70 Flat box cover\"></div>\n</div>",
+  "description": "The flat, lockable box cover allows you to protect transported goods with a volume of up to 240 L against wind and weather. The folding polypropylene cover allows for easy loading and unloading.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/99-28-detail.jpg.695x464-q80-upscale.jpg?t=1713439536",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-03T21:00:04.167Z",
+  "originalHypaData": {
+    "productId": "515",
+    "sourceColumn": "shared.weather-option-3-card",
+    "position": 3
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Ct Vario",
+        "sku": "F01356_1209140719153055"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_F01356_1209140719153055_weather-protection_3_1751576420522_r0emhu8j5.json"
+}
