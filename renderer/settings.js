@@ -14,6 +14,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup debug log toggle
     setupDebugLogToggle();
+    
+    const cleanupBtn = document.getElementById('cleanupOrphanedImagesBtn');
+    const statusDiv = document.getElementById('cleanupOrphanedImagesStatus');
+    if (cleanupBtn && statusDiv && window.electronAPI && window.electronAPI.cleanupOrphanedImages) {
+        cleanupBtn.addEventListener('click', async () => {
+            cleanupBtn.disabled = true;
+            statusDiv.textContent = 'Cleaning up...';
+            try {
+                const result = await window.electronAPI.cleanupOrphanedImages();
+                if (result.success) {
+                    statusDiv.textContent = result.message + (result.deleted && result.deleted.length ? `\nDeleted: ${result.deleted.join(', ')}` : '');
+                } else {
+                    statusDiv.textContent = 'Error: ' + (result.error || 'Unknown error');
+                }
+            } catch (e) {
+                statusDiv.textContent = 'Error: ' + e.message;
+            }
+            cleanupBtn.disabled = false;
+        });
+    }
 });
 
 // Initialize settings page

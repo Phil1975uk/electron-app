@@ -1,0 +1,42 @@
+{
+  "id": "1752095132469",
+  "sku": "F00932",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Adjustable seating position",
+  "description": "Thanks to the angle- and height-adjustable stem and the adjustable saddle height, the seat position can be altered to accommodate body sizes of from 1.50 m to 2.00 m, and adapted from sporty to comfortable. The overall geometry of the bike can be perfectly adjusted to the rider in just a few easy steps. This flexibility makes the Load ideal for shared use, for example within a family.",
+  "imageUrl": "renderer/cards/images/img_1752095115074_wznxee.jpeg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_feature_Adjustable_seating_position_1752095132469.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/feature/Load_Load4_feature_adjustable-seating-position.jpeg",
+  "uploadDate": "2025-07-09T21:52:55.562Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-09T21:52:50.062Z",
+    "DateUploaded": "2025-07-09T21:52:50.062Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-09T21:52:32.657Z",
+  "originalHypaData": {},
+  "subtitle": "Change riders with ease.",
+  "originalFilename": "card_Riese___Muller_Load_feature_Adjustable_seating_position_1752095132469.json",
+  "exportedToHypa": true
+}

@@ -1,0 +1,39 @@
+{
+  "id": "1752334197234",
+  "sku": "F00932",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Two child seats",
+  "description": "Two comfortable height-adjustable child seats for two children age seven or younger. The seats can also be fitted individually and centrally. Padded 5-point belts guarantee excellent safety for your children. Equipment available only in conjunction with sidewalls. Please observe national regulations for the transport of children on bikes before using.",
+  "imageUrl": "renderer/cards/images/img_1752334191604_vndbip620.jpeg",
+  "price": "187.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_cargo-options_Two_child_seats_1752334197234.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/cargo-options/Load_Load4_cargo-options_two-child-seats.jpeg",
+  "uploadDate": "2025-07-12T15:35:52.917Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-12T15:35:48.532Z",
+    "DateUploaded": "2025-07-12T15:35:48.532Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-12T15:29:57.234Z",
+  "originalHypaData": {}
+}

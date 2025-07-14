@@ -1,0 +1,39 @@
+{
+  "id": "1752334293770",
+  "sku": "F00932",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Three child seats with footwell",
+  "description": "Two separate seats side by side with adjustable sitting and sleeping positions and a single seat at the front enable up to three children age seven or younger to be carried. Padded 5-point belts ensure greater safety. Longer journeys are no longer a problem, thanks to the optimum layout, comfortable and adjustable seating positions and the footwell. Please observe national regulations for the transport of children on bikes before using.",
+  "imageUrl": "renderer/cards/images/img_1752334289990_dp5gl6fsf.jpeg",
+  "price": "513.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_cargo-options_Three_child_seats_with_footwell_1752334293770.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/cargo-options/Load_Load4_cargo-options_three-child-seats-with-footwell.jpeg",
+  "uploadDate": "2025-07-12T15:35:43.183Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-12T15:35:38.723Z",
+    "DateUploaded": "2025-07-12T15:35:38.723Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-12T15:31:33.770Z",
+  "originalHypaData": {}
+}

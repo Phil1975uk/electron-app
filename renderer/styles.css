@@ -315,6 +315,88 @@ h2 {
     margin-bottom: 1.5rem;
 }
 
+/* Card Manager specific styles */
+.card-manager-card {
+    height: auto !important;
+    min-height: 200px;
+    margin-bottom: 1rem;
+}
+
+.card-manager-card .card-body {
+    /* Remove flexbox to prevent stretching */
+    /* height: 100%; */
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+
+.card-manager-card .row {
+    /* Remove flexbox to prevent stretching */
+    /* height: 100%; */
+    /* align-items: stretch; */
+    align-items: flex-start;
+}
+
+.card-manager-card .col-md-2,
+.card-manager-card .col-md-7,
+.card-manager-card .col-md-3 {
+    /* Remove flexbox to prevent stretching */
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+
+.card-manager-card .col-md-3 {
+    /* Remove vertical justification */
+    /* justify-content: flex-start; */
+}
+
+.card-preview {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.spec-preview {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 4px;
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+/* Responsive adjustments for card manager */
+@media (max-width: 768px) {
+    .card-manager-card .row {
+        flex-direction: column;
+    }
+    
+    .card-manager-card .col-md-2,
+    .card-manager-card .col-md-7,
+    .card-manager-card .col-md-3 {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .card-manager-card .col-md-3 {
+        order: -1;
+    }
+    
+    .card-manager-card .col-md-3 .d-flex {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .card-manager-card .col-md-3 .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
 .card-header {
     border-bottom: none;
     padding: 0.75rem 1rem;
@@ -1330,4 +1412,89 @@ select.form-select {
 
 .toast {
     min-width: 300px;
+}
+
+/* Card Manager Card Styles */
+.card-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    border-bottom: 2px solid #b0b0b0;
+}
+.card-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+.card-preview {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+}
+.card-type-badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+}
+.variant-tag {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    margin: 1px;
+    background-color: #e9ecef;
+    border-radius: 12px;
+    display: inline-block;
+}
+.stats-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.filter-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.filter-group {
+    margin-bottom: 15px;
+}
+.clear-filters {
+    margin-top: 10px;
+}
+/* Navbar alignment fixes - simplified to match home page */
+.navbar-brand {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 0;
+}
+.navbar-brand img {
+    margin-bottom: 0;
+}
+.navbar-nav {
+    align-items: flex-end;
+    padding-bottom: 0.5rem;
+}
+.nav-link {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease;
+}
+.nav-link:hover {
+    border-bottom-color: #fff;
+}
+.nav-link.active {
+    border-bottom-color: #fff;
+}
+.navbar {
+    min-height: 60px;
+    align-items: flex-end;
+}
+.navbar .container {
+    align-items: flex-end;
 } 

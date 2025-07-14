@@ -1,0 +1,39 @@
+{
+  "id": "1752310395209",
+  "sku": "F00932",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Carrier",
+  "description": "If the front storage space is not enough, there is always the optional carrier. It is ideal for attaching panniers, making it perfect for longer bike trips too. Since it is secured directly to the frame, it also benefits from the suspension thanks to Control Technology. On the HS models, the carrier is fitted as standard.",
+  "imageUrl": "renderer/cards/images/img_1752310394239_s8di30f8j.jpeg",
+  "price": "94.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_product-options_Carrier_1752310395209.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/product-options/Load_Load4_product-options_carrier.jpeg",
+  "uploadDate": "2025-07-12T15:34:30.798Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-12T15:34:26.233Z",
+    "DateUploaded": "2025-07-12T15:34:26.233Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-12T08:53:15.209Z",
+  "originalHypaData": {}
+}

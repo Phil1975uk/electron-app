@@ -10,6 +10,8 @@
  * - Managing saved cards
  */
 
+let lastUnsavedImagePath = null;
+
 // Utility function for showing toast notifications
 function showToast(message, type = 'info') {
     const toastContainer = document.querySelector('.toast-container');
@@ -38,6 +40,110 @@ function showToast(message, type = 'info') {
     });
 }
 
+// Utility: Convert file/blob to base64
+async function fileOrBlobToBase64(fileOrBlob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(fileOrBlob);
+    });
+}
+
+// Utility: Download image from URL and return as Blob
+async function fetchImageAsBlob(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch image');
+    return await response.blob();
+}
+
+// Utility: Check if an image is referenced by any saved card
+async function isImageReferenced(imagePath) {
+    try {
+        const response = await fetch('/api/cards');
+        if (!response.ok) return false;
+        const cards = await response.json();
+        return cards.some(card => card.imageUrl && card.imageUrl.endsWith(imagePath));
+    } catch {
+        return false;
+    }
+}
+
+// Utility: Clean up last unsaved image if not referenced
+async function cleanupLastUnsavedImage() {
+    if (lastUnsavedImagePath) {
+        const imgName = lastUnsavedImagePath.split('/').pop();
+        const referenced = await isImageReferenced(imgName);
+        if (!referenced) {
+            await window.electronAPI.deleteImageFile(lastUnsavedImagePath);
+        }
+        lastUnsavedImagePath = null;
+    }
+}
+
+// Main handler for image input (file, data URL, or normal URL)
+async function handleImageInput(input) {
+    let base64Data, extension = 'png';
+    try {
+        // Auto-delete previous unsaved image if not referenced
+        await cleanupLastUnsavedImage();
+        if (typeof input === 'string') {
+            if (input.startsWith('data:image/')) {
+                // Data URL
+                const match = input.match(/^data:image\/(\w+);base64,/);
+                extension = match ? match[1] : 'png';
+                base64Data = input.split(',')[1];
+            } else if (input.startsWith('http')) {
+                // Normal URL: fetch and convert
+                const blob = await fetchImageAsBlob(input);
+                extension = blob.type.split('/')[1] || 'png';
+                base64Data = await fileOrBlobToBase64(blob);
+            } else {
+                throw new Error('Unsupported image input');
+            }
+        } else if (input instanceof File || input instanceof Blob) {
+            extension = (input.type && input.type.split('/')[1]) || 'png';
+            base64Data = await fileOrBlobToBase64(input);
+        } else {
+            throw new Error('Unsupported image input');
+        }
+        // Save to disk via Electron API
+        const savedPath = await window.electronAPI.saveImageToDisk(base64Data, extension);
+        lastUnsavedImagePath = savedPath;
+        // Use savedPath as the card's image URL
+        const imageUrlInput = document.getElementById('imageUrl');
+        if (imageUrlInput) {
+            imageUrlInput.value = savedPath;
+            imageUrlInput.dataset.fileDataUrl = '';
+            imageUrlInput.dataset.fileName = '';
+        }
+        if (typeof cardCreator !== 'undefined' && cardCreator.updatePreview) {
+            cardCreator.updatePreview();
+        }
+    } catch (err) {
+        alert('Failed to process image: ' + err.message);
+    }
+}
+
+// Utility to get correct image src
+function getImageSrc(url) {
+    if (!url) return '';
+    // Remove 'renderer/' prefix if present
+    if (url.startsWith('renderer/')) url = url.replace(/^renderer\//, '').replace(/^renderer\//, '');
+    if (url.startsWith('data:')) return url;
+    // Use image-proxy for both local and external images
+    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+}
+
+// Utility: Robust deep copy (uses structuredClone if available, else JSON fallback)
+function deepCopy(obj) {
+    if (typeof structuredClone === 'function') {
+        return structuredClone(obj);
+    } else {
+        return JSON.parse(JSON.stringify(obj));
+    }
+}
+
 class CardCreator {
     constructor() {
         this.selectedCardType = 'feature';
@@ -47,6 +153,9 @@ class CardCreator {
         this.editingCardFilename = null; // Track the filename of the card being edited
         this.pendingCardType = null; // Track a pending card type switch
         this.justCancelledEdit = false; // Track if cancel was just pressed
+        this.filterByDetails = true; // Track filter toggle state
+        this.hasUnsavedChanges = false; // Track if there are unsaved changes
+        this.originalFormData = null; // Store original form data for comparison
         // Map card types to the form fields they use. This helps in showing/hiding fields.
         this.cardFields = {
             'feature': ['title', 'subtitle', 'description', 'image'],
@@ -64,6 +173,13 @@ class CardCreator {
         this.selectCardType('feature'); // Set initial state
         this.updatePreview(); // Initial preview update
         this.loadSavedCards(); // Load existing cards on page load
+        this.updateStatusIndicator(); // Initialize status indicator
+        
+        // Initialize filter toggle checkbox
+        const filterToggle = document.getElementById('filterToggle');
+        if (filterToggle) {
+            filterToggle.checked = this.filterByDetails;
+        }
     }
 
     async loadConfigurations() {
@@ -89,8 +205,8 @@ class CardCreator {
                 this.configurations = storedConfigs ? JSON.parse(storedConfigs) : [];
                 console.log('Server error, loaded configurations from localStorage:', this.configurations.length, 'configurations');
             }
-            
             this.populateBrandSelect();
+            await this.restoreSelectionsFromLocalStorage();
             this.loadSavedCards(); // Refresh the saved cards list
         } catch (error) {
             console.error('Error loading configurations:', error);
@@ -99,6 +215,43 @@ class CardCreator {
             this.configurations = storedConfigs ? JSON.parse(storedConfigs) : [];
             this.populateBrandSelect();
             this.loadSavedCards();
+        }
+    }
+
+    async restoreSelectionsFromLocalStorage() {
+        const brandSelect = document.getElementById('brand');
+        const modelSelect = document.getElementById('model');
+        const generationSelect = document.getElementById('generation');
+        const savedBrand = localStorage.getItem('cardCreatorBrand');
+        const savedModel = localStorage.getItem('cardCreatorModel');
+        const savedGeneration = localStorage.getItem('cardCreatorGeneration');
+        const savedVariants = localStorage.getItem('cardCreatorVariants');
+        if (savedBrand) {
+            brandSelect.value = savedBrand;
+            this.populateModelSelect(savedBrand);
+            setTimeout(() => {
+                if (savedModel) {
+                    modelSelect.value = savedModel;
+                    this.populateGenerationSelect(savedModel);
+                    setTimeout(() => {
+                        if (savedGeneration) {
+                            generationSelect.value = savedGeneration;
+                            this.populateVariantCheckboxes();
+                            setTimeout(() => {
+                                if (savedVariants) {
+                                    try {
+                                        const checked = JSON.parse(savedVariants);
+                                        checked.forEach(val => {
+                                            const cb = document.querySelector(`input[name="variant"][value="${val}"]`);
+                                            if (cb) cb.checked = true;
+                                        });
+                                    } catch {}
+                                }
+                            }, 100);
+                        }
+                    }, 100);
+                }
+            }, 100);
         }
     }
 
@@ -114,6 +267,11 @@ class CardCreator {
         // Card type selection
         document.querySelectorAll('.card-type-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
+                // (REMOVED) Do not clear remembered selections when switching card type
+                // localStorage.removeItem('cardCreatorBrand');
+                // localStorage.removeItem('cardCreatorModel');
+                // localStorage.removeItem('cardCreatorGeneration');
+                // localStorage.removeItem('cardCreatorVariants');
                 const type = e.target.closest('.card-type-btn').dataset.type;
                 this.selectCardType(type);
                 this.renderSavedCards(); // Update saved cards list when card type changes
@@ -125,10 +283,11 @@ class CardCreator {
         const brandSelect = document.getElementById('brand');
         if (brandSelect) {
             brandSelect.addEventListener('change', (e) => {
-            this.populateModelSelect(e.target.value);
-            this.renderSavedCards(); // Update saved cards list when brand changes
-            this.checkConfigurationAvailability(); // Check availability
-        });
+                this.populateModelSelect(e.target.value);
+                this.renderSavedCards(); // Update saved cards list when brand changes
+                this.checkConfigurationAvailability(); // Check availability
+                localStorage.setItem('cardCreatorBrand', e.target.value);
+            });
         } else {
             console.warn('Element with id "brand" not found during event listener setup');
         }
@@ -136,37 +295,55 @@ class CardCreator {
         const modelSelect = document.getElementById('model');
         if (modelSelect) {
             modelSelect.addEventListener('change', (e) => {
-            this.populateGenerationSelect(e.target.value);
-            this.renderSavedCards(); // Update saved cards list when model changes
-            this.checkConfigurationAvailability(); // Check availability
-        });
+                this.populateGenerationSelect(e.target.value);
+                this.renderSavedCards(); // Update saved cards list when model changes
+                this.checkConfigurationAvailability(); // Check availability
+                localStorage.setItem('cardCreatorModel', e.target.value);
+            });
         } else {
             console.warn('Element with id "model" not found during event listener setup');
         }
 
         const generationSelect = document.getElementById('generation');
         if (generationSelect) {
-            generationSelect.addEventListener('change', () => {
-            this.populateVariantCheckboxes();
-            this.renderSavedCards(); // Update saved cards list when generation changes
-            this.checkConfigurationAvailability(); // Check availability
-        });
+            generationSelect.addEventListener('change', (e) => {
+                this.populateVariantCheckboxes();
+                this.renderSavedCards(); // Update saved cards list when generation changes
+                this.checkConfigurationAvailability(); // Check availability
+                localStorage.setItem('cardCreatorGeneration', e.target.value);
+            });
         } else {
             console.warn('Element with id "generation" not found during event listener setup');
         }
 
-        // Variant checkbox changes
-        const variantCheckboxes = document.getElementById('variantCheckboxes');
-        if (variantCheckboxes) {
-            variantCheckboxes.addEventListener('change', (e) => {
-            if (e.target.type === 'checkbox') {
-                this.renderSavedCards(); // Update saved cards list when variants change
-                this.checkConfigurationAvailability(); // Check availability
-            }
-        });
+        // Variant checkbox changes and filter event
+        const variantCheckboxesEl = document.getElementById('variantCheckboxes');
+        if (variantCheckboxesEl) {
+            variantCheckboxesEl.addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox') {
+                    this.renderSavedCards(); // Update saved cards list when variants change
+                    this.checkConfigurationAvailability(); // Check availability
+                    // Save checked variants to localStorage
+                    const checked = Array.from(document.querySelectorAll('input[name="variant"]:checked')).map(cb => cb.value);
+                    localStorage.setItem('cardCreatorVariants', JSON.stringify(checked));
+                }
+                if (this.filterByDetails) this.renderSavedCards();
+            });
         } else {
             console.warn('Element with id "variantCheckboxes" not found during event listener setup');
         }
+
+        // Clear selections from localStorage when navigating away from Card Creator
+        document.querySelectorAll('a.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (!link.classList.contains('active')) {
+                    localStorage.removeItem('cardCreatorBrand');
+                    localStorage.removeItem('cardCreatorModel');
+                    localStorage.removeItem('cardCreatorGeneration');
+                    localStorage.removeItem('cardCreatorVariants');
+                }
+            });
+        });
 
         // Form submission
         const cardForm = document.getElementById('cardForm');
@@ -198,13 +375,14 @@ class CardCreator {
             console.warn('Element with id "uploadToWebDAV" not found during event listener setup');
         }
 
-        // Real-time preview updates
+        // Real-time preview updates and change tracking
         ['title', 'subtitle', 'description', 'price', 'imageUrl'].forEach(fieldId => {
             const element = document.getElementById(fieldId);
             if (element) {
                 element.addEventListener('input', () => {
-                this.updatePreview();
-            });
+                    this.updatePreview();
+                    this.checkForChanges();
+                });
             } else {
                 console.warn(`Element with id '${fieldId}' not found during event listener setup`);
             }
@@ -223,18 +401,47 @@ class CardCreator {
         } else {
             console.warn('Element with id "live-preview-wrapper" not found during event listener setup');
         }
+        
+        // Change tracking for HTML content field (specification tables)
+        const htmlContentField = document.getElementById('htmlContent');
+        if (htmlContentField) {
+            htmlContentField.addEventListener('input', () => {
+                this.updatePreview();
+                this.checkForChanges();
+            });
+        }
+        
+        // Quick save button
+        const quickSaveBtn = document.getElementById('quickSaveBtn');
+        if (quickSaveBtn) {
+            quickSaveBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleFormSubmit(e);
+            });
+        }
 
         // Reset Form button
         const resetFormBtn = document.getElementById('resetFormBtn');
         if (resetFormBtn) {
-            resetFormBtn.addEventListener('click', () => {
-            this.editingCardId = null;
-            document.getElementById('cardForm').reset();
-            // Clear variant checkboxes
-            document.querySelectorAll('input[name="variant"]').forEach(chk => chk.checked = false);
-            // Keep the current card type
-            this.updatePreview();
-        });
+            resetFormBtn.addEventListener('click', async () => {
+                await cleanupLastUnsavedImage(); // Clean up unsaved image on reset
+                this.editingCardId = null;
+                document.getElementById('cardForm').reset();
+                // Clear variant checkboxes
+                document.querySelectorAll('input[name="variant"]').forEach(chk => chk.checked = false);
+                // Clear remembered selections from localStorage on reset
+                localStorage.removeItem('cardCreatorBrand');
+                localStorage.removeItem('cardCreatorModel');
+                localStorage.removeItem('cardCreatorGeneration');
+                localStorage.removeItem('cardCreatorVariants');
+                console.log('[Reset] Cleared selection memory from localStorage');
+                // Clear change tracking
+                this.clearOriginalFormData();
+                // Reload the list of saved cards
+                this.renderSavedCards();
+                // Keep the current card type
+                this.updatePreview();
+            });
         } else {
             console.warn('Element with id "resetFormBtn" not found during event listener setup');
         }
@@ -260,9 +467,71 @@ class CardCreator {
                 }
             });
         }
+
+        // Drag-and-drop image support
+        const imageDropArea = document.getElementById('imageDropArea');
+        const imageUrlInput = document.getElementById('imageUrl');
+
+        if (imageDropArea) {
+            imageDropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                imageDropArea.style.background = '#f0f8ff';
+            });
+            imageDropArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                imageDropArea.style.background = '';
+            });
+            imageDropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                imageDropArea.style.background = '';
+                const dt = e.dataTransfer;
+                if (dt.files && dt.files.length > 0) {
+                    const file = dt.files[0];
+                    if (file.type.startsWith('image/')) {
+                        handleImageInput(file);
+                    }
+                } else if (dt.items && dt.items.length > 0) {
+                    // Try to get image URL from dragged content
+                    for (let i = 0; i < dt.items.length; i++) {
+                        const item = dt.items[i];
+                        if (item.kind === 'string' && item.type === 'text/uri-list') {
+                            item.getAsString(function(url) {
+                                handleImageInput(url);
+                            });
+                            return;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Show preview when user types/pastes a URL
+        if (imageUrlInput) {
+            imageUrlInput.addEventListener('input', function() {
+                handleImageInput(imageUrlInput.value);
+            });
+        }
+
+        // Add event listeners for filter toggle and form controls
+        const filterToggle = document.getElementById('filterToggle');
+        if (filterToggle) {
+            filterToggle.addEventListener('change', (e) => {
+                this.filterByDetails = filterToggle.checked;
+                this.renderSavedCards();
+            });
+        }
+        ['brand', 'model', 'generation'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('change', () => {
+                    if (this.filterByDetails) this.renderSavedCards();
+                });
+            }
+        });
     }
 
     selectCardType(type) {
+        cleanupLastUnsavedImage(); // Clean up unsaved image on card type change
         console.log('selectCardType called with:', type, 'previous value was:', this.selectedCardType);
         console.log('[selectCardType] editingCardId:', this.editingCardId, 'justCancelledEdit:', this.justCancelledEdit, 'pendingCardType:', this.pendingCardType);
         // If just cancelled edit, allow switch and clear flag
@@ -270,23 +539,49 @@ class CardCreator {
             console.log('[selectCardType] justCancelledEdit is true, allowing card type switch to', type);
             this.justCancelledEdit = false;
         } else if (this.editingCardId) {
-            showToast('You are currently editing a card. Please save or cancel editing before switching card type.', 'warning');
-            this.pendingCardType = type; // Store the requested type
-            console.log('[selectCardType] Blocked card type switch, set pendingCardType to', type);
-            return;
+            if (!this.hasUnsavedChanges) {
+                // No unsaved changes, auto-cancel edit and switch
+                this.cancelEditMode();
+                // After cancelEditMode, proceed to switch card type
+            } else {
+                showToast('You have unsaved changes. Please save or cancel editing before switching card type.', 'warning');
+                this.pendingCardType = type; // Store the requested type
+                // --- Flash the Save button(s) ---
+                const quickSaveBtn = document.getElementById('quickSaveBtn');
+                if (quickSaveBtn) {
+                    quickSaveBtn.classList.add('flash');
+                    setTimeout(() => quickSaveBtn.classList.remove('flash'), 1400);
+                }
+                const mainSaveBtn = document.querySelector('#cardForm button[type="submit"]');
+                if (mainSaveBtn) {
+                    mainSaveBtn.classList.add('flash');
+                    setTimeout(() => mainSaveBtn.classList.remove('flash'), 1400);
+                }
+                console.log('[selectCardType] Blocked card type switch, set pendingCardType to', type);
+                return;
+            }
         }
         this.pendingCardType = null; // Clear pending if not editing
-        // If not editing, clear the form when switching card types
+        // --- Remember Brand, Model, Generation, and selected Variants ---
+        const brand = document.getElementById('brand').value;
+        const model = document.getElementById('model').value;
+        const generation = document.getElementById('generation').value;
+        const checkedVariants = Array.from(document.querySelectorAll('input[name="variant"]:checked')).map(cb => cb.value);
+        // --- Reset all other fields ---
         if (!this.editingCardId) {
+            // Only reset if not editing
             document.getElementById('cardForm').reset();
-            // Clear variant checkboxes
-            document.querySelectorAll('input[name="variant"]').forEach(chk => chk.checked = false);
-            // Also clear dynamically inserted price field if present
-            const priceField = document.getElementById('price');
-            if (priceField) priceField.value = '';
-            // Clear subtitle field if present
-            const subtitleInput = document.getElementById('subtitle');
-            if (subtitleInput) subtitleInput.value = '';
+            // Restore remembered fields
+            document.getElementById('brand').value = brand;
+            this.populateModelSelect(brand);
+            document.getElementById('model').value = model;
+            this.populateGenerationSelect(model);
+            document.getElementById('generation').value = generation;
+            this.populateVariantCheckboxes();
+            // Restore checked variants
+            document.querySelectorAll('input[name="variant"]').forEach(cb => {
+                cb.checked = checkedVariants.includes(cb.value);
+            });
         }
         this.selectedCardType = type;
         console.log('selectedCardType set to:', this.selectedCardType);
@@ -298,7 +593,6 @@ class CardCreator {
         this.updateFormFields(type);
         // Update the preview
         this.updatePreview();
-        
         // Debug: Check if renderSavedCards is being called
         console.log('[selectCardType] About to call renderSavedCards...');
         this.renderSavedCards();
@@ -397,8 +691,9 @@ class CardCreator {
             case 'specification-table':
                 descriptionField.style.display = 'block';
                 descriptionInput.setAttribute('required', 'required');
-                if (descriptionInput.tagName !== 'INPUT') {
-                    this.convertToTextInput(descriptionInput);
+                // Ensure we have a <textarea> for multi-line HTML input
+                if (descriptionInput.tagName !== 'TEXTAREA') {
+                    this.convertToTextarea(descriptionInput);
                 }
                 const descriptionLabel = descriptionField.querySelector('label');
                 if (descriptionLabel) {
@@ -512,25 +807,19 @@ class CardCreator {
 
     populateVariantCheckboxes() {
         const container = document.getElementById('variantCheckboxes');
-        
         container.innerHTML = '';
-
         const brand = document.getElementById('brand').value;
         const model = document.getElementById('model').value;
         const generation = document.getElementById('generation').value;
-
         console.log('Populating variants for:', { brand, model, generation });
-
         if (!brand || !model || !generation) {
             container.innerHTML = '<p class="text-muted">Select brand, model, and generation to see available variants.</p>';
             return;
         }
-
         // Find ALL matching configurations to get SKUs
         const matchingConfigs = this.configurations.filter(c => 
             c.brand === brand && c.model === model && c.generation === generation
         );
-        
         // Merge all variants from matching configurations
         const allConfigVariants = [];
         matchingConfigs.forEach(config => {
@@ -538,16 +827,13 @@ class CardCreator {
                 allConfigVariants.push(...config.variants);
             }
         });
-        
         console.log('Found matching configs:', matchingConfigs);
         console.log('All variants array:', allConfigVariants);
         console.log('Number of variants:', allConfigVariants.length);
-        
         if (allConfigVariants.length === 0) {
             container.innerHTML = '<p class="text-muted">No variants found for this configuration.</p>';
             return;
         }
-
         if (allConfigVariants.length > 1) {
              container.innerHTML += `
                 <div class="form-check">
@@ -555,30 +841,24 @@ class CardCreator {
                     <label class="form-check-label" for="selectAllVariants">Select All</label>
                 </div>`;
         }
-        
         allConfigVariants.forEach(variant => {
-            // Handle both old string format and new object format
-            const variantName = typeof variant === 'string' ? variant : variant.name;
-            const variantSku = typeof variant === 'string' ? '' : variant.sku;
+            // Always use variant.name if present, fallback to string
+            const variantName = (typeof variant === 'object' && variant.name) ? variant.name : (typeof variant === 'string' ? variant : '');
+            const variantSku = (typeof variant === 'object' && variant.sku) ? variant.sku : '';
             const variantId = variantName.replace(/[^a-zA-Z0-9]/g, '_');
-            
             // Display variant with SKU as read-only text
             const skuDisplay = variantSku ? ` <span class="text-muted">(${variantSku})</span>` : '';
-            
             container.innerHTML += `
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="variant" value="${variantName}" id="variant-${variantId}">
+                    <input class="form-check-input" type="checkbox" name="variant" value="${variantSku}" id="variant-${variantId}">
                     <label class="form-check-label" for="variant-${variantId}">${variantName}${skuDisplay}</label>
                 </div>`;
         });
-        
         console.log('Final HTML content:', container.innerHTML);
-        
         // Count actual checkboxes in DOM
         const actualCheckboxes = container.querySelectorAll('input[name="variant"]');
         console.log('Actual checkboxes found in DOM:', actualCheckboxes.length);
         console.log('Checkbox values:', Array.from(actualCheckboxes).map(cb => cb.value));
-        
         // Add event listeners for variant checkboxes
         actualCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
@@ -586,7 +866,6 @@ class CardCreator {
                 this.updatePreview();
             });
         });
-        
         if (allConfigVariants.length > 1) {
             document.getElementById('selectAllVariants').addEventListener('change', (e) => {
                 document.querySelectorAll('input[name="variant"]').forEach(chk => {
@@ -609,6 +888,7 @@ class CardCreator {
     }
 
     async populateForm(card) {
+        await cleanupLastUnsavedImage(); // Clean up unsaved image on card selection/edit
         console.log('[populateForm] card:', card);
         this.editingCardId = card.id;
         this.editingCardFilename = card.filename;
@@ -626,8 +906,8 @@ class CardCreator {
             this.populateVariantCheckboxes();
             const variants = card.configuration.variants || [];
             document.querySelectorAll('input[name="variant"]').forEach(checkbox => {
-                const variantNames = variants.map(v => typeof v === 'string' ? v : v.name);
-                checkbox.checked = variantNames.includes(checkbox.value);
+                const variantSkus = variants.map(v => typeof v === 'string' ? v : v.sku);
+                checkbox.checked = variantSkus.includes(checkbox.value);
                 checkbox.dispatchEvent(new Event('change'));
             });
             if (card.configuration.variantSkus) {
@@ -651,7 +931,7 @@ class CardCreator {
             }
         }
         document.getElementById('title').value = card.title || '';
-        document.getElementById('description').value = card.description || card.htmlContent || '';
+        document.getElementById('description').value = card.description || card.htmlContent || card.content || '';
         document.getElementById('imageUrl').value = card.imageUrl || '';
         console.log('[populateForm] imageUrl set to:', card.imageUrl);
         if (cardType === 'feature') {
@@ -669,11 +949,14 @@ class CardCreator {
                 this.updatePreview();
             }, 0);
         } else if (cardType === 'specification-table') {
-            document.getElementById('description').value = card.htmlContent || card.description || '';
+            document.getElementById('description').value = card.htmlContent || card.description || card.content || '';
             this.updatePreview();
         } else {
             this.updatePreview();
         }
+        
+        // Store original form data for change tracking
+        this.storeOriginalFormData();
     }
 
     getFormData() {
@@ -683,15 +966,18 @@ class CardCreator {
         console.log('[getFormData] cleanedImageUrl:', cleanedImageUrl);
         console.log('[getFormData] selectedCardType:', this.selectedCardType);
 
+        // Standardize cardType for weather protection
+        let cardType = this.selectedCardType;
+        if (cardType === 'weather') cardType = 'weather-protection';
         // Map UI card types to short folder names
         const cardTypeMap = {
             'feature': 'feature',
-            'product-options': 'option',
-            'cargo-options': 'cargo',
-            'weather-protection': 'weather',
+            'product-options': 'product-options',
+            'cargo-options': 'cargo-options',
+            'weather-protection': 'weather-protection',
             'specification-table': 'specification-table'
         };
-        const shortCardType = cardTypeMap[this.selectedCardType];
+        const shortCardType = cardTypeMap[cardType];
 
         // Get selected variants with their SKUs from configuration
         const selectedVariants = [];
@@ -713,31 +999,83 @@ class CardCreator {
         });
         
         document.querySelectorAll('input[name="variant"]:checked').forEach(checkbox => {
-            const variantName = checkbox.value;
+            const variantSku = checkbox.value;
             
-            // Find the variant in all configurations to get its SKU
+            // Find the variant in all configurations to get its name
             const configVariant = allConfigVariants.find(v => {
-                const vName = typeof v === 'string' ? v : v.name;
-                return vName === variantName;
+                const vSku = typeof v === 'string' ? v : v.sku;
+                return vSku === variantSku;
             });
             
-            const sku = configVariant && typeof configVariant === 'object' ? configVariant.sku : '';
+            const name = configVariant && typeof configVariant === 'object' ? configVariant.name : variantSku;
             
             selectedVariants.push({
-                name: variantName,
-                sku: sku
+                name: name,
+                sku: variantSku
             });
         });
 
+        // Pick the first variant SKU (if any) for top-level card.sku – needed for Hypa export
+        let primarySku = '';
+        if (selectedVariants.length > 0) {
+            primarySku = selectedVariants[0].sku || selectedVariants[0].name || '';
+        }
+
+        // Gather all values first
+        const id = this.editingCardId || Date.now().toString();
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const imageUrlInput = document.getElementById('imageUrl');
+        let imageUrl = '';
+        if (imageUrlInput) {
+            if (imageUrlInput.dataset.fileDataUrl) {
+                imageUrl = imageUrlInput.dataset.fileDataUrl;
+            } else if (imageUrlInput.value) {
+                imageUrl = imageUrlInput.value;
+            }
+        }
+        const price = document.getElementById('price') ? document.getElementById('price').value : '';
+        let position = 1;
+        if (cardType === 'feature' || cardType === 'product-options' || cardType === 'cargo-options' || cardType === 'weather-protection') {
+            // If editing, preserve position if available
+            if (this.editingCardId && this.savedCards) {
+                const editingCard = this.savedCards.find(card => String(card.id) === String(this.editingCardId));
+                if (editingCard && editingCard.position) {
+                    position = editingCard.position;
+                }
+            }
+        } else {
+            position = undefined;
+        }
+        // Standardize filename
+        const safe = s => (s || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+        const filename = `card_${safe(brand)}_${safe(model)}_${safe(cardType)}_${safe(title)}_${id}.json`;
+        // Build standardized cardData
         const cardData = {
+            id,
+            sku: primarySku,
+            cardType: cardType,
+            position,
+            title,
+            description,
+            imageUrl,
+            price,
             configuration: {
                 brand: brand,
                 model: model,
                 generation: generation,
                 variants: selectedVariants
             },
-            description: document.getElementById('description').value
+            filename,
+            webdavPath: '',
+            uploadDate: '',
+            uploadMetadata: {},
+            importedFromHypa: false,
+            hypaUpdated: false,
+            lastModified: new Date().toISOString(),
+            originalHypaData: {}
         };
+        
         if (shortCardType) {
             cardData.cardType = shortCardType;
         }
@@ -755,6 +1093,15 @@ class CardCreator {
             cardData.htmlContent = document.getElementById('description').value;
         }
         
+        // Use the previewed image (data URL or URL) if available
+        if (imageUrlInput) {
+            if (imageUrlInput.dataset.fileDataUrl) {
+                cardData.imageUrl = imageUrlInput.dataset.fileDataUrl;
+            } else if (imageUrlInput.value) {
+                cardData.imageUrl = imageUrlInput.value;
+            }
+        }
+        
         console.log('[getFormData] Final cardData:', cardData);
         return cardData;
     }
@@ -765,6 +1112,16 @@ class CardCreator {
         const form = document.getElementById('cardForm');
         const formData = new FormData(form);
         const cardData = this.getFormData();
+
+        // Auto-assign position for card types that need it (feature / product / cargo / weather)
+        const positionRequiredTypes = ['feature', 'product-options', 'cargo-options', 'weather-protection'];
+        if (positionRequiredTypes.includes(this.selectedCardType) && !cardData.position) {
+            const nextPos = this.getNextAvailablePosition(cardData.cardType || this.selectedCardType, cardData.sku);
+            if (nextPos) {
+                cardData.position = nextPos;
+                console.log('[handleFormSubmit] Auto-assigned position', nextPos, 'to card');
+            }
+        }
 
         // Get selected variants
         const selectedVariants = Array.from(document.querySelectorAll('input[name="variant"]:checked')).map(el => el.value);
@@ -821,11 +1178,27 @@ class CardCreator {
             const result = await response.json();
             if (result.success) {
                 showToast('Card saved successfully!', 'success');
+                // --- Remember Brand, Model, Generation, and selected Variants ---
+                const brand = document.getElementById('brand').value;
+                const model = document.getElementById('model').value;
+                const generation = document.getElementById('generation').value;
+                const checkedVariants = Array.from(document.querySelectorAll('input[name="variant"]:checked')).map(cb => cb.value);
                 form.reset();
+                // Restore remembered fields
+                document.getElementById('brand').value = brand;
+                this.populateModelSelect(brand);
+                document.getElementById('model').value = model;
+                this.populateGenerationSelect(model);
+                document.getElementById('generation').value = generation;
+                this.populateVariantCheckboxes();
+                // Restore checked variants
+                document.querySelectorAll('input[name="variant"]').forEach(cb => {
+                    cb.checked = checkedVariants.includes(cb.value);
+                });
                 this.updatePreview();
                 if (this.editingCardId) {
                     // Update the card in the list by id
-                    const idx = this.savedCards.findIndex(card => card.id === this.editingCardId);
+                    const idx = this.savedCards.findIndex(card => String(card.id) === String(this.editingCardId));
                     if (idx !== -1) {
                         this.savedCards[idx] = result.card;
                         console.log('[handleFormSubmit] Updated card in list (edit mode):', result.card);
@@ -897,13 +1270,10 @@ class CardCreator {
         const title = data.title || '';
         const subtitle = data.subtitle || '';
         const description = data.description || '';
-        // Use the server proxy for the image URL
-        const imageSrc = data.imageUrl ? `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}` : '';
-
+        let imageSrc = getImageSrc(data.imageUrl);
         const imageHtml = imageSrc
             ? `<img src="${imageSrc}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;">`
             : `<div style="width: 100%; height: 100%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Enter an image URL to see a preview</div>`;
-
         return `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;">
@@ -925,8 +1295,7 @@ class CardCreator {
         const title = data.title || '';
         const description = data.description || '';
         let price = (data.price || '').trim();
-        // Use the server proxy for the image URL
-        const imageSrc = data.imageUrl ? `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}` : '';
+        let imageSrc = getImageSrc(data.imageUrl);
 
         // Format price
         let priceHtml = '';
@@ -965,10 +1334,7 @@ class CardCreator {
         const description = data.description || '';
         const price = data.price || '';
         const buttonText = data.buttonText || 'Learn More';
-        
-        // Use the server proxy for the image URL
-        const imageSrc = data.imageUrl ? `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}` : '';
-        
+        let imageSrc = getImageSrc(data.imageUrl);
         console.log('Cargo Options - Image URL:', data.imageUrl);
         console.log('Cargo Options - Proxied URL:', imageSrc);
 
@@ -976,9 +1342,6 @@ class CardCreator {
             ? `<img src="${imageSrc}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="width: 100%; height: 100%; background-color: #f3f4f6; display: none; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Image failed to load</div>`
             : `<div style="width: 100%; height: 100%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Enter an image URL to see a preview</div>`;
-
-        // Unique ID for description toggle
-        const descId = `desc-${Math.random().toString(36).substr(2, 9)}`;
 
         return `
             <div class="card-info" style="border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);">
@@ -988,11 +1351,7 @@ class CardCreator {
                         <h2 style="font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;">${title}</h2>
                         ${subtitle ? `<h3 style="font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;">${subtitle}</h3>` : ''}
                         <p style="font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;">${description}</p>
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            ${price ? `<span style="font-size: 1rem; font-weight: 600; color: #059669;">${price}</span>` : ''}
-                            <button type="button" class="more-info-btn" data-target="${descId}" style="background: #198754; color: #fff; border: none; padding: 0.5rem 1.2rem; border-radius: 4px; font-size: 1rem; font-weight: 500; cursor: pointer; margin-bottom: 0.5rem;">More Information</button>
-                            <div id="${descId}" class="card-description" style="display:none; margin-top:0.5rem; font-size:0.97rem; color:#444;">${description}</div>
-                        </div>
+                        ${price ? `<span style="font-size: 1rem; font-weight: 600; color: #059669;">${price}</span>` : ''}
                     </div>
                     <!-- Image -->
                     <div style="flex: 1 1 40%; aspect-ratio: 16 / 10;">
@@ -1008,10 +1367,7 @@ class CardCreator {
         const description = data.description || '';
         const price = data.price || '';
         const buttonText = data.buttonText || 'Learn More';
-        
-        // Use the server proxy for the image URL
-        const imageSrc = data.imageUrl ? `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}` : '';
-        
+        let imageSrc = getImageSrc(data.imageUrl);
         console.log('Weather Protection - Image URL:', data.imageUrl);
         console.log('Weather Protection - Proxied URL:', imageSrc);
 
@@ -1019,9 +1375,6 @@ class CardCreator {
             ? `<img src="${imageSrc}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="width: 100%; height: 100%; background-color: #f3f4f6; display: none; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Image failed to load</div>`
             : `<div style="width: 100%; height: 100%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Enter an image URL to see a preview</div>`;
-
-        // Unique ID for description toggle
-        const descId = `desc-${Math.random().toString(36).substr(2, 9)}`;
 
         return `
             <div class="card-info" style="border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);">
@@ -1031,11 +1384,7 @@ class CardCreator {
                         <h2 style="font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;">${title}</h2>
                         ${subtitle ? `<h3 style="font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;">${subtitle}</h3>` : ''}
                         <p style="font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;">${description}</p>
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            ${price ? `<span style="font-size: 1rem; font-weight: 600; color: #059669;">${price}</span>` : ''}
-                            <button type="button" class="more-info-btn" data-target="${descId}" style="background: #198754; color: #fff; border: none; padding: 0.5rem 1.2rem; border-radius: 4px; font-size: 1rem; font-weight: 500; cursor: pointer; margin-bottom: 0.5rem;">More Information</button>
-                            <div id="${descId}" class="card-description" style="display:none; margin-top:0.5rem; font-size:0.97rem; color:#444;">${description}</div>
-                        </div>
+                        ${price ? `<span style="font-size: 1rem; font-weight: 600; color: #059669;">${price}</span>` : ''}
                     </div>
                     <!-- Image -->
                     <div style="flex: 1 1 40%; aspect-ratio: 16 / 10;">
@@ -1158,7 +1507,7 @@ class CardCreator {
 
     async loadSavedCards() {
         try {
-            const response = await fetch('/api/load-cards');
+            const response = await fetch('/api/cards');
             if (!response.ok) throw new Error('Failed to fetch cards.');
             let cards = await response.json();
             console.log('[loadSavedCards] Raw cards from server:', cards.map(c => ({ id: c.id, cardType: c.cardType, type: c.type, title: c.title })));
@@ -1176,6 +1525,23 @@ class CardCreator {
             this.savedCards = cards;
             this.renderSavedCards();
             this.checkConfigurationAvailability(); // Check availability after loading cards
+
+            // Auto-edit or duplicate if URL contains parameters
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const editParam = urlParams.get('edit');
+                const duplicateParam = urlParams.get('duplicate');
+                
+                if (editParam) {
+                    console.log('[loadSavedCards] Detected edit param:', editParam);
+                    await this.handleCardAction(editParam, 'edit');
+                } else if (duplicateParam) {
+                    console.log('[loadSavedCards] Detected duplicate param:', duplicateParam);
+                    await this.handleCardAction(duplicateParam, 'duplicate');
+                }
+            } catch (err) {
+                console.error('[loadSavedCards] Error processing URL params:', err);
+            }
         } catch (error) {
             console.error('Error loading saved cards:', error);
             showToast(error.message, 'danger');
@@ -1183,131 +1549,203 @@ class CardCreator {
     }
 
     renderSavedCards() {
-        console.log('[renderSavedCards] Method called');
-        const listContainer = document.getElementById('savedCardsList');
-        if (!listContainer) {
-            console.error('[renderSavedCards] savedCardsList element not found!');
-            return;
-        }
-        listContainer.innerHTML = '';
-
+        const savedCardsList = document.getElementById('savedCardsList');
+        if (!savedCardsList) return;
         if (this.savedCards.length === 0) {
-            listContainer.innerHTML = '<p class="text-muted">No cards saved yet.</p>';
+            savedCardsList.innerHTML = '<p class="text-muted">No cards saved yet.</p>';
             return;
         }
 
-        // Consistent card type mapping
-        const cardTypeMap = {
-            'feature': ['feature'],
-            'product-options': ['product-options', 'option'],
-            'specification-table': ['specification-table', 'spec'],
-            'weather-protection': ['weather-protection', 'weather'],
-            'cargo-options': ['cargo-options', 'cargo']
-        };
+        // Get current filter values
+        const currentBrand = document.getElementById('brand')?.value || '';
+        const currentModel = document.getElementById('model')?.value || '';
+        const currentGeneration = document.getElementById('generation')?.value || '';
         const currentCardType = this.selectedCardType;
-        const validTypes = cardTypeMap[currentCardType] || [currentCardType];
-
-        // Only filter by card type
-        console.log('[renderSavedCards] Current card type:', currentCardType);
-        console.log('[renderSavedCards] Valid types for filtering:', validTypes);
-        console.log('[renderSavedCards] All saved cards:', this.savedCards.map(c => ({ id: c.id, cardType: c.cardType, type: c.type, title: c.title })));
+        const checkedVariants = Array.from(document.querySelectorAll('input[name="variant"]:checked')).map(cb => cb.value);
         
-        const filteredCards = this.savedCards.filter(card => {
+
+        
+
+
+        // Filter cards based on current selections
+        let filteredCards = this.savedCards;
+        
+        // ALWAYS filter by current card type first (regardless of toggle state)
+        filteredCards = this.savedCards.filter(card => {
             const cardType = card.cardType || card.type;
-            const isIncluded = validTypes.includes(cardType);
-            console.log(`[renderSavedCards] Card ${card.id} (${card.title}): cardType=${cardType}, included=${isIncluded}`);
-            return isIncluded;
+            // Handle card type mapping for both old and new formats
+            const typeMap = {
+                'option': 'product-options',
+                'cargo': 'cargo-options',  // Map old 'cargo' to 'cargo-options'
+                'spec': 'specification-table'
+            };
+            const mappedCardType = typeMap[cardType] || cardType;
+            if (mappedCardType !== currentCardType) {
+                return false;
+            }
+            return true;
         });
         
-        console.log('[renderSavedCards] Filtered cards:', filteredCards.length);
+        // If toggle is ON, also filter by brand/model/generation/variants
+        if (this.filterByDetails) {
+            filteredCards = filteredCards.filter(card => {
+                // Filter by brand
+                if (currentBrand && card.configuration?.brand !== currentBrand) {
+                    return false;
+                }
 
+                // Filter by model
+                if (currentModel && card.configuration?.model !== currentModel) {
+                    return false;
+                }
+
+                // Filter by generation
+                if (currentGeneration && card.configuration?.generation !== currentGeneration) {
+                    return false;
+                }
+
+                // Filter by variants (if any variants are selected)
+                if (checkedVariants.length > 0 && card.configuration?.variants) {
+                    const cardVariants = card.configuration.variants;
+                    
+                    // Extract card variant SKUs
+                    const cardVariantSkus = cardVariants.map(variant => {
+                        if (typeof variant === 'string') {
+                            return variant;
+                        } else if (typeof variant === 'object' && variant.sku) {
+                            return variant.sku;
+                        }
+                        return null;
+                    }).filter(sku => sku !== null);
+                    
+                    // Get all available variant SKUs for this configuration
+                    const allAvailableVariants = this.getAllAvailableVariants(currentBrand, currentModel, currentGeneration);
+                    
+                    // Check if all available variants are selected
+                    const allVariantsSelected = allAvailableVariants.length > 0 && 
+                        allAvailableVariants.every(variant => checkedVariants.includes(variant));
+                    
+                    if (allVariantsSelected) {
+                        // If all variants are selected, show cards with ANY of those variants (OR logic)
+                        const hasAnySelectedVariant = checkedVariants.some(selectedVariant => 
+                            cardVariantSkus.includes(selectedVariant)
+                        );
+                        if (!hasAnySelectedVariant) {
+                            return false;
+                        }
+                    } else {
+                        // If some variants are selected, show only cards with EXACTLY those variants (exact match)
+                        // Check if card has exactly the selected variants (no more, no less)
+                        if (cardVariantSkus.length !== checkedVariants.length) {
+                            return false;
+                        }
+                        
+                        const hasExactMatch = checkedVariants.every(selectedVariant => 
+                            cardVariantSkus.includes(selectedVariant)
+                        );
+                        
+                        if (!hasExactMatch) {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            });
+        }
+        
+
+        
+
+
+        // Clear the list
+        savedCardsList.innerHTML = '';
+
+        // Show filter status if filtering is active
+        if (this.filterByDetails && (currentBrand || currentModel || currentGeneration || checkedVariants.length > 0 || currentCardType)) {
+            const filterStatusDiv = document.createElement('div');
+            filterStatusDiv.className = 'filter-status mb-3';
+            
+            const filterCriteria = [];
+            if (currentBrand) filterCriteria.push(`Brand: ${currentBrand}`);
+            if (currentModel) filterCriteria.push(`Model: ${currentModel}`);
+            if (currentGeneration) filterCriteria.push(`Generation: ${currentGeneration}`);
+            if (checkedVariants.length > 0) filterCriteria.push(`Variants: ${checkedVariants.join(', ')}`);
+            if (currentCardType) filterCriteria.push(`Card Type: ${this.getCardTypeLabel(currentCardType)}`);
+            
+            filterStatusDiv.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fas fa-filter me-2"></i>
+                        <strong>Filtered Results:</strong> ${filteredCards.length} of ${this.savedCards.length} cards
+                        <br><small class="text-muted">${filterCriteria.join(' | ')}</small>
+                    </div>
+                    <button class="btn btn-outline-info btn-sm" onclick="cardCreator.clearFilter()">
+                        <i class="fas fa-times me-1"></i>Clear Filter
+                    </button>
+                </div>
+            `;
+            savedCardsList.appendChild(filterStatusDiv);
+        }
+
+        // Show message if no cards match the filter
         if (filteredCards.length === 0) {
-            listContainer.innerHTML = '<p class="text-muted">No cards of this type saved yet.</p>';
+            if (this.filterByDetails && (currentBrand || currentModel || currentGeneration || checkedVariants.length > 0 || currentCardType)) {
+                savedCardsList.innerHTML += '<p class="text-muted">No cards match the current filter criteria.</p>';
+            } else {
+                savedCardsList.innerHTML = '<p class="text-muted">No cards saved yet.</p>';
+            }
             return;
         }
 
+        // Render filtered cards
         filteredCards.forEach(card => {
-            // Unified display name
-            const cardTypeNames = {
-                'feature': 'Feature Card',
-                'product-options': 'Product Options',
-                'specification-table': 'Specification Table',
-                'spec': 'Specification Table',
-                'weather-protection': 'Weather Protection',
-                'cargo-options': 'Cargo Options'
-            };
-            // Always use 'Product Options' for both 'option' and 'product-options'
-            const cardType = card.cardType || card.type || 'Unknown';
-            const cardTypeName = cardTypeNames[cardType] || (cardType === 'option' ? 'Product Options' : cardType);
-            console.log(`[renderSavedCards] Card ${card.id}: cardType=${cardType}, displayName=${cardTypeName}`);
-            
-            // For specification table cards, extract the meaningful title from HTML content
-            let displayTitle = card.title;
-            if (cardType === 'specification-table' || cardType === 'spec') {
-                const htmlContent = card.htmlContent || card.description || '';
-                // Try to extract the h2 title from the HTML content
-                const h2Match = htmlContent.match(/<h2[^>]*>([^<]+)<\/h2>/);
-                if (h2Match && h2Match[1]) {
-                    displayTitle = h2Match[1].trim();
-                }
-            }
-            
-            // Format variants for display
-            const variants = (card.configuration && card.configuration.variants) ? card.configuration.variants : [];
-            let variantsText = 'No variants selected';
-            
-            if (variants.length > 0) {
-                if (typeof variants[0] === 'string') {
-                    // Old format: array of strings
-                    variantsText = variants.join(', ');
-                } else {
-                    // New format: array of objects with name and sku
-                    variantsText = variants.map(v => `${v.name} (${v.sku || 'No SKU'})`).join(', ');
-                }
-            }
-            
-            // Create card element
-            const cardElement = document.createElement('div');
-            cardElement.className = 'p-3 mb-3 bg-light rounded border saved-card-item';
-            cardElement.innerHTML = `
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="flex-grow-1">
-                        <div class="d-flex align-items-center mb-1">
-                            <span class="badge bg-primary me-2 card-type-badge">${cardTypeName}</span>
-                            <strong>${displayTitle}</strong>
-                        </div>
-                        <div class="text-muted small">
-                            <strong>Configuration:</strong> ${card.configuration ? `${card.configuration.brand || 'Unknown'} - ${card.configuration.model || 'Unknown'} - ${card.configuration.generation || 'Unknown'}` : 'No configuration'}
-                        </div>
-                        ${variants.length > 0 ? `<div class="variants-info"><small><strong>Variants:</strong> ${variantsText}</small></div>` : ''}
-                        ${cardType === 'product-options' && card.price ? `<div class="text-success small mt-1"><strong>${card.price}</strong></div>` : ''}
-                        ${cardType !== 'product-options' && card.subtitle ? `<div class="text-muted small mt-1"><em>${card.subtitle}</em></div>` : ''}
-                    </div>
-                    <div class="ms-3">
-                        <button class="btn btn-sm btn-outline-primary me-2" data-action="edit" data-card-id="${card.id}" title="Edit Card">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" data-action="delete" data-card-id="${card.id}" title="Delete Card">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'saved-card-item mb-3 p-3 border rounded d-flex justify-content-between align-items-center';
+            cardDiv.innerHTML = `
+                <div>
+                    <span class="badge bg-primary card-type-badge me-2">${this.getCardTypeLabel(card.cardType || card.type)}</span>
+                    <strong>${card.title || '(Untitled Card)'}</strong><br>
+                    <span class="text-muted">Configuration:</span> ${card.configuration ? `${card.configuration.brand} - ${card.configuration.model} - ${card.configuration.generation}` : ''}<br>
+                    <span class="text-muted">Variants:</span> ${card.configuration && card.configuration.variants ? card.configuration.variants.map(v => typeof v === 'object' ? v.name + (v.sku ? ` (${v.sku})` : '') : v).join(', ') : ''}
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary btn-sm" title="Edit" onclick="cardCreator.handleSavedCardAction('${card.id}', 'edit')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-outline-success btn-sm" title="Duplicate" onclick="cardCreator.handleSavedCardAction('${card.id}', 'duplicate')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" title="Delete" onclick="cardCreator.handleSavedCardAction('${card.id}', 'delete')">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             `;
-            listContainer.appendChild(cardElement);
+            savedCardsList.appendChild(cardDiv);
         });
     }
 
-    handleSavedCardAction(e) {
-        const button = e.target.closest('button');
-        if (!button) return;
-
-        const action = button.dataset.action;
-        const cardId = button.dataset.cardId;
-
-        if (action === 'delete') {
-            this.handleDeleteClick(cardId);
-        } else if (action === 'edit') {
+    handleSavedCardAction(eOrId, action) {
+        let cardId, actionType;
+        if (typeof eOrId === 'object' && eOrId !== null && eOrId.target) {
+            // Called as an event handler
+            const btn = eOrId.target.closest('button[data-card-id]');
+            cardId = btn ? btn.getAttribute('data-card-id') : null;
+            actionType = btn ? btn.getAttribute('data-action') : null;
+        } else {
+            // Called directly with cardId and action
+            cardId = eOrId;
+            actionType = action;
+        }
+        if (!cardId) return;
+        const card = this.savedCards.find(c => String(c.id) === String(cardId));
+        if (!card) return;
+        if (actionType === 'edit') {
             this.handleEditClick(cardId);
+        } else if (actionType === 'duplicate') {
+            this.duplicateCard(card);
+        } else if (actionType === 'delete') {
+            this.handleDeleteClick(cardId);
         }
     }
 
@@ -1315,7 +1753,7 @@ class CardCreator {
         if (!confirm('Are you sure you want to delete this card?')) return;
 
         // Find the card to get its filename
-        const cardToDelete = this.savedCards.find(card => card.id === cardId);
+        const cardToDelete = this.savedCards.find(card => String(card.id) === String(cardId));
         if (!cardToDelete || !cardToDelete.filename) {
             showToast('Could not delete card: filename is missing.', 'danger');
             return;
@@ -1335,8 +1773,67 @@ class CardCreator {
         }
     }
 
+    async handleCardAction(cardId, action) {
+        console.log(`[handleCardAction] Called with cardId: ${cardId}, action: ${action}`);
+        const card = this.savedCards.find(card => String(card.id) === String(cardId));
+        if (!card) {
+            console.error(`[handleCardAction] Card not found: ${cardId}`);
+            return;
+        }
+        
+        if (action === 'edit') {
+            await this.handleEditClick(cardId);
+        } else if (action === 'duplicate') {
+            await this.duplicateCard(card);
+        }
+    }
+    
+    async duplicateCard(originalCard) {
+        console.log('[duplicateCard] Duplicating card:', originalCard);
+        // Deep copy the entire card and configuration
+        const duplicatedCard = deepCopy(originalCard);
+        duplicatedCard.id = Date.now() + Math.random(); // Generate unique ID
+        duplicatedCard.title = originalCard.title ? `${originalCard.title} (Copy)` : 'Copy';
+        duplicatedCard.filename = null; // Clear filename so it gets a new one when saved
+        duplicatedCard.webdavPath = null; // Clear WebDAV path
+        duplicatedCard.uploadStatus = 'awaiting-upload'; // Reset upload status
+        // Deep copy and rename variants
+        if (duplicatedCard.configuration && Array.isArray(duplicatedCard.configuration.variants)) {
+            duplicatedCard.configuration.variants = duplicatedCard.configuration.variants.map(variant => {
+                if (typeof variant === 'string') {
+                    return `${variant} (Copy)`;
+                } else if (variant && typeof variant === 'object') {
+                    return {
+                        ...variant,
+                        name: (variant.name ? `${variant.name} (Copy)` : 'Variant (Copy)')
+                    };
+                }
+                return variant;
+            });
+        }
+        // Switch to the correct card type if needed
+        const typeMap = {
+            'option': 'product-options',
+            'spec': 'specification-table'
+        };
+        const desiredType = typeMap[duplicatedCard.cardType] || duplicatedCard.cardType || duplicatedCard.type;
+        if (desiredType && this.selectedCardType !== desiredType) {
+            this.selectCardType(desiredType);
+        }
+        // Populate the form with the duplicated card data (but don't set edit mode)
+        this.editingCardId = null; // Clear edit mode for new card
+        this.editingCardFilename = null;
+        await this.populateForm(duplicatedCard);
+        this.updateCancelBtnState();
+        // Clear the URL parameter to prevent re-duplication on refresh
+        const url = new URL(window.location);
+        url.searchParams.delete('duplicate');
+        window.history.replaceState({}, '', url);
+        showToast('Card duplicated successfully! You can now modify and save the copy.', 'success');
+    }
+    
     async handleEditClick(cardId) {
-        const cardToEdit = this.savedCards.find(card => card.id === cardId);
+        const cardToEdit = this.savedCards.find(card => String(card.id) === String(cardId));
         if (cardToEdit) {
             this.editingCardId = cardToEdit.id; // Set edit mode
             this.editingCardFilename = cardToEdit.filename; // Ensure filename is set
@@ -1350,6 +1847,25 @@ class CardCreator {
         }
     }
 
+    // Determine the next free position (1-12) for a given cardType & SKU
+    getNextAvailablePosition(cardType, sku) {
+        const used = new Set();
+        this.savedCards.forEach(card => {
+            const type = card.cardType || card.type;
+            if (type === cardType && (card.sku === sku || !sku)) {
+                if (card.position) {
+                    used.add(Number(card.position));
+                }
+            }
+        });
+        for (let i = 1; i <= 12; i++) {
+            if (!used.has(i)) return i;
+        }
+        // All positions taken
+        console.warn('[getNextAvailablePosition] No free slot for', cardType, sku);
+        return null;
+    }
+
     clearFilter() {
         // Clear form selections to show all cards
         document.getElementById('brand').value = '';
@@ -1359,6 +1875,12 @@ class CardCreator {
         // Clear variant checkboxes
         document.querySelectorAll('input[name="variant"]').forEach(chk => chk.checked = false);
         
+        // Clear localStorage selections
+        localStorage.removeItem('cardCreatorBrand');
+        localStorage.removeItem('cardCreatorModel');
+        localStorage.removeItem('cardCreatorGeneration');
+        localStorage.removeItem('cardCreatorVariants');
+        
         // Reset card type to default
         this.selectCardType('feature');
         
@@ -1367,6 +1889,8 @@ class CardCreator {
         
         // Update preview
         this.updatePreview();
+        
+        showToast('Filter cleared. Showing all cards.', 'info');
     }
 
     checkConfigurationAvailability() {
@@ -1420,16 +1944,31 @@ class CardCreator {
     }
 
     cancelEditMode() {
+        cleanupLastUnsavedImage(); // Clean up unsaved image on cancel
         console.log('[cancelEditMode] called. Before clear: editingCardId:', this.editingCardId, 'pendingCardType:', this.pendingCardType);
         this.editingCardId = null;
         this.editingCardFilename = null;
         this.updateCancelBtnState();
         this.justCancelledEdit = true;
+        // --- Remember Brand, Model, Generation, and selected Variants ---
+        const brand = document.getElementById('brand').value;
+        const model = document.getElementById('model').value;
+        const generation = document.getElementById('generation').value;
+        const checkedVariants = Array.from(document.querySelectorAll('input[name="variant"]:checked')).map(cb => cb.value);
         // Reset the form
         const form = document.getElementById('cardForm');
         if (form) form.reset();
-        // Clear variant checkboxes
-        document.querySelectorAll('input[name="variant"]').forEach(chk => chk.checked = false);
+        // Restore remembered fields
+        document.getElementById('brand').value = brand;
+        this.populateModelSelect(brand);
+        document.getElementById('model').value = model;
+        this.populateGenerationSelect(model);
+        document.getElementById('generation').value = generation;
+        this.populateVariantCheckboxes();
+        // Restore checked variants
+        document.querySelectorAll('input[name="variant"]').forEach(cb => {
+            cb.checked = checkedVariants.includes(cb.value);
+        });
         // Optionally clear dynamic price field
         const oldPriceField = document.getElementById('price-field-dynamic');
         if (oldPriceField) oldPriceField.remove();
@@ -1445,6 +1984,8 @@ class CardCreator {
         // Optionally clear title
         const titleInput = document.getElementById('title');
         if (titleInput) titleInput.value = '';
+        // Clear change tracking
+        this.clearOriginalFormData();
         // Update preview
         this.updatePreview();
         showToast('Edit cancelled. Switched to new card type.', 'info');
@@ -1464,6 +2005,126 @@ class CardCreator {
         if (cancelBtn) {
             cancelBtn.disabled = !this.editingCardId;
         }
+    }
+    
+    // Update the status indicator
+    updateStatusIndicator() {
+        const statusElement = document.getElementById('cardStatus');
+        const quickSaveBtn = document.getElementById('quickSaveBtn');
+        
+        if (!statusElement) return;
+        
+        let statusHtml = '';
+        
+        if (this.editingCardId) {
+            // Editing an existing card
+            if (this.hasUnsavedChanges) {
+                statusHtml = '<span class="badge bg-warning"><i class="fas fa-exclamation-triangle me-1"></i>Changes Unsaved</span>';
+                if (quickSaveBtn) {
+                    quickSaveBtn.disabled = false;
+                    quickSaveBtn.innerHTML = '<i class="fas fa-save me-1"></i>Save Changes';
+                }
+            } else {
+                statusHtml = '<span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Changes Saved</span>';
+                if (quickSaveBtn) {
+                    quickSaveBtn.disabled = true;
+                    quickSaveBtn.innerHTML = '<i class="fas fa-save me-1"></i>Saved';
+                }
+            }
+        } else {
+            // Creating a new card
+            if (this.hasUnsavedChanges) {
+                statusHtml = '<span class="badge bg-warning"><i class="fas fa-exclamation-triangle me-1"></i>Changes Unsaved</span>';
+                if (quickSaveBtn) {
+                    quickSaveBtn.disabled = false;
+                    quickSaveBtn.innerHTML = '<i class="fas fa-save me-1"></i>Save Card';
+                }
+            } else {
+                statusHtml = '<span class="badge bg-secondary"><i class="fas fa-circle me-1"></i>No Changes</span>';
+                if (quickSaveBtn) {
+                    quickSaveBtn.disabled = true;
+                    quickSaveBtn.innerHTML = '<i class="fas fa-save me-1"></i>Save';
+                }
+            }
+        }
+        
+        statusElement.innerHTML = statusHtml;
+    }
+    
+    // Check if form data has changed
+    checkForChanges() {
+        if (!this.originalFormData) {
+            this.hasUnsavedChanges = false;
+            this.updateStatusIndicator();
+            return;
+        }
+        
+        const currentData = this.getFormData();
+        const hasChanges = JSON.stringify(currentData) !== JSON.stringify(this.originalFormData);
+        
+        if (hasChanges !== this.hasUnsavedChanges) {
+            this.hasUnsavedChanges = hasChanges;
+            this.updateStatusIndicator();
+        }
+    }
+    
+    // Store original form data for comparison
+    storeOriginalFormData() {
+        this.originalFormData = this.getFormData();
+        this.hasUnsavedChanges = false;
+        this.updateStatusIndicator();
+    }
+    
+    // Clear original form data
+    clearOriginalFormData() {
+        this.originalFormData = null;
+        this.hasUnsavedChanges = false;
+        this.updateStatusIndicator();
+    }
+
+    // Add this method for card type label mapping
+    getCardTypeLabel(type) {
+        const map = {
+            'feature': 'Feature Card',
+            'product-options': 'Product Options',
+            'option': 'Product Options',
+            'specification-table': 'Specification Table',
+            'spec': 'Specification Table',
+            'weather-protection': 'Weather Protection',
+            'cargo-options': 'Cargo Options'
+        };
+        return map[type] || type || 'Unknown';
+    }
+
+    // Get all available variants for a given brand/model/generation combination
+    getAllAvailableVariants(brand, model, generation) {
+        if (!brand || !model || !generation) return [];
+        
+
+        
+        // Find the configuration that matches the current selections
+        const config = this.configurations.find(config => 
+            config.brand === brand && 
+            config.model === model && 
+            config.generation === generation
+        );
+        
+
+        
+        if (!config || !config.variants) return [];
+        
+        // Extract SKUs from variants
+        const variants = config.variants.map(variant => {
+            if (typeof variant === 'string') {
+                return variant;
+            } else if (typeof variant === 'object' && variant.sku) {
+                return variant.sku;
+            }
+            return null;
+        }).filter(sku => sku !== null);
+        
+
+        return variants;
     }
 }
 

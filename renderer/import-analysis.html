@@ -130,6 +130,24 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
+
+        /* Improved status badge and row colors for readability */
+        .table-secondary { background-color: #f8f9fa !important; color: #212529 !important; }
+        .table-warning { background-color: #fff3cd !important; color: #212529 !important; }
+        .table-info { background-color: #d1ecf1 !important; color: #212529 !important; }
+        .table-success { background-color: #d4edda !important; color: #212529 !important; }
+        .status-badge.bg-secondary { background-color: #6c757d !important; color: #fff !important; }
+        .status-badge.bg-warning { background-color: #ffc107 !important; color: #212529 !important; }
+        .status-badge.bg-info { background-color: #17a2b8 !important; color: #fff !important; }
+        .status-badge.bg-success { background-color: #28a745 !important; color: #fff !important; }
+
+        /* Improve table heading contrast for export selection table */
+        #exportSelectionTable thead th {
+            background-color: #212529 !important;
+            color: #fff !important;
+            font-weight: bold;
+            border-bottom: 2px solid #444 !important;
+        }
     </style>
 </head>
 <body>
@@ -143,7 +161,7 @@
                 <a class="nav-link" href="index.html">Home</a>
                 <a class="nav-link" href="card-creator.html">Card Creator</a>
                 <a class="nav-link" href="card-manager.html">Card Manager</a>
-                <a class="nav-link" href="csv-manager.html">CSV Manager</a>
+                
                 <a class="nav-link" href="webdav-explorer.html">File Explorer</a>
                 <a class="nav-link active" href="import-analysis.html">Import Analysis</a>
                 <a class="nav-link" href="settings.html">Settings</a>
@@ -167,8 +185,11 @@
                         <button class="btn btn-info me-2" id="importHypaBtn" data-bs-toggle="modal" data-bs-target="#importHypaModal">
                             <i class="fas fa-download me-2"></i>Import Hypa Metafields
                         </button>
-                        <button class="btn btn-warning" id="exportHypaBtn" data-bs-toggle="modal" data-bs-target="#exportHypaModal">
+                        <button class="btn btn-warning me-2" id="exportHypaBtn" data-bs-toggle="modal" data-bs-target="#exportHypaModal">
                             <i class="fas fa-upload me-2"></i>Export to Hypa Metafields
+                        </button>
+                        <button class="btn btn-outline-warning" id="placeholderSummaryBtn" onclick="showPlaceholderCardSummary()">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Placeholder Cards
                         </button>
                     </div>
                 </div>
@@ -222,8 +243,8 @@
                 <div class="card analysis-card">
                     <div class="card-body text-center">
                         <h3 id="totalConfigs" class="text-primary">0</h3>
-                        <p class="mb-0">BigCommerce Products</p>
-                        <small class="text-muted">Imported</small>
+                        <p class="mb-0">BigCommerce Variants (SKUs)</p>
+                        <small class="text-muted">Total Variants</small>
                     </div>
                 </div>
             </div>
@@ -232,7 +253,7 @@
                     <div class="card-body text-center">
                         <h3 id="totalCards" class="text-warning">0</h3>
                         <p class="mb-0">Cards Created</p>
-                        <small class="text-muted">From Products</small>
+                        <small class="text-muted">Total Cards</small>
                     </div>
                 </div>
             </div>
@@ -241,16 +262,18 @@
                     <div class="card-body text-center">
                         <h3 id="totalImages" class="text-info">0</h3>
                         <p class="mb-0">Images Uploaded</p>
-                        <small class="text-muted">To WebDAV</small>
+                        <small class="text-muted">Unique Images</small>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card analysis-card">
                     <div class="card-body text-center">
-                        <h3 id="totalHypa" class="text-success">0</h3>
+                        <h3 class="text-success mb-1">
+                            <span id="totalHypaImported">0</span> <small class="text-muted" style="font-size:1rem;">Imported</small><br>
+                            <span id="totalHypaExported">0</span> <small class="text-muted" style="font-size:1rem;">Exported</small>
+                        </h3>
                         <p class="mb-0">Hypa Metafields</p>
-                        <small class="text-muted">Exported</small>
                     </div>
                 </div>
             </div>
@@ -368,38 +391,7 @@
                         </tr>
                     </thead>
                     <tbody id="importHistoryTable">
-                        <tr>
-                            <td>2025-01-27 14:30</td>
-                            <td>bigcommerce_export.csv</td>
-                            <td>45</td>
-                            <td>42</td>
-                            <td>3</td>
-                            <td><span class="badge bg-success">Completed</span></td>
-                            <td>
-                                <button class="btn btn-outline-secondary btn-sm" onclick="viewImportDetails('import_1')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" onclick="rollbackImport('import_1')">
-                                    <i class="fas fa-undo"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2025-01-26 09:15</td>
-                            <td>products_update.csv</td>
-                            <td>23</td>
-                            <td>20</td>
-                            <td>3</td>
-                            <td><span class="badge bg-success">Completed</span></td>
-                            <td>
-                                <button class="btn btn-outline-secondary btn-sm" onclick="viewImportDetails('import_2')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" onclick="rollbackImport('import_2')">
-                                    <i class="fas fa-undo"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        <!-- Import history will be populated here by JS -->
                     </tbody>
                 </table>
             </div>
@@ -421,6 +413,9 @@
                             <p class="mb-3">Download all your cards as a JSON file for backup or transfer to another device.</p>
                             <button class="btn btn-success" onclick="exportCardsToFile()">
                                 <i class="fas fa-download me-2"></i>Export Cards Backup
+                            </button>
+                            <button class="btn btn-danger ms-2" id="resetCardsBtn" data-bs-toggle="modal" data-bs-target="#resetCardsModal">
+                                <i class="fas fa-trash-alt me-2"></i>Reset Cards
                             </button>
                             <small class="text-muted d-block mt-2">File will be saved as: cards-backup-YYYY-MM-DD.json</small>
                         </div>
@@ -760,7 +755,20 @@
                     <div id="exportAnalysisStep">
                         <div class="alert alert-info">
                             <h6><i class="fas fa-info-circle me-2"></i>Analyzing Local Cards and Hypa Metafields</h6>
-                            <p class="mb-0">We'll compare your local cards with what's already in Hypa Metafields to show you what will be created, updated, or skipped.</p>
+                            <p class="mb-0">
+                                We'll compare your local cards with what's already in Hypa Metafields to show you what will be <strong>added</strong>, <strong>updated</strong>, <strong>kept</strong>, or <strong>removed</strong>.<br>
+                                <strong>Label criteria:</strong><br>
+                                <ul style="margin-bottom:0;">
+                                    <li><strong>Add</strong>: This card does not exist in Hypa and will be added to an existing row.</li>
+                                    <li><strong>Update</strong>: This card exists in Hypa, but your local version is different and will overwrite the Hypa version.</li>
+                                    <li><strong>Keep</strong>: This card is identical to what's already in Hypa (no changes detected), so it will be preserved.</li>
+                                    <li><strong>Remove</strong>: This card exists in Hypa but you want to clear/remove it from the website.</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Tip:</strong> You <b>do not need</b> to import a Hypa Metafields CSV to export your cards. However, <b>importing an up-to-date Hypa Metafields CSV</b> lets you see which cards are new, which will update, and which will be skipped—helping you avoid accidental overwrites or duplicates. For best results, always export the latest data from Hypa and import it here before exporting new cards.
                         </div>
                         
                         <div class="row mb-4">
@@ -822,7 +830,7 @@
                                 <div class="card bg-success text-white">
                                     <div class="card-body text-center">
                                         <h4 id="exportNewCount">0</h4>
-                                        <small>New Cards</small>
+                                        <small>Add</small>
                                     </div>
                                 </div>
                             </div>
@@ -830,7 +838,7 @@
                                 <div class="card bg-warning text-dark">
                                     <div class="card-body text-center">
                                         <h4 id="exportUpdateCount">0</h4>
-                                        <small>Will Update</small>
+                                        <small>Update</small>
                                     </div>
                                 </div>
                             </div>
@@ -838,7 +846,7 @@
                                 <div class="card bg-info text-white">
                                     <div class="card-body text-center">
                                         <h4 id="exportSkipCount">0</h4>
-                                        <small>Will Skip</small>
+                                        <small>Keep</small>
                                     </div>
                                 </div>
                             </div>
@@ -846,7 +854,7 @@
                                 <div class="card bg-danger text-white">
                                     <div class="card-body text-center">
                                         <h4 id="exportConflictCount">0</h4>
-                                        <small>Conflicts</small>
+                                        <small>Remove</small>
                                     </div>
                                 </div>
                             </div>
@@ -885,26 +893,32 @@
                         
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>Review Carefully:</strong> Select which cards you want to export. Be careful with updates as they will overwrite existing Hypa metafields.
+                            <strong>Review Carefully:</strong> Select which cards you want to keep in the final CSV. Unselected cards will be removed/cleared from the website.
                         </div>
 
                         <div class="mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selectAllNew" checked>
-                                <label class="form-check-label" for="selectAllNew">
-                                    <span class="badge bg-success">New</span> Export all new cards (safe)
+                                <input class="form-check-input" type="checkbox" id="selectAllAdd" checked>
+                                <label class="form-check-label" for="selectAllAdd">
+                                    <span class="badge bg-success">Add</span> Keep all new cards (safe)
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selectAllUpdates">
+                                <input class="form-check-input" type="checkbox" id="selectAllUpdates" checked>
                                 <label class="form-check-label" for="selectAllUpdates">
-                                    <span class="badge bg-warning">Updates</span> Export all updates (will overwrite)
+                                    <span class="badge bg-warning">Updates</span> Keep all updated cards (will overwrite)
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selectAllConflicts">
-                                <label class="form-check-label" for="selectAllConflicts">
-                                    <span class="badge bg-danger">Conflicts</span> Export conflicts (manual review needed)
+                                <input class="form-check-input" type="checkbox" id="selectAllKeep" checked>
+                                <label class="form-check-label" for="selectAllKeep">
+                                    <span class="badge bg-info">Keep</span> Keep all unchanged cards (preserve)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="selectAllRemove" checked>
+                                <label class="form-check-label" for="selectAllRemove">
+                                    <span class="badge bg-danger">Remove</span> Remove cards from website (clear)
                                 </label>
                             </div>
                         </div>
@@ -913,18 +927,21 @@
                             <table class="table table-sm table-striped" id="exportSelectionTable">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th><input type="checkbox" id="selectAllCheckbox"></th>
-                                        <th>Product</th>
-                                        <th>Card Type</th>
-                                        <th>Action</th>
-                                        <th>Last Modified</th>
-                                        <th>Status</th>
+                                        <th class="text-white fw-bold"><input type="checkbox" id="selectAllCheckbox"></th>
+                                        <th class="text-white fw-bold">Product</th>
+                                        <th class="text-white fw-bold">Card Type</th>
+                                        <th class="text-white fw-bold">SKU</th>
+                                        <th class="text-white fw-bold">Action</th>
+                                        <th class="text-white fw-bold">Last Modified</th>
+                                        <th class="text-white fw-bold">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="exportSelectionTableBody">
                                 </tbody>
                             </table>
                         </div>
+
+                        <div id="exportSelectionSummaryPanel" class="mb-3"></div>
 
                         <div class="mt-3">
                             <button type="button" class="btn btn-secondary" id="backToComparisonBtn">
@@ -1039,6 +1056,32 @@
             </div>
             <div class="toast-body" id="analysisToastBody">
                 Analysis completed successfully!
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Cards Modal -->
+    <div class="modal fade" id="resetCardsModal" tabindex="-1" aria-labelledby="resetCardsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="resetCardsModalLabel"><i class="fas fa-trash-alt me-2"></i>Reset Cards</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-4">This will permanently delete <strong>all</strong> card JSON files and related cache on this computer.</p>
+                    <p class="fw-bold">Choose an option:</p>
+                    <ul>
+                        <li><strong>Backup &amp; Delete</strong> &ndash; Downloads a backup of all cards <em>before</em> deletion.</li>
+                        <li><strong>Delete Only</strong> &ndash; Deletes without creating a backup.</li>
+                    </ul>
+                    <div class="alert alert-warning"><i class="fas fa-exclamation-triangle me-2"></i>This action cannot be undone.</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="deleteOnlyBtn">Delete Only</button>
+                    <button type="button" class="btn btn-warning" id="backupDeleteBtn">Backup &amp; Delete</button>
+                </div>
             </div>
         </div>
     </div>

@@ -101,6 +101,22 @@ function checkImageExists(url, callback) {
     img.src = url + '?cb=' + Date.now(); // cache-busting query param
 }
 
+// Utility to get correct image src for cards
+function getImageSrc(url, card = null) {
+    if (!url) return '';
+    
+    // If card has been uploaded to WebDAV, use the WebDAV URL
+    if (card && card.webdavPath) {
+        return getPublicWebDavUrl(card.webdavPath);
+    }
+    
+    // Remove 'renderer/' prefix if present
+    if (url.startsWith('renderer/')) url = url.replace(/^renderer\//, '').replace(/^renderer\//, '');
+    if (url.startsWith('cards/images/')) return '/' + url.replace(/^\//, '');
+    if (url.startsWith('data:')) return url;
+    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+}
+
 class CardManager {
     constructor() {
         this.allCards = [];
@@ -488,13 +504,18 @@ class CardManager {
     }
 
     applyFilters() {
-        // Consistent card type mapping
+        // Strict card type mapping: only allow known, valid card types
+        // If you add a new card type, update this mapping!
         const cardTypeMap = {
             'feature': ['feature'],
-            'product-options': ['product-options', 'option'],
-            'specification-table': ['specification-table', 'spec'],
-            'weather-protection': ['weather-protection', 'weather'],
-            'cargo-options': ['cargo-options', 'cargo']
+            'product-options': ['product-options'],
+            'option': ['option'],
+            'specification-table': ['specification-table'],
+            'spec': ['spec'],
+            'weather-protection': ['weather-protection'],
+            'weather': ['weather'],
+            'cargo-options': ['cargo-options'],
+            'cargo': ['cargo']
         };
         const selectedType = this.filters.cardType;
         const validTypes = cardTypeMap[selectedType] || [selectedType];
@@ -601,9 +622,11 @@ class CardManager {
         
         // Calculate upload statistics
         const uploadedImages = this.allCards.filter(card => 
-            card.webdavPath && card.uploadDate
+            card.imageUrl && card.webdavPath && card.uploadDate
         ).length;
-        const awaitingUpload = totalCards - uploadedImages;
+        const awaitingUpload = this.allCards.filter(card => 
+            card.imageUrl && (!card.webdavPath || !card.uploadDate)
+        ).length;
         
         // Update the DOM elements
         document.getElementById('totalCards').textContent = totalCards;
@@ -721,11 +744,34 @@ class CardManager {
                 });
             }, 0);
         }
+
+        // Use getImageSrc function to handle local and external images properly
+        const imageSrc = getImageSrc(card.imageUrl, card);
         
-        // Use proxy for external images to bypass CORS
-        const imageSrc = card.imageUrl ? 
-            (card.imageUrl.startsWith('http') ? `/api/image-proxy?url=${encodeURIComponent(card.imageUrl)}` : card.imageUrl) :
-            'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';
+        // Build media preview section (image or mini spec table)
+        let mediaPreviewHtml;
+        if (cardType === 'spec' || cardType === 'specification-table') {
+            // Extract raw HTML content
+            const rawContent = (card.htmlContent || card.content || card.description || '').trim();
+            // Try to capture the first complete <table> and then the first row only for brevity
+            let tableMatch = rawContent.match(/<table[\s\S]*?<\/table>/i);
+            let tablePreview = '';
+            if (tableMatch) {
+                // Extract the first row for compactness
+                const firstRowMatch = tableMatch[0].match(/<tr[\s\S]*?<\/tr>/i);
+                if (firstRowMatch) {
+                    tablePreview = `<table class="table table-sm mb-0">${firstRowMatch[0]}</table>`;
+                }
+            }
+            if (!tablePreview) {
+                // Fallback: use plain-text snippet if no proper table found
+                const textSnippet = rawContent.replace(/<[^>]+>/g, '').substring(0, 80);
+                tablePreview = `<div>${textSnippet}${rawContent.length > 80 ? '…' : ''}</div>`;
+            }
+            mediaPreviewHtml = `<div class="spec-preview card-preview d-flex align-items-center justify-content-center" style="width:100%; height:120px; overflow:hidden; background:#ffffff; border:1px solid #dee2e6; padding:4px; font-size:10px; line-height:1.2;">${tablePreview}</div>`;
+        } else {
+            mediaPreviewHtml = `<img src="${imageSrc}" alt="${card.title}" class="card-preview" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='; this.onerror=null;">`;
+        }
         
         // Check upload status and create upload button
         let uploadButtonHtml = '';
@@ -799,10 +845,7 @@ class CardManager {
                 <div class="row">
                     <div class="col-md-2">
                         <div class="position-relative">
-                            <img src="${imageSrc}" 
-                                 alt="${card.title}" 
-                                 class="card-preview"
-                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='; this.onerror=null;">
+                            ${mediaPreviewHtml}
                             <div class="position-absolute top-0 start-0 m-1">
                                 <span class="badge bg-${statusColor}" id="${statusId}">
                                     <i class="fas ${statusIcon} me-1"></i>${uploadStatus}
@@ -988,7 +1031,7 @@ class CardManager {
     }
 
     async copyCardHtml(cardId) {
-        const card = this.allCards.find(c => c.id === cardId);
+        const card = this.allCards.find(c => String(c.id) === String(cardId));
         if (!card) {
             showToast('Card not found', 'danger');
             return;
@@ -1060,173 +1103,26 @@ class CardManager {
         // If no valid image URL, generate HTML without image section
         if (!imageUrl || imageUrl.trim() === '') {
             return `<!-- Product feature card container -->
-<div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: nowrap;">
-
-    <!-- Text content -->
-    <div style="flex: 1; min-width: 300px;">
-        <h2>${title}</h2>
-        <h3>${subtitle}</h3>
-        <p>${description}</p>
-    </div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9;">
+  <div style="flex: 1 1 300px; min-width: 200px;">
+    <h2>${title}</h2>
+    <h3>${subtitle}</h3>
+    <p>${description}</p>
+  </div>
 </div>`;
         }
         
         return `<!-- Product feature card container -->
-<div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: nowrap;">
-
-    
-
-
-
-
-
-
-
-<!-- Text content -->
-    
-
-
-
-
-
-
-
-<div style="flex: 1; min-width: 300px;">
-        
-
-
-
-
-
-
-
-<h2>${title}</h2>
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-<h3>${subtitle}</h3>
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-<p>${description}</p>
-
-
-
-
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-<!-- Image -->
-    
-
-
-
-
-
-
-
-<div style="flex-shrink: 0; max-width: 40%; text-align: center;">
-        </div>
-
-<div class="se-component se-image-container __se__float-center">
-    
-    
-    
-    
-    
-    
-    
-    <figure style="margin: 0px; width: 392px;">
-
-
-
-
-
-
-
-
-                                                            <img src="${imageUrl}" alt="Feature Image" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 392px;" data-proportion="true" data-align="center" width="392" height="auto" data-size="392px,auto" data-file-name="${card.title.replace(/\s+/g, '')}.jpg" data-file-size="0" origin-size="1600,1067" data-origin="392px,auto" data-index="0">
-
-
-
-
-
-
-
-
-        </figure>
-</div>
-
-<div style="flex-shrink: 0; max-width: 40%; text-align: center;">
-    
-    
-    
-    
-    
-    
-    
-    <figure style="margin: 0;">
-
-
-
-
-
-
-
-
-            
-        </figure>
-</div>
-
-<div style="flex-shrink: 0; max-width: 40%; text-align: center;">
-    </div>
-</div>
-<p></p>`;
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9;">
+  <div style="flex: 1 1 300px; min-width: 200px;">
+    <h2>${title}</h2>
+    <h3>${subtitle}</h3>
+    <p>${description}</p>
+  </div>
+  <div style="flex: 0 1 350px; max-width: 100%; text-align: center;">
+    <img src="${imageUrl}" alt="Feature Image" style="max-width: 100%; height: auto; display: block; border-radius: 5px;">
+  </div>
+</div>`;
     }
 
     generateProductOptionsCardHtml(card, imageUrl) {
@@ -1467,7 +1363,7 @@ class CardManager {
             }
         }
 
-        const card = this.allCards.find(c => c.id === cardId);
+        const card = this.allCards.find(c => String(c.id) === String(cardId));
         if (!card) {
             showToast('Card not found for upload.', 'danger');
             return;
@@ -1499,6 +1395,7 @@ class CardManager {
     }
 
     async startUpload(cardsToUpload) {
+        showCancelButton(); // Show cancel button at start
         const progressDiv = document.getElementById('uploadProgress');
         const statusDiv = document.getElementById('uploadStatus');
         const progressBar = document.querySelector('#uploadProgress .progress');
@@ -1513,6 +1410,11 @@ class CardManager {
         let uploadResults = [];
         
         for (let i = 0; i < cardsToUpload.length; i++) {
+            // Cancel logic: abort if user requested cancel
+            if (window.cancelOperation) {
+                showToast('Upload cancelled by user.', 'warning');
+                break;
+            }
             const card = cardsToUpload[i];
             const progress = ((i + 1) / cardsToUpload.length) * 100;
             
@@ -1607,6 +1509,7 @@ class CardManager {
         setTimeout(() => {
             this.hideUploadStatus();
         }, 10000);
+        hideCancelButton(); // Always hide cancel button at end
     }
 
     async uploadSingleImage(card) {
@@ -1653,10 +1556,9 @@ class CardManager {
 
     async saveCardData(card) {
         try {
-            // Find the card file and update it
-            const cardFile = this.allCards.find(c => c.id === card.id);
+            // Find the stored copy of this card and update it
+            const cardFile = this.allCards.find(c => String(c.id) === String(card.id));
             if (cardFile) {
-                // Update the card data
                 Object.assign(cardFile, card);
                 
                 // Save the updated cards array
@@ -1999,3 +1901,44 @@ let cardManager;
 document.addEventListener('DOMContentLoaded', () => {
     cardManager = new CardManager();
 }); 
+
+// Cancel Operation logic
+const cancelBtn = document.getElementById('cancelOperationBtn');
+window.cancelOperation = false;
+if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+        window.cancelOperation = true;
+        cancelBtn.disabled = true;
+        cancelBtn.textContent = 'Cancelling...';
+    });
+}
+
+// Call these when upload/import starts and ends:
+function showCancelButton() {
+    if (cancelBtn) {
+        cancelBtn.style.display = '';
+        cancelBtn.disabled = false;
+        cancelBtn.textContent = 'Cancel Current Operation';
+    }
+    window.cancelOperation = false;
+}
+function hideCancelButton() {
+    if (cancelBtn) {
+        cancelBtn.style.display = 'none';
+        cancelBtn.disabled = false;
+        cancelBtn.textContent = 'Cancel Current Operation';
+    }
+    window.cancelOperation = false;
+}
+
+// Example: In your bulk upload/import function, call showCancelButton() at the start and hideCancelButton() at the end.
+// In your upload loop, check window.cancelOperation and abort if true.
+// Example:
+// for (let i = 0; i < items.length; i++) {
+//     if (window.cancelOperation) {
+//         // Clean up, show message, break/return
+//         break;
+//     }
+//     // ... upload logic ...
+// }
+// hideCancelButton();

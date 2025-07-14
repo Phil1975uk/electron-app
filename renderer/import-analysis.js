@@ -1,5 +1,8 @@
 // Import Analysis Dashboard
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+    // Always fetch the cached Hypa CSV from the backend on page load
+    await loadHypaCsvCacheFromServer();
+    
     // Data storage
     let configurations = [];
     let cards = [];
@@ -7,6 +10,23 @@ window.addEventListener('load', () => {
     let originalHypaCsvData = null; // Store original Hypa CSV for perfect round-trip
     let originalHypaCsvHeaders = null; // Store original column headers
     let hasSavedImportState = false; // Track if import state has been saved
+    
+    // Load Hypa CSV cache from server
+    async function loadHypaCsvCacheFromServer() {
+        try {
+            const response = await fetch('/api/hypa-csv-cache');
+            if (response.ok) {
+                const cacheData = await response.json();
+                if (cacheData && cacheData.data) {
+                    originalHypaCsvData = cacheData.data;
+                    originalHypaCsvHeaders = cacheData.headers || [];
+                    console.log('Loaded Hypa CSV cache from server:', cacheData.data?.length || 0, 'rows');
+                }
+            }
+        } catch (error) {
+            console.log('No Hypa CSV cache found on server or error loading:', error.message);
+        }
+    }
     
     // DOM Elements
     let refreshAnalysisBtn;
@@ -24,6 +44,10 @@ window.addEventListener('load', () => {
     let configMatchingResults = null;
     let currentImportStep = 1;
     let importHistory = [];
+
+    // Add lightweight UI delay constant and helper
+    const UI_DELAY_MS = 200;                       // Short, user-visible pause used by progress UI
+    const delay = (ms = UI_DELAY_MS) => new Promise(r => setTimeout(r, ms));
 
     // Initialize the application
     async function initializeElements() {
@@ -232,97 +256,29 @@ window.addEventListener('load', () => {
                 console.error('hypaCsvFile element not found!');
             }
         }
-        attachHypaCsvFileListener();
-        // Watch for dynamic replacement of the file input
+
+        // Attach event listener when the Hypa import modal is shown
+        const importHypaModal = document.getElementById('importHypaModal');
+        if (importHypaModal) {
+            importHypaModal.addEventListener('shown.bs.modal', function () {
+                console.log('Hypa import modal shown, attaching event listener');
+                // Use setTimeout to ensure the modal is fully rendered
+                setTimeout(() => {
+                    attachHypaCsvFileListener();
+                }, 100);
+            });
+        }
+
+        // Also try to attach immediately if the element exists
+        setTimeout(() => {
+            attachHypaCsvFileListener();
+        }, 500);
+
+        // Watch for dynamic replacement of the file input (fallback)
         const observer = new MutationObserver(() => {
             attachHypaCsvFileListener();
         });
         observer.observe(document.body, { childList: true, subtree: true });
-
-        // Add event listener for Start Analysis button
-        const startAnalysisBtn = document.getElementById('startAnalysisBtn');
-        if (startAnalysisBtn) {
-            startAnalysisBtn.addEventListener('click', function() {
-                startExportAnalysis();
-            });
-        }
-    }
-
-    // Stub for export analysis workflow
-    function startExportAnalysis() {
-        // Debug logging
-        console.log('window.cards:', window.cards, Array.isArray(window.cards) ? window.cards.length : 'not array');
-        console.log('window.originalHypaCsvData:', window.originalHypaCsvData, Array.isArray(window.originalHypaCsvData) ? window.originalHypaCsvData.length : 'not array');
-        // Show toast with data status
-        const cardsCount = Array.isArray(window.cards) ? window.cards.length : 0;
-        const hypaCount = Array.isArray(window.originalHypaCsvData) ? window.originalHypaCsvData.length : 0;
-        showAnalysisToast(`Cards loaded: ${cardsCount} | Hypa CSV rows: ${hypaCount}`, 'info');
-        // Hide the current step, show the comparison step
-        const analysisStep = document.getElementById('exportAnalysisStep');
-        const comparisonStep = document.getElementById('exportComparisonStep');
-        if (analysisStep) analysisStep.style.display = 'none';
-        if (comparisonStep) comparisonStep.style.display = '';
-
-        // --- Comparison Logic ---
-        // Compare local cards to original Hypa CSV data
-        if (!window.cards || !window.originalHypaCsvData) {
-            showAnalysisToast('No cards or Hypa CSV data found for comparison.', 'error');
-            return;
-        }
-        const localCards = window.cards;
-        const hypaRows = window.originalHypaCsvData;
-        const hypaByKey = {};
-        hypaRows.forEach(row => {
-            hypaByKey[`${row.sku}__${row.id}`] = row;
-        });
-        const comparisonResults = [];
-        let newCount = 0, updateCount = 0, skipCount = 0, conflictCount = 0;
-        localCards.forEach(card => {
-            const key = `${card.sku}__${card.originalHypaData?.productId || ''}`;
-            const hypaRow = hypaByKey[key];
-            let action = 'New', notes = '';
-            if (hypaRow) {
-                // Compare content for update/skip/conflict
-                if (card.content === hypaRow[card.originalHypaData?.sourceColumn]) {
-                    action = 'Skip';
-                } else {
-                    action = 'Update';
-                }
-            }
-            if (action === 'New') newCount++;
-            if (action === 'Update') updateCount++;
-            if (action === 'Skip') skipCount++;
-            if (action === 'Conflict') conflictCount++;
-            comparisonResults.push({
-                product: card.sku,
-                cardType: card.cardType,
-                localStatus: 'Present',
-                hypaStatus: hypaRow ? 'Present' : 'Missing',
-                action,
-                notes
-            });
-        });
-        // Update summary boxes
-        document.getElementById('exportNewCount').textContent = newCount;
-        document.getElementById('exportUpdateCount').textContent = updateCount;
-        document.getElementById('exportSkipCount').textContent = skipCount;
-        document.getElementById('exportConflictCount').textContent = conflictCount;
-        // Populate table
-        const tbody = document.getElementById('exportComparisonTableBody');
-        tbody.innerHTML = '';
-        comparisonResults.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${row.product}</td>
-                <td>${row.cardType}</td>
-                <td>${row.localStatus}</td>
-                <td>${row.hypaStatus}</td>
-                <td>${row.action}</td>
-                <td>${row.notes}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-        showAnalysisToast('Export analysis complete.', 'success');
     }
 
     // File-based storage functions for configurations
@@ -440,9 +396,9 @@ window.addEventListener('load', () => {
             }
             
             cards = cardsData;
-            // Assign to window for global access
+            // Make cards globally accessible for export functions
             window.cards = cards;
-            // If originalHypaCsvData is loaded elsewhere, ensure window.originalHypaCsvData is set there as well
+
             console.log('Loaded data:', { configurations: configurations.length, cards: cards.length });
         } catch (error) {
             console.error('Error loading data:', error);
@@ -519,27 +475,44 @@ window.addEventListener('load', () => {
         const totalImages = analysisData.filter(item => item.hasImages).length;
         const totalHypa = analysisData.filter(item => item.hasHypa).length;
 
-        // Update overview cards
-        document.getElementById('totalConfigs').textContent = totalConfigs;
-        document.getElementById('totalCards').textContent = totalCards;
-        document.getElementById('totalImages').textContent = totalImages;
-        document.getElementById('totalHypa').textContent = totalHypa;
+        // Update overview cards - check if elements exist first
+        const totalConfigsEl = document.getElementById('totalConfigs');
+        const totalCardsEl = document.getElementById('totalCards');
+        const totalImagesEl = document.getElementById('totalImages');
+        const totalHypaImportedEl = document.getElementById('totalHypaImported');
+        const totalHypaExportedEl = document.getElementById('totalHypaExported');
 
-        // Update progress bars
+        if (totalConfigsEl) totalConfigsEl.textContent = totalConfigs;
+        if (totalCardsEl) totalCardsEl.textContent = totalCards;
+        if (totalImagesEl) totalImagesEl.textContent = totalImages;
+        if (totalHypaImportedEl) totalHypaImportedEl.textContent = totalHypa;
+        if (totalHypaExportedEl) totalHypaExportedEl.textContent = totalHypa;
+
+        // Update progress bars - check if elements exist first
         const cardsProgress = totalConfigs > 0 ? (totalCards / totalConfigs) * 100 : 0;
         const imagesProgress = totalConfigs > 0 ? (totalImages / totalConfigs) * 100 : 0;
         const hypaProgress = totalConfigs > 0 ? (totalHypa / totalConfigs) * 100 : 0;
         const completeProgress = totalConfigs > 0 ? (analysisData.filter(item => item.overallStatus === 'complete').length / totalConfigs) * 100 : 0;
 
-        document.getElementById('cardsProgress').style.width = cardsProgress + '%';
-        document.getElementById('imagesProgress').style.width = imagesProgress + '%';
-        document.getElementById('hypaProgress').style.width = hypaProgress + '%';
-        document.getElementById('completeProgress').style.width = completeProgress + '%';
+        const cardsProgressEl = document.getElementById('cardsProgress');
+        const imagesProgressEl = document.getElementById('imagesProgress');
+        const hypaProgressEl = document.getElementById('hypaProgress');
+        const completeProgressEl = document.getElementById('completeProgress');
 
-        document.getElementById('cardsProgressText').textContent = `${totalCards} of ${totalConfigs} configurations have cards`;
-        document.getElementById('imagesProgressText').textContent = `${totalImages} of ${totalConfigs} configurations have images`;
-        document.getElementById('hypaProgressText').textContent = `${totalHypa} of ${totalConfigs} configurations have Hypa metafields`;
-        document.getElementById('completeProgressText').textContent = `${analysisData.filter(item => item.overallStatus === 'complete').length} of ${totalConfigs} configurations are complete`;
+        if (cardsProgressEl) cardsProgressEl.style.width = cardsProgress + '%';
+        if (imagesProgressEl) imagesProgressEl.style.width = imagesProgress + '%';
+        if (hypaProgressEl) hypaProgressEl.style.width = hypaProgress + '%';
+        if (completeProgressEl) completeProgressEl.style.width = completeProgress + '%';
+
+        const cardsProgressTextEl = document.getElementById('cardsProgressText');
+        const imagesProgressTextEl = document.getElementById('imagesProgressText');
+        const hypaProgressTextEl = document.getElementById('hypaProgressText');
+        const completeProgressTextEl = document.getElementById('completeProgressText');
+
+        if (cardsProgressTextEl) cardsProgressTextEl.textContent = `${totalCards} of ${totalConfigs} configurations have cards`;
+        if (imagesProgressTextEl) imagesProgressTextEl.textContent = `${totalImages} of ${totalConfigs} configurations have images`;
+        if (hypaProgressTextEl) hypaProgressTextEl.textContent = `${totalHypa} of ${totalConfigs} configurations have Hypa metafields`;
+        if (completeProgressTextEl) completeProgressTextEl.textContent = `${analysisData.filter(item => item.overallStatus === 'complete').length} of ${totalConfigs} configurations are complete`;
     }
 
     function renderAnalysisTable() {
@@ -3150,7 +3123,7 @@ Import Details:
         updateWorkflowProgress(1, 'File Upload', 'Reading file data...');
         
         // Add delay to make progress visible
-        await new Promise(resolve => setTimeout(resolve, 4000));
+        await delay();
 
         const reader = new FileReader();
         reader.onload = async function(e) {
@@ -3160,7 +3133,7 @@ Import Details:
             updateWorkflowProgress(2, 'Parse CSV', 'Parsing CSV data with Papa Parse...');
             
             // Add delay to make progress visible
-            await new Promise(resolve => setTimeout(resolve, 4000));
+            await delay();
             
             try {
                 console.log('Papa Parse available:', typeof Papa !== 'undefined');
@@ -3171,6 +3144,11 @@ Import Details:
                 }
                 
                 const csvData = Papa.parse(e.target.result, { header: true });
+                // Normalise common header names (e.g. "SKU" → "sku")
+                csvData.data = csvData.data.map(r => {
+                    if (r.SKU && !r.sku) { r.sku = r.SKU; delete r.SKU; }
+                    return r;
+                });
                 console.log('CSV parsed successfully:', csvData);
                 
                 if (csvData.errors.length > 0) {
@@ -3193,7 +3171,7 @@ Import Details:
                 updateWorkflowProgress(3, 'Validate Data', `Validating ${csvData.data.length} rows...`);
                 
                 // Add delay to make validation step visible
-                await new Promise(resolve => setTimeout(resolve, 4000));
+                await delay();
                 
                 // Store the original CSV data for perfect round-trip export
                 originalHypaCsvData = csvData.data;
@@ -3212,7 +3190,7 @@ Import Details:
                 updateWorkflowProgress(4, 'Match SKUs', 'Matching SKUs with local configurations...');
                 
                 // Add delay to make SKU matching step visible
-                await new Promise(resolve => setTimeout(resolve, 4000));
+                await delay();
                 
                 // Show validation results
                 console.log('Calling showHypaValidationResults...');
@@ -3246,27 +3224,27 @@ Import Details:
             <div class="mb-4">
                 <div class="progress" style="height: 4px;">
                     <div class="progress-bar bg-info" id="workflowProgress" role="progressbar" style="width: 0%"></div>
-                        </div>
+                </div>
                 <div class="d-flex justify-content-between mt-2">
                     <span class="badge bg-secondary" id="step1Badge">Step 1: File Upload</span>
                     <span class="badge bg-secondary" id="step2Badge">Step 2: Parse CSV</span>
                     <span class="badge bg-secondary" id="step3Badge">Step 3: Validate Data</span>
                     <span class="badge bg-secondary" id="step4Badge">Step 4: Match SKUs</span>
                     <span class="badge bg-secondary" id="step5Badge">Step 5: Ready to Import</span>
-                            </div>
-                            </div>
+                </div>
+            </div>
             
             <!-- Current Step Info -->
             <div class="card border-info mb-3">
-                        <div class="card-header bg-info text-white">
+                <div class="card-header bg-info text-white">
                     <h6 class="mb-0"><i class="fas fa-upload me-2"></i>Ready to Start</h6>
-                        </div>
-                        <div class="card-body">
+                </div>
+                <div class="card-body">
                     <div id="currentStepInfo">
                         <p class="mb-2"><strong>Current Step:</strong> <span id="currentStepText">Waiting for file selection...</span></p>
                         <p class="mb-2"><strong>File:</strong> <span id="currentFileName">No file selected</span></p>
                         <p class="mb-0"><strong>Size:</strong> <span id="currentFileSize">-</span></p>
-                            </div>
+                    </div>
                 </div>
             </div>
             
@@ -3284,7 +3262,7 @@ Import Details:
             <div class="alert alert-warning">
                 <i class="fas fa-exclamation-triangle me-2"></i>
                 <strong>Note:</strong> This will import existing cards from Hypa. Cards with the same SKU will be skipped to avoid duplicates.
-                </div>
+            </div>
             
             <div class="alert alert-info">
                 <i class="fas fa-info-circle me-2"></i>
@@ -3346,11 +3324,7 @@ Import Details:
     }
 
     function showHypaValidationResults(data) {
-        window.variantPreviewCards = {};
-        // ... existing code ...
-    }
-
-    function showHypaValidationResults(data) {
+        console.log('=== showHypaValidationResults START ===');
         // Load previously excluded SKUs from localStorage at the very top
         let excludedSkus = [];
         try {
@@ -3358,41 +3332,103 @@ Import Details:
         } catch (e) { excludedSkus = []; }
         console.log('showHypaValidationResults called with data:', data);
         const modalBody = document.querySelector('#importHypaModal .modal-body');
+        const modalFooter = document.querySelector('#importHypaModal .modal-footer');
         console.log('Modal body found:', modalBody);
         updateWorkflowProgress(5, 'Ready to Import', 'Validation complete! Ready to import cards.');
+        console.log('About to call validateHypaData...');
         const validation = validateHypaData(data);
-        // --- Build variant-level preview data ---
+        console.log('validateHypaData completed');
+        
+        // === NEW: Collect validation statistics ===
+        const validationStats = {
+            totalCards: 0,
+            validCards: 0,
+            invalidCards: 0,
+            placeholderCards: 0,
+            validationErrors: [],
+            errorTypes: {}
+        };
+        console.log('Validation stats object created');
+        
+        // --- Build variant-level preview data with validation tracking ---
         const skuToVariantPreview = {};
-        if (configurations && configurations.length > 0) {
-            configurations.forEach(config => {
-                if (config.variants && Array.isArray(config.variants)) {
-                    config.variants.forEach(variant => {
-                        const sku = variant.sku && variant.sku.trim();
-                        if (!sku) return;
-                        if (!skuToVariantPreview[sku]) {
-                            skuToVariantPreview[sku] = {
-                                model: config.model,
-                                generation: config.generation,
-                                variants: []
-                            };
-                        }
-                        // Find cards for this variant from the Hypa CSV
-                        const row = data.find(r => r.sku && r.sku.trim() === sku);
-                        let cards = [];
-                        if (row) {
-                            cards = extractCardsFromHypaRow(row);
-                        }
-                        skuToVariantPreview[sku].variants.push({
-                            name: variant.name || '',
-                            id: variant.id || '',
-                            cards,
-                            importAction: 'import' // default to import
+        console.log('About to process ALL Hypa CSV rows, count:', data ? data.length : 'null');
+        
+        // Process ALL rows from the Hypa CSV data, not just those in local configurations
+        data.forEach(row => {
+            const sku = row.sku && row.sku.trim();
+            if (!sku) return;
+            
+            // Check if this SKU exists in local configurations
+            let localConfig = null;
+            let localVariant = null;
+            
+            if (configurations && configurations.length > 0) {
+                configurations.forEach(config => {
+                    if (config.variants && Array.isArray(config.variants)) {
+                        config.variants.forEach(variant => {
+                            if (variant.sku && variant.sku.trim() === sku) {
+                                localConfig = config;
+                                localVariant = variant;
+                            }
                         });
-                    });
-                }
+                    }
+                });
+            }
+            
+            // Create entry for this SKU (whether it exists locally or not)
+            if (!skuToVariantPreview[sku]) {
+                skuToVariantPreview[sku] = {
+                    model: localConfig ? localConfig.model : 'Unknown',
+                    generation: localConfig ? localConfig.generation : 'Unknown',
+                    hasLocalConfig: !!localConfig,
+                    variants: []
+                };
+            }
+            
+            // Extract and process cards for this SKU
+            const extractedCards = extractCardsFromHypaRow(row);
+            validationStats.totalCards += extractedCards.length;
+            
+            // Validate and filter cards to collect statistics
+            const { validCards, invalidCards, placeholderCards } = validateAndFilterCards(extractedCards, row);
+            
+            validationStats.validCards += validCards.length;
+            validationStats.invalidCards += invalidCards.length;
+            validationStats.placeholderCards += placeholderCards.length;
+            
+            // Collect validation errors
+            invalidCards.forEach(invalidCard => {
+                const errors = invalidCard.validation.errors;
+                validationStats.validationErrors.push({
+                    sku: sku,
+                    cardTitle: invalidCard.card.title || 'Unknown',
+                    cardType: invalidCard.card.cardType || 'Unknown',
+                    errors: errors,
+                    rowId: invalidCard.rowId
+                });
+                
+                // Count error types
+                errors.forEach(error => {
+                    validationStats.errorTypes[error] = (validationStats.errorTypes[error] || 0) + 1;
+                });
             });
-        }
+            
+            // Use valid cards + placeholder cards for display
+            const cards = [...validCards, ...placeholderCards];
+            
+            skuToVariantPreview[sku].variants.push({
+                name: localVariant ? localVariant.name : 'Unknown Variant',
+                id: localVariant ? localVariant.id : 'unknown',
+                cards,
+                importAction: localConfig ? 'import' : 'skip', // Skip if no local config
+                hasLocalConfig: !!localConfig
+            });
+        });
+        console.log('ALL Hypa CSV rows processed, skuToVariantPreview keys:', Object.keys(skuToVariantPreview));
+        
         // --- Render variant-level preview table ---
+        console.log('About to build preview HTML...');
         let previewHtml = `<div class="table-responsive" style="max-height: 500px;">
             <table class="table table-bordered table-striped">
                 <thead class="table-light">
@@ -3401,6 +3437,7 @@ Import Details:
                         <th>Model</th>
                         <th>Generation</th>
                         <th>Variant</th>
+                        <th>Local Config</th>
                         <th>Cards to Import</th>
                         <th>Action</th>
                     </tr>
@@ -3420,13 +3457,19 @@ Import Details:
 </style>`;
         // Ensure this is before the previewHtml building loop:
         window.variantPreviewCards = {};
+        window.invalidCardsForReview = [];
         Object.entries(skuToVariantPreview).forEach(([sku, info]) => {
             info.variants.forEach((variant, vIdx) => {
-                previewHtml += `<tr>
+                const localConfigStatus = variant.hasLocalConfig ? 
+                    '<span class="badge bg-success">✓ Found</span>' : 
+                    '<span class="badge bg-warning">⚠ Not Found</span>';
+                
+                previewHtml += `<tr class="${variant.hasLocalConfig ? '' : 'table-warning'}">
                     <td>${sku}</td>
                     <td>${info.model || ''}</td>
                     <td>${info.generation || ''}</td>
                     <td>${variant.name || ''}</td>
+                    <td>${localConfigStatus}</td>
                     <td>
                         ${variant.cards.length === 0 ? '<span class="text-muted">No cards</span>' :
                             `${gridStyle}<div class="card-grid">${variant.cards.map((card, idx) => {
@@ -3436,14 +3479,14 @@ Import Details:
                                     // Show the <h2> heading (title) fully and styled to match the spec card, but smaller
                                     return `<div class=\"card-grid-item\" tabindex=\"0\" aria-label=\"Spec card: ${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}\" data-card-key=\"${cardKey}\">
                                         <span class=\"badge bg-secondary card-grid-badge\">${getCardTypeDisplayName(card.cardType)}</span>
-                                        <span class=\"card-grid-title\" style=\"font-size:0.55rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}</span>
+                                        <span class=\"card-grid-title\" style=\"font-size:1.1rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}</span>
                                         <span class=\"card-grid-info\"><i class=\"fas fa-info-circle\"></i></span>
                                     </div>`;
                                 } else {
                                     // Make all card titles match the spec card style, but smaller
                                     return `<div class=\"card-grid-item\" tabindex=\"0\" aria-label=\"${getCardTypeDisplayName(card.cardType)} card: ${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) : '(No Title)'}\" data-card-key=\"${cardKey}\">
                                         <span class=\"badge bg-secondary card-grid-badge\">${getCardTypeDisplayName(card.cardType)}</span>
-                                        <span class=\"card-grid-title\" style=\"font-size:0.55rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) + (card.title.length > 32 ? '…' : '') : '(No Title)'}</span>
+                                        <span class=\"card-grid-title\" style=\"font-size:1.1rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) + (card.title.length > 32 ? '…' : '') : '(No Title)'}</span>
                                         ${card.imageUrl ? `<img src=\"${card.imageUrl}\" class=\"card-grid-thumb\" alt=\"\">` : ''}
                                         <span class=\"card-grid-info\"><i class=\"fas fa-info-circle\"></i></span>
                                     </div>`;
@@ -3452,13 +3495,14 @@ Import Details:
                         </td>
                     <td>
                         <select class="form-select variant-import-action" data-sku="${sku}" data-variant-idx="${vIdx}">
-                            <option value="import" selected>Import & Overwrite</option>
-                            <option value="skip">Skip</option>
+                            <option value="import" ${variant.hasLocalConfig ? 'selected' : 'disabled'}>Import & Overwrite</option>
+                            <option value="skip" ${!variant.hasLocalConfig ? 'selected' : ''}>Skip</option>
                         </select>
                     </td>
                 </tr>`;
             });
         });
+        console.log('Preview HTML building completed');
         previewHtml += '</tbody></table></div>';
         // Add card type summary
         const cardTypeCounts = { Feature: 0, Option: 0, Cargo: 0, Weather: 0, Spec: 0 };
@@ -3545,6 +3589,17 @@ Import Details:
                 </p>
             </div>
         `;
+        
+        // Store validation stats globally for the detail view
+        window.hypaValidationStats = validationStats;
+        
+        // Update modal footer to ensure Cancel button works properly
+        modalFooter.innerHTML = `
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <i class="fas fa-times me-2"></i>Cancel
+            </button>
+        `;
+        
         // --- Listen for action changes ---
         const variantActions = {};
         document.querySelectorAll('.variant-import-action').forEach(sel => {
@@ -3578,33 +3633,7 @@ Import Details:
                 });
             });
         }, 0);
-        // After extracting all cards for all variants (after skuToVariantPreview is built)
-        // Build uniqueCards and variantToCardMap
-        const uniqueCardMap = new Map();
-        const uniqueCards = [];
-        const variantToCardMap = {};
-        Object.entries(skuToVariantPreview).forEach(([sku, info]) => {
-            info.variants.forEach(variant => {
-                const cardIds = [];
-                variant.cards.forEach(card => {
-                    // Create a unique key for the card
-                    const key = `${card.cardType}|${card.title}|${card.content}`;
-                    if (!uniqueCardMap.has(key)) {
-                        // Assign a unique id (hash or base64 of key for simplicity)
-                        const id = btoa(unescape(encodeURIComponent(key))).replace(/=+$/, '');
-                        const cardWithId = { ...card, id };
-                        uniqueCardMap.set(key, cardWithId);
-                        uniqueCards.push(cardWithId);
-                    }
-                    cardIds.push(uniqueCardMap.get(key).id);
-                });
-                if (!variantToCardMap[sku]) variantToCardMap[sku] = [];
-                variantToCardMap[sku].push({ variantId: variant.id, cardIds });
-            });
-        });
-        // Save to localStorage for now (can be adapted for backend)
-        localStorage.setItem('uniqueCards', JSON.stringify(uniqueCards));
-        localStorage.setItem('variantToCardMap', JSON.stringify(variantToCardMap));
+        console.log('=== showHypaValidationResults END ===');
     }
 
     async function confirmHypaImport(variantActions) {
@@ -3741,49 +3770,106 @@ Import Details:
         }
 
         // Process rows with progress updates
+        const shouldImportSku = (sku) => {
+            if (!variantActions || Object.keys(variantActions).length === 0) return true;
+            const actions = variantActions[sku];
+            if (!actions) return false;
+            return Object.values(actions).some(v => v === 'import');
+        };
         for (let i = 0; i < data.length; i++) {
-            const row = data[i]; // <-- Ensure row is defined here
+            const row = data[i];
+            
+            // Update progress
+            const progress = ((i + 1) / data.length) * 100;
+            const progressBar = document.getElementById('hypaImportProgress');
+            const processedCountEl = document.getElementById('processedCount');
+            const currentSkuEl = document.getElementById('currentSku');
+            
+            if (progressBar) progressBar.style.width = progress + '%';
+            if (progressBar) progressBar.textContent = Math.round(progress) + '%';
+            if (processedCountEl) processedCountEl.textContent = i + 1;
+            if (currentSkuEl) currentSkuEl.textContent = row.sku || 'Unknown';
+            
             // Check for cancel
             if (window.hypaImportCancelRequested) {
                 showAnalysisToast('Hypa import cancelled by user.', 'warning');
                 break;
             }
-            // Only import for SKUs that exist in configurations
-            if (!row.sku || !existingSkus.has(row.sku.trim())) {
-                missingSkus.push(row.sku);
+            
+            // Skip rows without SKU
+            if (!row.sku || !row.sku.trim()) {
+                console.log('Skipping row without SKU:', row);
                 continue;
             }
-            // Extract cards for this row
-            const cardsForRow = extractCardsFromHypaRow(row);
-            importedCards.push(...cardsForRow);
-
-            // Update progress bar and status text
-            const progress = Math.round(((i + 1) / data.length) * 100);
-            const progressBar = document.getElementById('hypaImportProgress');
-            if (progressBar) {
-                progressBar.style.width = progress + '%';
-                progressBar.setAttribute('aria-valuenow', progress);
-                progressBar.textContent = progress + '%';
+            
+            // Check if SKU exists in configurations
+            if (!existingSkus.has(row.sku.trim())) {
+                console.log(`SKU ${row.sku} not found in configurations, skipping`);
+                missingSkus.push(row.sku);
+                notFoundCount++;
+                continue;
             }
-            const processedCount = document.getElementById('processedCount');
-            if (processedCount) processedCount.textContent = i + 1;
-            const currentSku = document.getElementById('currentSku');
-            if (currentSku) currentSku.textContent = row.sku || '-';
-            // Optionally, show extraction status
-            let statusText = document.getElementById('hypaImportStatusText');
-            if (!statusText) {
-                const bar = document.getElementById('hypaImportProgress');
-                if (bar && bar.parentNode) {
-                    statusText = document.createElement('div');
-                    statusText.id = 'hypaImportStatusText';
-                    statusText.style.marginTop = '4px';
-                    statusText.style.fontSize = '0.95em';
-                    bar.parentNode.parentNode.insertBefore(statusText, bar.parentNode.nextSibling);
+            
+            // Skip if user chose "Skip"
+            if (!shouldImportSku(row.sku)) {
+                skippedCount++;
+                continue;
+            }
+            
+            // Yield every 200 rows to keep UI responsive
+            if (i % 200 === 0) await delay(0);
+            
+            // Extract cards from this row
+            try {
+                const extractedCards = extractCardsFromHypaRow(row);
+                console.log(`Extracted ${extractedCards.length} cards from SKU ${row.sku}`);
+                
+                if (extractedCards.length > 0) {
+                    // Validate and filter cards
+                    const { validCards, invalidCards, placeholderCards } = validateAndFilterCards(extractedCards, row);
+                    
+                    console.log(`Valid cards: ${validCards.length}, Invalid cards: ${invalidCards.length}, Placeholder cards: ${placeholderCards.length}`);
+                    
+                    // Add valid cards to import
+                    if (validCards.length > 0) {
+                        importedCards.push(...validCards);
+                        importedCount += validCards.length;
+                    }
+                    
+                    // Add placeholder cards to import
+                    if (placeholderCards.length > 0) {
+                        importedCards.push(...placeholderCards);
+                        importedCount += placeholderCards.length;
+                    }
+                    
+                    // Store invalid cards for review
+                    if (invalidCards.length > 0) {
+                        if (!window.invalidCardsForReview) {
+                            window.invalidCardsForReview = [];
+                        }
+                        window.invalidCardsForReview.push(...invalidCards);
+                    }
+                    
+                    // Count as skipped if no valid or placeholder cards
+                    if (validCards.length === 0 && placeholderCards.length === 0) {
+                        skippedCount++;
+                    }
+                } else {
+                    skippedCount++;
                 }
+            } catch (error) {
+                console.error(`Error extracting cards from SKU ${row.sku}:`, error);
+                skippedCount++;
             }
-            if (statusText) {
-                statusText.textContent = `Extracting cards: ${i + 1} / ${data.length}`;
-            }
+            
+            // Update imported count display
+            const importedCountEl = document.getElementById('importedCount');
+            const skippedCountEl = document.getElementById('skippedCount');
+            const notFoundCountEl = document.getElementById('notFoundCount');
+            
+            if (importedCountEl) importedCountEl.textContent = importedCount;
+            if (skippedCountEl) skippedCountEl.textContent = skippedCount;
+            if (notFoundCountEl) notFoundCountEl.textContent = notFoundCount;
         }
         // Reset cancel flag
         window.hypaImportCancelRequested = false;
@@ -3898,10 +3984,23 @@ Only cards for existing products will be imported.`;
         // Save to file-based storage
         saveCardsToFile();
         
-        let message = `Hypa import completed! ${newCards.length} new cards imported for existing products, ${importedCards.length - newCards.length} duplicates skipped.`;
+        // Count placeholder cards
+        const placeholderCount = newCards.filter(card => card.isPlaceholder).length;
+        const validNewCards = newCards.filter(card => !card.isPlaceholder).length;
+        
+        let message = `Hypa import completed! ${validNewCards} valid cards imported, ${placeholderCount} placeholder cards created for invalid cards, ${importedCards.length - newCards.length} duplicates skipped.`;
         
         if (missingSkus.length > 0) {
             message += `\n\n${missingSkus.length} products skipped (not found in local configurations).`;
+        }
+        
+        // Show validation results if there are invalid cards
+        if (window.invalidCardsForReview && window.invalidCardsForReview.length > 0) {
+            const invalidCount = window.invalidCardsForReview.length;
+            message += `\n\n⚠️ ${invalidCount} cards had validation issues and were replaced with placeholders.`;
+            
+            // Show detailed validation modal
+            showValidationResultsModal();
         }
         
         showAnalysisToast(message, 'success');
@@ -3916,128 +4015,610 @@ Only cards for existing products will be imported.`;
     }
 
     function extractCardsFromHypaRow(row) {
+        console.log('extractCardsFromHypaRow called for SKU:', row.sku);
         const cards = [];
-        for (const col in row) {
-            const value = row[col] && row[col].trim();
-            if (!value) continue;
-            let cardType = null;
-            let position = null;
-            let match;
-            if ((match = col.match(/^shared\.feature-(\d+)-card$/))) {
-                cardType = 'feature';
-                position = parseInt(match[1], 10);
-            } else if ((match = col.match(/^shared\.option-(\d+)-card$/))) {
-                cardType = 'product-options';
-                position = parseInt(match[1], 10);
-            } else if ((match = col.match(/^shared\.cargo-option-(\d+)-card$/))) {
-                cardType = 'cargo-options';
-                position = parseInt(match[1], 10);
-            } else if ((match = col.match(/^shared\.weather-option-(\d+)-card$/))) {
-                cardType = 'weather-protection';
-                position = parseInt(match[1], 10);
-            } else if (col === 'shared.spec-table') {
-                cardType = 'specification-table';
-            }
-            if (cardType) {
-                // Parse HTML to extract fields if possible
-                let title = '', subtitle = '', description = '', imageUrl = '', price = '';
-                try {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(value, 'text/html');
-                    if (cardType === 'feature' || cardType === 'cargo-options' || cardType === 'weather-protection') {
-                        title = (doc.querySelector('h2') || doc.querySelector('h3'))?.textContent?.trim() || '';
-                        subtitle = doc.querySelector('h3')?.textContent?.trim() || '';
-                        description = doc.querySelector('p')?.textContent?.trim() || '';
-                        const img = doc.querySelector('img');
-                        imageUrl = img ? img.getAttribute('src') : '';
-                        price = doc.querySelector('.card-price, h3.price')?.textContent?.trim() || '';
-                    } else if (cardType === 'product-options') {
-                        title = doc.querySelector('.card-title')?.textContent?.trim() || '';
-                        description = doc.querySelector('.card-description')?.textContent?.trim() || '';
-                        price = doc.querySelector('.card-price')?.textContent?.trim() || '';
-                        const img = doc.querySelector('img');
-                        imageUrl = img ? img.getAttribute('src') : '';
-                    } else if (cardType === 'specification-table') {
-                        title = doc.querySelector('h2')?.textContent?.trim() || '';
-                        description = doc.querySelector('p')?.textContent?.trim() || '';
-                    }
-                } catch (err) {
-                    console.error('Error parsing HTML for card', col, err);
+        const columns = Object.keys(row);
+        
+        console.log('Available columns:', columns);
+        
+        // Extract feature cards
+        const featureCards = extractFeatureCards(row, columns);
+        cards.push(...featureCards);
+        
+        // Extract option cards
+        const optionCards = extractOptionCards(row, columns);
+        cards.push(...optionCards);
+        
+        // Extract cargo cards
+        const cargoCards = extractCargoCards(row, columns);
+        cards.push(...cargoCards);
+        
+        // Extract weather cards
+        const weatherCards = extractWeatherCards(row, columns);
+        cards.push(...weatherCards);
+        
+        // Extract spec table
+        const specTable = extractSpecTable(row, columns);
+        if (specTable) {
+            cards.push(specTable);
+        }
+        
+        console.log(`Total cards extracted for SKU ${row.sku}:`, cards.length);
+        console.log('Card types:', cards.map(c => c.cardType));
+        
+        return cards;
+    }
+
+    // === NEW: Card validation system with format comparison ===
+    function validateCard(card, row) {
+        const errors = [];
+        const warnings = [];
+        
+        // Basic structure validation
+        if (!card.sku || !card.sku.trim()) {
+            errors.push('Missing SKU');
+        }
+        
+        if (!card.cardType || !card.cardType.trim()) {
+            errors.push('Missing card type');
+        }
+        
+        if (!card.title || !card.title.trim()) {
+            errors.push('Missing title');
+        }
+        
+        // Content validation based on card type
+        switch (card.cardType) {
+            case 'feature':
+                if (!card.content || !card.content.trim()) {
+                    warnings.push('Feature card has no description');
                 }
-                cards.push({
-                    id: Date.now() + Math.random(),
-                    sku: row.sku && row.sku.trim(),
-                    cardType,
-                    position,
-                    title,
-                    subtitle,
-                    content: value,
-                    description,
-                    imageUrl,
-                    price,
-                    hypaUpdated: true,
-                    importedFromHypa: true,
-                    lastModified: new Date().toISOString(),
-                    originalHypaData: {
-                        productId: row.id,
-                        sourceColumn: col,
-                        position
-                    }
-                });
+                if (!card.imageUrl || !card.imageUrl.trim()) {
+                    warnings.push('Feature card has no image');
+                }
+                break;
+                
+            case 'product-options':
+            case 'cargo-options':
+            case 'weather-protection':
+                if (!card.content || !card.content.trim()) {
+                    warnings.push(`${card.cardType} card has no description`);
+                }
+                if (!card.imageUrl || !card.imageUrl.trim()) {
+                    warnings.push(`${card.cardType} card has no image`);
+                }
+                break;
+                
+            case 'specification-table':
+                if (!card.content || !card.content.trim()) {
+                    errors.push('Specification table has no content');
+                }
+                // Check if spec table has proper HTML structure
+                if (card.content && !card.content.includes('<table') && !card.content.includes('<tr')) {
+                    warnings.push('Specification table may not have proper table structure');
+                }
+                break;
+        }
+        
+        // Image URL validation
+        if (card.imageUrl && card.imageUrl.trim()) {
+            const imageUrl = card.imageUrl.trim();
+            if (!imageUrl.startsWith('http') && !imageUrl.startsWith('https') && !imageUrl.startsWith('data:')) {
+                warnings.push('Image URL may not be valid');
             }
         }
-        return cards;
+        
+        // Content length validation
+        if (card.content && card.content.length > 5000) {
+            warnings.push('Content is very long (>5000 chars)');
+        }
+        
+        if (card.title && card.title.length > 200) {
+            warnings.push('Title is very long (>200 chars)');
+        }
+        
+        // HTML structure validation
+        if (card.content && card.content.includes('<script')) {
+            errors.push('Content contains script tags (security risk)');
+        }
+        
+        if (card.content && card.content.includes('javascript:')) {
+            errors.push('Content contains javascript: links (security risk)');
+        }
+        
+        // Check for broken HTML
+        if (card.content && (card.content.includes('<div') && !card.content.includes('</div>'))) {
+            warnings.push('Content may have unclosed HTML tags');
+        }
+        
+        // === NEW: Format comparison validation ===
+        const formatValidation = validateCardFormat(card);
+        if (formatValidation.errors.length > 0) {
+            errors.push(...formatValidation.errors);
+        }
+        if (formatValidation.warnings.length > 0) {
+            warnings.push(...formatValidation.warnings);
+        }
+        
+        return {
+            isValid: errors.length === 0,
+            errors: errors,
+            warnings: warnings,
+            card: card,
+            row: row,
+            formatValidation: formatValidation
+        };
+    }
+
+    // === NEW: Format comparison validation functions ===
+    function validateCardFormat(card) {
+        const errors = [];
+        const warnings = [];
+        
+        // Generate expected HTML format for this card
+        const expectedHtml = generateExpectedCardHtml(card);
+        const actualHtml = card.content || '';
+        
+        if (!expectedHtml) {
+            warnings.push('Could not generate expected format for this card type');
+            return { errors, warnings };
+        }
+        
+        // Compare the actual HTML with expected format
+        const comparison = compareCardFormats(actualHtml, expectedHtml, card.cardType);
+        
+        if (comparison.majorDifferences.length > 0) {
+            errors.push(`Format mismatch: ${comparison.majorDifferences.join(', ')}`);
+        }
+        
+        if (comparison.minorDifferences.length > 0) {
+            warnings.push(`Minor format differences: ${comparison.minorDifferences.join(', ')}`);
+        }
+        
+        return { errors, warnings, comparison };
+    }
+
+    function generateExpectedCardHtml(card) {
+        const data = {
+            title: card.title || '',
+            subtitle: card.subtitle || '',
+            description: card.content || '',
+            imageUrl: card.imageUrl || '',
+            price: card.price || ''
+        };
+        
+        switch (card.cardType) {
+            case 'feature':
+                return generateExpectedFeatureCardHtml(data);
+            case 'product-options':
+                return generateExpectedProductOptionsCardHtml(data);
+            case 'cargo-options':
+                return generateExpectedCargoOptionsCardHtml(data);
+            case 'weather-protection':
+                return generateExpectedWeatherProtectionCardHtml(data);
+            case 'specification-table':
+                return generateExpectedSpecificationTableHtml(data);
+            default:
+                return null;
+        }
+    }
+
+    function generateExpectedFeatureCardHtml(data) {
+        const title = data.title || '';
+        const subtitle = data.subtitle || '';
+        const description = data.description || '';
+        const imageSrc = data.imageUrl || '';
+        
+        const imageHtml = imageSrc
+            ? `<img src="${imageSrc}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;">`
+            : `<div style="width: 100%; height: 100%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Enter an image URL to see a preview</div>`;
+        
+        return `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+                    <!-- Text content -->
+                    <div style="flex: 1 1 55%;">
+                        <h2 style="font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;">${title}</h2>
+                        ${subtitle ? `<h3 style="font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;">${subtitle}</h3>` : ''}
+                        <p style="font-size: 0.75rem; line-height: 1.4; margin: 0; color: #4b5563;">${description}</p>
+                    </div>
+                    <!-- Image -->
+                    <div style="flex: 1 1 40%; aspect-ratio: 16 / 10;">
+                        ${imageHtml}
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    function generateExpectedProductOptionsCardHtml(data) {
+        const title = data.title || '';
+        const description = data.description || '';
+        let price = (data.price || '').trim();
+        const imageSrc = data.imageUrl || '';
+
+        // Format price
+        let priceHtml = '';
+        if (price === '' || price === '0' || price === '0.00') {
+            priceHtml = `<span style="font-size: 1rem; font-weight: 600; color: #222;">No extra cost</span>`;
+        } else if (typeof price === 'string' && price.toLowerCase() === 'tbc') {
+            priceHtml = `<span style="font-size: 1rem; font-weight: 600; color: #888;">TBC</span>`;
+        } else if (!isNaN(Number(price)) && Number(price) > 0) {
+            priceHtml = `<span style="font-size: 1rem; font-weight: 600; color: #222;">£${Number(price).toLocaleString('en-GB', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>`;
+        } else {
+            priceHtml = `<span style="font-size: 1rem; font-weight: 600; color: #222;">${price}</span>`;
+        }
+
+        const imageHtml = imageSrc
+            ? `<img src="${imageSrc}" alt="${title}" style="width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;">`
+            : `<div style="width: 100%; height: 160px; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-size: 0.9rem; border-top-left-radius: 8px; border-top-right-radius: 8px;">No image</div>`;
+
+        const descId = `desc-${Math.random().toString(36).substr(2, 9)}`;
+
+        return `
+            <div class="card-info" style="border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;">
+                ${imageHtml}
+                <div style="padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;">
+                    <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;">${title}</div>
+                    <div style="margin-bottom: 0.5rem;">${priceHtml}</div>
+                    <button type="button" class="more-info-btn" data-target="${descId}" style="background: #198754; color: #fff; border: none; padding: 0.5rem 1.2rem; border-radius: 4px; font-size: 1rem; font-weight: 500; cursor: pointer; margin-bottom: 0.5rem;">More Information</button>
+                    <div id="${descId}" class="card-description" style="display:none; margin-top:0.5rem; font-size:0.97rem; color:#444;">${description}</div>
+                </div>
+            </div>`;
+    }
+
+    function generateExpectedCargoOptionsCardHtml(data) {
+        const title = data.title || '';
+        const subtitle = data.subtitle || '';
+        const description = data.description || '';
+        const price = data.price || '';
+        const imageSrc = data.imageUrl || '';
+
+        const imageHtml = imageSrc
+            ? `<img src="${imageSrc}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="width: 100%; height: 100%; background-color: #f3f4f6; display: none; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Image failed to load</div>`
+            : `<div style="width: 100%; height: 100%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Enter an image URL to see a preview</div>`;
+
+        return `
+            <div class="card-info" style="border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+                    <!-- Text content -->
+                    <div style="flex: 1 1 55%;">
+                        <h2 style="font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;">${title}</h2>
+                        ${subtitle ? `<h3 style="font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;">${subtitle}</h3>` : ''}
+                        <p style="font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;">${description}</p>
+                        ${price ? `<span style="font-size: 1rem; font-weight: 600; color: #059669;">${price}</span>` : ''}
+                    </div>
+                    <!-- Image -->
+                    <div style="flex: 1 1 40%; aspect-ratio: 16 / 10;">
+                        ${imageHtml}
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    function generateExpectedWeatherProtectionCardHtml(data) {
+        const title = data.title || '';
+        const subtitle = data.subtitle || '';
+        const description = data.description || '';
+        const price = data.price || '';
+        const imageSrc = data.imageUrl || '';
+
+        const imageHtml = imageSrc
+            ? `<img src="${imageSrc}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="width: 100%; height: 100%; background-color: #f3f4f6; display: none; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Image failed to load</div>`
+            : `<div style="width: 100%; height: 100%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Enter an image URL to see a preview</div>`;
+
+        return `
+            <div class="card-info" style="border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+                    <!-- Text content -->
+                    <div style="flex: 1 1 55%;">
+                        <h2 style="font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;">${title}</h2>
+                        ${subtitle ? `<h3 style="font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;">${subtitle}</h3>` : ''}
+                        <p style="font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;">${description}</p>
+                        ${price ? `<span style="font-size: 1rem; font-weight: 600; color: #059669;">${price}</span>` : ''}
+                    </div>
+                    <!-- Image -->
+                    <div style="flex: 1 1 40%; aspect-ratio: 16 / 10;">
+                        ${imageHtml}
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    function generateExpectedSpecificationTableHtml(data) {
+        const htmlContent = data.description || '';
+        
+        if (!htmlContent.trim()) {
+            return `
+                <div style="border: 1px solid #e0e0e0; border-radius: 4px; padding: 20px; text-align: center; background: #fff; font-family: sans-serif;">
+                    <p style="color: #666; margin: 0;">Paste specification table HTML content above to see preview</p>
+                </div>
+            `;
+        }
+        
+        return `
+            <div style="
+                border: 1px solid #e0e0e0; 
+                border-radius: 8px; 
+                padding: 20px; 
+                background: #fff; 
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                max-width: 100%;
+                max-height: 600px;
+                overflow-y: auto;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            ">
+                ${htmlContent}
+            </div>`;
+    }
+
+    function compareCardFormats(actualHtml, expectedHtml, cardType) {
+        const majorDifferences = [];
+        const minorDifferences = [];
+        
+        // Normalize HTML for comparison (remove whitespace, normalize quotes)
+        const normalizeHtml = (html) => {
+            return html
+                .replace(/\s+/g, ' ')
+                .replace(/"/g, '"')
+                .replace(/'/g, "'")
+                .trim();
+        };
+        
+        const normalizedActual = normalizeHtml(actualHtml);
+        const normalizedExpected = normalizeHtml(expectedHtml);
+        
+        // Check for major structural differences
+        const actualDoc = new DOMParser().parseFromString(actualHtml, 'text/html');
+        const expectedDoc = new DOMParser().parseFromString(expectedHtml, 'text/html');
+        
+        // Check for required elements based on card type
+        switch (cardType) {
+            case 'feature':
+                if (!actualDoc.querySelector('h2')) {
+                    majorDifferences.push('Missing title (h2) element');
+                }
+                if (!actualDoc.querySelector('p')) {
+                    majorDifferences.push('Missing description (p) element');
+                }
+                if (!actualDoc.querySelector('img') && !actualDoc.querySelector('div[style*="background-color"]')) {
+                    majorDifferences.push('Missing image or placeholder');
+                }
+                break;
+                
+            case 'product-options':
+                if (!actualDoc.querySelector('.card-info')) {
+                    majorDifferences.push('Missing card-info container');
+                }
+                if (!actualDoc.querySelector('button[class*="more-info"]')) {
+                    majorDifferences.push('Missing "More Information" button');
+                }
+                break;
+                
+            case 'cargo-options':
+            case 'weather-protection':
+                if (!actualDoc.querySelector('h2')) {
+                    majorDifferences.push('Missing title (h2) element');
+                }
+                if (!actualDoc.querySelector('p')) {
+                    majorDifferences.push('Missing description (p) element');
+                }
+                break;
+                
+            case 'specification-table':
+                if (!actualDoc.querySelector('table') && !actualDoc.querySelector('.specs')) {
+                    minorDifferences.push('May not have proper table structure');
+                }
+                break;
+        }
+        
+        // Check for styling differences
+        if (!normalizedActual.includes('border-radius') && normalizedExpected.includes('border-radius')) {
+            minorDifferences.push('Missing border-radius styling');
+        }
+        
+        if (!normalizedActual.includes('box-shadow') && normalizedExpected.includes('box-shadow')) {
+            minorDifferences.push('Missing box-shadow styling');
+        }
+        
+        if (!normalizedActual.includes('font-family') && normalizedExpected.includes('font-family')) {
+            minorDifferences.push('Missing font-family styling');
+        }
+        
+        return { majorDifferences, minorDifferences };
+    }
+
+    function validateAndFilterCards(cards, row) {
+        const validCards = [];
+        const invalidCards = [];
+        const placeholderCards = [];
+        
+        cards.forEach(card => {
+            const validation = validateCard(card, row);
+            
+            if (validation.isValid) {
+                // Add validation info to card for reference
+                card.validationInfo = {
+                    hasWarnings: validation.warnings.length > 0,
+                    warnings: validation.warnings
+                };
+                validCards.push(card);
+            } else {
+                // Store invalid card with validation details
+                invalidCards.push({
+                    card: card,
+                    validation: validation,
+                    sku: row.sku,
+                    rowId: row.id
+                });
+                
+                // Create placeholder card for invalid card
+                const placeholderCard = createPlaceholderCard(card, validation, row);
+                placeholderCards.push(placeholderCard);
+            }
+        });
+        
+        return { validCards, invalidCards, placeholderCards };
+    }
+
+    function createPlaceholderCard(originalCard, validation, row) {
+        const placeholderId = `placeholder_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
+        return {
+            id: placeholderId,
+            sku: originalCard.sku || row.sku,
+            cardType: originalCard.cardType || 'unknown',
+            position: originalCard.position || 1,
+            title: originalCard.title || `[PLACEHOLDER] ${originalCard.cardType || 'Unknown'} Card`,
+            subtitle: '',
+            content: generatePlaceholderContent(originalCard, validation),
+            imageUrl: '',
+            price: originalCard.price || '',
+            hypaUpdated: true,
+            importedFromHypa: true,
+            lastModified: new Date().toISOString(),
+            isPlaceholder: true,
+            placeholderInfo: {
+                originalCard: originalCard,
+                validation: validation,
+                rowId: row.id,
+                createdAt: new Date().toISOString(),
+                needsRecreation: true
+            },
+            originalHypaData: {
+                productId: row.id,
+                isPlaceholder: true,
+                originalCardType: originalCard.cardType,
+                originalPosition: originalCard.position
+            }
+        };
+    }
+
+    function generatePlaceholderContent(originalCard, validation) {
+        const cardTypeDisplay = getCardTypeDisplayName(originalCard.cardType || 'unknown');
+        const errorList = validation.errors.map(error => `• ${error}`).join('\n');
+        const warningList = validation.warnings.map(warning => `• ${warning}`).join('\n');
+        
+        let content = `
+<div style="
+    background: #fff3cd;
+    border: 2px dashed #ffc107;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
+">
+    <div style="
+        background: #ffc107;
+        color: #212529;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-weight: bold;
+        font-size: 1.1rem;
+    ">
+        ⚠️ PLACEHOLDER CARD - NEEDS RECREATION
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <strong>Original Card Type:</strong> ${cardTypeDisplay}<br>
+        <strong>Original Title:</strong> ${originalCard.title || 'No title provided'}<br>
+        <strong>Position:</strong> ${originalCard.position || 'Unknown'}
+    </div>
+    
+    <div style="
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 15px;
+        margin: 15px 0;
+        text-align: left;
+    ">
+        <strong style="color: #dc3545;">Validation Errors:</strong>
+        <div style="margin: 10px 0; color: #dc3545; font-family: monospace; font-size: 0.9rem;">
+            ${errorList || 'None'}
+        </div>
+        
+        ${warningList ? `
+        <strong style="color: #ffc107;">Warnings:</strong>
+        <div style="margin: 10px 0; color: #856404; font-family: monospace; font-size: 0.9rem;">
+            ${warningList}
+        </div>
+        ` : ''}
+    </div>
+    
+    <div style="
+        background: #e7f3ff;
+        border: 1px solid #b3d9ff;
+        border-radius: 6px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 0.9rem;
+    ">
+        <strong>Action Required:</strong><br>
+        This card could not be imported due to format issues. Please recreate it using the Card Creator with the correct format.
+    </div>
+    
+    <div style="
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 10px;
+        margin: 15px 0;
+        font-size: 0.8rem;
+        color: #6c757d;
+    ">
+        <strong>Original Content Preview:</strong><br>
+        ${originalCard.content ? 
+            originalCard.content.substring(0, 200) + (originalCard.content.length > 200 ? '...' : '') : 
+            'No content available'
+        }
+    </div>
+</div>
+        `;
+        
+        return content;
     }
 
     function extractFeatureCards(row, columns) {
         const cards = [];
-        let foundStandard = false;
-        // Standard: separate columns for each feature
-        for (let i = 1; i <= 12; i++) {
-            const title = row[`features.feature_${i}_title`] || '';
-            const subtitle = row[`features.feature_${i}_subtitle`] || '';
-            const description = row[`features.feature_${i}_description`] || '';
-            const imageUrl = row[`features.feature_${i}_image`] || '';
-            if (title || subtitle || description || imageUrl) {
-                foundStandard = true;
-                cards.push({
-                    id: Date.now() + Math.random(),
-                    sku: row.sku && row.sku.trim(),
-                    cardType: 'feature',
-                    position: i,
-                    title: title.trim(),
-                    subtitle: subtitle.trim(),
-                    content: description.trim(),
-                    imageUrl: imageUrl.trim(),
-                    hypaUpdated: true,
-                    importedFromHypa: true,
-                    lastModified: new Date().toISOString(),
-                    originalHypaData: {
-                        productId: row.id,
-                        featureIndex: i
-                    }
-                });
-            }
-        }
-        // Fallback: parse HTML block in shared.feature-1-card, shared.feature-2-card, ...
-        if (!foundStandard) {
-            for (let i = 1; i <= 12; i++) {
-                const html = row[`shared.feature-${i}-card`];
-                if (html && html.trim()) {
-                    try {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const title = (doc.querySelector('h2') || doc.querySelector('h3'))?.textContent?.trim() || '';
-                        const subtitle = doc.querySelector('h3')?.textContent?.trim() || '';
-                        const description = doc.querySelector('p')?.textContent?.trim() || '';
-                        const img = doc.querySelector('img');
+        
+        // Check for HTML blocks in shared.feature-X-card columns
+        for (let i = 1; i <= 10; i++) {
+            const columnName = `shared.feature-${i}-card`;
+            const htmlContent = row[columnName];
+            
+            if (htmlContent && htmlContent.trim()) {
+                try {
+                    console.log(`Processing ${columnName} for SKU ${row.sku}`);
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    
+                    // Find all card containers (divs with inline styles that look like cards)
+                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
+                        const style = div.getAttribute('style') || '';
+                        return style.includes('background: #ffffff') && 
+                               style.includes('border-radius: 10px') &&
+                               (div.querySelector('h2') || div.querySelector('h3'));
+                    });
+                    
+                    console.log(`Found ${cardDivs.length} feature cards in ${columnName}`);
+                    
+                    cardDivs.forEach((div, idx) => {
+                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
+                        const subtitle = (div.querySelector('h3') && div.querySelector('h2')) ? div.querySelector('h3').textContent.trim() : '';
+                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
+                        const img = div.querySelector('img');
                         const imageUrl = img ? img.getAttribute('src') : '';
+                        
                         if (title || description || imageUrl) {
                             cards.push({
                                 id: Date.now() + Math.random(),
                                 sku: row.sku && row.sku.trim(),
                                 cardType: 'feature',
-                                position: i,
+                                position: (i - 1) * 10 + idx + 1, // Position based on column and card index
                                 title,
                                 subtitle,
                                 content: description,
@@ -4047,265 +4628,269 @@ Only cards for existing products will be imported.`;
                                 lastModified: new Date().toISOString(),
                                 originalHypaData: {
                                     productId: row.id,
-                                    featureIndex: i,
-                                    htmlSource: true
+                                    featureIndex: (i - 1) * 10 + idx + 1,
+                                    htmlSource: true,
+                                    columnName: columnName
                                 }
                             });
                         }
-                    } catch (err) {
-                        console.error('Error parsing HTML block for feature card (shared.feature-' + i + '-card):', err);
-                    }
+                    });
+                } catch (err) {
+                    console.error(`Error parsing HTML block for ${columnName}:`, err);
                 }
             }
         }
+        
         return cards;
     }
 
     function extractOptionCards(row, columns) {
         const cards = [];
-        // Standard: separate columns for each option
+        
+        // Check for HTML blocks in shared.option-X-card columns
         for (let i = 1; i <= 12; i++) {
-            const title = row[`options.option_${i}_title`] || '';
-            const description = row[`options.option_${i}_description`] || '';
-            const imageUrl = row[`options.option_${i}_image`] || '';
-            const price = row[`options.option_${i}_price`] || '';
-            if (title || description || imageUrl || price) {
-                cards.push({
-                    id: Date.now() + Math.random(),
-                    sku: row.sku && row.sku.trim(),
-                    cardType: 'product-options',
-                    position: i,
-                    title: title.trim(),
-                    content: description.trim(),
-                    imageUrl: imageUrl.trim(),
-                    price: price.trim(),
-                    hypaUpdated: true,
-                    importedFromHypa: true,
-                    lastModified: new Date().toISOString(),
-                    originalHypaData: {
-                        productId: row.id,
-                        optionIndex: i
-                    }
-                });
-            }
-        }
-        // Fallback: parse HTML block in shared.option-1-card, shared.option-2-card, ...
-        for (let i = 1; i <= 12; i++) {
-            const html = row[`shared.option-${i}-card`];
-            if (html && html.trim()) {
+            const columnName = `shared.option-${i}-card`;
+            const htmlContent = row[columnName];
+            
+            if (htmlContent && htmlContent.trim()) {
                 try {
+                    console.log(`Processing ${columnName} for SKU ${row.sku}`);
                     const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const title = doc.querySelector('.card-title')?.textContent?.trim() || '';
-                    const description = doc.querySelector('.card-description')?.textContent?.trim() || '';
-                    const price = doc.querySelector('.card-price')?.textContent?.trim() || '';
-                    const img = doc.querySelector('img');
-                    const imageUrl = img ? img.getAttribute('src') : '';
-                    if (title || description || imageUrl || price) {
-                        cards.push({
-                            id: Date.now() + Math.random(),
-                            sku: row.sku && row.sku.trim(),
-                            cardType: 'product-options',
-                            position: i,
-                            title,
-                            content: description,
-                            imageUrl,
-                            price,
-                            hypaUpdated: true,
-                            importedFromHypa: true,
-                            lastModified: new Date().toISOString(),
-                            originalHypaData: {
-                                productId: row.id,
-                                htmlSource: true,
-                                optionIndex: i
-                            }
-                        });
-                    }
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    
+                    // Find all card containers (divs with inline styles that look like cards)
+                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
+                        const style = div.getAttribute('style') || '';
+                        return style.includes('background: #ffffff') && 
+                               style.includes('border-radius: 10px') &&
+                               (div.querySelector('h2') || div.querySelector('h3'));
+                    });
+                    
+                    console.log(`Found ${cardDivs.length} option cards in ${columnName}`);
+                    
+                    cardDivs.forEach((div, idx) => {
+                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
+                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
+                        const img = div.querySelector('img');
+                        const imageUrl = img ? img.getAttribute('src') : '';
+                        
+                        // Try to extract price from the card content
+                        let price = '';
+                        const priceElement = div.querySelector('[style*="font-weight: bold"]') || 
+                                           div.querySelector('[style*="color: #"]');
+                        if (priceElement) {
+                            price = priceElement.textContent.trim();
+                        }
+                        
+                        if (title || description || imageUrl) {
+                            cards.push({
+                                id: Date.now() + Math.random(),
+                                sku: row.sku && row.sku.trim(),
+                                cardType: 'product-options',
+                                position: (i - 1) * 10 + idx + 1,
+                                title,
+                                content: description,
+                                imageUrl,
+                                price,
+                                hypaUpdated: true,
+                                importedFromHypa: true,
+                                lastModified: new Date().toISOString(),
+                                originalHypaData: {
+                                    productId: row.id,
+                                    optionIndex: (i - 1) * 10 + idx + 1,
+                                    htmlSource: true,
+                                    columnName: columnName
+                                }
+                            });
+                        }
+                    });
                 } catch (err) {
-                    console.error('Error parsing HTML block for option card (shared.option-' + i + '-card):', err);
+                    console.error(`Error parsing HTML block for ${columnName}:`, err);
                 }
             }
         }
+        
         return cards;
     }
 
     function extractCargoCards(row, columns) {
         const cards = [];
-        // Standard: separate columns for each cargo card
+        
+        // Check for HTML blocks in shared.cargo-option-X-card columns
         for (let i = 1; i <= 12; i++) {
-            const title = row[`cargo.cargo_${i}_title`] || '';
-            const description = row[`cargo.cargo_${i}_description`] || '';
-            const imageUrl = row[`cargo.cargo_${i}_image`] || '';
-            const price = row[`cargo.cargo_${i}_price`] || '';
-            if (title || description || imageUrl || price) {
-                cards.push({
-                    id: Date.now() + Math.random(),
-                    sku: row.sku && row.sku.trim(),
-                    cardType: 'cargo-options',
-                    position: i,
-                    title: title.trim(),
-                    content: description.trim(),
-                    imageUrl: imageUrl.trim(),
-                    price: price.trim(),
-                    hypaUpdated: true,
-                    importedFromHypa: true,
-                    lastModified: new Date().toISOString(),
-                    originalHypaData: {
-                        productId: row.id,
-                        cargoIndex: i
-                    }
-                });
-            }
-        }
-        // Fallback: parse HTML block in shared.cargo-1-card, shared.cargo-2-card, ...
-        for (let i = 1; i <= 12; i++) {
-            const html = row[`shared.cargo-${i}-card`];
-            if (html && html.trim()) {
+            const columnName = `shared.cargo-option-${i}-card`;
+            const htmlContent = row[columnName];
+            
+            if (htmlContent && htmlContent.trim()) {
                 try {
+                    console.log(`Processing ${columnName} for SKU ${row.sku}`);
                     const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const title = doc.querySelector('h2')?.textContent?.trim() || '';
-                    const description = doc.querySelector('p')?.textContent?.trim() || '';
-                    const price = doc.querySelector('h3')?.textContent?.trim() || '';
-                    const img = doc.querySelector('img');
-                    const imageUrl = img ? img.getAttribute('src') : '';
-                    if (title || description || imageUrl || price) {
-                        cards.push({
-                            id: Date.now() + Math.random(),
-                            sku: row.sku && row.sku.trim(),
-                            cardType: 'cargo-options',
-                            position: i,
-                            title,
-                            content: description,
-                            imageUrl,
-                            price,
-                            hypaUpdated: true,
-                            importedFromHypa: true,
-                            lastModified: new Date().toISOString(),
-                            originalHypaData: {
-                                productId: row.id,
-                                htmlSource: true,
-                                cargoIndex: i
-                            }
-                        });
-                    }
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    
+                    // Find all card containers (divs with inline styles that look like cards)
+                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
+                        const style = div.getAttribute('style') || '';
+                        return style.includes('background: #ffffff') && 
+                               style.includes('border-radius: 10px') &&
+                               (div.querySelector('h2') || div.querySelector('h3'));
+                    });
+                    
+                    console.log(`Found ${cardDivs.length} cargo cards in ${columnName}`);
+                    
+                    cardDivs.forEach((div, idx) => {
+                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
+                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
+                        const img = div.querySelector('img');
+                        const imageUrl = img ? img.getAttribute('src') : '';
+                        
+                        // Try to extract price from the card content
+                        let price = '';
+                        const priceElement = div.querySelector('[style*="font-weight: bold"]') || 
+                                           div.querySelector('[style*="color: #"]');
+                        if (priceElement) {
+                            price = priceElement.textContent.trim();
+                        }
+                        
+                        if (title || description || imageUrl) {
+                            cards.push({
+                                id: Date.now() + Math.random(),
+                                sku: row.sku && row.sku.trim(),
+                                cardType: 'cargo-options',
+                                position: (i - 1) * 10 + idx + 1,
+                                title,
+                                content: description,
+                                imageUrl,
+                                price,
+                                hypaUpdated: true,
+                                importedFromHypa: true,
+                                lastModified: new Date().toISOString(),
+                                originalHypaData: {
+                                    productId: row.id,
+                                    cargoIndex: (i - 1) * 10 + idx + 1,
+                                    htmlSource: true,
+                                    columnName: columnName
+                                }
+                            });
+                        }
+                    });
                 } catch (err) {
-                    console.error('Error parsing HTML block for cargo card (shared.cargo-' + i + '-card):', err);
+                    console.error(`Error parsing HTML block for ${columnName}:`, err);
                 }
             }
         }
+        
         return cards;
     }
 
     function extractWeatherCards(row, columns) {
         const cards = [];
-        // Standard: separate columns for each weather card
+        
+        // Check for HTML blocks in shared.weather-option-X-card columns
         for (let i = 1; i <= 12; i++) {
-            const title = row[`weather.weather_${i}_title`] || '';
-            const description = row[`weather.weather_${i}_description`] || '';
-            const imageUrl = row[`weather.weather_${i}_image`] || '';
-            const price = row[`weather.weather_${i}_price`] || '';
-            if (title || description || imageUrl || price) {
-                cards.push({
-                    id: Date.now() + Math.random(),
-                    sku: row.sku && row.sku.trim(),
-                    cardType: 'weather-protection',
-                    position: i,
-                    title: title.trim(),
-                    content: description.trim(),
-                    imageUrl: imageUrl.trim(),
-                    price: price.trim(),
-                    hypaUpdated: true,
-                    importedFromHypa: true,
-                    lastModified: new Date().toISOString(),
-                    originalHypaData: {
-                        productId: row.id,
-                        weatherIndex: i
-                    }
-                });
-            }
-        }
-        // Fallback: parse HTML block in shared.weather-1-card, shared.weather-2-card, ...
-        for (let i = 1; i <= 12; i++) {
-            const html = row[`shared.weather-${i}-card`];
-            if (html && html.trim()) {
+            const columnName = `shared.weather-option-${i}-card`;
+            const htmlContent = row[columnName];
+            
+            if (htmlContent && htmlContent.trim()) {
                 try {
+                    console.log(`Processing ${columnName} for SKU ${row.sku}`);
                     const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const title = doc.querySelector('h2')?.textContent?.trim() || '';
-                    const description = doc.querySelector('p')?.textContent?.trim() || '';
-                    const price = doc.querySelector('h3')?.textContent?.trim() || '';
-                    const img = doc.querySelector('img');
-                    const imageUrl = img ? img.getAttribute('src') : '';
-                    if (title || description || imageUrl || price) {
-                        cards.push({
-                            id: Date.now() + Math.random(),
-                            sku: row.sku && row.sku.trim(),
-                            cardType: 'weather-protection',
-                            position: i,
-                            title,
-                            content: description,
-                            imageUrl,
-                            price,
-                            hypaUpdated: true,
-                            importedFromHypa: true,
-                            lastModified: new Date().toISOString(),
-                            originalHypaData: {
-                                productId: row.id,
-                                htmlSource: true,
-                                weatherIndex: i
-                            }
-                        });
-                    }
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    
+                    // Find all card containers (divs with inline styles that look like cards)
+                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
+                        const style = div.getAttribute('style') || '';
+                        return style.includes('background: #ffffff') && 
+                               style.includes('border-radius: 10px') &&
+                               (div.querySelector('h2') || div.querySelector('h3'));
+                    });
+                    
+                    console.log(`Found ${cardDivs.length} weather cards in ${columnName}`);
+                    
+                    cardDivs.forEach((div, idx) => {
+                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
+                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
+                        const img = div.querySelector('img');
+                        const imageUrl = img ? img.getAttribute('src') : '';
+                        
+                        // Try to extract price from the card content
+                        let price = '';
+                        const priceElement = div.querySelector('[style*="font-weight: bold"]') || 
+                                           div.querySelector('[style*="color: #"]');
+                        if (priceElement) {
+                            price = priceElement.textContent.trim();
+                        }
+                        
+                        if (title || description || imageUrl) {
+                            cards.push({
+                                id: Date.now() + Math.random(),
+                                sku: row.sku && row.sku.trim(),
+                                cardType: 'weather-protection',
+                                position: (i - 1) * 10 + idx + 1,
+                                title,
+                                content: description,
+                                imageUrl,
+                                price,
+                                hypaUpdated: true,
+                                importedFromHypa: true,
+                                lastModified: new Date().toISOString(),
+                                originalHypaData: {
+                                    productId: row.id,
+                                    weatherIndex: (i - 1) * 10 + idx + 1,
+                                    htmlSource: true,
+                                    columnName: columnName
+                                }
+                            });
+                        }
+                    });
                 } catch (err) {
-                    console.error('Error parsing HTML block for weather card (shared.weather-' + i + '-card):', err);
+                    console.error(`Error parsing HTML block for ${columnName}:`, err);
                 }
             }
         }
+        
         return cards;
     }
 
     function extractSpecTable(row, columns) {
-        // Scan all columns for a cell that starts with the spec sheet HTML block
-        let specTableContent = '';
-        for (const col of columns) {
-            const val = row[col];
-            if (typeof val === 'string' && val.trim().startsWith('<div class="module container-center m30-layer-content background-grey" data-layer-target="specifications-table"')) {
-                specTableContent = val.trim();
-                break;
-            }
-        }
-        if (specTableContent) {
-            let title = '';
+        // Check for spec table in shared.spec-table column
+        const specTableContent = row['shared.spec-table'];
+        
+        if (specTableContent && specTableContent.trim()) {
             try {
+                console.log(`Processing spec table for SKU ${row.sku}`);
+                let title = '';
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(specTableContent, 'text/html');
                 const h2 = doc.querySelector('h2');
                 if (h2 && h2.textContent) {
                     title = h2.textContent.trim();
                 }
-            } catch (err) {
-                console.warn('Failed to parse spec table HTML for <h2>:', err);
-            }
-            if (!title) {
-                title = row['product_name'] || row['name'] || row['title'] || `Specifications for ${row.sku}`;
-            }
-            return {
-                id: Date.now() + Math.random(),
-                sku: row.sku.trim(),
-                cardType: 'specification-table',
-                title: title.trim(),
-                content: specTableContent,
-                hypaUpdated: true,
-                importedFromHypa: true,
-                lastModified: new Date().toISOString(),
-                originalHypaData: {
-                    productId: row.id,
-                    specTableFlag: true,
-                    originalContent: specTableContent
+                
+                if (!title) {
+                    title = row['product_name'] || row['name'] || row['title'] || `Specifications for ${row.sku}`;
                 }
-            };
+                
+                return {
+                    id: Date.now() + Math.random(),
+                    sku: row.sku && row.sku.trim(),
+                    cardType: 'specification-table',
+                    title: title.trim(),
+                    content: specTableContent,
+                    hypaUpdated: true,
+                    importedFromHypa: true,
+                    lastModified: new Date().toISOString(),
+                    originalHypaData: {
+                        productId: row.id,
+                        specTableFlag: true,
+                        originalContent: specTableContent,
+                        columnName: 'shared.spec-table'
+                    }
+                };
+            } catch (err) {
+                console.error('Error parsing spec table HTML:', err);
+            }
         }
+        
         return null;
     }
 
@@ -4402,12 +4987,355 @@ Only cards for existing products will be imported.`;
         });
     }
 
+    // === NEW: Validation results modal ===
+    function showValidationResultsModal() {
+        if (!window.invalidCardsForReview || window.invalidCardsForReview.length === 0) {
+            return;
+        }
+        
+        // Create modal HTML
+        const modalHtml = `
+            <div class="modal fade" id="validationResultsModal" tabindex="-1" aria-labelledby="validationResultsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning text-dark">
+                            <h5 class="modal-title" id="validationResultsModalLabel">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Cards Requiring Re-creation
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-warning">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>${window.invalidCardsForReview.length} cards were skipped</strong> due to validation issues. 
+                                These cards need to be re-created manually to ensure they work properly with the app.
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6>Invalid Cards Summary</h6>
+                                <button class="btn btn-outline-primary btn-sm" onclick="exportInvalidCards()">
+                                    <i class="fas fa-download me-2"></i>Export for Review
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-sm table-striped">
+                                    <thead class="table-dark sticky-top">
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Card Type</th>
+                                            <th>Title</th>
+                                            <th>Errors</th>
+                                            <th>Warnings</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="invalidCardsTableBody">
+                                        ${window.invalidCardsForReview.map((item, index) => `
+                                            <tr>
+                                                <td><strong>${item.sku || 'Unknown'}</strong></td>
+                                                <td><span class="badge bg-secondary">${item.card.cardType || 'Unknown'}</span></td>
+                                                <td>${item.card.title || 'No Title'}</td>
+                                                <td>
+                                                    ${item.validation.errors.map(error => 
+                                                        `<span class="badge bg-danger me-1">${error}</span>`
+                                                    ).join('')}
+                                                </td>
+                                                <td>
+                                                    ${item.validation.warnings.map(warning => 
+                                                        `<span class="badge bg-warning me-1">${warning}</span>`
+                                                    ).join('')}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-outline-info btn-sm" onclick="viewInvalidCardDetails(${index})">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <h6>Common Issues and Solutions:</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i><strong>Missing title:</strong> Add a descriptive title for the card</li>
+                                    <li><i class="fas fa-check text-success me-2"></i><strong>Missing content:</strong> Add description text to the card</li>
+                                    <li><i class="fas fa-check text-success me-2"></i><strong>Invalid image URL:</strong> Ensure image URLs are valid and accessible</li>
+                                    <li><i class="fas fa-check text-success me-2"></i><strong>Security issues:</strong> Remove any script tags or javascript: links</li>
+                                    <li><i class="fas fa-check text-success me-2"></i><strong>Broken HTML:</strong> Fix unclosed HTML tags</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="exportInvalidCards()">
+                                <i class="fas fa-download me-2"></i>Export Invalid Cards
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add modal to page if it doesn't exist
+        if (!document.getElementById('validationResultsModal')) {
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('validationResultsModal'));
+        modal.show();
+    }
+
+    function viewInvalidCardDetails(index) {
+        const item = window.invalidCardsForReview[index];
+        if (!item) return;
+        
+        const detailsHtml = `
+            <div class="modal fade" id="invalidCardDetailsModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Card Details - ${item.sku}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Card Information</h6>
+                                    <table class="table table-sm">
+                                        <tr><td><strong>SKU:</strong></td><td>${item.sku || 'Unknown'}</td></tr>
+                                        <tr><td><strong>Card Type:</strong></td><td>${item.card.cardType || 'Unknown'}</td></tr>
+                                        <tr><td><strong>Title:</strong></td><td>${item.card.title || 'No Title'}</td></tr>
+                                        <tr><td><strong>Position:</strong></td><td>${item.card.position || 'Unknown'}</td></tr>
+                                        <tr><td><strong>Image URL:</strong></td><td>${item.card.imageUrl || 'No Image'}</td></tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Validation Issues</h6>
+                                    ${item.validation.errors.length > 0 ? `
+                                        <div class="alert alert-danger">
+                                            <strong>Errors:</strong>
+                                            <ul class="mb-0">
+                                                ${item.validation.errors.map(error => `<li>${error}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    ` : ''}
+                                    ${item.validation.warnings.length > 0 ? `
+                                        <div class="alert alert-warning">
+                                            <strong>Warnings:</strong>
+                                            <ul class="mb-0">
+                                                ${item.validation.warnings.map(warning => `<li>${warning}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <h6>Card Content Preview</h6>
+                                <div class="border p-3 bg-light" style="max-height: 200px; overflow-y: auto; font-size: 0.9rem;">
+                                    ${item.card.content ? item.card.content.substring(0, 500) + (item.card.content.length > 500 ? '...' : '') : 'No content'}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if present
+        const existingModal = document.getElementById('invalidCardDetailsModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Add and show modal
+        document.body.insertAdjacentHTML('beforeend', detailsHtml);
+        const modal = new bootstrap.Modal(document.getElementById('invalidCardDetailsModal'));
+        modal.show();
+    }
+
+    function exportInvalidCards() {
+        if (!window.invalidCardsForReview || window.invalidCardsForReview.length === 0) {
+            showAnalysisToast('No invalid cards to export.', 'warning');
+            return;
+        }
+        
+        try {
+            const exportData = window.invalidCardsForReview.map(item => ({
+                sku: item.sku,
+                cardType: item.card.cardType,
+                title: item.card.title,
+                position: item.card.position,
+                imageUrl: item.card.imageUrl,
+                content: item.card.content,
+                errors: item.validation.errors,
+                warnings: item.validation.warnings,
+                rowId: item.rowId
+            }));
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `invalid-cards-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showAnalysisToast(`Exported ${exportData.length} invalid cards for review.`, 'success');
+        } catch (error) {
+            console.error('Error exporting invalid cards:', error);
+            showAnalysisToast('Error exporting invalid cards: ' + error.message, 'error');
+        }
+    }
+
+    // === NEW: Placeholder card management functions ===
+    function findPlaceholderCards() {
+        if (!cards || !Array.isArray(cards)) {
+            return [];
+        }
+        return cards.filter(card => card.isPlaceholder === true);
+    }
+
+    function getPlaceholderCardSummary() {
+        const placeholderCards = findPlaceholderCards();
+        if (placeholderCards.length === 0) {
+            return null;
+        }
+
+        const summary = {
+            total: placeholderCards.length,
+            byCardType: {},
+            bySku: {}
+        };
+
+        placeholderCards.forEach(card => {
+            // Count by card type
+            const cardType = card.cardType || 'unknown';
+            summary.byCardType[cardType] = (summary.byCardType[cardType] || 0) + 1;
+
+            // Count by SKU
+            const sku = card.sku || 'unknown';
+            if (!summary.bySku[sku]) {
+                summary.bySku[sku] = [];
+            }
+            summary.bySku[sku].push({
+                id: card.id,
+                cardType: card.cardType,
+                title: card.title,
+                position: card.position
+            });
+        });
+
+        return summary;
+    }
+
+    function showPlaceholderCardSummary() {
+        const summary = getPlaceholderCardSummary();
+        if (!summary) {
+            showAnalysisToast('No placeholder cards found.', 'info');
+            return;
+        }
+
+        const modalHtml = `
+            <div class="modal fade" id="placeholderSummaryModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning text-dark">
+                            <h5 class="modal-title">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Placeholder Cards Summary
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-warning">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>${summary.total} placeholder cards found</strong> that need to be recreated.
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>By Card Type</h6>
+                                    <div class="list-group">
+                                        ${Object.entries(summary.byCardType).map(([cardType, count]) => `
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span>${getCardTypeDisplayName(cardType)}</span>
+                                                <span class="badge bg-warning rounded-pill">${count}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>By SKU</h6>
+                                    <div class="list-group" style="max-height: 300px; overflow-y: auto;">
+                                        ${Object.entries(summary.bySku).map(([sku, cardList]) => `
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <strong>${sku}</strong>
+                                                    <span class="badge bg-secondary rounded-pill">${cardList.length}</span>
+                                                </div>
+                                                <small class="text-muted">
+                                                    ${cardList.map(card => `${getCardTypeDisplayName(card.cardType)} (${card.position})`).join(', ')}
+                                                </small>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <h6>Next Steps:</h6>
+                                <ol>
+                                    <li>Go to the <strong>Card Manager</strong> to see all placeholder cards</li>
+                                    <li>Filter by "Placeholder" status to find cards that need recreation</li>
+                                    <li>Use the <strong>Card Creator</strong> to recreate each card with proper format</li>
+                                    <li>Replace placeholder cards with the newly created ones</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="window.open('card-manager.html', '_blank')">
+                                <i class="fas fa-external-link-alt me-2"></i>Open Card Manager
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Add modal to page if it doesn't exist
+        if (!document.getElementById('placeholderSummaryModal')) {
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('placeholderSummaryModal'));
+        modal.show();
+    }
+
     // Make it available globally for testing
     window.testHypaFlow = testHypaFlow;
     window.exportCardsToFile = exportCardsToFile;
     window.importCardsFromFile = importCardsFromFile;
     window.confirmHypaImport = confirmHypaImport;
     window.hasSavedImportState = hasSavedImportState;
+    window.viewInvalidCardDetails = viewInvalidCardDetails;
+    window.exportInvalidCards = exportInvalidCards;
+    window.findPlaceholderCards = findPlaceholderCards;
+    window.getPlaceholderCardSummary = getPlaceholderCardSummary;
+    window.showPlaceholderCardSummary = showPlaceholderCardSummary;
 
     // Card migration and renewal system
     function migrateAndUpdateCards() {
@@ -4796,157 +5724,12 @@ Only cards for existing products will be imported.`;
         }, 100);
 
         showAnalysisToast('Export completed! Download started.', 'success');
-
-        // Add this function near the top of the file
-        function validateSpecTableHtml(html) {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          const hasSpecsTable = !!doc.querySelector('.specs__table');
-          const hasSpecsItem = !!doc.querySelector('.specs__item');
-          return hasSpecsTable && hasSpecsItem;
-        }
-
-        // In the exportToHypaFormat function, before triggering the download, add strict validation for spec cards
-        // Find all spec cards and validate their content
-        const failedSpecCards = exportData.filter(card =>
-          (card.cardType === 'specification-table' || card.cardType === 'spec') &&
-          !validateSpecTableHtml(card.content || '')
-        );
-        if (failedSpecCards.length > 0) {
-          // Show modal with failed cards and reasons
-          const modal = document.createElement('div');
-          modal.className = 'modal fade';
-          modal.tabIndex = -1;
-          modal.innerHTML = `
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Export Blocked: Invalid Spec Table Cards</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p>The following spec cards do not match the required Hypa template and must be fixed before export:</p>
-                  <ul>
-                    ${failedSpecCards.map(card => `<li><strong>${card.title || '(Untitled)'}</strong> - Missing .specs__table or .specs__item in content</li>`).join('')}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          `;
-          document.body.appendChild(modal);
-          const bsModal = new bootstrap.Modal(modal);
-          bsModal.show();
-          modal.addEventListener('hidden.bs.modal', () => {
-            document.body.removeChild(modal);
-          });
-          return; // Block export
-        }
-
-        // Add this at the top of the file, before showHypaValidationResults
-        function validateHypaData(data) {
-            console.log('validateHypaData called with data length:', data.length);
-            console.log('First few rows:', data.slice(0, 3));
-            const validation = {
-                validCards: 0,
-                invalidRows: 0,
-                missingSkus: 0,
-                detectedFields: {},
-                errors: [],
-                cardTypes: {
-                    feature: 0,
-                    option: 0,
-                    cargo: 0,
-                    weather: 0,
-                    specTable: 0
-                }
-            };
-            // Hypa-specific field patterns
-            const hypaFieldPatterns = {
-                sku: ['sku'],
-                productId: ['id'],
-                featureCards: /^shared\.feature-\d+-card$/,
-                optionCards: /^shared\.option-\d+-card$/,
-                cargoCards: /^shared\.cargo-option-\d+-card$/,
-                weatherCards: /^shared\.weather-option-\d+-card$/,
-                specTable: /^shared\.spec-table$/,
-                featureContent: /^features\.feature_\d+_(title|subtitle|description|image)$/,
-                optionContent: /^options\.option_\d+_(title|description|image|price)$/,
-                cargoContent: /^cargo\.cargo_\d+_(title|description|image|price)$/,
-                weatherContent: /^weather\.weather_\d+_(title|description|image|price)$/
-            };
-            if (data.length > 0) {
-                const firstRow = data[0];
-                const columns = Object.keys(firstRow);
-                columns.forEach(column => {
-                    if (hypaFieldPatterns.featureCards.test(column)) {
-                        validation.cardTypes.feature++;
-                    } else if (hypaFieldPatterns.optionCards.test(column)) {
-                        validation.cardTypes.option++;
-                    } else if (hypaFieldPatterns.cargoCards.test(column)) {
-                        validation.cardTypes.cargo++;
-                    } else if (hypaFieldPatterns.weatherCards.test(column)) {
-                        validation.cardTypes.weather++;
-                    } else if (hypaFieldPatterns.specTable.test(column)) {
-                        validation.cardTypes.specTable++;
-                    }
-                });
-                validation.detectedFields.sku = firstRow.hasOwnProperty('sku') ? 100 : 0;
-                validation.detectedFields.productId = firstRow.hasOwnProperty('id') ? 100 : 0;
-            }
-            data.forEach((row, index) => {
-                const rowNum = index + 1;
-                let isValid = true;
-                let hasSku = false;
-                let hasCards = false;
-                const sku = row.sku;
-                if (sku && sku.trim()) {
-                    hasSku = true;
-                } else {
-                    validation.missingSkus++;
-                    validation.errors.push({
-                        row: rowNum,
-                        issue: 'Missing SKU',
-                        data: `Row ${rowNum}: No SKU found`
-                    });
-                    isValid = false;
-                }
-                const columns = Object.keys(row);
-                const enabledCards = columns.filter(col => {
-                    return (hypaFieldPatterns.featureCards.test(col) || 
-                            hypaFieldPatterns.optionCards.test(col) || 
-                            hypaFieldPatterns.cargoCards.test(col) || 
-                            hypaFieldPatterns.weatherCards.test(col) || 
-                            hypaFieldPatterns.specTable.test(col)) && 
-                           row[col] && row[col].trim();
-                });
-                if (enabledCards.length > 0) {
-                    hasCards = true;
-                } else {
-                    validation.errors.push({
-                        row: rowNum,
-                        issue: 'No Cards Enabled',
-                        data: `Row ${rowNum}: SKU ${sku} - No cards are enabled`
-                    });
-                    isValid = false;
-                }
-                if (isValid && hasSku && hasCards) {
-                    validation.validCards++;
-                } else {
-                    validation.invalidRows++;
-                }
-            });
-            console.log('Validation completed:', validation);
-            return validation;
-        }
-       
-        // Expose helpers on window for debugging if needed
-        window.getCardTypeDisplayName = getCardTypeDisplayName;
-        window.validateHypaData = validateHypaData;
-        window.showCardDetailsModal = showCardDetailsModal;
-        // ... existing code ...
     }
 
-    // ===== Global helper: validateHypaData (moved out of exportToHypaFormat for wider scope) =====
+    // Make export function available globally
+    window.exportToHypaFormat = exportToHypaFormat;
+
+    // Add this at the top of the file, before showHypaValidationResults
     function validateHypaData(data) {
         console.log('validateHypaData called with data length:', data.length);
         console.log('First few rows:', data.slice(0, 3));
@@ -4964,6 +5747,7 @@ Only cards for existing products will be imported.`;
                 specTable: 0
             }
         };
+        // Hypa-specific field patterns
         const hypaFieldPatterns = {
             sku: ['sku'],
             productId: ['id'],
@@ -5015,11 +5799,11 @@ Only cards for existing products will be imported.`;
             }
             const columns = Object.keys(row);
             const enabledCards = columns.filter(col => {
-                return (hypaFieldPatterns.featureCards.test(col) ||
-                        hypaFieldPatterns.optionCards.test(col) ||
-                        hypaFieldPatterns.cargoCards.test(col) ||
-                        hypaFieldPatterns.weatherCards.test(col) ||
-                        hypaFieldPatterns.specTable.test(col)) &&
+                return (hypaFieldPatterns.featureCards.test(col) || 
+                        hypaFieldPatterns.optionCards.test(col) || 
+                        hypaFieldPatterns.cargoCards.test(col) || 
+                        hypaFieldPatterns.weatherCards.test(col) || 
+                        hypaFieldPatterns.specTable.test(col)) && 
                        row[col] && row[col].trim();
             });
             if (enabledCards.length > 0) {
@@ -5042,7 +5826,7 @@ Only cards for existing products will be imported.`;
         return validation;
     }
 
-    // ===== Global helper: getCardTypeDisplayName (extracted for wider scope) =====
+    // Add this helper near the top (after other helpers or before showHypaValidationResults)
     function getCardTypeDisplayName(cardType) {
         switch (cardType) {
             case 'feature': return 'Feature';
@@ -5054,64 +5838,806 @@ Only cards for existing products will be imported.`;
         }
     }
 
-    // ─── Global helper functions (ensure availability everywhere) ───────────────
-    if (typeof getCardTypeDisplayName === 'undefined') {
-      function getCardTypeDisplayName(cardType) {
-        switch (cardType) {
-          case 'feature': return 'Feature';
-          case 'product-options': return 'Option';
-          case 'cargo-options': return 'Cargo';
-          case 'weather-protection': return 'Weather';
-          case 'specification-table': return 'Spec';
-          default: return cardType;
-        }
-      }
-    }
-
-    if (typeof showCardDetailsModal === 'undefined') {
-      function showCardDetailsModal(card) {
+    // Add this helper function for modal display (at the bottom of the file):
+    function showCardDetailsModal(card) {
         const modal = document.createElement('div');
         modal.className = 'modal fade';
         modal.tabIndex = -1;
-        // Image HTML with fallback
-        let imageHtml = '';
-        if (card.imageUrl) {
-          imageHtml = `<img src="${card.imageUrl}" style="max-width:200px;" class="mb-3" onerror="this.style.display='none';this.parentNode.querySelector('.img-placeholder').style.display='block';">` +
-            `<div class="img-placeholder" style="display:none;width:200px;height:100px;background:#eee;color:#888;line-height:100px;text-align:center;border:1px solid #ccc;border-radius:4px;">Image not available</div>`;
-        }
         modal.innerHTML = `
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Card Details: ${getCardTypeDisplayName(card.cardType)}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <h4>${card.title || ''}</h4>
                 ${card.subtitle ? `<h5>${card.subtitle}</h5>` : ''}
-                ${imageHtml}
-                ${card.content ? `<div style='border:1px solid #eee;padding:8px 12px;margin:10px 0;background:#fafbfc;border-radius:4px;'>${card.content}</div>` : ''}
+                ${card.imageUrl ? `<img src="${card.imageUrl}" alt="" style="max-width:200px;max-height:100px;" class="mb-3">` : ''}
+                ${card.content ? `<p>${card.content}</p>` : ''}
                 ${card.price ? `<p><strong>Price:</strong> ${card.price}</p>` : ''}
+                <pre style="white-space:pre-wrap;">${card.description || ''}</pre>
                 <hr>
-                <pre style="font-size:0.85em;white-space:pre-wrap;">${JSON.stringify(card, null, 2)}</pre>
+                <pre style="font-size:0.9em;">${JSON.stringify(card, null, 2)}</pre>
               </div>
             </div>
-          </div>`;
+          </div>
+        `;
         document.body.appendChild(modal);
         const bsModal = new bootstrap.Modal(modal);
         bsModal.show();
         modal.addEventListener('hidden.bs.modal', () => {
           document.body.removeChild(modal);
         });
-      }
     }
 
-    if (typeof validateHypaData === 'undefined') {
-      // (Optional) If validateHypaData somehow missing, you can move its implementation here.
+    // === NEW: Function to show validation details modal ===
+    function showHypaValidationDetails() {
+        const stats = window.hypaValidationStats;
+        if (!stats || stats.validationErrors.length === 0) {
+            showAnalysisToast('No validation errors to display.', 'info');
+            return;
+        }
+        
+        // Group errors by type
+        const errorGroups = {};
+        stats.validationErrors.forEach(error => {
+            error.errors.forEach(err => {
+                if (!errorGroups[err]) {
+                    errorGroups[err] = [];
+                }
+                errorGroups[err].push(error);
+            });
+        });
+        
+        let modalContent = `
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Validation Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>${stats.invalidCards} cards failed validation</strong> and were replaced with placeholder cards.
+                    You can review the details below and decide if you want to adjust the validation rules.
+                </div>
+                
+                <div class="accordion" id="validationAccordion">
+    `;
+        
+        Object.entries(errorGroups).forEach(([errorType, errors], index) => {
+            const errorCount = errors.length;
+            modalContent += `
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
+                            <span class="badge bg-danger me-2">${errorCount}</span>
+                            ${errorType}
+                        </button>
+                    </h2>
+                    <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" data-bs-parent="#validationAccordion">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Card Title</th>
+                                            <th>Card Type</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+        `;
+        
+        errors.forEach(error => {
+            modalContent += `
+                <tr>
+                    <td><code>${error.sku}</code></td>
+                    <td>${error.cardTitle}</td>
+                    <td><span class="badge bg-secondary">${error.cardType}</span></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-info btn-sm" onclick="viewHypaCardDetails('${error.sku}', '${error.cardTitle}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        modalContent += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        modalContent += `
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" onclick="exportHypaValidationReport()">
+                    <i class="fas fa-download me-2"></i>Export Report
+                </button>
+            </div>
+        `;
+        
+        // Create and show modal
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.id = 'hypaValidationModal';
+        modal.innerHTML = `
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    ${modalContent}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        
+        // Clean up modal when hidden
+        modal.addEventListener('hidden.bs.modal', () => {
+            document.body.removeChild(modal);
+        });
     }
 
-    // Expose helpers globally
-    window.getCardTypeDisplayName = getCardTypeDisplayName;
-    window.showCardDetailsModal = showCardDetailsModal;
-    // ───────────────────────────────────────────────────────────────────────────
-  });
+    // === NEW: Function to view specific card details ===
+    function viewHypaCardDetails(sku, cardTitle) {
+        // This would show the original card content vs expected format
+        showAnalysisToast(`Viewing details for ${cardTitle} (SKU: ${sku})`, 'info');
+        // TODO: Implement detailed card comparison view
+    }
+
+    // === NEW: Function to export validation report ===
+    function exportHypaValidationReport() {
+        const stats = window.hypaValidationStats;
+        if (!stats) return;
+        
+        const report = {
+            timestamp: new Date().toISOString(),
+            summary: {
+                totalCards: stats.totalCards,
+                validCards: stats.validCards,
+                invalidCards: stats.invalidCards,
+                placeholderCards: stats.placeholderCards
+            },
+            errorTypes: stats.errorTypes,
+            validationErrors: stats.validationErrors
+        };
+        
+        const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `hypa-validation-report-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showAnalysisToast('Validation report exported successfully.', 'success');
+    }
+
+    // Make functions globally available
+    window.showHypaValidationDetails = showHypaValidationDetails;
+    window.viewHypaCardDetails = viewHypaCardDetails;
+    window.exportHypaValidationReport = exportHypaValidationReport;
+
+    // === EXPORT WORKFLOW FUNCTIONS ===
+    
+    // Step 1: Start Analysis
+    async function startExportAnalysis() {
+        console.log('Starting export analysis...');
+        
+        // Update progress
+        updateExportProgress(1, 'Analyzing local cards and Hypa metafields...');
+        
+        // Always fetch cards from disk via API
+        let localCards = [];
+        try {
+            const response = await fetch('/api/cards');
+            if (response.ok) {
+                localCards = await response.json();
+                console.log('[Export Analysis] Loaded cards from disk:', localCards.length);
+                console.log('[Export Analysis] Card data sample:', localCards.slice(0, 3)); // Show first 3 cards for inspection
+            } else {
+                console.error('[Export Analysis] Failed to load cards from disk, status:', response.status);
+            }
+        } catch (err) {
+            console.error('[Export Analysis] Error loading cards from disk:', err);
+        }
+        
+        const localTotalCards = localCards.length;
+        const localWithWebdavImages = localCards.filter(card => {
+            // Exclude placeholder cards from image count too
+            if ((card.id && String(card.id).toLowerCase().includes('placeholder')) || 
+                (card.title && String(card.title).toLowerCase().includes('placeholder'))) {
+                return false;
+            }
+            return card.webdavPath && card.uploadDate;
+        }).length;
+        const localReadyToExport = localCards.filter(card => {
+            // Exclude placeholder cards by id or title
+            if ((card.id && String(card.id).toLowerCase().includes('placeholder')) || (card.title && String(card.title).toLowerCase().includes('placeholder'))) {
+                return false;
+            }
+            let ready = false;
+            let missing = [];
+            const type = (card.cardType || card.type || '').toLowerCase();
+            if (type === 'feature') {
+                if (!card.title) missing.push('title');
+                if (!card.description) missing.push('description');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            } else if (type === 'product-options' || type === 'option') {
+                if (!card.title) missing.push('title');
+                if (!card.price) missing.push('price');
+                if (!card.description) missing.push('description');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            } else if (type === 'specification-table' || type === 'spec') {
+                if (!card.content) missing.push('content');
+                ready = missing.length === 0;
+            } else if (type === 'cargo-options' || type === 'cargo') {
+                if (!card.title) missing.push('title');
+                if (!card.description) missing.push('description');
+                if (!card.price) missing.push('price');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            } else if (type === 'weather-protection' || type === 'weather') {
+                if (!card.title) missing.push('title');
+                if (!card.description) missing.push('description');
+                if (!card.price) missing.push('price');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            }
+            if (!ready) {
+                console.log(`[Not Ready] Card ID: ${card.id || card.sku}, Type: ${type}, Missing: ${missing.join(', ')}`);
+            }
+            return ready;
+        }).length;
+        
+        // Update local stats
+        document.getElementById('localTotalCards').textContent = localTotalCards;
+        document.getElementById('localWithImages').textContent = localWithWebdavImages;
+        document.getElementById('localReadyToExport').textContent = localReadyToExport;
+        
+        console.log('Local stats updated:', { localTotalCards, localWithWebdavImages, localReadyToExport });
+        
+        // Check for existing Hypa data
+        const hypaData = window.hypaCsvData || null;
+        const hypaTotalMetafields = hypaData ? hypaData.length : 0;
+        const hypaLastUpdated = hypaData ? 'Available' : 'Not imported';
+        const hypaStatus = hypaData ? 'Connected' : 'No data';
+        
+        // Update Hypa stats (fix IDs to match HTML)
+        document.getElementById('hypaExistingCount').textContent = hypaTotalMetafields;
+        document.getElementById('hypaLastUpdated').textContent = hypaLastUpdated;
+        document.getElementById('hypaConnectionStatus').textContent = hypaStatus;
+        
+        console.log('Hypa stats updated:', { hypaTotalMetafields, hypaLastUpdated, hypaStatus });
+        
+        // Move to step 2
+        console.log('Analysis complete. Moving to comparison step in 10 seconds...');
+        setTimeout(() => {
+            showExportStep(2);
+        }, 10000);
+    }
+    
+    // Perform comparison between local cards and Hypa data
+    function performExportComparison(localCards) {
+        console.log('Performing export comparison...');
+        
+        const results = {
+            new: [],
+            updates: [],
+            keep: [],
+            remove: [],
+            summary: {
+                new: 0,
+                updates: 0,
+                keep: 0,
+                remove: 0
+            }
+        };
+        
+        // If no Hypa data, all cards are new
+        if (!originalHypaCsvData || originalHypaCsvData.length === 0) {
+            localCards.forEach(card => {
+                results.new.push({
+                    ...card,
+                    action: 'new',
+                    reason: 'No Hypa data available'
+                });
+            });
+            results.summary.new = localCards.length;
+            return results;
+        }
+        
+        // Compare each local card with Hypa data
+        localCards.forEach(card => {
+            const hypaRow = originalHypaCsvData.find(row => row.sku === card.sku);
+            
+            if (!hypaRow) {
+                // New card - doesn't exist in Hypa
+                results.new.push({
+                    ...card,
+                    action: 'new',
+                    reason: 'SKU not found in Hypa data'
+                });
+                results.summary.new++;
+            } else {
+                // Check if card exists in Hypa
+                const cardExistsInHypa = checkCardExistsInHypa(card, hypaRow);
+                
+                if (!cardExistsInHypa) {
+                    // New card for existing SKU
+                    results.new.push({
+                        ...card,
+                        action: 'new',
+                        reason: 'Card type not found in Hypa data'
+                    });
+                    results.summary.new++;
+                } else {
+                    // Check if content is different
+                    const contentChanged = checkCardContentChanged(card, hypaRow);
+                    
+                    if (contentChanged) {
+                        results.updates.push({
+                            ...card,
+                            action: 'update',
+                            reason: 'Content differs from Hypa version'
+                        });
+                        results.summary.updates++;
+                    } else {
+                        results.keep.push({
+                            ...card,
+                            action: 'keep',
+                            reason: 'Identical to Hypa version'
+                        });
+                        results.summary.keep++;
+                    }
+                }
+            }
+        });
+        
+        // Find cards in Hypa that should be removed (not in local cards)
+        originalHypaCsvData.forEach(hypaRow => {
+            const sku = hypaRow.sku;
+            const localCardsForSku = localCards.filter(card => card.sku === sku);
+            
+            // Check for cards in Hypa that don't exist locally
+            const hypaCardTypes = getHypaCardTypes(hypaRow);
+            hypaCardTypes.forEach(cardType => {
+                const localCardExists = localCardsForSku.some(card => 
+                    card.cardType === cardType.cardType && card.position === cardType.position
+                );
+                
+                if (!localCardExists) {
+                    results.remove.push({
+                        sku: sku,
+                        cardType: cardType.cardType,
+                        position: cardType.position,
+                        action: 'remove',
+                        reason: 'Card exists in Hypa but not locally'
+                    });
+                    results.summary.remove++;
+                }
+            });
+        });
+        
+        console.log('Export comparison results:', results);
+        return results;
+    }
+    
+    // Check if a card exists in Hypa data
+    function checkCardExistsInHypa(card, hypaRow) {
+        const columns = Object.keys(hypaRow);
+        
+        switch (card.cardType) {
+            case 'feature':
+                if (card.position) {
+                    const featureFlag = `shared.feature-${card.position}-card`;
+                    return columns.includes(featureFlag) && hypaRow[featureFlag] === 'enabled';
+                }
+                break;
+            case 'product-options':
+                if (card.position) {
+                    const optionFlag = `shared.option-${card.position}-card`;
+                    return columns.includes(optionFlag) && hypaRow[optionFlag] === 'enabled';
+                }
+                break;
+            case 'specification-table':
+            case 'spec':
+                return columns.includes('shared.spec-table') && hypaRow['shared.spec-table'] === 'enabled';
+            case 'cargo-options':
+                if (card.position) {
+                    const cargoFlag = `shared.cargo-option-${card.position}-card`;
+                    return columns.includes(cargoFlag) && hypaRow[cargoFlag] === 'enabled';
+                }
+                break;
+            case 'weather-protection':
+                if (card.position) {
+                    const weatherFlag = `shared.weather-option-${card.position}-card`;
+                    return columns.includes(weatherFlag) && hypaRow[weatherFlag] === 'enabled';
+                }
+                break;
+        }
+        return false;
+    }
+    
+    // Check if card content has changed
+    function checkCardContentChanged(card, hypaRow) {
+        const columns = Object.keys(hypaRow);
+        
+        switch (card.cardType) {
+            case 'feature':
+                if (card.position) {
+                    const titleField = `features.feature_${card.position}_title`;
+                    const descField = `features.feature_${card.position}_description`;
+                    const imageField = `features.feature_${card.position}_image`;
+                    
+                    return (columns.includes(titleField) && hypaRow[titleField] !== card.title) ||
+                           (columns.includes(descField) && hypaRow[descField] !== card.content) ||
+                           (columns.includes(imageField) && hypaRow[imageField] !== card.imageUrl);
+                }
+                break;
+            case 'product-options':
+                if (card.position) {
+                    const titleField = `options.option_${card.position}_title`;
+                    const descField = `options.option_${card.position}_description`;
+                    const imageField = `options.option_${card.position}_image`;
+                    
+                    return (columns.includes(titleField) && hypaRow[titleField] !== card.title) ||
+                           (columns.includes(descField) && hypaRow[descField] !== card.content) ||
+                           (columns.includes(imageField) && hypaRow[imageField] !== card.imageUrl);
+                }
+                break;
+            case 'specification-table':
+            case 'spec':
+                const specField = 'specification_table_content';
+                return columns.includes(specField) && hypaRow[specField] !== card.content;
+        }
+        return false;
+    }
+    
+    // Get card types from Hypa row
+    function getHypaCardTypes(hypaRow) {
+        const cardTypes = [];
+        const columns = Object.keys(hypaRow);
+        
+        columns.forEach(column => {
+            if (column.match(/^shared\.feature-\d+-card$/) && hypaRow[column] === 'enabled') {
+                const position = column.match(/feature-(\d+)-card/)[1];
+                cardTypes.push({ cardType: 'feature', position: parseInt(position) });
+            } else if (column.match(/^shared\.option-\d+-card$/) && hypaRow[column] === 'enabled') {
+                const position = column.match(/option-(\d+)-card/)[1];
+                cardTypes.push({ cardType: 'product-options', position: parseInt(position) });
+            } else if (column.match(/^shared\.cargo-option-\d+-card$/) && hypaRow[column] === 'enabled') {
+                const position = column.match(/cargo-option-(\d+)-card/)[1];
+                cardTypes.push({ cardType: 'cargo-options', position: parseInt(position) });
+            } else if (column.match(/^shared\.weather-option-\d+-card$/) && hypaRow[column] === 'enabled') {
+                const position = column.match(/weather-option-(\d+)-card/)[1];
+                cardTypes.push({ cardType: 'weather-protection', position: parseInt(position) });
+            } else if (column === 'shared.spec-table' && hypaRow[column] === 'enabled') {
+                cardTypes.push({ cardType: 'specification-table', position: 1 });
+            }
+        });
+        
+        return cardTypes;
+    }
+    
+    // Step 2: Show comparison results
+    function showExportComparisonResults() {
+        const results = window.exportComparisonResults;
+        if (!results) {
+            showAnalysisToast('No comparison results available. Please run analysis first.', 'error');
+            return;
+        }
+        
+        // Update counts
+        document.getElementById('exportNewCount').textContent = results.summary.new;
+        document.getElementById('exportUpdateCount').textContent = results.summary.updates;
+        document.getElementById('exportSkipCount').textContent = results.summary.keep;
+        document.getElementById('exportConflictCount').textContent = results.summary.remove;
+        
+        // Build comparison table
+        const tableBody = document.getElementById('exportComparisonTableBody');
+        tableBody.innerHTML = '';
+        
+        const allResults = [...results.new, ...results.updates, ...results.keep, ...results.remove];
+        
+        allResults.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.sku || 'N/A'}</td>
+                <td><span class="badge bg-secondary">${getCardTypeDisplayName(item.cardType)}</span></td>
+                <td><span class="badge bg-success">✓ Local</span></td>
+                <td><span class="badge bg-info">✓ Hypa</span></td>
+                <td><span class="badge bg-${getActionBadgeClass(item.action)}">${getActionText(item.action)}</span></td>
+                <td><small>${item.reason}</small></td>
+            `;
+            tableBody.appendChild(row);
+        });
+        
+        updateExportProgress(2, 'Comparison completed');
+    }
+    
+    // Step 3: Show selection interface
+    function showExportSelection() {
+        const results = window.exportComparisonResults;
+        if (!results) {
+            showAnalysisToast('No comparison results available. Please run analysis first.', 'error');
+            return;
+        }
+        
+        // Build selection table
+        const tableBody = document.getElementById('exportSelectionTableBody');
+        tableBody.innerHTML = '';
+        
+        const allResults = [...results.new, ...results.updates, ...results.keep, ...results.remove];
+        
+        allResults.forEach((item, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <input type="checkbox" class="form-check-input export-checkbox" 
+                           data-action="${item.action}" data-index="${index}" 
+                           ${item.action === 'remove' ? '' : 'checked'}>
+                </td>
+                <td>${item.sku || 'N/A'}</td>
+                <td><span class="badge bg-secondary">${getCardTypeDisplayName(item.cardType)}</span></td>
+                <td>${item.sku || 'N/A'}</td>
+                <td><span class="badge bg-${getActionBadgeClass(item.action)}">${getActionText(item.action)}</span></td>
+                <td>${item.lastModified || 'Unknown'}</td>
+                <td><span class="badge bg-success">Ready</span></td>
+            `;
+            tableBody.appendChild(row);
+        });
+        
+        // Update summary panel
+        updateExportSelectionSummary();
+        
+        updateExportProgress(3, 'Selection ready');
+    }
+    
+    // Step 4: Final export
+    function performFinalExport() {
+        const results = window.exportComparisonResults;
+        if (!results) {
+            showAnalysisToast('No comparison results available. Please run analysis first.', 'error');
+            return;
+        }
+        
+        // Get selected items
+        const selectedCheckboxes = document.querySelectorAll('.export-checkbox:checked');
+        const selectedItems = [];
+        
+        selectedCheckboxes.forEach(checkbox => {
+            const index = parseInt(checkbox.dataset.index);
+            const action = checkbox.dataset.action;
+            const allResults = [...results.new, ...results.updates, ...results.keep, ...results.remove];
+            if (allResults[index]) {
+                selectedItems.push(allResults[index]);
+            }
+        });
+        
+        // Update final counts
+        const finalCounts = {
+            new: selectedItems.filter(item => item.action === 'new').length,
+            updates: selectedItems.filter(item => item.action === 'update').length,
+            conflicts: selectedItems.filter(item => item.action === 'remove').length,
+            total: selectedItems.length
+        };
+        
+        document.getElementById('finalExportNewCount').textContent = finalCounts.new;
+        document.getElementById('finalExportUpdateCount').textContent = finalCounts.updates;
+        document.getElementById('finalExportConflictCount').textContent = finalCounts.conflicts;
+        document.getElementById('finalExportTotalCount').textContent = finalCounts.total;
+        
+        // Store selected items for export
+        window.selectedExportItems = selectedItems;
+        
+        updateExportProgress(4, 'Ready to export');
+    }
+    
+    // Helper functions
+    function updateExportProgress(step, description) {
+        const progress = (step / 4) * 100;
+        document.getElementById('exportProgress').style.width = `${progress}%`;
+        
+        // Update step badges
+        for (let i = 1; i <= 4; i++) {
+            const badge = document.getElementById(`exportStep${i}Badge`);
+            if (badge) {
+                if (i < step) {
+                    badge.className = 'badge bg-success';
+                } else if (i === step) {
+                    badge.className = 'badge bg-warning';
+                } else {
+                    badge.className = 'badge bg-secondary';
+                }
+            }
+        }
+    }
+    
+    function showExportStep(step) {
+        // Hide all steps
+        document.getElementById('exportAnalysisStep').style.display = 'none';
+        document.getElementById('exportComparisonStep').style.display = 'none';
+        document.getElementById('exportSelectionStep').style.display = 'none';
+        document.getElementById('exportFinalStep').style.display = 'none';
+        
+        // Show current step
+        switch (step) {
+            case 1:
+                document.getElementById('exportAnalysisStep').style.display = 'block';
+                break;
+            case 2:
+                document.getElementById('exportComparisonStep').style.display = 'block';
+                showExportComparisonResults();
+                break;
+            case 3:
+                document.getElementById('exportSelectionStep').style.display = 'block';
+                showExportSelection();
+                break;
+            case 4:
+                document.getElementById('exportFinalStep').style.display = 'block';
+                performFinalExport();
+                break;
+        }
+    }
+    
+    function getActionBadgeClass(action) {
+        switch (action) {
+            case 'new': return 'success';
+            case 'update': return 'warning';
+            case 'keep': return 'info';
+            case 'remove': return 'danger';
+            default: return 'secondary';
+        }
+    }
+    
+    function getActionText(action) {
+        switch (action) {
+            case 'new': return 'Add';
+            case 'update': return 'Update';
+            case 'keep': return 'Keep';
+            case 'remove': return 'Remove';
+            default: return action;
+        }
+    }
+    
+    function updateExportSelectionSummary() {
+        const checkboxes = document.querySelectorAll('.export-checkbox');
+        const summary = {
+            new: 0,
+            updates: 0,
+            keep: 0,
+            remove: 0
+        };
+        
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const action = checkbox.dataset.action;
+                summary[action]++;
+            }
+        });
+        
+        const summaryPanel = document.getElementById('exportSelectionSummaryPanel');
+        summaryPanel.innerHTML = `
+            <div class="alert alert-info">
+                <strong>Selected for export:</strong> 
+                ${summary.new} new, ${summary.updates} updates, ${summary.keep} keep, ${summary.remove} remove
+                (${summary.new + summary.updates + summary.keep + summary.remove} total)
+            </div>
+        `;
+    }
+    
+    // Event listeners for export workflow
+    function attachExportEventListeners() {
+        // Step 1: Start Analysis
+        const startAnalysisBtn = document.getElementById('startAnalysisBtn');
+        if (startAnalysisBtn) {
+            startAnalysisBtn.addEventListener('click', async () => {
+                await startExportAnalysis();
+            });
+        }
+        
+        // Step 2: Continue to Selection
+        const continueToSelectionBtn = document.getElementById('continueToSelectionBtn');
+        if (continueToSelectionBtn) {
+            continueToSelectionBtn.addEventListener('click', () => showExportStep(3));
+        }
+        
+        // Step 3: Continue to Export
+        const continueToExportBtn = document.getElementById('continueToExportBtn');
+        if (continueToExportBtn) {
+            continueToExportBtn.addEventListener('click', () => showExportStep(4));
+        }
+        
+        // Back buttons
+        const backToAnalysisBtn = document.getElementById('backToAnalysisBtn');
+        if (backToAnalysisBtn) {
+            backToAnalysisBtn.addEventListener('click', () => showExportStep(1));
+        }
+        
+        const backToComparisonBtn = document.getElementById('backToComparisonBtn');
+        if (backToComparisonBtn) {
+            backToComparisonBtn.addEventListener('click', () => showExportStep(2));
+        }
+        
+        const backToSelectionBtn = document.getElementById('backToSelectionBtn');
+        if (backToSelectionBtn) {
+            backToSelectionBtn.addEventListener('click', () => showExportStep(3));
+        }
+        
+        // Selection checkboxes
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('export-checkbox')) {
+                updateExportSelectionSummary();
+            }
+        });
+        
+        // Select all checkboxes
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', (e) => {
+                const checkboxes = document.querySelectorAll('.export-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = e.target.checked;
+                });
+                updateExportSelectionSummary();
+            });
+        }
+        
+        // Category select all checkboxes
+        ['selectAllAdd', 'selectAllUpdates', 'selectAllKeep', 'selectAllRemove'].forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                checkbox.addEventListener('change', (e) => {
+                    const action = id.replace('selectAll', '').toLowerCase();
+                    const checkboxes = document.querySelectorAll(`.export-checkbox[data-action="${action}"]`);
+                    checkboxes.forEach(cb => {
+                        cb.checked = e.target.checked;
+                    });
+                    updateExportSelectionSummary();
+                });
+            }
+        });
+        
+        // Final export button
+        const confirmExportBtn = document.getElementById('confirmExportBtn');
+        if (confirmExportBtn) {
+            confirmExportBtn.addEventListener('click', () => {
+                // Use the existing export function but with selected items
+                exportToHypaFormat();
+            });
+        }
+    }
+    
+    // Call this when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        attachExportEventListeners();
+    });
+
+    // Attach event listener when the Export to Hypa modal is shown
+    const exportHypaModal = document.getElementById('exportHypaModal');
+    if (exportHypaModal) {
+        exportHypaModal.addEventListener('shown.bs.modal', function () {
+            console.log('Export to Hypa modal shown, attaching export event listeners');
+            setTimeout(() => {
+                attachExportEventListeners();
+            }, 100);
+        });
+    }
+}); 

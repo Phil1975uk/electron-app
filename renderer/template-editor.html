@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Card Template Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tiny.cloud/1/tjsbmez9ghj8mzzrc9f700bph9ueczc7y7t7h5t11p8nrrew/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 100%; width: 100%; margin: 0; background: #222; padding: 20px; box-sizing: border-box; }
+    h1 { margin-top: 0; }
+    .navbar {
+      background: #222;
+      padding: 10px 20px;
+      display: flex;
+      gap: 20px;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .modal {
+      position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;
+    }
+    .modal-content {
+      background: #fff; padding: 30px; border-radius: 8px; min-width: 400px; max-width: 90vw; max-height: 90vh; overflow: auto;
+      position: relative;
+    }
+    .close {
+      position: absolute; top: 10px; right: 20px; font-size: 28px; cursor: pointer;
+    }
+    #previewContent {
+      min-width: 350px;
+      background: #f8f8f8;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    #saveAsModal input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    #saveAsModal button {
+      padding: 8px 16px;
+      font-size: 16px;
+    }
+    .editor-toolbar {
+      margin-bottom: 10px;
+    }
+    label {
+      color: #ffffff;
+    } 
+  </style>
+</head>
+<body>
+  <!-- Navigation/Header -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="https://store-c8jhcan2jv.mybigcommerce.com/product_images/e-bikebarn-logo-w_1681566343__57813.original.png" alt="E-Bike Barn" height="40" class="me-2">
+        <span>E-Bike Barn Configuration Manager</span>
+      </a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="card-creator.html">Card Creator</a>
+        <a class="nav-link" href="card-manager.html">Card Manager</a>
+        <a class="nav-link active" href="template-editor.html">Template Editor</a>
+        <a class="nav-link" href="webdav-explorer.html">File Explorer</a>
+        <a class="nav-link" href="import-analysis.html">Import Analysis</a>
+        <a class="nav-link" href="settings.html">Settings</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4" style="background: #fff;">
+    <h1 class="mb-4">Card Template Editor</h1>
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <form class="row g-2 align-items-center mb-3" onsubmit="return false;">
+          <div class="col-auto">
+            <label for="cardTypeSelect" class="form-label mb-0"><b>Card Type:</b></label>
+          </div>
+          <div class="col-auto">
+            <select id="cardTypeSelect" class="form-select" style="min-width: 350px; max-width: 400px; background: #fff;"></select>
+          </div>
+          <div class="col-auto">
+            <button id="loadTemplateBtn" type="button" class="btn btn-primary">Load Template</button>
+          </div>
+          <div class="col-auto">
+            <button id="previewBtn" type="button" class="btn btn-secondary">Preview</button>
+          </div>
+          <div class="col-auto">
+            <button id="saveBtn" type="button" class="btn btn-success">Save</button>
+          </div>
+          <div class="col-auto">
+            <button id="setActiveBtn" type="button" class="btn btn-warning" title="WARNING: Changing the active template may cause the app to become unresponsive. Do this only if you know what you are doing!">Set as Active</button>
+          </div>
+          <div class="col-auto">
+            <span id="templateStatus" class="ms-2" style="color:green;"></span>
+          </div>
+        </form>
+        <div class="mb-3">
+          <label for="templateEditor" class="form-label"><b>Template HTML:</b></label>
+          <textarea id="templateEditor"></textarea>
+        </div>
+        <div>
+          <label for="customCss" class="form-label"><b>Custom CSS (for preview only, scoped to preview area):</b></label>
+          <textarea id="customCss" class="form-control" style="min-height:80px;" placeholder="Paste CSS that would go above this card section in Stencil HTML"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-warning mt-3" style="max-width: 600px;" id="setActiveWarning">
+      <b>Warning:</b> Changing the active template may cause the app to become unresponsive. Do this only if you know what you are doing!
+    </div>
+  </div>
+
+  <!-- Modal for Preview -->
+  <div id="previewModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" id="closePreview">&times;</span>
+      <div id="previewContent"></div>
+    </div>
+  </div>
+
+  <!-- Modal for Save As (when editing original template) -->
+  <div id="saveAsModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" id="closeSaveAs">&times;</span>
+      <h2>Save As New Template</h2>
+      <input type="text" id="newTemplateName" placeholder="Enter new template name" />
+      <button id="confirmSaveAs">Save</button>
+    </div>
+  </div>
+
+  <script src="template-editor.js"></script>
+</body>
+</html> 

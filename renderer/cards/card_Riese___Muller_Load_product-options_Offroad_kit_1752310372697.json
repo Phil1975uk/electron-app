@@ -1,0 +1,39 @@
+{
+  "id": "1752310372697",
+  "sku": "F00932",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Offroad kit",
+  "description": "If you like riding your E-Bike off-road, then simply equip it with first-class Schwalbe Smart Sam Plus all-terrain tires. The tread pattern with a large contact area in the centre as well a pronounced outer profile for safe cornering ensures optimum off-road grip. A 3 mm protective cover around the inner tube provides extra-secure puncture resistance.",
+  "imageUrl": "renderer/cards/images/img_1752310370901_2in53460f.jpeg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_product-options_Offroad_kit_1752310372697.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/product-options/Load_Load4_product-options_offroad-kit.jpeg",
+  "uploadDate": "2025-07-12T15:34:46.053Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-12T15:34:41.520Z",
+    "DateUploaded": "2025-07-12T15:34:41.520Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-12T08:52:52.697Z",
+  "originalHypaData": {}
+}

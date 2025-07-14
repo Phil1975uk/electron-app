@@ -10,6 +10,7 @@ const DigestAuthClient = require('./digest-auth');
 const { exiftool } = require('exiftool-vendored');
 const tmp = require('tmp-promise');
 const os = require('os');
+const templateManager = require('./renderer/data/template-manager');
 
 let mainWindow;
 let server;
@@ -96,9 +97,7 @@ function startServer() {
     res.sendFile(path.join(__dirname, 'renderer', 'settings.html'));
   });
 
-  app.get('/csv-manager', (req, res) => {
-    res.sendFile(path.join(__dirname, 'renderer', 'csv-manager.html'));
-  });
+
 
   // Serve PapaParse library from node_modules
   app.get('/papaparse.min.js', (req, res) => {
@@ -142,6 +141,21 @@ function startServer() {
       res.json(cards);
     } catch (error) {
       console.error('Error reading cards:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // API route to serve Hypa CSV cache
+  app.get('/api/hypa-csv-cache', async (req, res) => {
+    try {
+      const cachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');
+      if (!fsSync.existsSync(cachePath)) {
+        return res.status(404).json({ error: 'Cache not found' });
+      }
+      const cacheData = await fs.readFile(cachePath, 'utf8');
+      res.json(JSON.parse(cacheData));
+    } catch (error) {
+      console.error('Error reading Hypa CSV cache:', error);
       res.status(500).json({ error: error.message });
     }
   });
@@ -721,16 +735,31 @@ function startServer() {
           let imageBuffer = null;
           let imageName = card.imageName || card.filename || 'image.jpg';
           if (card.imageUrl) {
-            console.log('[bulk-upload] Downloading image from:', card.imageUrl);
-            const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-            const response = await fetch(card.imageUrl);
-            if (!response.ok) throw new Error('Failed to download image');
-            imageBuffer = await response.buffer();
-            // Try to get filename from URL if not provided
-            if (!imageName && response.url) {
-              imageName = response.url.split('/').pop();
+            console.log('[bulk-upload] Processing image from:', card.imageUrl);
+            
+            // Handle local files vs external URLs
+            if (card.imageUrl.startsWith('http')) {
+              // External URL - use fetch
+              const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+              const response = await fetch(card.imageUrl);
+              if (!response.ok) throw new Error('Failed to download image');
+              imageBuffer = await response.buffer();
+              // Try to get filename from URL if not provided
+              if (!imageName && response.url) {
+                imageName = response.url.split('/').pop();
+              }
+              console.log(`[bulk-upload] Downloaded external image, bytes: ${imageBuffer.length}`);
+            } else {
+              // Local file - read directly from filesystem
+              const localPath = path.join(__dirname, card.imageUrl);
+              console.log('[bulk-upload] Reading local file from:', localPath);
+              imageBuffer = await fs.readFile(localPath);
+              // Try to get filename from path if not provided
+              if (!imageName) {
+                imageName = path.basename(card.imageUrl);
+              }
+              console.log(`[bulk-upload] Read local image, bytes: ${imageBuffer.length}`);
             }
-            console.log(`[bulk-upload] Downloaded image, bytes: ${imageBuffer.length}`);
           } else if (card.imageData) {
             // If imageData (base64) is provided
             imageBuffer = Buffer.from(card.imageData, 'base64');
@@ -1007,6 +1036,78 @@ function startServer() {
     }
   });
 
+  // List all templates for a card type
+  app.get('/api/templates/:cardType', async (req, res) => {
+    try {
+      const templates = await templateManager.listTemplates(req.params.cardType);
+      res.json({ templates });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Get the content of a template
+  app.get('/api/template/:cardType', async (req, res) => {
+    try {
+      const { path: templatePath } = req.query;
+      if (!templatePath) return res.status(400).json({ error: 'Missing template path' });
+      const templateName = templatePath.includes('master') ? 'master' : templatePath.split('/').pop().replace(`${req.params.cardType}-`, '').replace('.html', '');
+      const content = await templateManager.getTemplateContent(req.params.cardType, templateName);
+      res.json({ content });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Save a new custom template
+  app.post('/api/template/:cardType', async (req, res) => {
+    try {
+      const { name, content } = req.body;
+      await templateManager.saveCustomTemplate(req.params.cardType, name, content);
+      res.json({ success: true });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Set the active template for a card type
+  app.post('/api/template/:cardType/activate', async (req, res) => {
+    try {
+      const { templatePath } = req.body;
+      await templateManager.setActiveTemplate(req.params.cardType, templatePath);
+      res.json({ success: true });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Get the active template path for a card type
+  app.get('/api/template/:cardType/active', async (req, res) => {
+    try {
+      const templatePath = await templateManager.getActiveTemplatePath(req.params.cardType);
+      res.json({ templatePath });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Serve reference templates with real data
+  app.get('/reference-templates/:filename', async (req, res) => {
+    try {
+      const filename = req.params.filename;
+      const filePath = path.join(__dirname, 'renderer', 'reference-templates', filename);
+      
+      if (!fsSync.existsSync(filePath)) {
+        return res.status(404).json({ error: 'Reference template not found' });
+      }
+      
+      const content = await fs.readFile(filePath, 'utf8');
+      res.type('text/html').send(content);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // Helper function to format file size
   function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
@@ -1091,4 +1192,49 @@ ipcMain.handle('log-debug-info', (event, info) => {
   console.log('Writing to debug log:', info);
   const logEntry = `[${info.timestamp}] [${info.page}] ${info.message}\n${JSON.stringify(info.data, null, 2)}\n\n`;
   fsSync.appendFileSync(debugLogPath, logEntry, 'utf8');
+}); 
+
+ipcMain.handle('save-image-to-disk', async (event, { imageData, extension }) => {
+  try {
+    const imagesDir = path.join(__dirname, 'renderer', 'cards', 'images');
+    if (!fsSync.existsSync(imagesDir)) {
+      fsSync.mkdirSync(imagesDir, { recursive: true });
+    }
+    // Generate a unique filename
+    const filename = `img_${Date.now()}_${Math.random().toString(36).substr(2, 6)}.${extension || 'png'}`;
+    const filePath = path.join(imagesDir, filename);
+
+    let buffer;
+    if (imageData.startsWith('data:')) {
+      // Handle base64 data URL
+      const base64Data = imageData.split(',')[1];
+      buffer = Buffer.from(base64Data, 'base64');
+    } else if (/^https?:\/\//.test(imageData)) {
+      // Handle image URL
+      const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+      const response = await fetch(imageData);
+      if (!response.ok) throw new Error('Failed to fetch image from URL');
+      buffer = Buffer.from(await response.arrayBuffer());
+    } else {
+      throw new Error('Unsupported image data format');
+    }
+
+    await fs.writeFile(filePath, buffer);
+    return { success: true, filePath };
+  } catch (error) {
+    console.error('Error in save-image-to-disk:', error);
+    return { success: false, error: error.message };
+  }
+}); 
+
+ipcMain.handle('read-template-file', async (event, filePath) => {
+  return await fs.readFile(filePath, 'utf8');
+});
+ipcMain.handle('write-template-file', async (event, { filePath, content }) => {
+  await fs.writeFile(filePath, content, 'utf8');
+  return true;
+});
+ipcMain.handle('list-template-files', async (event, directory) => {
+  const files = await fs.readdir(directory);
+  return files.filter(f => f.endsWith('.html'));
 }); 

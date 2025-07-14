@@ -410,22 +410,87 @@ window.addEventListener('load', () => {
             alert('Please fill in all fields and add at least one variant');
             return;
         }
+        
+        // Check for duplicate SKUs across all configurations
+        const allSkus = [];
+        configurations.forEach(config => {
+            if (config.variants && Array.isArray(config.variants)) {
+                config.variants.forEach(variant => {
+                    if (variant.sku) {
+                        allSkus.push({ sku: variant.sku, config: config });
+                    }
+                });
+            }
+        });
+        
+        // Add current variants to check
+        variants.forEach(variant => {
+            if (variant.sku) {
+                allSkus.push({ sku: variant.sku, config: { brand, model, generation } });
+            }
+        });
+        
+        // Find duplicate SKUs
+        const duplicateSkus = [];
+        const skuCounts = {};
+        allSkus.forEach(item => {
+            skuCounts[item.sku] = (skuCounts[item.sku] || 0) + 1;
+        });
+        
+        Object.keys(skuCounts).forEach(sku => {
+            if (skuCounts[sku] > 1) {
+                const configsWithSku = allSkus.filter(item => item.sku === sku);
+                duplicateSkus.push({ sku, configs: configsWithSku });
+            }
+        });
+        
+        if (duplicateSkus.length > 0) {
+            let warningMessage = `⚠️ DUPLICATE SKUs DETECTED!\n\n`;
+            warningMessage += `The following SKUs are used in multiple configurations:\n\n`;
+            
+            duplicateSkus.forEach(duplicate => {
+                warningMessage += `SKU: "${duplicate.sku}" is used in:\n`;
+                duplicate.configs.forEach(config => {
+                    warningMessage += `• ${config.config.brand} - ${config.config.model} - ${config.config.generation}\n`;
+                });
+                warningMessage += `\n`;
+            });
+            
+            warningMessage += `This will cause issues with Hypa Metafields uploads.\n`;
+            warningMessage += `Each SKU must be unique across all products.\n\n`;
+            warningMessage += `Continue anyway?`;
+            
+            const continueAnyway = confirm(warningMessage);
+            if (!continueAnyway) {
+                return;
+            }
+        }
 
         // Find config by stringified ID for robustness
         let index = configurations.findIndex(config => config.id.toString() === id.toString());
         console.log('Found config at index:', index);
 
         if (index !== -1) {
-            // Prevent duplicate configs (same brand, model, generation, variants)
+            // Check for duplicate brand/model/generation combination (excluding current config)
             const isDuplicate = configurations.some((config, i) =>
                 i !== index &&
                 config.brand === brand &&
                 config.model === model &&
-                config.generation === generation &&
-                JSON.stringify(config.variants) === JSON.stringify(variants)
+                config.generation === generation
             );
+            
             if (isDuplicate) {
-                alert('A configuration with the same brand, model, generation, and variants already exists.');
+                alert(
+                    `⚠️ DUPLICATE CONFIGURATION DETECTED!\n\n` +
+                    `A configuration with Brand: "${brand}", Model: "${model}", Generation: "${generation}" already exists.\n\n` +
+                    `This will cause issues with Hypa Metafields because:\n` +
+                    `• SKUs must be unique across all products\n` +
+                    `• Duplicate configurations can cause data conflicts\n\n` +
+                    `Please either:\n` +
+                    `• Edit the existing configuration instead\n` +
+                    `• Use a different model/generation name\n` +
+                    `• Or ensure all variants have unique SKUs`
+                );
                 return;
             }
             configurations[index] = {
@@ -480,21 +545,55 @@ window.addEventListener('load', () => {
         }
     }
 
+    // Utility: Robust deep copy (uses structuredClone if available, else JSON fallback)
+    function deepCopy(obj) {
+        if (typeof structuredClone === 'function') {
+            return structuredClone(obj);
+        } else {
+            return JSON.parse(JSON.stringify(obj));
+        }
+    }
+
     function duplicateConfiguration(id) {
         const config = configurations.find(config => config.id === id);
         if (config) {
-            const variants = config.variants || [config.variant || ''];
-            const duplicatedVariants = variants.map(variant => `${variant} (Copy)`);
+            // Check for duplicate brand/model/generation combination
+            const isDuplicate = configurations.some(existingConfig => 
+                existingConfig.brand === config.brand &&
+                existingConfig.model === config.model &&
+                existingConfig.generation === config.generation
+            );
             
-            const newConfig = {
-                ...config,
-                id: Date.now(),
-                variants: duplicatedVariants
-            };
+            if (isDuplicate) {
+                const result = confirm(
+                    `A configuration with Brand: "${config.brand}", Model: "${config.model}", Generation: "${config.generation}" already exists.\n\n` +
+                    `Duplicating will create another configuration with the same brand/model/generation but NO variants.\n\n` +
+                    `You will need to add unique variants with unique SKUs manually.\n\n` +
+                    `Continue with duplication?`
+                );
+                if (!result) return;
+            }
+            
+            // Deep copy the configuration but CLEAR the variants to prevent SKU conflicts
+            const newConfig = deepCopy(config);
+            newConfig.id = Date.now();
+            newConfig.variants = []; // Clear variants - user must add unique ones
+            
             configurations.push(newConfig);
             saveConfigurations();
             updateFilterOptions();
             applyFilters();
+            
+            // Show warning about adding variants
+            setTimeout(() => {
+                alert(
+                    `Configuration duplicated successfully!\n\n` +
+                    `⚠️ IMPORTANT: Variants were NOT copied to prevent SKU conflicts.\n\n` +
+                    `You must now add unique variants with unique SKUs for this configuration.\n\n` +
+                    `Remember: Each SKU must be unique across all products for Hypa Metafields to work correctly.`
+                );
+            }, 100);
+            
             editConfiguration(newConfig.id);
         }
     }
@@ -938,36 +1037,9 @@ window.addEventListener('load', () => {
     };
 
     // Global functions for table actions
-    window.editConfiguration = function(id) {
-        const config = configurations.find(config => config.id === id);
-        if (config) {
-            document.getElementById('editId').value = config.id;
-            document.getElementById('editBrand').value = config.brand;
-            document.getElementById('editModel').value = config.model;
-            document.getElementById('editGeneration').value = config.generation;
-            setEditVariants(config.variants || []);
-            editModal.show();
-        }
-    };
-
-    window.duplicateConfiguration = function(id) {
-        const config = configurations.find(config => config.id === id);
-        if (config) {
-            const variants = config.variants || [config.variant || ''];
-            const duplicatedVariants = variants.map(variant => `${variant} (Copy)`);
-            
-            const newConfig = {
-                ...config,
-                id: Date.now(),
-                variants: duplicatedVariants
-            };
-            configurations.push(newConfig);
-            saveConfigurations();
-            updateFilterOptions();
-            applyFilters();
-            editConfiguration(newConfig.id);
-        }
-    };
+    window.editConfiguration = editConfiguration;
+    window.duplicateConfiguration = duplicateConfiguration;
+    window.deleteConfiguration = deleteConfiguration;
 
     // Initialize the application
     initializeElements();

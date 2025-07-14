@@ -1,0 +1,39 @@
+{
+  "id": "1752310447786",
+  "sku": "F00932",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "RX chip for RX services",
+  "description": "RX Connect takes your riding experience to a new level. The RX chip integrated into your bike is the foundation for using comprehensive connectivity features. Simply download the free RX Connect app, register your bike in your My Bike account, and select the service package available for your country.\nPlease note: The availability of RX Services, the included services, and the costs vary depending on the bike model and country. Detailed information can be found on the series page for each model and in the RX Services online shop.",
+  "imageUrl": "renderer/cards/images/img_1752310446364_92aiiztov.jpeg",
+  "price": "122.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_product-options_RX_chip_for_RX_services_1752310447786.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/product-options/Load_Load4_product-options_rx-chip-for-rx-services.jpeg",
+  "uploadDate": "2025-07-12T15:34:51.262Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-12T15:34:46.763Z",
+    "DateUploaded": "2025-07-12T15:34:46.763Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-12T08:54:07.786Z",
+  "originalHypaData": {}
+}

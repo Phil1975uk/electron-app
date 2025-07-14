@@ -1,0 +1,42 @@
+{
+  "id": "1752095106377",
+  "sku": "F00932",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Safety equipment",
+  "description": "It’s all about riding stability and visibility in traffic. You’ll remain safely on the saddle with the optional Bosch eBike ABS 2.0 with Magura CT brake and Suntour Mobie 34 fork. The daytime running light of the Supernova M99 Mini Pro headlight with main-beam function offers excellent lighting conditions at night and also increases your visibility during the day. And if you need to stop quickly, the Supernova M99 Tail Light ensures your safety while the standard Tektro cargo brake packs quite a punch.",
+  "imageUrl": "renderer/cards/images/img_1752094593306_5c7f0j.jpeg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_feature_Safety_equipment_1752095106377.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/feature/Load_Load4_feature_safety-equipment.jpeg",
+  "uploadDate": "2025-07-09T21:49:18.350Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-09T21:49:14.258Z",
+    "DateUploaded": "2025-07-09T21:49:14.258Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-09T21:12:16.991Z",
+  "originalHypaData": {},
+  "subtitle": "Safely to your destination.",
+  "originalFilename": "card_Riese___Muller_Load_feature_Safety_equipment_1752095106377.json",
+  "exportedToHypa": true
+}

@@ -1,0 +1,41 @@
+{
+  "id": "1752094563364",
+  "sku": "F00932",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Control Technology",
+  "description": "Admittedly, not everyone immediately thinks of fun on two wheels when you hear the words “Cargo Bike”. But this changes when you sit on a Load with Control Technology. The optimised chassis and the finely tuned full suspension ensure optimum comfort, safe riding even at higher speeds, excellent road holding and thus top-of-the-range riding dynamics. Vibrations and hard impacts, such as from cobblestones or kerbs, are significantly reduced and you are in control.",
+  "imageUrl": "renderer/cards/images/img_1752094539186_ffv2wq.jpeg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_feature_Control_Technology_1752094563364.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/feature/Load_Load4_feature_control-technology.jpeg",
+  "uploadDate": "2025-07-09T21:49:03.345Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-09T21:48:58.885Z",
+    "DateUploaded": "2025-07-09T21:48:58.885Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-09T20:56:03.364Z",
+  "originalHypaData": {},
+  "subtitle": "Fun and safety are not mutually exclusive.",
+  "exportedToHypa": true
+}

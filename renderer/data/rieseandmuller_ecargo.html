@@ -1,0 +1,707 @@
+---
+product:
+    videos:
+        limit: {{theme_settings.productpage_videos_count}}
+    reviews:
+        limit: {{theme_settings.productpage_reviews_count}}
+    related_products:
+        limit: {{theme_settings.productpage_related_products_count}}
+    similar_by_views:
+        limit: {{theme_settings.productpage_similar_by_views_count}}
+        
+gql: "query productById($productId: Int!) {
+  site {
+    product(entityId: $productId) {
+      metafields(namespace: \"shared\", keys: [\"feature-1-card\", \"feature-2-card\", \"feature-3-card\", \"feature-4-card\", \"feature-5-card\", \"feature-6-card\", \"feature-7-card\", \"feature-8-card\", \"feature-9-card\", \"feature-10-card\", \"option-1-card\", \"option-2-card\", \"option-3-card\", \"option-4-card\", \"option-5-card\", \"option-6-card\", \"option-7-card\", \"option-8-card\", \"option-9-card\", \"option-10-card\", \"option-11-card\", \"option-12-card\", \"cargo-option-1-card\", \"cargo-option-2-card\", \"cargo-option-3-card\", \"cargo-option-4-card\", \"cargo-option-5-card\", \"cargo-option-6-card\", \"cargo-option-7-card\", \"cargo-option-8-card\", \"cargo-option-9-card\", \"cargo-option-10-card\", \"cargo-option-11-card\", \"cargo-option-12-card\", \"weather-option-1-card\", \"weather-option-2-card\", \"weather-option-3-card\", \"weather-option-4-card\", \"weather-option-5-card\", \"weather-option-6-card\", \"weather-option-7-card\", \"weather-option-8-card\", \"weather-option-9-card\", \"weather-option-10-card\", \"weather-option-11-card\", \"weather-option-12-card\", \"spec-table\", ]) {
+        edges {
+          node {
+            id
+            key
+            value
+          }
+        }
+      }
+    }
+  }
+ }
+
+"    
+---
+{{inject 'productId' product.id}}
+
+{{#partial "page"}}
+
+    {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+
+    {{#each product.shipping_messages}}
+        {{> components/common/alert/alert-info message}}
+    {{/each}}
+
+    <div>
+        {{> components/vogue/product-view}}
+
+        {{{region name="product_below_content"}}}
+        
+        
+        
+<!-- Product Feature Section - Fetched from graphQl Shared Metafialds -->
+
+
+<!--  NEW CSS FROM CURSOR -->
+<!--  NEW CSS FROM CURSOR -->
+<!--  NEW CSS FROM CURSOR -->
+<!--  NEW CSS FROM CURSOR -->
+<!--  NEW CSS FROM CURSOR -->
+
+
+
+
+
+
+
+
+
+<!--  END OFF NEW CSS FROM CURSOR -->
+<!--  END OFF NEW CSS FROM CURSOR -->
+<!--  END OFF NEW CSS FROM CURSOR -->
+<!--  END OFF NEW CSS FROM CURSOR -->
+<!--  END OFF NEW CSS FROM CURSOR -->
+
+
+
+
+<style>
+ .product-feature-card {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-feature-card .feature-content {
+  flex: 1;
+}
+
+.product-feature-card .feature-content h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-feature-card .feature-content h3 {
+  font-size: 20px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.product-feature-card .feature-content p {
+  font-size: 16px;
+  color: #333;
+}
+
+.product-feature-card .feature-image {
+  flex: 0 0 40%; /* Adjust the width of the image side */
+  margin-right: 20px;
+}
+
+.product-feature-card .feature-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Media Query for Tablets and Desktops */
+@media (min-width: 768px) {
+  .product-feature-card {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .product-feature-card.reverse .feature-content {
+    order: 1; /* Reverse the order of content */
+  }
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 767px) {
+  .product-feature-card {
+    flex-direction: column;
+  }
+}
+
+</style>
+    
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-1-card'}}
+<h2>Product Features</h2>
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-2-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-3-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-4-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-5-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-6-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-7-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-8-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-9-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'feature-10-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+
+<!-- End Of Product Feature Section -->
+
+<!-- Product Options Section -->
+<!-- Product Options Section -->
+<!-- Product Options Section -->
+<!-- Product Options Section -->
+<!-- Product Options Section -->
+<!-- Product Options Section -->
+<!-- Product Options Section -->
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+<style>
+  .swiper-container {
+    width: 100%;
+    padding: 20px 0;
+    position: relative; /* Add position relative */
+  }
+
+  .swiper-slide {
+    width: 100%;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .card-info {
+    margin-top: auto;
+  }
+
+  .card-title {
+    font-weight: bold;
+  }
+
+  .card-description {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .card-price {
+    margin-top: 10px;
+    color: black;
+  }
+
+  .more-info-btn {
+    background-color: green;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+.swiper-pagination {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto; /* This will center the pagination horizontally */
+  bottom: 10px;
+  z-index: 10; /* Ensure the pagination is on top */
+}
+
+</style>
+
+<h2>Options</h2>
+
+<div class="swiper-container">
+  <div class="swiper-wrapper">
+
+    <!-- Start of swiper-slide for each option -->
+    <!-- Repeat this structure for all options -->
+
+ <!-- Start of swiper-slide for option 1 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-1-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 1 -->
+
+    <!-- Repeat the above structure for each option -->
+
+    <!-- Start of swiper-slide for option 2 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-2-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 2 -->
+    
+       <!-- Start of swiper-slide for option 3 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-3-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 3 -->
+    
+       <!-- Start of swiper-slide for option 4 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-4-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option  -->
+    
+       <!-- Start of swiper-slide for option 5 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-5-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 5 -->
+    
+       <!-- Start of swiper-slide for option 6 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-6-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 6 -->
+    
+     <!-- Start of swiper-slide for option 7 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-7-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 7 -->
+    
+     <!-- Start of swiper-slide for option 8 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-8-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 8 -->
+    
+     <!-- Start of swiper-slide for option 9 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-9-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 9 -->
+    
+     <!-- Start of swiper-slide for option 10 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-10-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 10 -->
+    
+     <!-- Start of swiper-slide for option 11 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-11-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 11 -->
+    
+     <!-- Start of swiper-slide for option 12 -->
+    <div class="swiper-slide">
+      {{#each gql.data.site.product.metafields.edges}}
+        {{#if node.key '===' 'option-12-card'}}
+          <div class="card">
+            {{{node.value}}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+    <!-- End of swiper-slide for option 12 -->
+
+    <!-- Repeat the above structure for each option -->
+    
+  </div>
+  <!-- Add Pagination inside swiper-container -->
+  <div class="swiper-pagination"></div>
+</div>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var swiper = new Swiper('.swiper-container', {
+      slidesPerView: 1,
+      spaceBetween: 10,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 4,
+        },
+      },
+      touchRatio: 0.5,
+    });
+
+    // JavaScript code to toggle more information
+    const moreInfoButtons = document.querySelectorAll('.more-info-btn');
+
+    moreInfoButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const cardDescription = button.parentElement.querySelector('.card-description');
+        cardDescription.style.display = cardDescription.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+  });
+</script>
+
+<!-- End of product options section -->
+
+
+
+<!-- Start of Cargo Options -->
+<!-- Product Cargo Options Section - Fetched from graphQl Shared Metafialds -->
+
+ 
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-1-card'}}
+<h2>Cargo Options</h2>
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-2-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-3-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-4-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-5-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-6-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-7-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-8-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-9-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-10-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-11-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'cargo-option-12-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+
+<!-- End of Cargo Options -->
+
+<!-- Start Of Weather Protection Options -->
+
+
+    
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-1-card'}}
+<h2>Weather Protection Options</h2>
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-2-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-3-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-4-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-5-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-6-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-7-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-8-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-9-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-10-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-11-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+{{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'weather-option-12-card'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+
+<!-- End of Weather Protection Options -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.container-center {
+  background-color: #f9f9f9;
+  padding: 15px;
+}
+  
+ .specs__table {
+    column-count: 3;
+    column-gap: 0;
+    margin-left: -12.5px;
+    margin-right: -12.5px;
+   
+}
+ .specs__item {
+    break-inside: avoid-column;
+    padding: 0 12.5px;
+} 
+  .specs__item-inner {
+    flex-direction: column;
+    display: flex;
+    border-bottom: 1px solid #000;
+    padding: 16px 0 3px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+  .specs__name {
+    font-family: inherit;
+    margin-bottom: 2px;
+    flex: 0 0 auto;
+    margin-right: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+}
+  .specs__value {
+    margin-bottom: 3px;
+    flex: 0 1 auto;
+}
+ .specs__footer {
+    margin-top: 50px;
+   font-size: 22px;
+}
+   @media (max-width: 850px) {
+    .specs__table {
+    column-count: 2;
+    column-gap: 0;
+    margin-left: -12.5px;
+    margin-right: -12.5px;
+}
+  }
+   @media (max-width: 425px) {
+    .specs__table {
+    column-count: 1;
+    column-gap: 0;
+    margin-left: -12.5px;
+    margin-right: -12.5px;
+}
+  }
+  .addition {
+    font-size: 20px;
+  }
+</style>
+<div>
+  {{#each gql.data.site.product.metafields.edges}}
+{{#if node.key '===' 'spec-table'}}
+{{{node.value}}}
+{{/if}}
+{{/each}}
+  
+</div>
+
+<!-- End of product options section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {{> components/vogue/tabs}}
+    </div>
+    
+
+    {{> components/products/schema}}
+{{/partial}}
+{{> layout/base}}

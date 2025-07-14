@@ -1,0 +1,39 @@
+{
+  "id": "1752310255537",
+  "sku": "F00932",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "SmartphoneGrip",
+  "description": "Its SmartphoneGrip transforms your mobile device into your bike’s display. Control the practical functions of your smartphone with the compact Purion 200 within thumb’s reach. Its adapter holds your smartphone firmly on the handlebar, charging it as you use it – either with or without cable. Suitable for use with all popular smartphones weighing a maximum of 276 g with the following dimensions: 123 to 175 mm long, 67 to 88 mm wide, and 6.8 to 13 mm deep (including case).",
+  "imageUrl": "renderer/cards/images/img_1752310252575_c8ev959oi.jpeg",
+  "price": "94.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_product-options_SmartphoneGrip_1752310255537.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/product-options/Load_Load4_product-options_smartphonegrip.jpeg",
+  "uploadDate": "2025-07-12T15:34:56.076Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-12T15:34:51.808Z",
+    "DateUploaded": "2025-07-12T15:34:51.808Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-12T08:50:55.537Z",
+  "originalHypaData": {}
+}

@@ -1,0 +1,41 @@
+{
+  "id": "1752094531860",
+  "sku": "F00932",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Safely transport up to three children",
+  "description": "Up to three children age 7 or younger can be carried comfortably and safely – well protected from the sun and rain under a practical cover. One of the children faces the rider while other two sit facing the direction of travel. The extra spacious footwell prevents your passengers from getting in each other’s way, guaranteed to contribute to a relaxed shared riding experience. Safely transport your youngest passengers in an infant car seat – ask your dealer for the correct bracket. (Loading surface approved for up to max. 70 kg. Please observe national regulations for the transport of children on bikes before using.)",
+  "imageUrl": "renderer/cards/images/img_1752094529335_1riv5n.jpeg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Load",
+    "generation": "Load4",
+    "variants": [
+      {
+        "name": "75 Vario",
+        "sku": "F00932"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Load_feature_Safely_transport_up_to_three_children_1752094531860.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Load/Load4/feature/Load_Load4_feature_safely-transport-up-to-three-children.jpeg",
+  "uploadDate": "2025-07-09T21:49:13.729Z",
+  "uploadMetadata": {
+    "Model": "Load",
+    "Generation": "Load4",
+    "Variants": "75 Vario",
+    "DateCreated": "2025-07-09T21:49:09.482Z",
+    "DateUploaded": "2025-07-09T21:49:09.482Z",
+    "ImageDescription": "Load Load4 - 75 Vario",
+    "UserComment": "Generation: Load4, Variants: 75 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-09T20:55:31.860Z",
+  "originalHypaData": {},
+  "subtitle": "The big one for the little ones.",
+  "exportedToHypa": true
+}

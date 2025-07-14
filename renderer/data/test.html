@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feature Card - Text Controls Height</title>
+  <style>
+    .feature-card-container {
+      display: flex;
+      align-items: stretch;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      background: #fff;
+      overflow: hidden;
+      margin: 32px auto;
+      width: 100%;
+      max-width: 1200px;
+    }
+    
+    .feature-card-text {
+      flex: 2 1 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 32px 40px 32px 56px;
+      background: #ededed;
+      min-width: 0;
+    }
+    
+    .feature-card-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      color: #25313c;
+      font-family: 'Georgia', serif;
+      line-height: 1.1;
+    }
+    
+    .feature-card-subtitle {
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin: 0 0 12px 0;
+      color: #6c757d;
+      font-family: 'Georgia', serif;
+    }
+    
+    .feature-card-description {
+      font-size: 1rem;
+      color: #25313c;
+      line-height: 1.6;
+      margin: 0;
+      font-family: 'Georgia', serif;
+    }
+    
+    .feature-card-image-container {
+      flex: 1 1 0;
+      display: flex;
+      align-items: stretch; /* Stretch image to fill container vertically */
+      justify-content: center;
+      background: #fff;
+      min-width: 0;
+      /* No padding! */
+    }
+    
+    .feature-card-image {
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 0 16px 16px 0;
+      display: block;
+      background: #fff;
+      /* No margin or padding! */
+    }
+    
+    @media (max-width: 900px) {
+      .feature-card-container {
+        flex-direction: column;
+        width: 100%;
+        max-width: 98vw;
+      }
+      .feature-card-text {
+        width: 100%;
+        padding: 18px 18px 12px 18px;
+        border-radius: 16px 16px 0 0;
+      }
+      .feature-card-image-container {
+        width: 100%;
+        justify-content: center;
+        border-radius: 0 0 16px 16px;
+        /* No padding! */
+        height: auto;
+      }
+      .feature-card-image {
+        max-width: 90vw;
+        max-height: 220px;
+        border-radius: 0 0 16px 16px;
+      }
+    }
+    </style>
+</head>
+<body>
+  <div class="feature-card-container">
+    <div class="feature-card-text">
+      <h2 class="feature-card-title">Control Technology</h2>
+      <div class="feature-card-subtitle">Smooth ride, even on rough terrain</div>
+      <div class="feature-card-description">
+        The full suspension ensures maximum comfort and safety, even on bumpy roads. Enjoy a stable and smooth ride wherever you go.<br><br>
+        <!-- Add more text here to see the card grow in height and the image shrink to fit -->
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, nisi eu consectetur consectetur, nisl nisi consectetur nisi, eu consectetur nisl nisi euismod nisi.
+      </div>
+    </div>
+    <div class="feature-card-image-container">
+      <img class="feature-card-image" src="https://assets.r-m.de/cms/media/filer_public/14/4c/144c676a-9707-40f1-ad35-d4ecc648611a/23_hlf_load75_peanut-mtt_vorbau_1436.jpg" alt="Control Technology">
+    </div>
+  </div>
+</body>
+</html>

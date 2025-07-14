@@ -416,26 +416,26 @@
       "id": 1751272330421.6716,
       "brand": "Riese & Muller",
       "model": "Ubn",
-      "generation": "Ubn",
+      "generation": "Five",
       "variants": [
         {
-          "name": "Five Touring",
+          "name": "Touring",
           "sku": "F01207"
         },
         {
-          "name": "Five Silent",
+          "name": "Silent",
           "sku": "F01208"
         },
         {
-          "name": "Five Singlespeed",
+          "name": "Singlespeed",
           "sku": "F01209"
         },
         {
-          "name": "Five Vario",
+          "name": "Vario",
           "sku": "F01210"
         },
         {
-          "name": "Five Commute",
+          "name": "Commute",
           "sku": "F01451"
         }
       ]
@@ -444,18 +444,18 @@
       "id": 1751272330421.5217,
       "brand": "Riese & Muller",
       "model": "Ubn",
-      "generation": "Ubn",
+      "generation": "Six",
       "variants": [
         {
-          "name": "Six Touring",
+          "name": "Touring",
           "sku": "F01213"
         },
         {
-          "name": "Six Silent",
+          "name": "Silent",
           "sku": "F01214"
         },
         {
-          "name": "Six Vario",
+          "name": "Vario",
           "sku": "F01215"
         }
       ]
@@ -464,22 +464,22 @@
       "id": 1751272330421.021,
       "brand": "Riese & Muller",
       "model": "Ubn",
-      "generation": "Ubn",
+      "generation": "Seven",
       "variants": [
         {
-          "name": "Seven Touring",
+          "name": "Touring",
           "sku": "F01218"
         },
         {
-          "name": "Seven Silent",
+          "name": "Silent",
           "sku": "F01219"
         },
         {
-          "name": "Seven Singlespeed",
+          "name": "Singlespeed",
           "sku": "F01220"
         },
         {
-          "name": "Seven Vario",
+          "name": "Vario",
           "sku": "F01221"
         }
       ]
@@ -607,7 +607,7 @@
     {
       "id": 1751272330421.738,
       "brand": "Riese & Muller",
-      "model": "Tinker2",
+      "model": "Tinker",
       "generation": "Tinker2",
       "variants": [
         {
@@ -647,7 +647,7 @@
     {
       "id": 1751272330421.167,
       "brand": "Riese & Muller",
-      "model": "Cruiser2",
+      "model": "Cruiser",
       "generation": "Cruiser2",
       "variants": [
         {
@@ -667,7 +667,7 @@
     {
       "id": 1751272330421.8423,
       "brand": "Riese & Muller",
-      "model": "Cruiser2",
+      "model": "Cruiser",
       "generation": "Cruiser2",
       "variants": [
         {
@@ -751,36 +751,12 @@
           "sku": "F01104"
         },
         {
-          "name": "Gt Touring Hs",
-          "sku": "F01103"
-        },
-        {
-          "name": "Gt Vario Hs",
-          "sku": "F01105"
-        },
-        {
           "name": "Gt Rohloff",
           "sku": "F01106"
         },
         {
-          "name": "Gt Rohloff Hs",
-          "sku": "F01107"
-        },
-        {
           "name": "Gt Automatic",
           "sku": "F01108"
-        },
-        {
-          "name": "Gt Touring Core",
-          "sku": "F01280"
-        },
-        {
-          "name": "Gt Vario Core",
-          "sku": "F01281"
-        },
-        {
-          "name": "Gt Vario Select",
-          "sku": "F01282"
         }
       ]
     },
@@ -791,44 +767,8 @@
       "generation": "Charger4",
       "variants": [
         {
-          "name": "Mixte Gt Touring",
-          "sku": "F01112"
-        },
-        {
-          "name": "Mixte Gt Touring Hs",
-          "sku": "F01114"
-        },
-        {
-          "name": "Mixte Gt Vario",
-          "sku": "F01113"
-        },
-        {
-          "name": "Mixte Gt Vario Hs",
-          "sku": "F01115"
-        },
-        {
-          "name": "Mixte Gt Automatic",
-          "sku": "F01118"
-        },
-        {
-          "name": "Mixte Gt Rohloff",
-          "sku": "F01116"
-        },
-        {
-          "name": "Mixte Gt Rohloff Hs",
-          "sku": "F01117"
-        },
-        {
-          "name": "Mixte Gt Touring Core",
-          "sku": "F01285"
-        },
-        {
-          "name": "Mixte Gt Vario Core",
-          "sku": "F01286"
-        },
-        {
-          "name": "Mixte Gt Vario Select",
-          "sku": "F01287"
+          "name": "Gt vario SELECT",
+          "sku": "F01282"
         }
       ]
     },
@@ -947,7 +887,7 @@
     {
       "id": 1751272330422.2175,
       "brand": "Riese & Muller",
-      "model": "Roaster4",
+      "model": "Roaster",
       "generation": "Roaster4",
       "variants": [
         {
@@ -1059,7 +999,7 @@
     {
       "id": 1751272330422.104,
       "brand": "Riese & Muller",
-      "model": "Swing4",
+      "model": "Swing",
       "generation": "Swing4",
       "variants": [
         {
@@ -1289,6 +1229,42 @@
         {
           "name": "Gt Rohloff",
           "sku": "F01440"
+        }
+      ]
+    },
+    {
+      "id": 1751993174537,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger4",
+      "variants": [
+        {
+          "name": "GT touring CORE",
+          "sku": "F01280"
+        },
+        {
+          "name": "GT vario CORE",
+          "sku": "F01281"
+        }
+      ]
+    },
+    {
+      "id": 1751993458223,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger4",
+      "variants": [
+        {
+          "name": "GT touring HS",
+          "sku": "F01103"
+        },
+        {
+          "name": "GT vario HS",
+          "sku": "F01105"
+        },
+        {
+          "name": "GT rohloff HS",
+          "sku": "F01107"
         }
       ]
     }

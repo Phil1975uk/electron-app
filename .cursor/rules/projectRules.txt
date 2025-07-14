@@ -1,0 +1,81 @@
+# Cursor Project Rules
+*Configuration file for AI-assisted development*
+
+## Project Context
+This is a Python web application using HTML, CSS, and JavaScript. The backend uses Python (likely Flask/Django), with frontend assets organized in static folders.
+
+## Code Style Rules
+- Use 4 spaces for Python indentation
+- Use 2 spaces for HTML, CSS, and JavaScript indentation
+- Follow PEP 8 for Python code
+- Use snake_case for Python variables and functions
+- Use kebab-case for CSS classes and IDs
+- Use camelCase for JavaScript variables and functions
+
+## File Organization Rules
+- Keep Python files in the root directory
+- Place CSS files in `/static/css/`
+- Place JavaScript files in `/static/js/`
+- Place HTML templates in `/templates/`
+- Place images in `/static/images/`
+- Use descriptive, lowercase filenames with underscores for Python files
+
+## Code Generation Rules
+- Always include proper error handling in Python functions
+- Add docstrings to all Python functions
+- Include comments for complex logic
+- Generate responsive CSS by default
+- Use semantic HTML elements
+- Implement proper form validation on both frontend and backend
+- Include loading states for asynchronous operations
+
+## Security Rules
+- Never hardcode sensitive data (API keys, passwords)
+- Always validate and sanitize user inputs
+- Use environment variables for configuration
+- Implement proper authentication checks
+- Escape user data in templates to prevent XSS
+
+## Testing Rules
+- Write testable functions with clear inputs and outputs
+- Include basic error cases in generated code
+- Add console.log statements for debugging JavaScript
+- Use Python's logging module for backend debugging
+
+## Dependencies Rules
+- Only suggest well-maintained, popular libraries
+- Always specify version numbers in requirements.txt
+- Prefer standard library solutions when possible
+- Ask before adding new dependencies
+
+## Database Rules (if applicable)
+- Use parameterized queries to prevent SQL injection
+- Include proper database connection error handling
+- Close database connections properly
+- Use database migrations for schema changes
+
+## Performance Rules
+- Optimize database queries
+- Minimize HTTP requests
+- Compress static assets
+- Use caching where appropriate
+- Lazy load images and content when possible
+
+## Accessibility Rules
+- Include proper ARIA labels
+- Use semantic HTML
+- Ensure keyboard navigation works
+- Provide alt text for images
+- Maintain proper color contrast
+
+## Documentation Rules
+- Add inline comments for complex business logic
+- Include usage examples in docstrings
+- Document API endpoints and their parameters
+- Keep README updated with setup instructions
+
+## Git Rules
+- Generate meaningful commit messages
+- Exclude sensitive files in .gitignore
+- Don't commit compiled files or cache directories
+- Include requirements.txt and environment setup files
