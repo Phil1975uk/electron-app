@@ -6678,24 +6678,95 @@ ${cardTitles}
 
             console.log(`Filtered export data to ${exportData.length} rows (from ${hypaCsvData.length} original rows)`);
 
-                    // Group selected items by SKU and card type to assign positions
-        const skuCardGroups = new Map();
+                    // Get the selected numbering system
+        const numberingSystem = document.getElementById('cardNumberingSystem')?.value || 'sequential';
         
-        selectedItems.forEach(item => {
-            const groupKey = `${item.sku}_${item.cardType}`;
-            if (!skuCardGroups.has(groupKey)) {
-                skuCardGroups.set(groupKey, []);
-            }
-            skuCardGroups.get(groupKey).push(item);
-        });
-        
-        // Assign positions to cards within each group
-        skuCardGroups.forEach((cards, groupKey) => {
-            cards.forEach((card, index) => {
-                // Assign position based on order in the group (1-based)
-                card.assignedPosition = index + 1;
-            });
-        });
+        // Apply the selected numbering system
+        switch (numberingSystem) {
+            case 'sequential':
+                // Simple sequential numbering across all selected cards (1, 2, 3, 4, 5...)
+                selectedItems.forEach((item, index) => {
+                    item.assignedPosition = index + 1;
+                });
+                break;
+                
+            case 'grouped':
+                // Group by SKU and card type, then number within each group
+                const skuCardGroups = new Map();
+                selectedItems.forEach(item => {
+                    const groupKey = `${item.sku}_${item.cardType}`;
+                    if (!skuCardGroups.has(groupKey)) {
+                        skuCardGroups.set(groupKey, []);
+                    }
+                    skuCardGroups.get(groupKey).push(item);
+                });
+                
+                skuCardGroups.forEach((cards, groupKey) => {
+                    cards.forEach((card, index) => {
+                        card.assignedPosition = index + 1;
+                    });
+                });
+                break;
+                
+            case 'alphabetical':
+                // Sort by title alphabetically, then assign sequential numbers
+                const sortedByTitle = [...selectedItems].sort((a, b) => {
+                    const titleA = (a.title || '').toLowerCase();
+                    const titleB = (b.title || '').toLowerCase();
+                    return titleA.localeCompare(titleB);
+                });
+                
+                sortedByTitle.forEach((item, index) => {
+                    item.assignedPosition = index + 1;
+                });
+                break;
+                
+            case 'creation-date':
+                // Sort by creation date (oldest first), then assign sequential numbers
+                const sortedByCreation = [...selectedItems].sort((a, b) => {
+                    const dateA = new Date(a.createdDate || 0);
+                    const dateB = new Date(b.createdDate || 0);
+                    return dateA - dateB;
+                });
+                
+                sortedByCreation.forEach((item, index) => {
+                    item.assignedPosition = index + 1;
+                });
+                break;
+                
+            case 'last-modified':
+                // Sort by last modified date (newest first), then assign sequential numbers
+                const sortedByModified = [...selectedItems].sort((a, b) => {
+                    const dateA = new Date(a.lastModified || 0);
+                    const dateB = new Date(b.lastModified || 0);
+                    return dateB - dateA; // Newest first
+                });
+                
+                sortedByModified.forEach((item, index) => {
+                    item.assignedPosition = index + 1;
+                });
+                break;
+                
+            case 'price':
+                // Sort by price (lowest first), then assign sequential numbers
+                const sortedByPrice = [...selectedItems].sort((a, b) => {
+                    const priceA = parseFloat(a.price || 0);
+                    const priceB = parseFloat(b.price || 0);
+                    return priceA - priceB;
+                });
+                
+                sortedByPrice.forEach((item, index) => {
+                    item.assignedPosition = index + 1;
+                });
+                break;
+                
+            default:
+                // Fallback to sequential
+                selectedItems.forEach((item, index) => {
+                    item.assignedPosition = index + 1;
+                });
+                break;
+        }
         
         // Map our selected cards back to the original CSV structure
         selectedItems.forEach(item => {
@@ -8808,6 +8879,10 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
                 isDisabled = !includeExcludedCards;
             }
             
+            // Calculate position based on current numbering system
+            const numberingSystem = document.getElementById('cardNumberingSystem')?.value || 'sequential';
+            const position = calculateCardPosition(item, Array.from(uniqueCards.values()), numberingSystem, index);
+            
             row.innerHTML = `
                 <td>
                     <input type="checkbox" class="form-check-input export-checkbox" 
@@ -8815,6 +8890,9 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
                            data-original-action="${item.action}"
                            ${isChecked ? 'checked' : ''}
                            ${isDisabled ? 'disabled' : ''}>
+                </td>
+                <td>
+                    <span class="badge bg-primary">${position}</span>
                 </td>
                 <td>
                     <strong>${item.sku || 'N/A'}</strong>
@@ -8867,9 +8945,67 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
         }
     }
     
+    // Calculate card position based on numbering system
+    function calculateCardPosition(item, allItems, numberingSystem, currentIndex) {
+        switch (numberingSystem) {
+            case 'sequential':
+                return currentIndex + 1;
+                
+            case 'grouped':
+                // Find position within the same SKU and card type group
+                const groupKey = `${item.sku}_${item.cardType}`;
+                const groupItems = allItems.filter(i => `${i.sku}_${i.cardType}` === groupKey);
+                const groupIndex = groupItems.findIndex(i => i === item);
+                return groupIndex + 1;
+                
+            case 'alphabetical':
+                // Find position in alphabetical order
+                const sortedByTitle = [...allItems].sort((a, b) => {
+                    const titleA = (a.title || '').toLowerCase();
+                    const titleB = (b.title || '').toLowerCase();
+                    return titleA.localeCompare(titleB);
+                });
+                const alphaIndex = sortedByTitle.findIndex(i => i === item);
+                return alphaIndex + 1;
+                
+            case 'creation-date':
+                // Find position by creation date (oldest first)
+                const sortedByCreation = [...allItems].sort((a, b) => {
+                    const dateA = new Date(a.createdDate || 0);
+                    const dateB = new Date(b.createdDate || 0);
+                    return dateA - dateB;
+                });
+                const creationIndex = sortedByCreation.findIndex(i => i === item);
+                return creationIndex + 1;
+                
+            case 'last-modified':
+                // Find position by last modified date (newest first)
+                const sortedByModified = [...allItems].sort((a, b) => {
+                    const dateA = new Date(a.lastModified || 0);
+                    const dateB = new Date(b.lastModified || 0);
+                    return dateB - dateA;
+                });
+                const modifiedIndex = sortedByModified.findIndex(i => i === item);
+                return modifiedIndex + 1;
+                
+            case 'price':
+                // Find position by price (lowest first)
+                const sortedByPrice = [...allItems].sort((a, b) => {
+                    const priceA = parseFloat(a.price || 0);
+                    const priceB = parseFloat(b.price || 0);
+                    return priceA - priceB;
+                });
+                const priceIndex = sortedByPrice.findIndex(i => i === item);
+                return priceIndex + 1;
+                
+            default:
+                return currentIndex + 1;
+        }
+    }
+
     // Attach event listeners for filtering and sorting
     function attachExportFilterListeners() {
-        const filters = ['skuSearchFilter', 'modelFilter', 'generationFilter', 'cardTypeFilter', 'actionFilter', 'sortFilter'];
+        const filters = ['skuSearchFilter', 'modelFilter', 'generationFilter', 'cardTypeFilter', 'actionFilter', 'sortFilter', 'cardNumberingSystem'];
         
         filters.forEach(filterId => {
             const element = document.getElementById(filterId);
@@ -8909,6 +9045,7 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
         document.getElementById('cardTypeFilter').value = '';
         document.getElementById('actionFilter').value = '';
         document.getElementById('sortFilter').value = 'sku';
+        document.getElementById('cardNumberingSystem').value = 'sequential';
         buildExportSelectionTable();
     }
     

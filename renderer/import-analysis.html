@@ -1012,6 +1012,7 @@
                                 <thead class="table-dark sticky-top">
                                     <tr>
                                         <th class="text-white fw-bold"><input type="checkbox" id="selectAllCheckbox"></th>
+                                        <th class="text-white fw-bold">Position</th>
                                         <th class="text-white fw-bold">SKU</th>
                                         <th class="text-white fw-bold">Card Type</th>
                                         <th class="text-white fw-bold">Title</th>
@@ -1087,6 +1088,19 @@
                                 <option value="csv">CSV File (Recommended for Hypa)</option>
                                 <option value="json">JSON File</option>
                             </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Card Numbering System:</label>
+                            <select class="form-select" id="cardNumberingSystem">
+                                <option value="sequential">Simple Sequential (1, 2, 3, 4, 5...)</option>
+                                <option value="grouped">Grouped by SKU & Type (1,2,3 per group)</option>
+                                <option value="alphabetical">Alphabetical by Title</option>
+                                <option value="creation-date">By Creation Date</option>
+                                <option value="last-modified">By Last Modified</option>
+                                <option value="price">By Price (for product options)</option>
+                            </select>
+                            <small class="form-text text-muted">Choose how card positions are numbered in the export</small>
                         </div>
 
                         <div class="mb-3">
