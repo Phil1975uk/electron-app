@@ -8878,127 +8878,156 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
         return currentIndex + 1;
     }
 
+    // Global variables for drag and drop
+    let draggedElement = null;
+    let isReorderMode = false;
+    
     // Initialize drag and drop functionality
     function initializeDragAndDrop() {
         const tableBody = document.getElementById('exportSelectionTableBody');
         if (!tableBody) return;
         
-        let draggedElement = null;
-        let isReorderMode = false;
-        
         // Toggle reorder mode
         const toggleReorderBtn = document.getElementById('toggleReorderBtn');
         if (toggleReorderBtn) {
-            toggleReorderBtn.addEventListener('click', () => {
-                isReorderMode = !isReorderMode;
-                toggleReorderBtn.innerHTML = isReorderMode ? 
-                    '<i class="fas fa-check me-1"></i>Done Reordering' : 
-                    '<i class="fas fa-arrows-alt me-1"></i>Reorder Cards';
-                toggleReorderBtn.className = isReorderMode ? 
-                    'btn btn-sm btn-success me-2' : 
-                    'btn btn-sm btn-outline-info me-2';
-                
-                // Update table appearance
-                const rows = tableBody.querySelectorAll('tr');
-                rows.forEach(row => {
-                    if (isReorderMode) {
-                        row.classList.add('reorder-mode');
-                        row.style.cursor = 'grab';
-                    } else {
-                        row.classList.remove('reorder-mode');
-                        row.style.cursor = 'default';
-                    }
-                });
-            });
+            // Remove existing event listener to prevent duplicates
+            toggleReorderBtn.removeEventListener('click', toggleReorderMode);
+            toggleReorderBtn.addEventListener('click', toggleReorderMode);
         }
         
-        // Drag start
-        tableBody.addEventListener('dragstart', (e) => {
-            if (!isReorderMode) {
-                e.preventDefault();
-                return;
-            }
-            draggedElement = e.target.closest('tr');
-            if (draggedElement) {
-                draggedElement.style.opacity = '0.5';
-                e.dataTransfer.effectAllowed = 'move';
-            }
-        });
+        // Remove existing event listeners to prevent duplicates
+        tableBody.removeEventListener('dragstart', handleDragStart);
+        tableBody.removeEventListener('dragend', handleDragEnd);
+        tableBody.removeEventListener('dragover', handleDragOver);
+        tableBody.removeEventListener('drop', handleDrop);
+        tableBody.removeEventListener('dragleave', handleDragLeave);
         
-        // Drag end
-        tableBody.addEventListener('dragend', (e) => {
-            if (draggedElement) {
-                draggedElement.style.opacity = '1';
-                draggedElement = null;
-            }
-        });
+        // Add event listeners
+        tableBody.addEventListener('dragstart', handleDragStart);
+        tableBody.addEventListener('dragend', handleDragEnd);
+        tableBody.addEventListener('dragover', handleDragOver);
+        tableBody.addEventListener('drop', handleDrop);
+        tableBody.addEventListener('dragleave', handleDragLeave);
+    }
+    
+    // Toggle reorder mode function
+    function toggleReorderMode() {
+        isReorderMode = !isReorderMode;
+        const toggleReorderBtn = document.getElementById('toggleReorderBtn');
+        const tableBody = document.getElementById('exportSelectionTableBody');
         
-        // Drag over
-        tableBody.addEventListener('dragover', (e) => {
-            if (!isReorderMode) return;
+        if (toggleReorderBtn) {
+            toggleReorderBtn.innerHTML = isReorderMode ? 
+                '<i class="fas fa-check me-1"></i>Done Reordering' : 
+                '<i class="fas fa-arrows-alt me-1"></i>Reorder Cards';
+            toggleReorderBtn.className = isReorderMode ? 
+                'btn btn-sm btn-success me-2' : 
+                'btn btn-sm btn-outline-info me-2';
+        }
+        
+        // Update table appearance
+        if (tableBody) {
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                if (isReorderMode) {
+                    row.classList.add('reorder-mode');
+                    row.style.cursor = 'grab';
+                } else {
+                    row.classList.remove('reorder-mode');
+                    row.style.cursor = 'default';
+                }
+            });
+        }
+    }
+    
+    // Drag event handlers
+    function handleDragStart(e) {
+        if (!isReorderMode) {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
+            return;
+        }
+        draggedElement = e.target.closest('tr');
+        if (draggedElement) {
+            draggedElement.style.opacity = '0.5';
+            e.dataTransfer.effectAllowed = 'move';
+        }
+    }
+    
+    function handleDragEnd(e) {
+        if (draggedElement) {
+            draggedElement.style.opacity = '1';
+            draggedElement = null;
+        }
+    }
+    
+    function handleDragOver(e) {
+        if (!isReorderMode) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        
+        const targetRow = e.target.closest('tr');
+        if (targetRow && targetRow !== draggedElement) {
+            const rect = targetRow.getBoundingClientRect();
+            const midpoint = rect.top + rect.height / 2;
             
-            const targetRow = e.target.closest('tr');
-            if (targetRow && targetRow !== draggedElement) {
-                const rect = targetRow.getBoundingClientRect();
-                const midpoint = rect.top + rect.height / 2;
-                
-                // Remove existing drop indicators
+            // Remove existing drop indicators
+            const tableBody = document.getElementById('exportSelectionTableBody');
+            if (tableBody) {
                 tableBody.querySelectorAll('.drop-above, .drop-below').forEach(el => {
                     el.classList.remove('drop-above', 'drop-below');
                 });
-                
-                if (e.clientY < midpoint) {
-                    targetRow.classList.add('drop-above');
-                } else {
-                    targetRow.classList.add('drop-below');
-                }
             }
-        });
+            
+            if (e.clientY < midpoint) {
+                targetRow.classList.add('drop-above');
+            } else {
+                targetRow.classList.add('drop-below');
+            }
+        }
+    }
+    
+    function handleDrop(e) {
+        if (!isReorderMode || !draggedElement) return;
+        e.preventDefault();
         
-        // Drop
-        tableBody.addEventListener('drop', (e) => {
-            if (!isReorderMode || !draggedElement) return;
-            e.preventDefault();
+        const targetRow = e.target.closest('tr');
+        if (targetRow && targetRow !== draggedElement) {
+            const draggedIndex = parseInt(draggedElement.getAttribute('data-index'));
+            const targetIndex = parseInt(targetRow.getAttribute('data-index'));
             
-            const targetRow = e.target.closest('tr');
-            if (targetRow && targetRow !== draggedElement) {
-                const draggedIndex = parseInt(draggedElement.getAttribute('data-index'));
-                const targetIndex = parseInt(targetRow.getAttribute('data-index'));
-                
-                // Reorder the cards array
-                const currentCards = Array.from(window.allExportResults || []);
-                const draggedCard = currentCards[draggedIndex];
-                
-                // Remove from original position
-                currentCards.splice(draggedIndex, 1);
-                // Insert at new position
-                currentCards.splice(targetIndex, 0, draggedCard);
-                
-                // Update the global array
-                window.allExportResults = currentCards;
-                
-                // Rebuild the table with new order
-                buildExportSelectionTable();
-                
-                showAnalysisToast(`Card "${draggedCard.title || draggedCard.sku}" moved to position ${targetIndex + 1}`, 'success');
-            }
+            // Reorder the cards array
+            const currentCards = Array.from(window.allExportResults || []);
+            const draggedCard = currentCards[draggedIndex];
             
-            // Remove drop indicators
+            // Remove from original position
+            currentCards.splice(draggedIndex, 1);
+            // Insert at new position
+            currentCards.splice(targetIndex, 0, draggedCard);
+            
+            // Update the global array
+            window.allExportResults = currentCards;
+            
+            // Rebuild the table with new order
+            buildExportSelectionTable();
+            
+            showAnalysisToast(`Card "${draggedCard.title || draggedCard.sku}" moved to position ${targetIndex + 1}`, 'success');
+        }
+        
+        // Remove drop indicators
+        const tableBody = document.getElementById('exportSelectionTableBody');
+        if (tableBody) {
             tableBody.querySelectorAll('.drop-above, .drop-below').forEach(el => {
                 el.classList.remove('drop-above', 'drop-below');
             });
-        });
-        
-        // Drag leave
-        tableBody.addEventListener('dragleave', (e) => {
-            if (!isReorderMode) return;
-            const targetRow = e.target.closest('tr');
-            if (targetRow) {
-                targetRow.classList.remove('drop-above', 'drop-below');
-            }
-        });
+        }
+    }
+    
+    function handleDragLeave(e) {
+        if (!isReorderMode) return;
+        const targetRow = e.target.closest('tr');
+        if (targetRow) {
+            targetRow.classList.remove('drop-above', 'drop-below');
+        }
     }
 
     // Attach event listeners for filtering and sorting

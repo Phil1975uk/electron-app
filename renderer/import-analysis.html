@@ -181,6 +181,88 @@
         .reorder-mode .drag-handle {
             color: #0d6efd !important;
         }
+        
+        /* Export table column widths */
+        #exportSelectionTable th:nth-child(1),
+        #exportSelectionTable td:nth-child(1) {
+            width: 50px;
+        }
+        
+        #exportSelectionTable th:nth-child(2),
+        #exportSelectionTable td:nth-child(2) {
+            width: 100px;
+        }
+        
+        #exportSelectionTable th:nth-child(3),
+        #exportSelectionTable td:nth-child(3) {
+            width: 120px;
+        }
+        
+        #exportSelectionTable th:nth-child(4),
+        #exportSelectionTable td:nth-child(4) {
+            width: 120px;
+        }
+        
+        #exportSelectionTable th:nth-child(5),
+        #exportSelectionTable td:nth-child(5) {
+            width: 200px;
+        }
+        
+        #exportSelectionTable th:nth-child(6),
+        #exportSelectionTable td:nth-child(6) {
+            width: 100px;
+        }
+        
+        #exportSelectionTable th:nth-child(7),
+        #exportSelectionTable td:nth-child(7) {
+            width: 120px;
+        }
+        
+        #exportSelectionTable th:nth-child(8),
+        #exportSelectionTable td:nth-child(8) {
+            width: 100px;
+        }
+        
+        /* Improve drag and drop visual feedback */
+        .reorder-mode tr {
+            transition: all 0.2s ease;
+        }
+        
+        .reorder-mode tr:hover {
+            background-color: #e3f2fd !important;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .drop-above {
+            border-top: 4px solid #0d6efd !important;
+            background-color: #e7f3ff !important;
+            position: relative;
+        }
+        
+        .drop-below {
+            border-bottom: 4px solid #0d6efd !important;
+            background-color: #e7f3ff !important;
+            position: relative;
+        }
+        
+        .drop-above::before,
+        .drop-below::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #0d6efd;
+        }
+        
+        .drop-above::before {
+            top: -2px;
+        }
+        
+        .drop-below::after {
+            bottom: -2px;
+        }
     </style>
 </head>
 <body>
@@ -955,29 +1037,39 @@
                         </div>
 
                         <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selectAllAdd" checked>
-                                <label class="form-check-label" for="selectAllAdd">
-                                    <span class="badge bg-success">Add</span> Keep all new cards (safe)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selectAllUpdates" checked>
-                                <label class="form-check-label" for="selectAllUpdates">
-                                    <span class="badge bg-warning">Updates</span> Keep all updated cards (will overwrite)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selectAllKeep" checked>
-                                <label class="form-check-label" for="selectAllKeep">
-                                    <span class="badge bg-info">Keep</span> Keep all unchanged cards (preserve)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selectAllRemove" checked>
-                                <label class="form-check-label" for="selectAllRemove">
-                                    <span class="badge bg-danger">Remove</span> Remove cards from website (clear)
-                                </label>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="selectAllAdd" checked>
+                                        <label class="form-check-label" for="selectAllAdd">
+                                            <span class="badge bg-success">Add</span> Keep all new cards (safe)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="selectAllUpdates" checked>
+                                        <label class="form-check-label" for="selectAllUpdates">
+                                            <span class="badge bg-warning">Updates</span> Keep all updated cards (will overwrite)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="selectAllKeep" checked>
+                                        <label class="form-check-label" for="selectAllKeep">
+                                            <span class="badge bg-info">Keep</span> Keep all unchanged cards (preserve)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="selectAllRemove" checked>
+                                        <label class="form-check-label" for="selectAllRemove">
+                                            <span class="badge bg-danger">Remove</span> Remove cards from website (clear)
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1034,7 +1126,7 @@
                             </div>
                         </div>
 
-                        <div class="table-responsive" style="max-height: 400px;">
+                        <div class="table-responsive" style="max-height: 500px;">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <small class="text-muted" id="exportSelectionCount">Loading...</small>
                                 <div>
