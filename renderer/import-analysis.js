@@ -6678,95 +6678,11 @@ ${cardTitles}
 
             console.log(`Filtered export data to ${exportData.length} rows (from ${hypaCsvData.length} original rows)`);
 
-                    // Get the selected numbering system
-        const numberingSystem = document.getElementById('cardNumberingSystem')?.value || 'sequential';
-        
-        // Apply the selected numbering system
-        switch (numberingSystem) {
-            case 'sequential':
-                // Simple sequential numbering across all selected cards (1, 2, 3, 4, 5...)
-                selectedItems.forEach((item, index) => {
-                    item.assignedPosition = index + 1;
-                });
-                break;
-                
-            case 'grouped':
-                // Group by SKU and card type, then number within each group
-                const skuCardGroups = new Map();
-                selectedItems.forEach(item => {
-                    const groupKey = `${item.sku}_${item.cardType}`;
-                    if (!skuCardGroups.has(groupKey)) {
-                        skuCardGroups.set(groupKey, []);
-                    }
-                    skuCardGroups.get(groupKey).push(item);
-                });
-                
-                skuCardGroups.forEach((cards, groupKey) => {
-                    cards.forEach((card, index) => {
-                        card.assignedPosition = index + 1;
-                    });
-                });
-                break;
-                
-            case 'alphabetical':
-                // Sort by title alphabetically, then assign sequential numbers
-                const sortedByTitle = [...selectedItems].sort((a, b) => {
-                    const titleA = (a.title || '').toLowerCase();
-                    const titleB = (b.title || '').toLowerCase();
-                    return titleA.localeCompare(titleB);
-                });
-                
-                sortedByTitle.forEach((item, index) => {
-                    item.assignedPosition = index + 1;
-                });
-                break;
-                
-            case 'creation-date':
-                // Sort by creation date (oldest first), then assign sequential numbers
-                const sortedByCreation = [...selectedItems].sort((a, b) => {
-                    const dateA = new Date(a.createdDate || 0);
-                    const dateB = new Date(b.createdDate || 0);
-                    return dateA - dateB;
-                });
-                
-                sortedByCreation.forEach((item, index) => {
-                    item.assignedPosition = index + 1;
-                });
-                break;
-                
-            case 'last-modified':
-                // Sort by last modified date (newest first), then assign sequential numbers
-                const sortedByModified = [...selectedItems].sort((a, b) => {
-                    const dateA = new Date(a.lastModified || 0);
-                    const dateB = new Date(b.lastModified || 0);
-                    return dateB - dateA; // Newest first
-                });
-                
-                sortedByModified.forEach((item, index) => {
-                    item.assignedPosition = index + 1;
-                });
-                break;
-                
-            case 'price':
-                // Sort by price (lowest first), then assign sequential numbers
-                const sortedByPrice = [...selectedItems].sort((a, b) => {
-                    const priceA = parseFloat(a.price || 0);
-                    const priceB = parseFloat(b.price || 0);
-                    return priceA - priceB;
-                });
-                
-                sortedByPrice.forEach((item, index) => {
-                    item.assignedPosition = index + 1;
-                });
-                break;
-                
-            default:
-                // Fallback to sequential
-                selectedItems.forEach((item, index) => {
-                    item.assignedPosition = index + 1;
-                });
-                break;
-        }
+                    // Use the custom order from drag-and-drop reordering
+        // The selectedItems array is already in the correct order from the user's drag-and-drop
+        selectedItems.forEach((item, index) => {
+            item.assignedPosition = index + 1;
+        });
         
         // Map our selected cards back to the original CSV structure
         selectedItems.forEach(item => {
@@ -8883,6 +8799,11 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
             const numberingSystem = document.getElementById('cardNumberingSystem')?.value || 'sequential';
             const position = calculateCardPosition(item, Array.from(uniqueCards.values()), numberingSystem, index);
             
+            // Add drag-and-drop attributes
+            row.setAttribute('draggable', 'true');
+            row.setAttribute('data-index', index);
+            row.setAttribute('data-original-index', originalIndex);
+            
             row.innerHTML = `
                 <td>
                     <input type="checkbox" class="form-check-input export-checkbox" 
@@ -8892,7 +8813,10 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
                            ${isDisabled ? 'disabled' : ''}>
                 </td>
                 <td>
-                    <span class="badge bg-primary">${position}</span>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-grip-vertical text-muted me-2 drag-handle" style="cursor: grab;"></i>
+                        <span class="badge bg-primary">${position}</span>
+                    </div>
                 </td>
                 <td>
                     <strong>${item.sku || 'N/A'}</strong>
@@ -8908,6 +8832,9 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
             `;
             tableBody.appendChild(row);
         });
+        
+        // Initialize drag and drop functionality
+        initializeDragAndDrop();
         
         // Update row count display
         const totalCount = window.allExportResults.length;
@@ -8945,67 +8872,138 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
         }
     }
     
-    // Calculate card position based on numbering system
+    // Calculate card position based on current order in the table
     function calculateCardPosition(item, allItems, numberingSystem, currentIndex) {
-        switch (numberingSystem) {
-            case 'sequential':
-                return currentIndex + 1;
+        // Simply return the current index + 1 (the order in the table is the order for export)
+        return currentIndex + 1;
+    }
+
+    // Initialize drag and drop functionality
+    function initializeDragAndDrop() {
+        const tableBody = document.getElementById('exportSelectionTableBody');
+        if (!tableBody) return;
+        
+        let draggedElement = null;
+        let isReorderMode = false;
+        
+        // Toggle reorder mode
+        const toggleReorderBtn = document.getElementById('toggleReorderBtn');
+        if (toggleReorderBtn) {
+            toggleReorderBtn.addEventListener('click', () => {
+                isReorderMode = !isReorderMode;
+                toggleReorderBtn.innerHTML = isReorderMode ? 
+                    '<i class="fas fa-check me-1"></i>Done Reordering' : 
+                    '<i class="fas fa-arrows-alt me-1"></i>Reorder Cards';
+                toggleReorderBtn.className = isReorderMode ? 
+                    'btn btn-sm btn-success me-2' : 
+                    'btn btn-sm btn-outline-info me-2';
                 
-            case 'grouped':
-                // Find position within the same SKU and card type group
-                const groupKey = `${item.sku}_${item.cardType}`;
-                const groupItems = allItems.filter(i => `${i.sku}_${i.cardType}` === groupKey);
-                const groupIndex = groupItems.findIndex(i => i === item);
-                return groupIndex + 1;
-                
-            case 'alphabetical':
-                // Find position in alphabetical order
-                const sortedByTitle = [...allItems].sort((a, b) => {
-                    const titleA = (a.title || '').toLowerCase();
-                    const titleB = (b.title || '').toLowerCase();
-                    return titleA.localeCompare(titleB);
+                // Update table appearance
+                const rows = tableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    if (isReorderMode) {
+                        row.classList.add('reorder-mode');
+                        row.style.cursor = 'grab';
+                    } else {
+                        row.classList.remove('reorder-mode');
+                        row.style.cursor = 'default';
+                    }
                 });
-                const alphaIndex = sortedByTitle.findIndex(i => i === item);
-                return alphaIndex + 1;
-                
-            case 'creation-date':
-                // Find position by creation date (oldest first)
-                const sortedByCreation = [...allItems].sort((a, b) => {
-                    const dateA = new Date(a.createdDate || 0);
-                    const dateB = new Date(b.createdDate || 0);
-                    return dateA - dateB;
-                });
-                const creationIndex = sortedByCreation.findIndex(i => i === item);
-                return creationIndex + 1;
-                
-            case 'last-modified':
-                // Find position by last modified date (newest first)
-                const sortedByModified = [...allItems].sort((a, b) => {
-                    const dateA = new Date(a.lastModified || 0);
-                    const dateB = new Date(b.lastModified || 0);
-                    return dateB - dateA;
-                });
-                const modifiedIndex = sortedByModified.findIndex(i => i === item);
-                return modifiedIndex + 1;
-                
-            case 'price':
-                // Find position by price (lowest first)
-                const sortedByPrice = [...allItems].sort((a, b) => {
-                    const priceA = parseFloat(a.price || 0);
-                    const priceB = parseFloat(b.price || 0);
-                    return priceA - priceB;
-                });
-                const priceIndex = sortedByPrice.findIndex(i => i === item);
-                return priceIndex + 1;
-                
-            default:
-                return currentIndex + 1;
+            });
         }
+        
+        // Drag start
+        tableBody.addEventListener('dragstart', (e) => {
+            if (!isReorderMode) {
+                e.preventDefault();
+                return;
+            }
+            draggedElement = e.target.closest('tr');
+            if (draggedElement) {
+                draggedElement.style.opacity = '0.5';
+                e.dataTransfer.effectAllowed = 'move';
+            }
+        });
+        
+        // Drag end
+        tableBody.addEventListener('dragend', (e) => {
+            if (draggedElement) {
+                draggedElement.style.opacity = '1';
+                draggedElement = null;
+            }
+        });
+        
+        // Drag over
+        tableBody.addEventListener('dragover', (e) => {
+            if (!isReorderMode) return;
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            
+            const targetRow = e.target.closest('tr');
+            if (targetRow && targetRow !== draggedElement) {
+                const rect = targetRow.getBoundingClientRect();
+                const midpoint = rect.top + rect.height / 2;
+                
+                // Remove existing drop indicators
+                tableBody.querySelectorAll('.drop-above, .drop-below').forEach(el => {
+                    el.classList.remove('drop-above', 'drop-below');
+                });
+                
+                if (e.clientY < midpoint) {
+                    targetRow.classList.add('drop-above');
+                } else {
+                    targetRow.classList.add('drop-below');
+                }
+            }
+        });
+        
+        // Drop
+        tableBody.addEventListener('drop', (e) => {
+            if (!isReorderMode || !draggedElement) return;
+            e.preventDefault();
+            
+            const targetRow = e.target.closest('tr');
+            if (targetRow && targetRow !== draggedElement) {
+                const draggedIndex = parseInt(draggedElement.getAttribute('data-index'));
+                const targetIndex = parseInt(targetRow.getAttribute('data-index'));
+                
+                // Reorder the cards array
+                const currentCards = Array.from(window.allExportResults || []);
+                const draggedCard = currentCards[draggedIndex];
+                
+                // Remove from original position
+                currentCards.splice(draggedIndex, 1);
+                // Insert at new position
+                currentCards.splice(targetIndex, 0, draggedCard);
+                
+                // Update the global array
+                window.allExportResults = currentCards;
+                
+                // Rebuild the table with new order
+                buildExportSelectionTable();
+                
+                showAnalysisToast(`Card "${draggedCard.title || draggedCard.sku}" moved to position ${targetIndex + 1}`, 'success');
+            }
+            
+            // Remove drop indicators
+            tableBody.querySelectorAll('.drop-above, .drop-below').forEach(el => {
+                el.classList.remove('drop-above', 'drop-below');
+            });
+        });
+        
+        // Drag leave
+        tableBody.addEventListener('dragleave', (e) => {
+            if (!isReorderMode) return;
+            const targetRow = e.target.closest('tr');
+            if (targetRow) {
+                targetRow.classList.remove('drop-above', 'drop-below');
+            }
+        });
     }
 
     // Attach event listeners for filtering and sorting
     function attachExportFilterListeners() {
-        const filters = ['skuSearchFilter', 'modelFilter', 'generationFilter', 'cardTypeFilter', 'actionFilter', 'sortFilter', 'cardNumberingSystem'];
+        const filters = ['skuSearchFilter', 'modelFilter', 'generationFilter', 'cardTypeFilter', 'actionFilter', 'sortFilter'];
         
         filters.forEach(filterId => {
             const element = document.getElementById(filterId);
@@ -9045,7 +9043,6 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
         document.getElementById('cardTypeFilter').value = '';
         document.getElementById('actionFilter').value = '';
         document.getElementById('sortFilter').value = 'sku';
-        document.getElementById('cardNumberingSystem').value = 'sequential';
         buildExportSelectionTable();
     }
     

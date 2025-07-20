@@ -148,6 +148,39 @@
             font-weight: bold;
             border-bottom: 2px solid #444 !important;
         }
+        
+        /* Drag and Drop Styles */
+        .reorder-mode {
+            background-color: #f8f9fa !important;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .reorder-mode:hover {
+            background-color: #e9ecef !important;
+            border-color: #adb5bd;
+        }
+        
+        .drop-above {
+            border-top: 3px solid #0d6efd !important;
+            background-color: #e7f3ff !important;
+        }
+        
+        .drop-below {
+            border-bottom: 3px solid #0d6efd !important;
+            background-color: #e7f3ff !important;
+        }
+        
+        .drag-handle {
+            cursor: grab;
+        }
+        
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        
+        .reorder-mode .drag-handle {
+            color: #0d6efd !important;
+        }
     </style>
 </head>
 <body>
@@ -1004,9 +1037,14 @@
                         <div class="table-responsive" style="max-height: 400px;">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <small class="text-muted" id="exportSelectionCount">Loading...</small>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearExportFilters()">
-                                    <i class="fas fa-times me-1"></i>Clear Filters
-                                </button>
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-outline-info me-2" id="toggleReorderBtn">
+                                        <i class="fas fa-arrows-alt me-1"></i>Reorder Cards
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearExportFilters()">
+                                        <i class="fas fa-times me-1"></i>Clear Filters
+                                    </button>
+                                </div>
                             </div>
                             <table class="table table-sm table-striped" id="exportSelectionTable">
                                 <thead class="table-dark sticky-top">
@@ -1090,18 +1128,7 @@
                             </select>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Card Numbering System:</label>
-                            <select class="form-select" id="cardNumberingSystem">
-                                <option value="sequential">Simple Sequential (1, 2, 3, 4, 5...)</option>
-                                <option value="grouped">Grouped by SKU & Type (1,2,3 per group)</option>
-                                <option value="alphabetical">Alphabetical by Title</option>
-                                <option value="creation-date">By Creation Date</option>
-                                <option value="last-modified">By Last Modified</option>
-                                <option value="price">By Price (for product options)</option>
-                            </select>
-                            <small class="form-text text-muted">Choose how card positions are numbered in the export</small>
-                        </div>
+
 
                         <div class="mb-3">
                             <label class="form-label">Export Options:</label>
