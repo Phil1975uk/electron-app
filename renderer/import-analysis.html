@@ -149,38 +149,7 @@
             border-bottom: 2px solid #444 !important;
         }
         
-        /* Drag and Drop Styles */
-        .reorder-mode {
-            background-color: #f8f9fa !important;
-            border: 2px dashed #dee2e6;
-        }
-        
-        .reorder-mode:hover {
-            background-color: #e9ecef !important;
-            border-color: #adb5bd;
-        }
-        
-        .drop-above {
-            border-top: 3px solid #0d6efd !important;
-            background-color: #e7f3ff !important;
-        }
-        
-        .drop-below {
-            border-bottom: 3px solid #0d6efd !important;
-            background-color: #e7f3ff !important;
-        }
-        
-        .drag-handle {
-            cursor: grab;
-        }
-        
-        .drag-handle:active {
-            cursor: grabbing;
-        }
-        
-        .reorder-mode .drag-handle {
-            color: #0d6efd !important;
-        }
+
         
         /* Export table column widths */
         #exportSelectionTable th:nth-child(1),
@@ -223,45 +192,26 @@
             width: 100px;
         }
         
-        /* Improve drag and drop visual feedback */
-        .reorder-mode tr {
-            transition: all 0.2s ease;
+        /* Up/Down button styling */
+        .move-up-btn, .move-down-btn {
+            padding: 0.125rem 0.25rem;
+            font-size: 0.75rem;
+            border-radius: 0.25rem;
         }
         
-        .reorder-mode tr:hover {
-            background-color: #e3f2fd !important;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .drop-above {
-            border-top: 4px solid #0d6efd !important;
-            background-color: #e7f3ff !important;
-            position: relative;
-        }
-        
-        .drop-below {
-            border-bottom: 4px solid #0d6efd !important;
-            background-color: #e7f3ff !important;
-            position: relative;
-        }
-        
-        .drop-above::before,
-        .drop-below::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 2px;
+        .move-up-btn:hover, .move-down-btn:hover {
             background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
         }
         
-        .drop-above::before {
-            top: -2px;
+        .move-up-btn:disabled, .move-down-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
-        .drop-below::after {
-            bottom: -2px;
+        .btn-group-sm .btn {
+            border-radius: 0.25rem;
         }
     </style>
 </head>
@@ -1130,9 +1080,6 @@
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <small class="text-muted" id="exportSelectionCount">Loading...</small>
                                 <div>
-                                    <button type="button" class="btn btn-sm btn-outline-info me-2" id="toggleReorderBtn">
-                                        <i class="fas fa-arrows-alt me-1"></i>Reorder Cards
-                                    </button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearExportFilters()">
                                         <i class="fas fa-times me-1"></i>Clear Filters
                                     </button>
