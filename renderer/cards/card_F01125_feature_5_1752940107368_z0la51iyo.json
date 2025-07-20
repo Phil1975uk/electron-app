@@ -1,0 +1,57 @@
+{
+  "id": "1752940104321",
+  "sku": "F01125",
+  "cardType": "feature",
+  "position": 5,
+  "title": "Battery Integration with DualBattery",
+  "content": "Whether you choose the standard setup with one battery (625 Wh) or the DualBattery option (1,250 Wh) for extended range and fewer charging stops, our complete battery integration sets a new standard for functionality. With strategically positioned batteries that minimally impact balance, the bike's sporty riding dynamics remain paramount. Plus, you can effortlessly remove the two batteries whenever needed.",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Homage4GT/BatteryIntegrationWithDualBattery.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.321Z",
+  "originalHypaData": {
+    "productId": "315",
+    "columnName": "shared.feature-5-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01123"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01125_feature_5_1752940107368_z0la51iyo.json"
+}

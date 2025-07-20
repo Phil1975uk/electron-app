@@ -1,0 +1,37 @@
+{
+  "id": "1752931025702",
+  "sku": "F01125-1",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Control Technology",
+  "content": "Riese & Müller Control Technology is synonymous with safety and dynamism: the perfectly tuned full suspension of the rear swing arm ensures a sporty riding experience and the best traction even at high speeds. The active rear swing arm, optimized front wheel suspension and co-sprung luggage carrier form the core of the Control Technology. The result is powerful propulsion and sporty riding without any loss of energy.",
+  "imageUrl": "https://www.r-m.de/media/filer_public/9a/bf/9abfbff9-0082-4356-af1c-3038f0865a86/21_hlf_hom_federung_5597.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.702Z",
+  "originalHypaData": {
+    "productId": "494",
+    "columnName": "shared.feature-1-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125-1"
+      }
+    ]
+  },
+  "filename": "card_F01125-1_feature_1_1752931030357_ww8t28mkg.json"
+}

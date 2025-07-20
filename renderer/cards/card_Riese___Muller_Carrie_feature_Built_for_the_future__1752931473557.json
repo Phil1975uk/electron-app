@@ -1,0 +1,58 @@
+{
+  "id": "1752931473557",
+  "sku": "F01170",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Built for the future.",
+  "description": "We have based the design of the Carrie on circular design principles. Its minimalist frame, 80% of which is made of recycled aluminium, is powder-coated to conserve resources. Carrie accessories are easy to dismantle, clean and repair, if necessary.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/56/74/5674d7f1-f12e-4755-9c9f-a3d3f28c45b1/my2025_carrie_hlf_zunkunft-1_1600x1067_web.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_feature_Built_for_the_future__1752931473557.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/feature/Carrie_Carrie_feature_built-for-the-future.jpg",
+  "uploadDate": "2025-07-19T20:44:52.710Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:44:48.011Z",
+    "DateUploaded": "2025-07-19T20:44:48.011Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:32:20.853Z",
+  "savedAt": "2025-07-19T13:24:33.557Z",
+  "originalHypaData": {},
+  "subtitle": "",
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_feature_Built_for_the_future__1752931473557.json"
+}

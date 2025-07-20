@@ -1,0 +1,45 @@
+{
+  "id": "1752940103041",
+  "sku": "F01132",
+  "cardType": "feature",
+  "position": 3,
+  "title": "Smart displays",
+  "content": "You can equip the control hub of the Roadster to meet your needs: the standard Bosch Purion 200 display is inconspicuously attached to the handlebar and provides the most important data and functions. You can also use navigation, route planning and other features with the optional Kiox 300 display.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-smart-displays.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.041Z",
+  "originalHypaData": {
+    "productId": "517",
+    "columnName": "shared.feature-3-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01132_feature_3_1752940107365_s3z4onlab.json"
+}

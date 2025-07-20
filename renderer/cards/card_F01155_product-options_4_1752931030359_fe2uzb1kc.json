@@ -1,0 +1,57 @@
+{
+  "id": "1752931026882",
+  "sku": "F01155",
+  "cardType": "product-options",
+  "position": 4,
+  "title": "Bosch eBike ABS 2.0",
+  "content": "The Bosch eBike ABS 2.0 ensures that you remain safely on the saddle even when you need to brake suddenly – on solid asphalt roads or gravel tracks. It prevents tires from slipping, the rear wheel lifting and the whole bike skidding out to the side.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/79-14-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282573",
+  "price": "£373.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:06.882Z",
+  "originalHypaData": {
+    "productId": "310",
+    "columnName": "shared.option-4-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01155"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01155_product-options_4_1752931030359_fe2uzb1kc.json"
+}

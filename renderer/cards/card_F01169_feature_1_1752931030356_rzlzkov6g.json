@@ -1,0 +1,63 @@
+{
+  "id": "17529310256494836",
+  "sku": "F01170",
+  "cardType": "feature",
+  "position": 1,
+  "title": "A bike for any time and anywhere.",
+  "description": "Minimal parking space and tight curves: you no longer have these worries with the Carrie. You can now ride around town with ease, just like on a normal bike, thanks to its 43 cm slim Basic Box. And, with a compact length of just two metres, there is always space for the Carrie in every bike store room.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/bb/44/bb441010-84f1-492a-a8ca-2ef9c5b0af6b/my2025_carrie_hlf_alle-faelle_1600x1067_web.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_F01169_feature_1_1752931030356_rzlzkov6g.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/feature/Carrie_Carrie_feature_a-bike-for-any-time-and-anywhere.jpg",
+  "uploadDate": "2025-07-19T20:43:57.992Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:43:52.813Z",
+    "DateUploaded": "2025-07-19T20:43:52.813Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": true,
+  "hypaUpdated": true,
+  "lastModified": "2025-07-19T18:32:08.745Z",
+  "savedAt": "2025-07-19T13:20:54.557Z",
+  "originalHypaData": {
+    "productId": "495",
+    "columnName": "shared.feature-1-card",
+    "isFormatError": true
+  },
+  "subtitle": "",
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "content": "\n<div style=\"\n    background: #f8d7da;\n    border: 2px dashed #dc3545;\n    border-radius: 8px;\n    padding: 20px;\n    margin: 10px 0;\n    text-align: center;\n    font-family: Arial, sans-serif;\n\">\n    <div style=\"\n        background: #dc3545;\n        color: #ffffff;\n        padding: 10px;\n        border-radius: 6px;\n        margin-bottom: 15px;\n        font-weight: bold;\n        font-size: 1.1rem;\n    \">\n        🚨 FORMAT ERROR - MULTIPLE CARDS IN SINGLE CELL\n    </div>\n    \n    <div style=\"margin-bottom: 15px;\">\n        <strong>Problem:</strong> Found 14 cards in shared.feature-1-card<br>\n        <strong>Expected:</strong> 1 card per cell<br>\n        <strong>Action Required:</strong> Recreate cards with correct format\n    </div>\n    \n    <div style=\"\n        background: #f8f9fa;\n        border: 1px solid #dee2e6;\n        border-radius: 6px;\n        padding: 15px;\n        margin: 15px 0;\n        text-align: left;\n    \">\n        <strong style=\"color: #dc3545;\">Cards Found in shared.feature-1-card:</strong>\n        <div style=\"margin: 10px 0; color: #dc3545; font-family: monospace; font-size: 0.9rem; white-space: pre-line;\">\n1. Compact Shape\n2. Compact Shape\n3. Compact Shape\n4. A bike for any time and anywhere.\n5. A bike for any time and anywhere.\n6. Effortless Electric Power\n7. Powerful Bosch Motor\n8. Powerful Bosch Motor\n9. Exceptional Ride Comfort\n10. Optimized Comfort Over All Terrains\n11. Optimized Comfort Over All Terrains\n12. Sustainable Cargo Solutions\n13. Environmentally Friendly Transport\n14. Environmentally Friendly Transport\n        </div>\n    </div>\n    \n    <div style=\"\n        background: #e7f3ff;\n        border: 1px solid #b3d9ff;\n        border-radius: 6px;\n        padding: 15px;\n        margin: 15px 0;\n        font-size: 0.9rem;\n    \">\n        <strong>How to Fix:</strong><br>\n        1. Use the Card Creator to recreate each card individually<br>\n        2. Each card should be in its own column (shared.feature-1-card, shared.feature-2-card, etc.)<br>\n        3. Export with correct format: 1 card per cell\n    </div>\n    \n    <div style=\"\n        background: #fff3cd;\n        border: 1px solid #ffc107;\n        border-radius: 6px;\n        padding: 10px;\n        margin: 15px 0;\n        font-size: 0.8rem;\n        color: #856404;\n    \">\n        <strong>Note:</strong> This placeholder represents 14 cards that need to be recreated with the correct format.\n    </div>\n</div>\n        ",
+  "originalFilename": "card_F01169_feature_1_1752931030356_rzlzkov6g.json"
+}

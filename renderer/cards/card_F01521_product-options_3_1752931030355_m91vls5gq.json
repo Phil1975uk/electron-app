@@ -1,0 +1,41 @@
+{
+  "id": "1752931025377",
+  "sku": "F01521",
+  "cardType": "product-options",
+  "position": 3,
+  "title": "Cockpit with Comfort display",
+  "content": "Your riding data can easily be read in all weather on the large Comfort display. And, thanks to its Bluetooth connectivity, you also have many additional functions available. Choose between permanent installation with a locking screw or a removable Comfort display. It is simple and reliable to control using the Remote in thumb’s reach. Vibration feedback and backlit keys ensure perfect operation, even when wearing gloves and in the dark. The Comfort display is perfectly integrated into the cockpit, with the internal cabling creating a clean look. Charge your smartphone while you ride using the USB-C charging socket. The angle-adjustable stem lets you switch between a sportier or more upright seat position.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage-pinion-cockpit-comfortdisplay.jpg?t=1730560800\n\n",
+  "price": "Additional £187.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.377Z",
+  "originalHypaData": {
+    "productId": "501",
+    "columnName": "shared.option-3-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion Hs",
+        "sku": "F01521"
+      },
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      }
+    ]
+  },
+  "filename": "card_F01521_product-options_3_1752931030355_m91vls5gq.json"
+}

@@ -1,0 +1,57 @@
+{
+  "id": "1752931698228",
+  "sku": "F01170",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "RX Chip for RX Services",
+  "description": "RX Connect takes your riding experience to a new level. The RX Chip integrated in the bike is required to use the extensive connectivity features. Simply download the free RX Connect app, register your bike in your My Bike service platform, and select the service package available for your country.\nPlease note: the availability of RX Services, the services included and the costs vary depending on the bike model and country. You can find detailed information on the series page of each model and in the RX Services Online Shop.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01170/84_16_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "122.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_RX_Chip_for_RX_Services_1752931698228.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/product-options/Carrie_Carrie_product-options_rx-chip-for-rx-services.jpg",
+  "uploadDate": "2025-07-19T20:46:04.167Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:46:00.280Z",
+    "DateUploaded": "2025-07-19T20:46:00.280Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:33:38.476Z",
+  "savedAt": "2025-07-19T13:28:18.228Z",
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_product-options_RX_Chip_for_RX_Services_1752931698228.json"
+}

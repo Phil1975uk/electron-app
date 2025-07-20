@@ -1,0 +1,53 @@
+{
+  "id": "1752940104636",
+  "sku": "F01154",
+  "cardType": "product-options",
+  "position": 6,
+  "title": "GX option with Fox suspension",
+  "content": "The Fox Float air suspension fork with 140 mm travel offers in combination with a first-class off-road package optimum riding conditions for discerning cyclists. The GRIP damping system reliably absorbs shocks from stones, sticks or roots lying on the way and effortlessly compensates for unevenness. With 15 finely adjustable rebound damping levels, this excellently manufactured air suspension fork can be tuned to any undertaking – whether uphill, downhill, field and forest tracks or asphalt. The solid tire studs on the shoulders of the Schwalbe Johnny Watts tires guarantee outstanding grip, especially when cornering. The wide VP 538 flat pedals provide grip for your feet. The sporty saddle an the adjustable X-Fusion Manic seatpost simply make off-road riding an absolute joy",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/83-16-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282574",
+  "price": "£559.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.636Z",
+  "originalHypaData": {
+    "productId": "309",
+    "columnName": "shared.option-6-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01154_product-options_6_1752940107369_8acqm06n1.json"
+}

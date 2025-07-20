@@ -1,0 +1,61 @@
+{
+  "id": "1752931025704",
+  "sku": "F01125-1",
+  "cardType": "product-options",
+  "position": 6,
+  "title": "Lowerable saddle",
+  "content": "With the lowered saddle, you can easily come to a comfortable stop without needing to dismount. Controlled remotely, the saddle adjusts, allowing your feet to reach the ground effortlessly.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/riese-and-muller-homage4-lowerable-sadle.jpg?t=1710947939",
+  "price": "£94.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.704Z",
+  "originalHypaData": {
+    "productId": "494",
+    "columnName": "shared.option-6-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125-1"
+      },
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01123"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01125-1_product-options_6_1752931030357_enh01tenq.json"
+}

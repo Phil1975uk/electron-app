@@ -754,9 +754,9 @@
                     <!-- Step 1: Analysis -->
                     <div id="exportAnalysisStep">
                         <div class="alert alert-info">
-                            <h6><i class="fas fa-info-circle me-2"></i>Analyzing Local Cards and Hypa Metafields</h6>
+                            <h6><i class="fas fa-info-circle me-2"></i>Local Cards and Hypa Metafields Analysis</h6>
                             <p class="mb-0">
-                                We'll compare your local cards with what's already in Hypa Metafields to show you what will be <strong>added</strong>, <strong>updated</strong>, <strong>kept</strong>, or <strong>removed</strong>.<br>
+                                Your data has been loaded and analyzed. Click "Continue to Comparison" to see what will be <strong>added</strong>, <strong>updated</strong>, <strong>kept</strong>, or <strong>removed</strong>.<br>
                                 <strong>Label criteria:</strong><br>
                                 <ul style="margin-bottom:0;">
                                     <li><strong>Add</strong>: This card does not exist in Hypa and will be added to an existing row.</li>
@@ -817,7 +817,7 @@
                         </div>
                         
                         <button type="button" class="btn btn-primary" id="startAnalysisBtn">
-                            <i class="fas fa-search me-2"></i>Start Analysis
+                            <i class="fas fa-arrow-right me-2"></i>Continue to Comparison
                         </button>
                     </div>
 
@@ -826,7 +826,7 @@
                         <h6><i class="fas fa-exchange-alt me-2"></i>Comparison Results</h6>
                         
                         <div class="row mb-4">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="card bg-success text-white">
                                     <div class="card-body text-center">
                                         <h4 id="exportNewCount">0</h4>
@@ -834,7 +834,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="card bg-warning text-dark">
                                     <div class="card-body text-center">
                                         <h4 id="exportUpdateCount">0</h4>
@@ -842,7 +842,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="card bg-info text-white">
                                     <div class="card-body text-center">
                                         <h4 id="exportSkipCount">0</h4>
@@ -850,7 +850,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="card bg-danger text-white">
                                     <div class="card-body text-center">
                                         <h4 id="exportConflictCount">0</h4>
@@ -858,7 +858,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <div class="card bg-secondary text-white">
+                                    <div class="card-body text-center">
+                                        <h4 id="exportExcludedCount">0</h4>
+                                        <small>Excluded</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Excluded SKUs Summary -->
+                        <div id="excludedSkusSummary"></div>
 
                         <div class="table-responsive" style="max-height: 400px;">
                             <table class="table table-sm table-striped" id="exportComparisonTable">
@@ -896,6 +907,20 @@
                             <strong>Review Carefully:</strong> Select which cards you want to keep in the final CSV. Unselected cards will be removed/cleared from the website.
                         </div>
 
+                        <!-- Override Options -->
+                        <div class="mb-3" id="overrideOptions" style="display: none;">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Override Options:</strong> You can choose to include incomplete cards, but this may cause data loss.
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="includeExcludedCards">
+                                <label class="form-check-label" for="includeExcludedCards">
+                                    <span class="badge bg-secondary">Include Excluded Cards</span> Include cards with missing data (not recommended)
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="selectAllAdd" checked>
@@ -923,14 +948,73 @@
                             </div>
                         </div>
 
-                        <div class="table-responsive" style="max-height: 300px;">
+                        <!-- Filter Controls -->
+                        <div class="row mb-3">
+                            <div class="col-md-2">
+                                <label class="form-label">Search SKU:</label>
+                                <input type="text" class="form-control form-control-sm" id="skuSearchFilter" placeholder="Enter SKU...">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Model:</label>
+                                <select class="form-select form-select-sm" id="modelFilter">
+                                    <option value="">All Models</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Generation:</label>
+                                <select class="form-select form-select-sm" id="generationFilter">
+                                    <option value="">All Generations</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Card Type:</label>
+                                <select class="form-select form-select-sm" id="cardTypeFilter">
+                                    <option value="">All Types</option>
+                                    <option value="feature">Feature</option>
+                                    <option value="product-options">Product Options</option>
+                                    <option value="cargo-options">Cargo Options</option>
+                                    <option value="weather-protection">Weather Protection</option>
+                                    <option value="specification-table">Specification Table</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Action:</label>
+                                <select class="form-select form-select-sm" id="actionFilter">
+                                    <option value="">All Actions</option>
+                                    <option value="new">Add (New)</option>
+                                    <option value="update">Update</option>
+                                    <option value="keep">Keep</option>
+                                    <option value="remove">Remove</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Sort By:</label>
+                                <select class="form-select form-select-sm" id="sortFilter">
+                                    <option value="sku">SKU (A-Z)</option>
+                                    <option value="sku-desc">SKU (Z-A)</option>
+                                    <option value="model">Model</option>
+                                    <option value="generation">Generation</option>
+                                    <option value="cardType">Card Type</option>
+                                    <option value="action">Action</option>
+                                    <option value="lastModified">Last Modified</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 400px;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small class="text-muted" id="exportSelectionCount">Loading...</small>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearExportFilters()">
+                                    <i class="fas fa-times me-1"></i>Clear Filters
+                                </button>
+                            </div>
                             <table class="table table-sm table-striped" id="exportSelectionTable">
-                                <thead class="table-dark">
+                                <thead class="table-dark sticky-top">
                                     <tr>
                                         <th class="text-white fw-bold"><input type="checkbox" id="selectAllCheckbox"></th>
-                                        <th class="text-white fw-bold">Product</th>
-                                        <th class="text-white fw-bold">Card Type</th>
                                         <th class="text-white fw-bold">SKU</th>
+                                        <th class="text-white fw-bold">Card Type</th>
+                                        <th class="text-white fw-bold">Title</th>
                                         <th class="text-white fw-bold">Action</th>
                                         <th class="text-white fw-bold">Last Modified</th>
                                         <th class="text-white fw-bold">Status</th>
@@ -1025,6 +1109,14 @@
                             <i class="fas fa-exclamation-triangle me-2"></i>
                             <strong>Important:</strong> After downloading, you'll need to manually import this file into the Hypa MetaFields App in BigCommerce.
                         </div>
+                        
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Export Options:</h6>
+                            <ul class="mb-0">
+                                <li><strong>Export with Original Structure:</strong> Requires Hypa CSV import first. Preserves the exact Hypa format for perfect round-trip compatibility.</li>
+                                <li><strong>Export Simple CSV:</strong> Works without Hypa data. Creates a simple CSV with all your cards that you can manually process.</li>
+                            </ul>
+                        </div>
 
                         <div class="mt-3">
                             <button type="button" class="btn btn-secondary" id="backToSelectionBtn">
@@ -1035,6 +1127,9 @@
                             </button>
                             <button type="button" class="btn btn-success" onclick="exportToHypaFormat()">
                                 <i class="fas fa-sync me-2"></i>Export with Original Structure
+                            </button>
+                            <button type="button" class="btn btn-info" onclick="exportCardsToSimpleCsv()">
+                                <i class="fas fa-file-csv me-2"></i>Export Simple CSV
                             </button>
                         </div>
                     </div>
@@ -1089,6 +1184,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="card-manager.js"></script>
     <script src="import-analysis.js"></script>
 </body>
 </html> 

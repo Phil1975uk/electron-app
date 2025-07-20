@@ -1,0 +1,49 @@
+{
+  "id": "1752931025250",
+  "sku": "F01356_1209140719153055",
+  "cardType": "cargo-options",
+  "position": 4,
+  "title": "Cargo Carry System",
+  "content": "With its versatile polypropylene elements, the Cargo Carry System enables loads of various sizes to be safely transported. Depending on your needs, you have the option of a flat cargo surface, storage space in the bottom of the EPP box, up to three load compartments and a securing element for standard Euro boxes with two side pockets for smaller objects. In the event of a higher load, the cargo can be secured with additional straps using four eyelets.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/70-21-detail.jpg.695x464-q80-upscale.jpg?t=1713439541",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.250Z",
+  "originalHypaData": {
+    "productId": "515",
+    "columnName": "shared.cargo-option-4-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Ct Vario",
+        "sku": "F01356_1209140719153055"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      }
+    ]
+  },
+  "filename": "card_F01356_1209140719153055_cargo-options_4_1752931030353_bfw5irnq4.json"
+}

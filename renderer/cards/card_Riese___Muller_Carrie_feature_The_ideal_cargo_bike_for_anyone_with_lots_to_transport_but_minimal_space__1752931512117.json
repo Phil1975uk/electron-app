@@ -1,0 +1,58 @@
+{
+  "id": "1752931512117",
+  "sku": "F01170",
+  "cardType": "feature",
+  "position": 1,
+  "title": "The ideal cargo bike for anyone with lots to transport but minimal space.",
+  "description": "<br>\n",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public_thumbnails/filer_public/e3/4a/e34a01d0-c54e-400f-9253-2ff87522f60f/2024-0116_d_my-2025_bilder-website_carrie_2024-11-06_004_hlc-zukunft-2_1624x1080_web.jpg__720x540_q90_crop_subject_location-735%2C494_subsampling-2_upscale.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_feature_The_ideal_cargo_bike_for_anyone_with_lots_to_transport_but_minimal_space__1752931512117.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/feature/Carrie_Carrie_feature_the-ideal-cargo-bike-for-anyone-with-lots-to-transport-but-minimal-space.jpg",
+  "uploadDate": "2025-07-19T20:45:18.579Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:45:14.050Z",
+    "DateUploaded": "2025-07-19T20:45:14.050Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:32:42.823Z",
+  "savedAt": "2025-07-19T13:25:12.117Z",
+  "originalHypaData": {},
+  "subtitle": "",
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_feature_The_ideal_cargo_bike_for_anyone_with_lots_to_transport_but_minimal_space__1752931512117.json"
+}

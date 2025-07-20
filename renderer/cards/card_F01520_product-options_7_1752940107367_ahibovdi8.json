@@ -1,0 +1,49 @@
+{
+  "id": "1752940103299",
+  "sku": "F01520",
+  "cardType": "product-options",
+  "position": 7,
+  "title": "Pannier rack",
+  "content": "The minimalist pannier rack is ideal for fixing panniers weighing up to 7,5 kg each. The “Form follows function” design principle has been exceptionally well executed with the pannier rack.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-pannier-option8.jpg?t=1729953782\n\n",
+  "price": "No Additional Charge",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.299Z",
+  "originalHypaData": {
+    "productId": "500",
+    "columnName": "shared.option-7-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01526"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01524"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01522"
+      }
+    ]
+  },
+  "filename": "card_F01520_product-options_7_1752940107367_ahibovdi8.json"
+}

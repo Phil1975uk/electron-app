@@ -1,0 +1,57 @@
+{
+  "id": "1752935821654",
+  "sku": "F01170",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Carrier",
+  "description": "The carrier with MIK system provides even more storage space: you can quickly and securely attach pannier racks, baskets, bike accessories, and even a dog basket, to the sturdy adapter plate. Accessories can be obtained from your dealer.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01170/44_12_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "94.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_Carrier_1752935821654.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/product-options/Carrie_Carrie_product-options_carrier.jpg",
+  "uploadDate": "2025-07-19T20:45:56.781Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:45:52.761Z",
+    "DateUploaded": "2025-07-19T20:45:52.761Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:33:31.870Z",
+  "savedAt": "2025-07-19T14:37:01.654Z",
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_product-options_Carrier_1752935821654.json"
+}

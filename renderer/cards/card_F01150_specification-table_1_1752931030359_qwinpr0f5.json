@@ -1,0 +1,37 @@
+{
+  "id": "1752931027288",
+  "sku": "F01150",
+  "cardType": "specification-table",
+  "position": 1,
+  "title": "The Delite4 GT touring in detail",
+  "content": "Frame colour   tundra grey matt*; urban grey matt* \n\n\n Suspension fork   SR Suntour Mobie 34, Air, tapered, 120mm; Fox Float Rhythm, Air, 140mm, Boost*; SR Suntour Aion 35, Air, tapered, 140mm, Boost* \n\n\n Rear shock   Suntour RS-19 190x40; Fox Float DPS Performance 210x50*; Suntour RS-19 210x50* \n\n\n Headset   Acros Integration X, block lock \n\n\n Seatpost   JD-SP66, Alu, 34,9 x 400mm; Dropper Post X-Fusion Manic 100* \n\n\n Tires   Schwalbe Super Moto-X 62-584 Reflex; Schwalbe Johnny Watts 60-584* \n\n\n Tubes   Schwalbe AV21 \n\n\n Rims   Rodi Tryp35 27,5\" \n\n\n Spokes   Sapim Leader 2,0 mm, Inox, black ( 16x ); Sapim Leader 2,0 mm, Inox, black ( 18x ) \n\n\n Front hub   Novatec Boost, QR, 32H \n\n\n Rear hub   Novatec Boost, QR, 36H \n\n\n Battery   Akku Bosch PowerTube 750 Vertical; Akku Bosch Powertube 750 Vertical*; Bosch PowerMore 250* \n\n\n Motor   Bosch Performance Line CX (smart system) \n\n\n Display   Bosch Purion 200; Bosch Kiox 300*; Bosch Kiox 500* \n\n\n Crankset   Riese & Müller, 170mm \n\n\n Chain ring   42T \n\n\n Chain guard   Chain guard \n\n\n Chain   KMC X11 ( 129x ) \n\n\n Cassette   Shimano CUES CS-LG700-11,11-50 \n\n\n Saddle   Selle Royal New Lookin Male Eco; Ergon SMC10 Gel*; Selle Royal New Lookin Female Eco* \n\n\n Pedals   VP R&M Custom \n\n\n Shifting system   Shimano XT 11-S Linkglide \n\n\n Shifter   Shimano XT 11-S Linkglide \n\n\n Handlebar   Satori R&M Custom, 25,4mm, Alu; Satori R&M Custom Komfort, 25,4 mm, Alu* \n\n\n Stem   Satori R&M Custom, cable integration, adjustable angle, Alu \n\n\n Grips   Ergon ergonomic \n\n\n Brakes   Magura MT4, disc brake; Magura MT5, disc brake; Magura MT C ABS* \n\n\n Front light   Supernova M99 Mini Pro-25 \n\n\n Tail light   Supernova M99, integrated brake light \n\n\n Mudguards   SKS A69R; SKS A65R* \n\n\n Luggage rack   Riese & Müller; pannier holder Riese & Müller* \n\n\n Rubber   Bibia \n\n\n Bell   Billy \n\n\n Horn   Supernova horn ( 3x ) \n\n\n Kickstand   Pletscher Comp 40 Flex Evo \n\n\n Lock   Abus Bordo X+ 6000/90cm black \n\n\n Pump   Beto air suspension fork pump \n\n\n RX Hardware   RX Chip (für RX Services)* \n\n\n Frame size [cm]   47 cm*; 51 cm*; 56 cm*",
+  "imageUrl": "",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:07.288Z",
+  "originalHypaData": {
+    "productId": "304",
+    "columnName": "shared.spec-table",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Specification table may not have proper table structure",
+      "Minor format differences: May not have proper table structure, Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01150_specification-table_1_1752931030359_qwinpr0f5.json"
+}

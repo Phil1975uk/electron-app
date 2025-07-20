@@ -1,0 +1,45 @@
+{
+  "id": "1752940103042",
+  "sku": "F01132",
+  "cardType": "product-options",
+  "position": 2,
+  "title": "Front carrier",
+  "content": "The front carrier fits perfectly into the overall aesthetics of the stylish front. It has a centrally fixed base plate and a sophisticated luggage strap system that allows various items of luggage to be secured.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/10-9-detail.jpg.695x464-q80-upscale.jpg?t=1713530981",
+  "price": "£94.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.042Z",
+  "originalHypaData": {
+    "productId": "517",
+    "columnName": "shared.option-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01132_product-options_2_1752940107365_hx3g0eu39.json"
+}

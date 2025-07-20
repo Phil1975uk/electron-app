@@ -1,0 +1,45 @@
+{
+  "id": "1752940103043",
+  "sku": "F01132",
+  "cardType": "product-options",
+  "position": 4,
+  "title": "Comfort kit",
+  "content": "The perfect option for anyone wanting to ride in greater comfort: the classically curved handlebar, suspension seatpost and Ergon handles enable you to sit comfortably in an upright position.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/49-13-detail.jpg.695x464-q80-upscale.jpg?t=1713530982",
+  "price": "£47.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.043Z",
+  "originalHypaData": {
+    "productId": "517",
+    "columnName": "shared.option-4-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01132_product-options_4_1752940107365_5c26wra6d.json"
+}

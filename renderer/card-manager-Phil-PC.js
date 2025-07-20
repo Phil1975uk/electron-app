@@ -1109,64 +1109,37 @@ class CardManager {
         const title = card.title || '';
         const subtitle = card.subtitle || '';
         const description = card.description || '';
+        const filename = imageUrl ? imageUrl.split('/').pop().split('?')[0] : '';
         
         // If no valid image URL, generate HTML without image section
         if (!imageUrl || imageUrl.trim() === '') {
             return `<!-- Product feature card container -->
 <div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
-    
-<!-- Text content -->
-    
-<div style="flex: 1; min-width: 300px;">
-        
-<h2>${title}</h2>
-
-        
-<h3>${subtitle}</h3>
-
-        
-<p>${description}</p>
-
+    <!-- Text content -->
+    <div style="flex: 1; min-width: 300px;">
+        <h2>${title}</h2>
+        <h3>${subtitle}</h3>
+        <p>${description}</p>
     </div>
-
 </div>`;
         }
         
-        // Use the working template structure from product-feature-card-v2
         return `<!-- Product feature card container -->
 <div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
-    
-    
-<!-- Text content -->
-    
-<div style="flex: 1; min-width: 300px;">
-        
-<h2>${title}</h2>
-
-        
-<h3>${subtitle}</h3>
-
-        
-<p>${description}</p>
-
+    <!-- Text content -->
+    <div style="flex: 1; min-width: 300px;">
+        <h2>${title}</h2>
+        <h3>${subtitle}</h3>
+        <p>${description}</p>
     </div>
-
-    
-    
-<!-- Image -->
-    
-<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
-        </div>
-
-<div class="se-component se-image-container __se__float-">
-    <figure style="width: 400px;">
-      <img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${imageUrl.split('/').pop().split('?')[0]}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
+    <!-- Image -->
+    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+    </div>
+    <div class="se-component se-image-container __se__float-"><figure style="width: 400px;">
+        <img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${filename}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
     </figure>
-</div>
-
-    
-
-<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+    </div>
+    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
     </div>
 </div>`;
     }

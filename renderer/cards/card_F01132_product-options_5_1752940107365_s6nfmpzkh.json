@@ -1,0 +1,45 @@
+{
+  "id": "1752940103043",
+  "sku": "F01132",
+  "cardType": "product-options",
+  "position": 5,
+  "title": "Frame lock with chain lock and bag",
+  "content": "The sturdy Abus chain lock, in addition to the Abus Shield frame lock, provides twice the security for your E-Bike. The 130 cm long chain is latched onto the frame lock and the bike can be quickly attached to the nearest lamppost or lock it together with up to three other bikes. The chain thickness of 6 mm ensures a high level of anti-theft protection. Especially practical: frame lock, chain lock and battery lock all use the same key. The bag is firmly attached to the saddle and allows quick and easy removal of the chain lock thanks to its ergonomic shape and Fidlock magnetic closure. Please note: for smaller frame sizes the lowest saddle position may not be usable when the lock bag is fitted.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/98-12-detail.jpg.695x464-q80-upscale.jpg?t=1713530983",
+  "price": "£94.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.043Z",
+  "originalHypaData": {
+    "productId": "517",
+    "columnName": "shared.option-5-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01132_product-options_5_1752940107365_s6nfmpzkh.json"
+}

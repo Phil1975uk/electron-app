@@ -1,0 +1,57 @@
+{
+  "id": "1752935683359",
+  "sku": "F01170",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Additional chain lock with Vaude bag",
+  "description": "The sturdy Abus chain lock, in addition to the Abus frame lock, provides twice the security for your e-bike. The 130 cm long chain is latched onto the frame lock and you can quickly lock your bike to the nearest lamppost or lock it together with up to three other bikes. The chain thickness of 6 mm ensures a high level of anti-theft protection. Especially practical: frame lock, chain lock and battery lock all use the same key. The 100% recycled polyester Vaude bag is permanently attached to the saddle. You can remove the chain lock from the bag quickly and easily, thanks to its ergonomic shape and roll-up closure. Please note: for smaller frame sizes the lowest saddle position may not be usable when the lock bag is fitted.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01169/81_18_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_Additional_chain_lock_with_Vaude_bag_1752935683359.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/product-options/Carrie_Carrie_product-options_additional-chain-lock-with-vaude-bag.jpg",
+  "uploadDate": "2025-07-19T20:45:45.524Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:45:41.511Z",
+    "DateUploaded": "2025-07-19T20:45:41.511Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:33:26.359Z",
+  "savedAt": "2025-07-19T14:34:43.359Z",
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_product-options_Additional_chain_lock_with_Vaude_bag_1752935683359.json"
+}

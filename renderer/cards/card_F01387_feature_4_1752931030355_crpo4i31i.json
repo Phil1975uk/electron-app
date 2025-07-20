@@ -1,0 +1,37 @@
+{
+  "id": "1752931025345",
+  "sku": "F01387",
+  "cardType": "feature",
+  "position": 4,
+  "title": "Adjustable seating position",
+  "content": "The angle- and height-adjustable stem and easy-to-adjust seatpost let you set the seat position of the Multitinker to different body heights from 1.50 m to 2.00 m in the blink of an eye. This makes it the perfect everyday bike for the whole family, your household or a group of friends.",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Multitinker/AdjustableSeatingPosition.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.345Z",
+  "originalHypaData": {
+    "productId": "509",
+    "columnName": "shared.feature-4-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Multitinker",
+    "generation": "Multitinker",
+    "variants": [
+      {
+        "name": "Silent",
+        "sku": "F01387"
+      }
+    ]
+  },
+  "filename": "card_F01387_feature_4_1752931030355_crpo4i31i.json"
+}

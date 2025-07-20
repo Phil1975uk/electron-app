@@ -1,0 +1,53 @@
+{
+  "id": "1752940104634",
+  "sku": "F01154",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Control Technology",
+  "content": "Elevate your cycling experience to new heights with Riese & Müller’s Control Technology. This innovative feature is the epitome of safety and vigor, offering maximum riding enjoyment. At its core, the perfectly tuned full suspension of the rear swing arm ensures a sporty ride and superior traction, even at high speeds. The active rear swing arm, optimized front wheel suspension, and co-sprung luggage carrier form the heart of the Control Technology, delivering powerful propulsion and a dynamic ride without any energy loss. The Suntour suspension fork, with a travel of 120 mm (or 140 mm with the GX option), guarantees a safe ride whether you’re traversing forest tracks, gravel, or asphalt roads. With Riese & Müller’s Control Technology, master the art of cycling and take control of your ride.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-delite-controltech-1155-1-1-.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.634Z",
+  "originalHypaData": {
+    "productId": "309",
+    "columnName": "shared.feature-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01154_feature_2_1752940107369_ybxk3at7z.json"
+}

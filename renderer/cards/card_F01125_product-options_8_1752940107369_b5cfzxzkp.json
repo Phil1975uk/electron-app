@@ -1,0 +1,57 @@
+{
+  "id": "1752940104323",
+  "sku": "F01125",
+  "cardType": "product-options",
+  "position": 8,
+  "title": "Front carrier with bag",
+  "content": "Stay mobile while carrying all your essentials. Secure up to 5 kg of luggage on the front carrier, attached to the frame and benefiting from the bike's full suspension, ensuring your cargo is well-protected from bumps and jolts. The bag provides ample space with a volume of up to 18 liters. With its zipper and roll closure, your belongings remain shielded from dirt and rain. Easily removable, the bag transforms into a shoulder bag using the supplied strap. Additionally, two outer pockets with waterproof zippers offer secure storage for smaller items.The standard headlight is mounted on the handlebar, illuminating your path as you steer. Optionally, the headlight can be mounted on the front luggage carrier, ensuring excellent visibility ahead with its powerful beam.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/riese-and-muller-homage4-front-cargo-bag.jpg?t=1710947977",
+  "price": "£187.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.323Z",
+  "originalHypaData": {
+    "productId": "315",
+    "columnName": "shared.option-8-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01123"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01125_product-options_8_1752940107369_b5cfzxzkp.json"
+}

@@ -1,0 +1,49 @@
+{
+  "id": "1752931025004",
+  "sku": "F01133",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Safe on the road",
+  "content": "The powerful headlamp with daytime running light ensures better visibility in road traffic. When you’re on the go in the dark, nothing comes between you and your sporty ride, thanks to even illumination of your way and your surroundings. The Magura disc brakes ensure reliable braking even during sporty rides.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-safe-on-the-road.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.004Z",
+  "originalHypaData": {
+    "productId": "518",
+    "columnName": "shared.feature-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario Hs",
+        "sku": "F01133"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01133_feature_2_1752931030353_znowty51t.json"
+}

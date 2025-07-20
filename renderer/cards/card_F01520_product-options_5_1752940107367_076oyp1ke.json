@@ -1,0 +1,49 @@
+{
+  "id": "1752940103298",
+  "sku": "F01520",
+  "cardType": "product-options",
+  "position": 5,
+  "title": "Comfort kit",
+  "content": "The perfect option for anyone wanting to ride in greater comfort: the classically curved handlebars and wider saddle enable you to sit comfortably in an upright position.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-comfort-option6.jpg?t=1729953781\n\n",
+  "price": "No Additional Charge",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.298Z",
+  "originalHypaData": {
+    "productId": "500",
+    "columnName": "shared.option-5-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01526"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01524"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01522"
+      }
+    ]
+  },
+  "filename": "card_F01520_product-options_5_1752940107367_076oyp1ke.json"
+}

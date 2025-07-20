@@ -1,0 +1,58 @@
+{
+  "id": "1752931531244",
+  "sku": "F01170",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Flexible transport solutions.",
+  "description": "With the Flex Box, its name says it all: when collapsed, it holds a regular drinks crate, and even up to three when folded out. The box can be securely locked and extended with a high-quality cargo bag. You can carry your little ones on an adjustable child seat with protective cover.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/7a/40/7a40ba5e-a60b-4e92-9827-de8a13ffe3d4/my2025_carrie_hlf_transportloesungen_verdeck_1600x1067_web.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_feature_Flexible_transport_solutions__1752931531244.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/feature/Carrie_Carrie_feature_flexible-transport-solutions.jpg",
+  "uploadDate": "2025-07-19T20:45:10.116Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:45:04.474Z",
+    "DateUploaded": "2025-07-19T20:45:04.474Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:32:36.114Z",
+  "savedAt": "2025-07-19T13:25:31.244Z",
+  "originalHypaData": {},
+  "subtitle": "",
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_feature_Flexible_transport_solutions__1752931531244.json"
+}

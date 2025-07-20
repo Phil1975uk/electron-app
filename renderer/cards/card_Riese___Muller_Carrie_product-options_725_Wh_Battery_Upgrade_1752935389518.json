@@ -1,0 +1,57 @@
+{
+  "id": "1752935389518",
+  "sku": "F01170",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "725 Wh Battery Upgrade",
+  "description": "Upgrade from the standard 545Wh battery to the 725 Wh battery.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01170/73_6_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "187.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_725_Wh_Battery_Upgrade_1752935389518.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/product-options/Carrie_Carrie_product-options_725-wh-battery-upgrade.jpg",
+  "uploadDate": "2025-07-19T20:45:27.641Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:45:23.743Z",
+    "DateUploaded": "2025-07-19T20:45:23.743Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:33:20.281Z",
+  "savedAt": "2025-07-19T14:29:49.518Z",
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_product-options_725_Wh_Battery_Upgrade_1752935389518.json"
+}

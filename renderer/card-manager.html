@@ -1,250 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: blob: https://store-c8jhcan2jv.mybigcommerce.com; connect-src 'self' https://store-c8jhcan2jv.mybigcommerce.com;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: blob: https://store-c8jhcan2jv.mybigcommerce.com; connect-src 'self' https://store-c8jhcan2jv.mybigcommerce.com;"
+    />
     <title>Card Manager - E-Bike Barn</title>
-    <link rel="icon" type="image/png" href="https://store-c8jhcan2jv.mybigcommerce.com/product_images/e-bikebarn-logo-w_1681566343__57813.original.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://store-c8jhcan2jv.mybigcommerce.com/product_images/e-bikebarn-logo-w_1681566343__57813.original.png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="https://store-c8jhcan2jv.mybigcommerce.com/product_images/e-bikebarn-logo-w_1681566343__57813.original.png" alt="E-Bike Barn" height="40" class="me-2">
-                <span>E-Bike Barn Configuration Manager</span>
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="index.html">Home</a>
-                <a class="nav-link" href="card-creator.html">Card Creator</a>
-                <a class="nav-link active" href="card-manager.html">Card Manager</a>
-                
-                <a class="nav-link" href="webdav-explorer.html">File Explorer</a>
-                <a class="nav-link" href="import-analysis.html">Import Analysis</a>
-                <a class="nav-link" href="settings.html">Settings</a>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="https://store-c8jhcan2jv.mybigcommerce.com/product_images/e-bikebarn-logo-w_1681566343__57813.original.png"
+            alt="E-Bike Barn"
+            height="40"
+            class="me-2"
+          />
+          <span>Model Configuration Manager</span>
+        </a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="card-creator.html">Card Creator</a>
+          <a class="nav-link active" href="card-manager.html">Card Manager</a>
+
+          <a class="nav-link" href="webdav-explorer.html">File Explorer</a>
+          <a class="nav-link" href="import-analysis.html">Import Analysis</a>
+          <a class="nav-link" href="settings.html">Settings</a>
         </div>
+      </div>
     </nav>
 
     <div class="container mt-4">
-        <!-- Instructions Panel (collapsible) -->
-        <div class="container mt-3">
-            <div class="alert alert-info collapse" id="cardManagerInstructions">
-                <strong>Card Manager Instructions</strong><br>
-                <ul class="mb-0">
-                    <li>Use the filters above to narrow down cards by type, brand, model, or generation.</li>
-                    <li>Card types include: Feature, Product Options, Specification Table, Weather Protection, Cargo Options.</li>
-                    <li>Click a card to view or edit its details.</li>
-                    <li><strong>Only the cards currently shown (filtered) will be uploaded when you start a bulk upload.</strong></li>
-                    <li>You can also upload cards individually by using the upload button on each card.</li>
-                    <li>The "Cancel Operation" button will appear during bulk uploads or imports. Click it to stop the current operation.</li>
-                    <li>If you add new card types, update the filter dropdown and mapping in the code.</li>
-                </ul>
-            </div>
-            <button class="btn btn-link mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#cardManagerInstructions" aria-expanded="false" aria-controls="cardManagerInstructions">
-                Show/Hide Instructions
-            </button>
-            <!-- Cancel Operation Button (hidden by default) -->
-            <button id="cancelOperationBtn" class="btn btn-danger mb-2" style="display:none;">
-                Cancel Current Operation
-            </button>
+      <!-- Instructions Panel (collapsible) -->
+      <div class="container mt-3">
+        <div class="alert alert-info collapse" id="cardManagerInstructions">
+          <strong>Card Manager Instructions</strong><br />
+          <ul class="mb-0">
+            <li>
+              Use the filters above to narrow down cards by type, brand, model,
+              or generation.
+            </li>
+            <li>
+              Card types include: Feature, Product Options, Specification Table,
+              Weather Protection, Cargo Options.
+            </li>
+            <li>Click a card to view or edit its details.</li>
+            <li>
+              <strong
+                >Only the cards currently shown (filtered) will be uploaded when
+                you start a bulk upload.</strong
+              >
+            </li>
+            <li>
+              You can also upload cards individually by using the upload button
+              on each card.
+            </li>
+            <li>
+              The "Cancel Operation" button will appear during bulk uploads or
+              imports. Click it to stop the current operation.
+            </li>
+            <li>
+              If you add new card types, update the filter dropdown and mapping
+              in the code.
+            </li>
+          </ul>
         </div>
+        <button
+          class="btn btn-link mb-2"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#cardManagerInstructions"
+          aria-expanded="false"
+          aria-controls="cardManagerInstructions"
+        >
+          Show/Hide Instructions
+        </button>
+        <!-- Cancel Operation Button (hidden by default) -->
+        <button
+          id="cancelOperationBtn"
+          class="btn btn-danger mb-2"
+          style="display: none"
+        >
+          Cancel Current Operation
+        </button>
+      </div>
 
-        <!-- Stats Section -->
+      <!-- Stats Section -->
+      <div class="row">
+        <div class="col-md-2">
+          <div class="stats-card">
+            <h4 id="totalCards">0</h4>
+            <p class="mb-0">Total Cards</p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="stats-card">
+            <h4 id="filteredCards">0</h4>
+            <p class="mb-0">Filtered Cards</p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="stats-card">
+            <h4 id="uploadedImages">0</h4>
+            <p class="mb-0">Images Uploaded</p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="stats-card">
+            <h4 id="awaitingUpload">0</h4>
+            <p class="mb-0">Not Uploaded</p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="stats-card">
+            <h4 id="hypaImportedCards">0</h4>
+            <p class="mb-0">Hypa Imported</p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="stats-card">
+            <h4 id="recentlyUpdatedCards">0</h4>
+            <p class="mb-0">Recently Updated</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters Section -->
+      <div class="filter-section">
+        <h3><i class="fas fa-filter me-2"></i>Filters</h3>
         <div class="row">
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <h4 id="totalCards">0</h4>
-                    <p class="mb-0">Total Cards</p>
-                </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Card Type</label>
+              <select class="form-select" id="filterCardType">
+                <option value="">All Types</option>
+                <option value="feature">Feature Cards</option>
+                <option value="product-options">Product Options</option>
+                <option value="specification-table">Specification Table</option>
+                <option value="weather-protection">Weather Protection</option>
+                <option value="cargo-options">Cargo Options</option>
+              </select>
             </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <h4 id="filteredCards">0</h4>
-                    <p class="mb-0">Filtered Cards</p>
-                </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Upload Status</label>
+              <select class="form-select" id="filterUploadStatus">
+                <option value="">All Status</option>
+                <option value="uploaded">Uploaded</option>
+                <option value="awaiting">Awaiting Upload</option>
+              </select>
             </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <h4 id="uploadedImages">0</h4>
-                    <p class="mb-0">Images Uploaded</p>
-                </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Hypa Import</label>
+              <select class="form-select" id="filterHypaImport">
+                <option value="">All Cards</option>
+                <option value="imported">Imported from Hypa</option>
+                <option value="local">Local Cards</option>
+                <option value="updated">Recently Updated</option>
+              </select>
             </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <h4 id="awaitingUpload">0</h4>
-                    <p class="mb-0">Not Uploaded</p>
-                </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Brand</label>
+              <select class="form-select" id="filterBrand">
+                <option value="">All Brands</option>
+              </select>
             </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Model</label>
+              <select class="form-select" id="filterModel">
+                <option value="">All Models</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Generation</label>
+              <select class="form-select" id="filterGeneration">
+                <option value="">All Generations</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Variants</label>
+              <select class="form-select" id="filterVariants">
+                <option value="">All Variants</option>
+                <option value="specific">Specific Variants</option>
+              </select>
+              <small class="form-text text-muted"
+                >Select "Specific Variants" to choose individual variants</small
+              >
+              <div id="variantCheckboxes" class="mt-2" style="display: none">
+                <!-- Variant checkboxes will be populated here -->
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">SKU</label>
+              <input
+                type="text"
+                class="form-control"
+                id="filterSku"
+                placeholder="Search by SKU"
+              />
+              <small class="form-text text-muted"
+                >Enter SKU to filter cards</small
+              >
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="filter-group">
+              <label class="form-label fw-bold">Sort By</label>
+              <select class="form-select" id="sortCardsBy">
+                <option value="model-generation">Model & Generation</option>
+                <option value="model">Model</option>
+                <option value="generation">Generation</option>
+                <option value="cardType">Card Type</option>
+                <option value="created">Created Date</option>
+              </select>
+            </div>
+          </div>
         </div>
-
-        <!-- Filters Section -->
-        <div class="filter-section">
-            <h3><i class="fas fa-filter me-2"></i>Filters</h3>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">Card Type</label>
-                        <select class="form-select" id="filterCardType">
-                            <option value="">All Types</option>
-                            <option value="feature">Feature Cards</option>
-                            <option value="product-options">Product Options</option>
-                            <option value="specification-table">Specification Table</option>
-                            <option value="weather-protection">Weather Protection</option>
-                            <option value="cargo-options">Cargo Options</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">Upload Status</label>
-                        <select class="form-select" id="filterUploadStatus">
-                            <option value="">All Status</option>
-                            <option value="uploaded">Uploaded</option>
-                            <option value="awaiting">Awaiting Upload</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">Brand</label>
-                        <select class="form-select" id="filterBrand">
-                            <option value="">All Brands</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">Model</label>
-                        <select class="form-select" id="filterModel">
-                            <option value="">All Models</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">Generation</label>
-                        <select class="form-select" id="filterGeneration">
-                            <option value="">All Generations</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">Variants</label>
-                        <select class="form-select" id="filterVariants">
-                            <option value="">All Variants</option>
-                            <option value="specific">Specific Variants</option>
-                        </select>
-                        <small class="form-text text-muted">Select "Specific Variants" to choose individual variants</small>
-                        <div id="variantCheckboxes" class="mt-2" style="display: none;">
-                            <!-- Variant checkboxes will be populated here -->
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">SKU</label>
-                        <input type="text" class="form-control" id="filterSku" placeholder="Search by SKU">
-                        <small class="form-text text-muted">Enter SKU to filter cards</small>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="filter-group">
-                        <label class="form-label fw-bold">Sort By</label>
-                        <select class="form-select" id="sortCardsBy">
-                            <option value="model-generation">Model & Generation</option>
-                            <option value="model">Model</option>
-                            <option value="generation">Generation</option>
-                            <option value="cardType">Card Type</option>
-                            <option value="created">Created Date</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-outline-secondary" id="clearFilters">Clear All Filters</button>
-                        <button class="btn btn-warning ms-2" id="undoDeleteBtnPersistent" style="display:none;"><i class="fas fa-undo"></i> Undo Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cards List -->
         <div class="row">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3><i class="fas fa-list me-2"></i>Cards</h3>
-                    <div>
-                        <button class="btn btn-outline-primary me-2" id="refreshCardsBtn">
-                            <i class="fas fa-sync me-2"></i>Refresh Cards
-                        </button>
-                        <button class="btn btn-info me-2" id="resetImageStatusBtn">
-                            <i class="fas fa-redo me-2"></i>Reset Image Status
-                        </button>
-                        <button class="btn btn-danger me-2" id="clearDataBtn">
-                            <i class="fas fa-trash-alt me-2"></i>Clear Data
-                        </button>
-                        <button class="btn btn-warning me-2" id="clearCacheBtn">
-                            <i class="fas fa-broom me-2"></i>Clear Cache
-                        </button>
-                        <button class="btn btn-success me-2" id="uploadImagesBtn">
-                            <i class="fas fa-upload me-2"></i>Upload Selected Images to WebServer
-                        </button>
-                        <button class="btn btn-primary" onclick="window.location.href='card-creator.html'">
-                            <i class="fas fa-plus me-2"></i>Create New Card
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Upload Progress Section -->
-                <div id="uploadProgress" class="alert alert-info" style="display: none;">
-                    <h5><i class="fas fa-upload me-2"></i>Upload Progress</h5>
-                    <div id="uploadStatus">Ready to upload...</div>
-                    <div class="progress mt-2" style="display: none;">
-                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-                    </div>
-                </div>
-                
-                <!-- Clear Data Modal -->
-                <div class="modal fade" id="clearDataModal" tabindex="-1" aria-labelledby="clearDataModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="clearDataModalLabel"><i class="fas fa-trash-alt me-2 text-danger"></i>Clear Data</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <p class="mb-3">This action cannot be undone. What would you like to delete?</p>
-                        <ul>
-                          <li><strong>Delete All Cards:</strong> Remove all cards but keep models/configurations.</li>
-                          <li><strong>Delete All Data:</strong> Remove all cards, configurations, images, cache, and reset the app to a clean state.</li>
-                        </ul>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" id="deleteAllDataBtn">Delete All Data</button>
-                        <button type="button" class="btn btn-warning" id="deleteAllCardsBtn">Delete All Cards</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div id="cardsList">
-                    <div class="text-center py-5">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-3">Loading cards...</p>
-                    </div>
-                </div>
+          <div class="col-md-12">
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-outline-secondary" id="clearFilters">
+                Clear All Filters
+              </button>
+              <button
+                class="btn btn-warning ms-2"
+                id="undoDeleteBtnPersistent"
+                style="display: none"
+              >
+                <i class="fas fa-undo"></i> Undo Delete
+              </button>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Cards List -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-list me-2"></i>Cards</h3>
+            <div>
+              <button class="btn btn-outline-primary me-2" id="refreshCardsBtn">
+                <i class="fas fa-sync me-2"></i>Refresh Cards
+              </button>
+              <button class="btn btn-info me-2" id="resetImageStatusBtn">
+                <i class="fas fa-redo me-2"></i>Reset Image Status
+              </button>
+              <button class="btn btn-danger me-2" id="clearDataBtn">
+                <i class="fas fa-trash-alt me-2"></i>Clear Data
+              </button>
+              <button class="btn btn-warning me-2" id="clearCacheBtn">
+                <i class="fas fa-broom me-2"></i>Clear Cache
+              </button>
+              <button class="btn btn-success me-2" id="uploadImagesBtn">
+                <i class="fas fa-upload me-2"></i>Upload Selected Images to
+                WebServer
+              </button>
+              <button
+                class="btn btn-primary"
+                onclick="window.location.href='card-creator.html'"
+              >
+                <i class="fas fa-plus me-2"></i>Create New Card
+              </button>
+            </div>
+          </div>
+
+          <!-- Upload Progress Section -->
+          <div
+            id="uploadProgress"
+            class="alert alert-info"
+            style="display: none"
+          >
+            <h5><i class="fas fa-upload me-2"></i>Upload Progress</h5>
+            <div id="uploadStatus">Ready to upload...</div>
+            <div class="progress mt-2" style="display: none">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Clear Data Modal -->
+          <div
+            class="modal fade"
+            id="clearDataModal"
+            tabindex="-1"
+            aria-labelledby="clearDataModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="clearDataModalLabel">
+                    <i class="fas fa-trash-alt me-2 text-danger"></i>Clear Data
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <p class="mb-3">
+                    This action cannot be undone. What would you like to delete?
+                  </p>
+                  <ul>
+                    <li>
+                      <strong>Delete All Cards:</strong> Remove all cards but
+                      keep models/configurations.
+                    </li>
+                    <li>
+                      <strong>Delete All Data:</strong> Remove all cards,
+                      configurations, images, cache, and reset the app to a
+                      clean state.
+                    </li>
+                  </ul>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="deleteAllDataBtn"
+                  >
+                    Delete All Data
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-warning"
+                    id="deleteAllCardsBtn"
+                  >
+                    Delete All Cards
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="cardsList">
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3">Loading cards...</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Toast Container -->
@@ -252,5 +393,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="card-manager.js"></script>
-</body>
-</html> 
+  </body>
+</html>

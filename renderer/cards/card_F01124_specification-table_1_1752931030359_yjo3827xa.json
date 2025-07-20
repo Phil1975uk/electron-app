@@ -1,0 +1,37 @@
+{
+  "id": "1752931026629",
+  "sku": "F01124",
+  "cardType": "specification-table",
+  "position": 1,
+  "title": "The Homage4 GT rohloff in detail",
+  "content": "Frame colour   deepsea blue metallic*; pearl white* \n\n\n Suspension fork   SR Suntour Mobie 34, Air, tapered, 100mm; SR Suntour Mobie 34 ABS, Air, tapered, 100mm* \n\n\n Rear shock   Suntour RS-19 190x40 \n\n\n Headset   Acros Integration X, block lock \n\n\n Seatpost   JD-SP66, Alu, 34,9 x 400mm; Dropper Post X-Fusion Manic 70* \n\n\n Tires   Schwalbe Super Moto-X 62-584 Reflex; Schwalbe Johnny Watts 60-584* \n\n\n Tubes   Schwalbe AV21 \n\n\n Rims   Rodi Tryp35 27,5\" \n\n\n Spokes   Sapim Leader 2,0 mm, Inox, black ( 16x ); Sapim Leader 2,0 mm, Inox, black ( 36x ) \n\n\n Front hub   Novatec Disc 32H \n\n\n Rear hub   Rohloff Speedhub E14, 14-speed, 36H \n\n\n Battery   Akku Bosch PowerTube 625 Horizontal; Akku Bosch PowerTube 625 Horizontal ( 2x )* \n\n\n Motor   Bosch Performance Line CX (smart system) \n\n\n Display   Bosch Purion 200; Bosch Kiox 300*; Bosch Kiox 500* \n\n\n Crankset   Riese & Müller, 170mm \n\n\n Chain ring   60T, for Gates drive belt CDX \n\n\n Chain guard   Riemenschutzring \n\n\n Chain   Gates drive belt CDX \n\n\n Pinion   19T, for Gates drive belt CDX \n\n\n Saddle   Selle Royal New Lookin Male Eco; Selle Royal New Lookin Female Eco* \n\n\n Pedals   VP R&M Custom \n\n\n Shifter   Rohloff E14 electronic shifter \n\n\n Handlebar   Satori R&M Custom, 25,4mm, Alu; Satori R&M Custom Komfort, 25,4 mm, Alu* \n\n\n Stem   Satori R&M Custom, cable integration, adjustable angle, Alu \n\n\n Grips   Ergon ergonomic \n\n\n Brakes   Magura MT4, disc brake; Magura MT5, disc brake; Magura MT C ABS* \n\n\n Front light   Supernova M99 Mini Pro-25 \n\n\n Tail light   Supernova M99, integrated brake light \n\n\n Mudguards   SKS A69R \n\n\n Luggage rack   integrated, MIK* \n\n\n Rubber   Bibia \n\n\n Bell   Billy \n\n\n Kickstand   Pletscher Comp 40 Flex Evo \n\n\n Lock   Abus Bordo X+ 6000/90cm black \n\n\n Pump   Beto air suspension fork pump \n\n\n RX Hardware   RX Chip (für RX Services)* \n\n\n Frame size [cm]   49 cm*; 54 cm*; 58 cm*",
+  "imageUrl": "",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:06.629Z",
+  "originalHypaData": {
+    "productId": "314",
+    "columnName": "shared.spec-table",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Specification table may not have proper table structure",
+      "Minor format differences: May not have proper table structure, Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      }
+    ]
+  },
+  "filename": "card_F01124_specification-table_1_1752931030359_yjo3827xa.json"
+}

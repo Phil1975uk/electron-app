@@ -1,0 +1,49 @@
+{
+  "id": "1752931025006",
+  "sku": "F01133",
+  "cardType": "product-options",
+  "position": 3,
+  "title": "Carrier",
+  "content": "Baskets and panniers can be secured to the carrier in no time, thanks to the racktime “Snapit” system. With just a click, your load can be changed quicker than a pit stop. Accessories can be obtained from your dealer.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/44-10-detail.jpg.695x464-q80-upscale.jpg?t=1713530982",
+  "price": "£75.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.006Z",
+  "originalHypaData": {
+    "productId": "518",
+    "columnName": "shared.option-3-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario Hs",
+        "sku": "F01133"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01133_product-options_3_1752931030353_zu74h598q.json"
+}

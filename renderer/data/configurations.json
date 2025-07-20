@@ -1117,6 +1117,10 @@
         {
           "name": "City",
           "sku": "F01169"
+        },
+        {
+          "name": "City - Anise - Stock",
+          "sku": "F01169_040105171611071510"
         }
       ]
     },
@@ -1265,6 +1269,18 @@
         {
           "name": "GT rohloff HS",
           "sku": "F01107"
+        }
+      ]
+    },
+    {
+      "id": 1752615619120,
+      "brand": "Riese & Muller",
+      "model": "Test",
+      "generation": "Tester",
+      "variants": [
+        {
+          "name": "TesterSPT",
+          "sku": "F99999"
         }
       ]
     }

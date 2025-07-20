@@ -1,0 +1,45 @@
+{
+  "id": "1752931025508",
+  "sku": "F01526",
+  "cardType": "product-options",
+  "position": 5,
+  "title": "Bosch eBike ABS 2.0",
+  "content": "The Bosch eBike ABS 2.0 ensures that you remain safely on the saddle even when you need to brake suddenly – on solid asphalt roads or gravel tracks. It prevents tires from slipping, the rear wheel lifting and the whole bike skidding out to the side. The rear light with integrated brake light funktion provides additional safety.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-abs-option5.jpg?t=1729953780\n\n",
+  "price": "£373.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.508Z",
+  "originalHypaData": {
+    "productId": "499",
+    "columnName": "shared.option-5-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01526"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01524"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01522"
+      }
+    ]
+  },
+  "filename": "card_F01526_product-options_5_1752931030356_unu8cei2s.json"
+}

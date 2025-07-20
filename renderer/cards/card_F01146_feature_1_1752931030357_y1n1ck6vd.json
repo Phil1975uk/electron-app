@@ -1,0 +1,49 @@
+{
+  "id": "1752931025765",
+  "sku": "F01146",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Elegant frame design",
+  "content": "The shape of the frame is reminiscent of a traditional roadster. And you’re guaranteed to reach your destination in comfort, thanks to its suspension fork and suspension seatpost. It powerfully assists you with a 500 Wh carrier battery in conjunction with the seamlessly integrated Bosch Performance Line motor. The low step-through ensures comfortable handling in urban traffic, while the integrated cabling accentuates its elegant appearance.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/24-hlf-swing-rahmendesign-1485.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.765Z",
+  "originalHypaData": {
+    "productId": "470",
+    "columnName": "shared.feature-1-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Swing",
+    "generation": "Swing4",
+    "variants": [
+      {
+        "name": "Vario",
+        "sku": "F01146"
+      },
+      {
+        "name": "Silent",
+        "sku": "F01145"
+      },
+      {
+        "name": "Rucktritt",
+        "sku": "F01144"
+      },
+      {
+        "name": "Automatic",
+        "sku": "F01147"
+      }
+    ]
+  },
+  "filename": "card_F01146_feature_1_1752931030357_y1n1ck6vd.json"
+}

@@ -1,0 +1,61 @@
+{
+  "id": "1752931025702",
+  "sku": "F01125-1",
+  "cardType": "feature",
+  "position": 3,
+  "title": "Safety equipment",
+  "content": "Stay safe on the road at all times with the Homage's impressive array of safety features. Whether you need to brake suddenly or navigate tricky terrain, the optional Bosch eBike ABS 2.0 ensures you remain in control by preventing tire slippage, rear wheel lifting, and skidding. Even without this feature, the standard Magura disc brakes provide reliable stopping power when you need it most. Plus, the powerful Supernova M99 Mini Pro headlight ensures you're always visible in traffic and illuminates the road evenly in the dark. With its wide angle main beam, you'll have excellent visibility even in rural areas..",
+  "imageUrl": "https://www.r-m.de/media/filer_public/1d/f0/1df0a7df-c687-4371-b1f8-2405597b20e1/24_hlf_abs_smart.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.702Z",
+  "originalHypaData": {
+    "productId": "494",
+    "columnName": "shared.feature-3-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125-1"
+      },
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01123"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01125-1_feature_3_1752931030357_ys7dvr35t.json"
+}

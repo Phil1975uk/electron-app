@@ -1,0 +1,53 @@
+{
+  "id": "1752940104635",
+  "sku": "F01154",
+  "cardType": "product-options",
+  "position": 3,
+  "title": "750 Wh + Range Extender 250",
+  "content": "The Bosch PowerMore 250 Wh additional battery supplements the power of the standard 750 Wh battery – for even greater range and flexibility. Only as big as a drinking bottle and weighing just 1.6 kg, it can be stowed away in a backpack or bike bag. And should you spontaneously decide to go on a longer trip, then just attach the energy reserve to the down tube and continue riding for another 50 km without the need to stop and charge.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/73-10-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282572",
+  "price": "£420.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.635Z",
+  "originalHypaData": {
+    "productId": "309",
+    "columnName": "shared.option-3-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01154_product-options_3_1752940107369_v8sy7kzmt.json"
+}

@@ -1,0 +1,49 @@
+{
+  "id": "1752931025005",
+  "sku": "F01133",
+  "cardType": "feature",
+  "position": 4,
+  "title": "Equipment for everyday use",
+  "content": "Dynamism teamed with the comfort required for everyday life: while you feel the wind in your hair, the Suntour NCX suspension fork cushions the cobblestones and potholes in the road. And if you’d prefer even more comfort, simply opt for optional comfort kit with its curved handlebar, Ergon handles and suspension seatpost. You don’t have to do without anything when it comes to transport either: the optional carrier with the Racktime Snapit system or the front luggage carrier with loading area make the Roadster a sporty everyday companion.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-equipment-for-everyday-use.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.005Z",
+  "originalHypaData": {
+    "productId": "518",
+    "columnName": "shared.feature-4-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario Hs",
+        "sku": "F01133"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01133_feature_4_1752931030353_ka1taaz3h.json"
+}

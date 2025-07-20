@@ -1,0 +1,57 @@
+{
+  "id": "1752931026881",
+  "sku": "F01155",
+  "cardType": "product-options",
+  "position": 2,
+  "title": "Kiox 500 cockpit",
+  "content": "The Kiox 500 display is perfectly integrated into the cockpit: the internal cabling creates a tidy, minimalist appearance. The adjustable angle of the stem lets you choose between a sportier or more upright seating position. The Kiox 500 display cannot fail to impress with its large display and ease of reading – even in challenging riding conditions. Ideal for sportier rides, it records your fitness data and can also be coupled to heart rate monitors by Bluetooth. Map-free navigation (only in conjunction with a smartphone) completes the features of the Kiox 500. It can be intuitively operated using the LED Remote on the handlebar.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/85-8-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282571",
+  "price": "£112.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:06.881Z",
+  "originalHypaData": {
+    "productId": "310",
+    "columnName": "shared.option-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01155"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01155_product-options_2_1752931030359_pyvr1p9fa.json"
+}

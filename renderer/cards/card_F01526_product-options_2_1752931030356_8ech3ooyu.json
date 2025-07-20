@@ -1,0 +1,45 @@
+{
+  "id": "1752931025507",
+  "sku": "F01526",
+  "cardType": "product-options",
+  "position": 2,
+  "title": "Cockpit with SmartphoneGrip",
+  "content": "Its SmartphoneGrip transforms your mobile device into your bike’s display. Control the practical functions of your smartphone with the compact Purion 200 within thumb’s reach. The SmartphoneGrip is perfectly integrated into the minimalist cockpit with internal cabling and adjustable stem angle. Its adapter holds your smartphone firmly on the handlebar, charging it as you use it – either with or without cable. Suitable for use with all popular smartphones weighing a maximum of 276 g with the following dimensions: 123 to 175 mm long, 67 to 88 mm wide, and 6.8 to 13 mm deep (including case).",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-snartphonegrip-option2.jpg?t=1729953777\n\n",
+  "price": "£112.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.507Z",
+  "originalHypaData": {
+    "productId": "499",
+    "columnName": "shared.option-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01526"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01524"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01522"
+      }
+    ]
+  },
+  "filename": "card_F01526_product-options_2_1752931030356_8ech3ooyu.json"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "1752931025805",
+  "sku": "F01145",
+  "cardType": "specification-table",
+  "position": 1,
+  "title": "The Swing4 silent in detail",
+  "content": "Frame colour   black*; bordeaux*; crystal white*; salvia matt* \n\n\n Suspension fork   SR Suntour SF14, 28\", 63mm, tapered; SR Suntour SF18, 26\", 63mm, tapered* \n\n\n Headset   Acros Integration X, block lock \n\n\n Seatpost   Satori Elegance-LT OV 34,9 x 405mm; Satori Elegance-LT OV 34,9 x 355mm* \n\n\n Seatclamp   Kalloy SC-201, 40,0 mm \n\n\n Tires   Schwalbe Big Ben 50-622 Reflex; Schwalbe Big Ben 50-559 Reflex* \n\n\n Tubes   Schwalbe AV19; Schwalbe AV13* \n\n\n Rims   Mach1, 28\", CNC; Mach1 260 26\" CNC* \n\n\n Spokes   Sapim Leader 2,0 mm, Inox ( 32x ); Sapim Leader 2,0 mm, inox ( 36x ) \n\n\n Front hub   Novatec 32H \n\n\n Rear hub   Shimano Nexus 8-speed, free-wheel, 36H \n\n\n Battery   Bosch PowerPack Rack 500 \n\n\n Motor   Bosch Performance Line (smart system) \n\n\n Display   Bosch Intuvia 100; Bosch Kiox 300* \n\n\n Crankset   FSA CK-601 170mm schwarz \n\n\n Chain ring   50T, for Gates drive belt CDX \n\n\n Chain guard   Hebie Chainbar, black \n\n\n Chain   Gates drive belt CDC; Gates drive belt CDX* \n\n\n Pinion   24T, for Gates drive belt CDX; 22T, for Gates drive belt CDX* \n\n\n Saddle   Selle Bassano Volare XL \n\n\n Pedals   VP R&M Custom \n\n\n Shifter   Shimano Nexus grip shift, 8-speed \n\n\n Handlebar   Satori Noirette Plus, 31,8 mm, Alu \n\n\n Stem   Satori Stargazer-e, 110 mm, 35°; Satori Stargazer-e, 90 mm, 35°*; Satori Stargazer-e, 110 mm, 35°* \n\n\n Grips   Velo Leather-Look \n\n\n Brakes   Magura HS22, rim brake \n\n\n Front light   Busch & Müller Lumotec IQ-XS \n\n\n Tail light   Spanninga Pimento \n\n\n Mudguards   Curana CD 65 \n\n\n Luggage rack   Riese & Müller, MIK \n\n\n Rubber   Bibia \n\n\n Bell   Billy \n\n\n Kickstand   Pletscher Comp 40 Flex Evo \n\n\n Lock   ABUS Shield X+ \n\n\n RX Hardware   RX Chip (für RX Services)* \n\n\n Frame size [cm]   43 cm (26\")*; 46 cm (28\")*; 51 cm (28\")*; 56 cm (28\")*",
+  "imageUrl": "",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.805Z",
+  "originalHypaData": {
+    "productId": "469",
+    "columnName": "shared.spec-table",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Specification table may not have proper table structure",
+      "Minor format differences: May not have proper table structure, Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Swing",
+    "generation": "Swing4",
+    "variants": [
+      {
+        "name": "Silent",
+        "sku": "F01145"
+      }
+    ]
+  },
+  "filename": "card_F01145_specification-table_1_1752931030358_sdpocf7wq.json"
+}

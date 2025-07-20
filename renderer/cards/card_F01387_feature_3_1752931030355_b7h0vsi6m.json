@@ -1,0 +1,37 @@
+{
+  "id": "1752931025345",
+  "sku": "F01387",
+  "cardType": "feature",
+  "position": 3,
+  "title": "Stable riding behaviour",
+  "content": "Whether getting on and off, loading or riding it – the Multitinker brings safety into everyday life with its low centre of gravity, 20-inch wheels and ingenious details like spoke guard and bipod stand. The large light cone of the dipped beam of the powerful headlight ensures that you are seen in traffic, while the superior lighting offered by the main beam always lights up the path ahead of you out of town or riding through the forest. And if you need to stop quickly, the Magura disc brakes pack quite a punch.",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Multitinker/StableRidingBehaviour.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.345Z",
+  "originalHypaData": {
+    "productId": "509",
+    "columnName": "shared.feature-3-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Multitinker",
+    "generation": "Multitinker",
+    "variants": [
+      {
+        "name": "Silent",
+        "sku": "F01387"
+      }
+    ]
+  },
+  "filename": "card_F01387_feature_3_1752931030355_b7h0vsi6m.json"
+}

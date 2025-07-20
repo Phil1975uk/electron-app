@@ -1,0 +1,156 @@
+{
+  "id": "17529310263852718",
+  "sku": "F01200",
+  "cardType": "feature",
+  "position": 1,
+  "title": "[PLACEHOLDER] feature Card",
+  "subtitle": "",
+  "content": "\n<div style=\"\n    background: #fff3cd;\n    border: 2px dashed #ffc107;\n    border-radius: 8px;\n    padding: 20px;\n    margin: 10px 0;\n    text-align: center;\n    font-family: Arial, sans-serif;\n\">\n    <div style=\"\n        background: #ffc107;\n        color: #212529;\n        padding: 10px;\n        border-radius: 6px;\n        margin-bottom: 15px;\n        font-weight: bold;\n        font-size: 1.1rem;\n    \">\n        ⚠️ PLACEHOLDER CARD - NEEDS RECREATION\n    </div>\n    \n    <div style=\"margin-bottom: 15px;\">\n        <strong>Original Card Type:</strong> Feature<br>\n        <strong>Original Title:</strong> No title provided<br>\n        <strong>Position:</strong> 1\n    </div>\n    \n    <div style=\"\n        background: #f8f9fa;\n        border: 1px solid #dee2e6;\n        border-radius: 6px;\n        padding: 15px;\n        margin: 15px 0;\n        text-align: left;\n    \">\n        <strong style=\"color: #dc3545;\">Validation Errors:</strong>\n        <div style=\"margin: 10px 0; color: #dc3545; font-family: monospace; font-size: 0.9rem;\">\n            • Missing title\n        </div>\n        \n        \n        <strong style=\"color: #ffc107;\">Warnings:</strong>\n        <div style=\"margin: 10px 0; color: #856404; font-family: monospace; font-size: 0.9rem;\">\n            • Feature card has no image\n• Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder\n• Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling\n        </div>\n        \n    </div>\n    \n    <div style=\"\n        background: #e7f3ff;\n        border: 1px solid #b3d9ff;\n        border-radius: 6px;\n        padding: 15px;\n        margin: 15px 0;\n        font-size: 0.9rem;\n    \">\n        <strong>Action Required:</strong><br>\n        This card could not be imported due to format issues. Please recreate it using the Card Creator with the correct format.\n    </div>\n    \n    <div style=\"\n        background: #f8f9fa;\n        border: 1px solid #dee2e6;\n        border-radius: 6px;\n        padding: 10px;\n        margin: 15px 0;\n        font-size: 0.8rem;\n        color: #6c757d;\n    \">\n        <strong>Original Content Preview:</strong><br>\n        We're excited to offer you the Packster2 70 Family. Here is everything that comes with your package:\n    </div>\n</div>\n        ",
+  "imageUrl": "",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:06.385Z",
+  "isPlaceholder": true,
+  "placeholderInfo": {
+    "originalCard": {
+      "id": "1752931026276",
+      "sku": "F01200",
+      "cardType": "feature",
+      "position": 1,
+      "title": "",
+      "content": "We're excited to offer you the Packster2 70 Family. Here is everything that comes with your package:",
+      "imageUrl": "",
+      "price": "",
+      "hypaUpdated": true,
+      "importedFromHypa": true,
+      "lastModified": "2025-07-19T13:17:06.276Z",
+      "originalHypaData": {
+        "productId": "354",
+        "columnName": "shared.feature-1-card",
+        "htmlSource": true
+      }
+    },
+    "validation": {
+      "isValid": false,
+      "errors": [
+        "Missing title"
+      ],
+      "warnings": [
+        "Feature card has no image",
+        "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+        "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+      ],
+      "card": {
+        "id": "1752931026276",
+        "sku": "F01200",
+        "cardType": "feature",
+        "position": 1,
+        "title": "",
+        "content": "We're excited to offer you the Packster2 70 Family. Here is everything that comes with your package:",
+        "imageUrl": "",
+        "price": "",
+        "hypaUpdated": true,
+        "importedFromHypa": true,
+        "lastModified": "2025-07-19T13:17:06.276Z",
+        "originalHypaData": {
+          "productId": "354",
+          "columnName": "shared.feature-1-card",
+          "htmlSource": true
+        }
+      },
+      "row": {
+        "id": "354",
+        "sku": "F01200",
+        "shared.feature-1-card": "<div class=\"container\">\n    \n\n<h1>What&apos;s Included with the Packster2 70 Family</h1>\n\n\n    \n\n<p>We&apos;re excited to offer you the Packster2 70 Family. Here is everything that comes with your package:</p>\n\n\n    \n  \n  <ul>\n    <li>Powerful Bosch Cargo Line (Smart System) Motor</li>\n    <li>High-Capacity 625Wh Battery for Extended Range</li>\n    <li>Comfortable Passenger Cabin with Safety Belts</li>\n    <li>Integrated Front and Rear Lights for Safety</li>\n    <li>Weatherproof Buggy Option With Roll Cage to Protect Your Cargo and Family</li>\n    <li>Versatile Load Area for Cargo or Child Seating</li>\n    <li>Hydraulic Disc Brakes for Reliable Stopping Power</li>\n    <li>Ergonomic Saddle and Adjustable Handlebar for Comfort</li>\n    <li>Purion 200 Intuitive Controls</li>\n  </ul>\n\n\n    \n\n<p>Everything you need for your family adventures is included, designed for maximum comfort and convenience!</p>\n</div>\n<style>\n.swiper-container {\ndisplay: none;\n}\n.OptionH2 {\nDisplay: none;\n}\n</style>",
+        "shared.feature-2-card": "",
+        "shared.feature-3-card": "",
+        "shared.feature-4-card": "",
+        "shared.feature-5-card": "",
+        "shared.feature-6-card": "",
+        "shared.feature-7-card": "",
+        "shared.feature-8-card": "",
+        "shared.feature-9-card": "",
+        "shared.feature-10-card": "",
+        "shared.option-1-card": "",
+        "shared.option-2-card": "",
+        "shared.option-3-card": "",
+        "shared.option-4-card": "",
+        "shared.option-5-card": "",
+        "shared.option-6-card": "",
+        "shared.option-7-card": "",
+        "shared.option-8-card": "",
+        "shared.option-9-card": "",
+        "shared.option-10-card": "",
+        "shared.option-11-card": "",
+        "shared.option-12-card": "",
+        "shared.spec-table": "<div class=\"module container-center m30-layer-content background-grey\" data-layer-target=\"specifications-table-0\">\n<div class=\"grid text-spaces\">\n<p class=\"addition s-12 m-12 l-12\">Specifications</p>\n\n<h2 class=\"s-12 m-12 l-12\">The Packster2 70 family in detail</h2>\n\n<div class=\"s-12 m-12 l-12\">\n<div class=\"specs specs--basic\">\n<div class=\"specs__table\">\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Frame colour </span> <span class=\"specs__value\"> chili matt*; urban grey matt*; white* </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Suspension fork </span> <span class=\"specs__value\"> Suntour Mobie 34 CGO Boost, 20\", 80mm </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Rear shock </span> <span class=\"specs__value\"> X-Fusion Glyde* </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Headset </span> <span class=\"specs__value\"> Acros Integration X, block lock; Cane Creek ViscoSet </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Seatpost </span> <span class=\"specs__value\"> Satori Trident </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Seatclamp </span> <span class=\"specs__value\"> JD, 40,0 mm, QR </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Tires </span> <span class=\"specs__value\"> Schwalbe Big Ben Plus 55-406 Reflex; Schwalbe Super Moto-X 62-559 Reflex </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Tubes </span> <span class=\"specs__value\"> Schwalbe AV13; Schwalbe AV7 </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Rims </span> <span class=\"specs__value\"> Mach1 Trucky30 20\" CNC; Mach1 Trucky30 26\" CNC </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Spokes </span> <span class=\"specs__value\"> Sapim Leader 2,0 mm, Inox, black ( 16x ); Sapim Leader 2,0 mm, Inox, black ( 18x ) </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Front hub </span> <span class=\"specs__value\"> Novatec Boost Cargo Disc 32H </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Rear hub </span> <span class=\"specs__value\"> Shimano Deore Disc, 36H </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Battery </span> <span class=\"specs__value\"> Akku Bosch PowerTube 625 Vertical </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Motor </span> <span class=\"specs__value\"> Bosch Cargo Line (smart system) </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Display </span> <span class=\"specs__value\"> Bosch Purion 200 </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Crankset </span> <span class=\"specs__value\"> Riese &amp; Müller, 170mm </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Chain ring </span> <span class=\"specs__value\"> 42T </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Chain guard </span> <span class=\"specs__value\"> Kettenschutzring </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Chain </span> <span class=\"specs__value\"> KMC X11 ( 119x ) </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Cassette </span> <span class=\"specs__value\"> Shimano CUES CS-LG400-10,11-48T </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Saddle </span> <span class=\"specs__value\"> Selle Royal New Lookin Female Eco </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Pedals </span> <span class=\"specs__value\"> VP R&amp;M Custom </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Shifting system </span> <span class=\"specs__value\"> Shimano CUES RD-U6000 11/10-S </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Shifter </span> <span class=\"specs__value\"> Shimano CUES SL-U6000 10-S </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Handlebar </span> <span class=\"specs__value\"> Satori Noirette Plus, 31,8 mm, Alu </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Stem </span> <span class=\"specs__value\"> Satori, 60 mm, +/-17° </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Grips </span> <span class=\"specs__value\"> Ergon ergonomic </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Brakes </span> <span class=\"specs__value\"> Tektro Auriga Comp HD-500, disc brake </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Front light </span> <span class=\"specs__value\"> Supernova mini 2 </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Tail light </span> <span class=\"specs__value\"> Busch &amp; Müller Toplight 2C LED </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Mudguards </span> <span class=\"specs__value\"> SKS A69R </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Luggage rack </span> <span class=\"specs__value\"> Riese &amp; Müller, MIK </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Rubber </span> <span class=\"specs__value\"> Bibia </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Bell </span> <span class=\"specs__value\"> Billy </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Kickstand </span> <span class=\"specs__value\"> Kickstand Riese &amp; Müller </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Lock </span> <span class=\"specs__value\"> ABUS Shield X+ </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> RX Hardware </span> <span class=\"specs__value\"> RX Chip (für RX Services)* </span></div>\n</div>\n\n<div class=\"specs__item\">\n<div class=\"specs__item-inner\"><span class=\"specs__name\"> Frame size [cm] </span> <span class=\"specs__value\"> universal* </span></div>\n</div>\n</div>\n\n<div class=\"specs__footer\">\n<p>The specification table indicates all available components for this model – not just the basic equipment. Some of the options listed are only available for a surcharge. For more information, see the Configurator. Riese&nbsp;&amp;&nbsp;Müller reserves the right to make technical modifications as well as changes to the shape, colour and/or weight within reasonable limits.</p>\n\n<p>* May differ depending on the availability in your country, design or configuration of the model.</p>\n</div>\n</div>\n</div>\n</div>\n</div>",
+        "shared.cargo-option-1-card": "",
+        "shared.cargo-option-2-card": "",
+        "shared.cargo-option-3-card": "",
+        "shared.cargo-option-4-card": "",
+        "shared.cargo-option-5-card": "",
+        "shared.cargo-option-6-card": "",
+        "shared.cargo-option-7-card": "",
+        "shared.cargo-option-8-card": "",
+        "shared.cargo-option-9-card": "",
+        "shared.cargo-option-10-card": "",
+        "shared.cargo-option-11-card": "",
+        "shared.cargo-option-12-card": "",
+        "shared.weather-option-1-card": "",
+        "shared.weather-option-2-card": "",
+        "shared.weather-option-3-card": "",
+        "shared.weather-option-4-card": "",
+        "shared.weather-option-5-card": "",
+        "shared.weather-option-6-card": "",
+        "shared.weather-option-7-card": "",
+        "shared.weather-option-8-card": "",
+        "shared.weather-option-9-card": "",
+        "shared.weather-option-10-card": "",
+        "shared.weather-option-11-card": "",
+        "shared.weather-option-12-card": ""
+      },
+      "formatValidation": {
+        "errors": [
+          "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder"
+        ],
+        "warnings": [
+          "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+        ],
+        "comparison": {
+          "majorDifferences": [
+            "Missing title (h2) element",
+            "Missing description (p) element",
+            "Missing image or placeholder"
+          ],
+          "minorDifferences": [
+            "Missing border-radius styling",
+            "Missing box-shadow styling",
+            "Missing font-family styling"
+          ]
+        }
+      }
+    },
+    "rowId": "354",
+    "createdAt": "2025-07-19T13:17:06.385Z",
+    "needsRecreation": true
+  },
+  "originalHypaData": {
+    "productId": "354",
+    "isPlaceholder": true,
+    "originalCardType": "feature",
+    "originalPosition": 1
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      }
+    ]
+  },
+  "filename": "card_F01200_feature_1_1752931030358_cnh88u3x0.json"
+}

@@ -1498,3 +1498,41 @@ select.form-select {
 .navbar .container {
     align-items: flex-end;
 } 
+
+/* Card action buttons */
+.card-item .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    min-width: auto;
+    flex: 0 1 auto;
+    white-space: nowrap;
+}
+
+.card-item .col-md-3 .d-flex {
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+/* Ensure consistent button heights */
+.card-item .btn-sm {
+    height: 28px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Make icons slightly smaller in buttons */
+.card-item .btn-sm i {
+    font-size: 0.8rem;
+}
+
+/* Adjust spacing for better visual hierarchy */
+.card-item .col-md-3 {
+    padding-top: 0.5rem;
+}
+
+/* Ensure the created date has proper spacing */
+.card-item .col-md-3 .mt-2 {
+    margin-top: 0.75rem !important;
+} 

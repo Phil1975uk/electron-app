@@ -1,0 +1,63 @@
+{
+  "id": "17529310253763036",
+  "sku": "F01521",
+  "cardType": "feature",
+  "position": 1,
+  "title": "[FORMAT ERROR] Multiple cards in shared.feature-1-card",
+  "subtitle": "",
+  "content": "\n<div style=\"\n    background: #f8d7da;\n    border: 2px dashed #dc3545;\n    border-radius: 8px;\n    padding: 20px;\n    margin: 10px 0;\n    text-align: center;\n    font-family: Arial, sans-serif;\n\">\n    <div style=\"\n        background: #dc3545;\n        color: #ffffff;\n        padding: 10px;\n        border-radius: 6px;\n        margin-bottom: 15px;\n        font-weight: bold;\n        font-size: 1.1rem;\n    \">\n        🚨 FORMAT ERROR - MULTIPLE CARDS IN SINGLE CELL\n    </div>\n    \n    <div style=\"margin-bottom: 15px;\">\n        <strong>Problem:</strong> Found 8 cards in shared.feature-1-card<br>\n        <strong>Expected:</strong> 1 card per cell<br>\n        <strong>Action Required:</strong> Recreate cards with correct format\n    </div>\n    \n    <div style=\"\n        background: #f8f9fa;\n        border: 1px solid #dee2e6;\n        border-radius: 6px;\n        padding: 15px;\n        margin: 15px 0;\n        text-align: left;\n    \">\n        <strong style=\"color: #dc3545;\">Cards Found in shared.feature-1-card:</strong>\n        <div style=\"margin: 10px 0; color: #dc3545; font-family: monospace; font-size: 0.9rem; white-space: pre-line;\">\n1. Control Technology\n2. Control Technology\n3. Innovative Frame Design\n4. Innovative Frame Design\n5. Enhanced Comfort\n6. Enhanced Comfort\n7. Smart Connectivity\n8. Smart Connectivity\n        </div>\n    </div>\n    \n    <div style=\"\n        background: #e7f3ff;\n        border: 1px solid #b3d9ff;\n        border-radius: 6px;\n        padding: 15px;\n        margin: 15px 0;\n        font-size: 0.9rem;\n    \">\n        <strong>How to Fix:</strong><br>\n        1. Use the Card Creator to recreate each card individually<br>\n        2. Each card should be in its own column (shared.feature-1-card, shared.feature-2-card, etc.)<br>\n        3. Export with correct format: 1 card per cell\n    </div>\n    \n    <div style=\"\n        background: #fff3cd;\n        border: 1px solid #ffc107;\n        border-radius: 6px;\n        padding: 10px;\n        margin: 15px 0;\n        font-size: 0.8rem;\n        color: #856404;\n    \">\n        <strong>Note:</strong> This placeholder represents 8 cards that need to be recreated with the correct format.\n    </div>\n</div>\n        ",
+  "imageUrl": "",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.376Z",
+  "isPlaceholder": true,
+  "isFormatError": true,
+  "formatErrorInfo": {
+    "columnName": "shared.feature-1-card",
+    "cardCount": 8,
+    "originalContent": "<!-- HTML Structure -->\n<div class=\"product-card\">\n    \n\n<div class=\"product-image\">\n        </div>\n\n<div class=\"se-component se-image-container __se__float- __se__float-none\">\n    \n    <figure>\n\n            <img class=\"feature-image\" src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-controltech-feature1.jpg?t=1729947025\" alt=\"Control Technology Feature\" data-proportion=\"true\" data-align=\"none\" data-index=\"0\" data-file-name=\"homage5-controltech-feature1.jpg?t=1729947025\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\">\n\n    </figure>\n</div>\n\n\n    \n\n<div class=\"product-image\">\n    </div>\n\n<div class=\"product-details\">\n        \n\n<h2 class=\"product-title\">Control Technology</h2>\n\n\n        \n\n<p class=\"product-description\">The Homage5 GT combines front suspension, a rear swing arm, and co-sprung luggage carrier, providing stability across varied terrains. With the optional Bosch eBike ABS, braking becomes even safer on challenging surfaces.</p>\n\n\n    </div>\n</div>\n\n<div class=\"product-card reverse\">\n    \n\n<div class=\"product-image\">\n        </div>\n\n<div class=\"se-component se-image-container __se__float- __se__float-none\">\n    \n    <figure>\n\n            <img class=\"feature-image\" src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-frame-feature2.jpg?t=1729947026\" alt=\"Innovative Frame Design\" data-proportion=\"true\" data-align=\"none\" data-index=\"1\" data-file-name=\"homage5-frame-feature2.jpg?t=1729947026\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\">\n\n    </figure>\n</div>\n\n\n    \n\n<div class=\"product-image\">\n    </div>\n\n<div class=\"product-details\">\n        \n\n<h2 class=\"product-title\">Innovative Frame Design</h2>\n\n\n        \n\n<p class=\"product-description\">Crafted from 30% recycled aluminum, the Homage5 GT’s frame integrates the drive and suspension above the crank, offering both eco-friendliness and enhanced protection.</p>\n\n\n    </div>\n</div>\n\n<div class=\"product-card\">\n    \n\n<div class=\"product-image\">\n        </div>\n\n<div class=\"se-component se-image-container __se__float- __se__float-none\">\n    \n    <figure>\n\n            <img class=\"feature-image\" src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-comfort-feature-3.jpg?t=1729947027\" alt=\"Enhanced Comfort\" data-proportion=\"true\" data-align=\"none\" data-index=\"2\" data-file-name=\"homage5-comfort-feature-3.jpg?t=1729947027\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\">\n\n    </figure>\n</div>\n\n\n    \n\n<div class=\"product-image\">\n    </div>\n\n<div class=\"product-details\">\n        \n\n<h2 class=\"product-title\">Enhanced Comfort</h2>\n\n\n        \n\n<p class=\"product-description\">A low step-through design allows easy mounting, and the dropper seatpost offers quick height adjustments. The optional Comfort Kit, with curved handlebars and a wider saddle, enhances urban riding.</p>\n\n\n    </div>\n</div>\n\n<div class=\"product-card reverse\">\n    \n\n<div class=\"product-image\">\n        </div>\n\n<div class=\"se-component se-image-container __se__float- __se__float-none\">\n    \n    <figure>\n\n            <img class=\"feature-image\" src=\"https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-rx-feature4.jpg?t=1729947029\" alt=\"Smart Connectivity\" data-proportion=\"true\" data-align=\"none\" data-index=\"3\" data-file-name=\"homage5-rx-feature4.jpg?t=1729947029\" data-file-size=\"0\" data-origin=\",\" data-size=\",\" data-rotate=\"\" data-rotatex=\"\" data-rotatey=\"\" style=\"\" width=\"\" height=\"\" data-percentage=\"auto,auto\">\n\n    </figure>\n</div>\n\n\n    \n\n<div class=\"product-image\">\n    </div>\n\n<div class=\"product-details\">\n        \n\n<h2 class=\"product-title\">Smart Connectivity</h2>\n\n\n        \n\n<p class=\"product-description\">An integrated RX Chip offers tracking, a motion alarm, and ride statistics. Enjoy a free year of ConnectRide, providing a connected, secure riding experience.</p>\n\n\n    </div>\n</div>\n\n<!-- CSS --><style>\n.product-card {\n    display: flex;\n    border: 1px solid #ccc;\n    border-radius: 10px;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n    width: 100%;\n    overflow: hidden;\n    margin-bottom: 20px;\n    align-items: center;\n}\n\n.product-card.reverse {\n    flex-direction: row-reverse;\n}\n\n.product-image {\n    flex: 1;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 10px; /* Add padding around the image */\n}\n\n.feature-image {\n    max-width: 250px; /* Increase the max width to make images larger */\n    height: auto;\n}\n\n.product-details {\n    flex: 2;\n    padding: 20px;\n}\n\n.product-title {\n    font-size: 24px;\n    margin-bottom: 10px;\n}\n\n.product-description {\n    font-size: 16px;\n    color: #666;\n}\n\n@media (max-width: 768px) {\n    .product-card {\n        flex-direction: column;\n    }\n\n    .feature-image {\n        width: 100%; /* Allow images to expand fully on small screens */\n    }\n}\n</style>",
+    "needsRecreation": true
+  },
+  "originalHypaData": {
+    "productId": "501",
+    "columnName": "shared.feature-1-card",
+    "isFormatError": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Feature card has no image",
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion Hs",
+        "sku": "F01521"
+      },
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01526"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01524"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01522"
+      }
+    ]
+  },
+  "filename": "card_F01521_feature_1_1752931030355_ceqoi3p77.json"
+}

@@ -1,0 +1,57 @@
+{
+  "id": "1752940104322",
+  "sku": "F01125",
+  "cardType": "product-options",
+  "position": 2,
+  "title": "Kiox 300 cockpit",
+  "content": "The Kiox 300 display seamlessly integrates into the cockpit, enhancing aesthetics with internal cabling for a clean, minimalist look. The adjustable stem angle offers versatility, allowing riders to choose between a sporty or upright seating position. Designed with sporty riders in mind, the Kiox 300 display provides more than just fitness data, aiding in training optimization. Additionally, it can be paired with heart rate monitors via Bluetooth for comprehensive performance tracking. Map-free navigation, available when paired with a smartphone, adds further functionality to the Kiox 300. Intuitive operation is facilitated by the LED Remote on the handlebars.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/riese-and-muller-homage4-kiox300.jpg?t=1710947789",
+  "price": "£75.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.322Z",
+  "originalHypaData": {
+    "productId": "315",
+    "columnName": "shared.option-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01123"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01125_product-options_2_1752940107369_ndlxxjfvk.json"
+}

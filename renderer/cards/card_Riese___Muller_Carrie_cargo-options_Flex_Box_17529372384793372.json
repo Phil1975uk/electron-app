@@ -1,0 +1,57 @@
+{
+  "id": "17529372384793372",
+  "sku": "F01170",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Flex Box",
+  "description": "The Flex Box is an extension of the Basic Box (45 by 30 cm) for transporting larger loads and offers numerous transport options both when folded out and in. When collapsed, it is high enough to transport a regular drinks crate. And when folded out, its extended area of approx. 45 by 65 cm provides ample space for your weekly shopping or sports bag. It is fitted with a box lock that protects your load from unwanted access, if need be.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01170/115_39_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "373.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_cargo-options_Flex_Box_17529372384793372.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/cargo-options/Carrie_Carrie_cargo-options_flex-box.jpg",
+  "uploadDate": "2025-07-19T20:44:44.409Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:44:40.165Z",
+    "DateUploaded": "2025-07-19T20:44:40.165Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:34:50.865Z",
+  "savedAt": "2025-07-19T15:00:38.479Z",
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_cargo-options_Flex_Box_17529372384793372.json"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "1752940103297",
+  "sku": "F01520",
+  "cardType": "product-options",
+  "position": 2,
+  "title": "Cockpit with Multi-adapter",
+  "content": "The Multi-adapter lets you extend the compact Remote display with your smartphone, combining all functions in one place: smart navigation with live weather, fitness data and much more. Other services and apps, such as music playback, can be controlled at the same time. A matching SP Connect smartphone case or bracket is available separately, as are further attachments for a bike computer. The Multi-adapter is perfectly integrated into the cockpit, with the internal cabling creating a clean look. Charge your smartphone while you ride using the USB-C charging socket. The angle-adjustable stem lets you switch between a sportier or more upright seat position.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage-pinion-cockpit-multiadaptor.jpg?t=1730560798\n\n",
+  "price": "Additional £47.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.297Z",
+  "originalHypaData": {
+    "productId": "500",
+    "columnName": "shared.option-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      }
+    ]
+  },
+  "filename": "card_F01520_product-options_2_1752940107367_w0i2j5e50.json"
+}

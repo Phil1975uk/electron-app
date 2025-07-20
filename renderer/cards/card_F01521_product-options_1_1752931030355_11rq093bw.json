@@ -1,0 +1,41 @@
+{
+  "id": "1752931025377",
+  "sku": "F01521",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Cockpit with Remote display",
+  "content": "Keep an eye on all the important information with the compact and attractive Remote display. This combination of control unit and high-resolution colour display can be intuitively operated without taking your hand off the handlebars. The Remote display is perfectly integrated into the cockpit, with the internal cabling creating a clean look. Charge your smartphone while you ride using the USB-C charging socket. The angle-adjustable stem lets you switch between a sportier or more upright seat position.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage-pinion-cockpit-with-remote.jpg?t=1730560797\n\n",
+  "price": "Fitted As Standard",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.377Z",
+  "originalHypaData": {
+    "productId": "501",
+    "columnName": "shared.option-1-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion Hs",
+        "sku": "F01521"
+      },
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      }
+    ]
+  },
+  "filename": "card_F01521_product-options_1_1752931030355_11rq093bw.json"
+}

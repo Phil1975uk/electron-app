@@ -1,0 +1,45 @@
+{
+  "id": "1752940103744",
+  "sku": "F01202",
+  "cardType": "feature",
+  "position": 4,
+  "title": "Adjustable seating position",
+  "content": "The height-adjustable saddle and stem let you adjust the seating position of the Packster 70 to different body heights from 1.50 m to 2.00 m in the blink of an eye, making it the perfect companion to family life and a flexible replacement for your car.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/23-hlf-pac70-vorbau-6480.jpg?t=1713436209",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:23.744Z",
+  "originalHypaData": {
+    "productId": "467",
+    "columnName": "shared.feature-4-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      }
+    ]
+  },
+  "filename": "card_F01202_feature_4_1752940107368_ns7szuwyy.json"
+}

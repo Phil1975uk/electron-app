@@ -1,0 +1,53 @@
+{
+  "id": "1752931025378",
+  "sku": "F01521",
+  "cardType": "product-options",
+  "position": 8,
+  "title": "Additional chain lock with Vaude bag",
+  "content": "The sturdy Abus chain lock, in addition to the Abus frame lock, provides twice the security for your e-bike. The 130 cm long chain is latched onto the frame lock and you can quickly lock your bike to the nearest lamppost or lock it together with up to three other bikes. The chain thickness of 6 mm ensures a high level of anti-theft protection. Especially practical: frame lock, chain lock and battery lock all use the same key. The 100% recycled polyester Vaude bag is permanently attached to the saddle. You can remove the chain lock from the bag quickly and easily, thanks to its ergonomic shape and roll-up closure. Please note: for smaller frame sizes the lowest saddle position may not be usable when the lock bag is fitted.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-lock-option9.jpg?t=1729953783\n\n",
+  "price": "£47.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.378Z",
+  "originalHypaData": {
+    "productId": "501",
+    "columnName": "shared.option-8-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion Hs",
+        "sku": "F01521"
+      },
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01526"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01524"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01522"
+      }
+    ]
+  },
+  "filename": "card_F01521_product-options_8_1752931030355_6cls56yed.json"
+}

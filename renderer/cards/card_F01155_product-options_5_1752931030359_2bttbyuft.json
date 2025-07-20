@@ -1,0 +1,57 @@
+{
+  "id": "1752931026882",
+  "sku": "F01155",
+  "cardType": "product-options",
+  "position": 5,
+  "title": "GX option",
+  "content": "If you like riding your E-Bike off-road, then simply equip it with a first-class off-road package. The Suntour Aion air suspension fork with 140 mm travel reliably absorbs shocks and effortlessly compensates for any unevenness on the terrain. The solid tire studs on the shoulders of the Schwalbe Johnny Watts tires guarantee outstanding grip, especially when cornering. The wide VP 538 flat pedals provide grip for your feet. The sporty saddle an the adjustable X-Fusion Manic seatpost simply make off-road riding an absolute joy.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/83-15-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282574",
+  "price": "£187.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:06.882Z",
+  "originalHypaData": {
+    "productId": "310",
+    "columnName": "shared.option-5-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01155"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01155_product-options_5_1752931030359_2bttbyuft.json"
+}

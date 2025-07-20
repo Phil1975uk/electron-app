@@ -1,0 +1,53 @@
+{
+  "id": "1752931025377",
+  "sku": "F01521",
+  "cardType": "product-options",
+  "position": 4,
+  "title": "GX option",
+  "content": "If you like to go off-road, you can equip your E-Bike with Schwalbe's exceptional Johnny Watts tire. The flat knobs in the highest section have very low rolling resistance for fast trips on straight sections. The solid studs on the sides guarantee very good grip, especially when cornering. The wide VP 538 flat pedals offer the necessary grip for your feet.",
+  "imageUrl": "\n\nhttps://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/homage5-gx-option4.jpg?t=1729953779\n\n",
+  "price": "£47.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.377Z",
+  "originalHypaData": {
+    "productId": "501",
+    "columnName": "shared.option-4-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage5",
+    "variants": [
+      {
+        "name": "Gt Pinion Hs",
+        "sku": "F01521"
+      },
+      {
+        "name": "Gt Pinion",
+        "sku": "F01520"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01526"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01524"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01522"
+      }
+    ]
+  },
+  "filename": "card_F01521_product-options_4_1752931030355_t59roeb34.json"
+}

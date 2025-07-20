@@ -1,0 +1,49 @@
+{
+  "id": "1752931025246",
+  "sku": "F01356_1209140719153055",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Flexible load transport",
+  "content": "The Packster 70 offers a 70-cm-long and 60-cm-wide loading surface and, with basic equipment, provides a cargo space of up to 240 litres. With the optional Cargo Carry System, the shock-absorbing and insulating EPP box can adapt to any transport project. Whether you need a level cargo surface, secure transport for standard Euro boxes or storage space for smaller objects – the Cargo Carry System protects your cargo thanks to versatile elements and diverse adjustment options. You can even transport up to approx. 375 litres, securely sealed, with the optional high box cover (loading surface approved for up to 70 kg).",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/23-hlf-pac70-cargo-carry-system-0175.jpg?t=1713436202",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.246Z",
+  "originalHypaData": {
+    "productId": "515",
+    "columnName": "shared.feature-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Ct Vario",
+        "sku": "F01356_1209140719153055"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      }
+    ]
+  },
+  "filename": "card_F01356_1209140719153055_feature_2_1752931030353_leamjvlts.json"
+}

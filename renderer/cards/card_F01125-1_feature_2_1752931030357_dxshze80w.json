@@ -1,0 +1,61 @@
+{
+  "id": "1752931025702",
+  "sku": "F01125-1",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Integrated Design Concept",
+  "content": "The frame design of the Homage leaves an indelible impression at first glance - and with every subsequent viewing. Alongside complete battery integration, the head and down tube meld seamlessly into a singular entity. You'll search in vain for welding seams - each frame receives meticulous finishing touches. The Bosch Performance Line CX motor with 85 Nm and the compact carrier with MIK system seamlessly merge into the frame design, leading observers to assume: the Homage must be forged as one piece. Moreover, the minimalist cockpit is fully integrated, offering a consistently clean and sophisticated view at all times.",
+  "imageUrl": "https://www.r-m.de/media/filer_public/b1/74/b17411dc-dc0b-43f7-b26f-586809eb645b/24_hlf_homage4_motorintegration_1873.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.702Z",
+  "originalHypaData": {
+    "productId": "494",
+    "columnName": "shared.feature-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125-1"
+      },
+      {
+        "name": "Gt Rohloff Hs",
+        "sku": "F01125"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01123"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01125-1_feature_2_1752931030357_dxshze80w.json"
+}

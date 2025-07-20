@@ -1,0 +1,62 @@
+{
+  "id": "1752931025649",
+  "sku": "F01170",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Intuvia 100 cockpit",
+  "description": "The Intuvia 100 display is simple and intuitive to use and offers a perfect overview of key riding data, including distance, trip duration, range, speed and riding mode. The Intuvia 100 also provides precise information on the battery charge level as a percentage. It can be conveniently operated using the LED Remote on the handlebars..",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/320w/image-manager/carrie-intuvia100.jpg?t=1729344238",
+  "price": "£00.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_F01169_product-options_1_1752931030356_7lh25a5z2.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/product-options/Carrie_Carrie_product-options_intuvia-100-cockpit.jpg",
+  "uploadDate": "2025-07-19T20:44:06.571Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:44:02.330Z",
+    "DateUploaded": "2025-07-19T20:44:02.330Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": true,
+  "hypaUpdated": true,
+  "lastModified": "2025-07-19T18:33:12.428Z",
+  "savedAt": "2025-07-19T13:30:10.708Z",
+  "originalHypaData": {
+    "productId": "495",
+    "columnName": "shared.option-1-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "content": "The Intuvia 100 display is simple and intuitive to use and offers a perfect overview of key riding data, including distance, trip duration, range, speed and riding mode. The Intuvia 100 also provides precise information on the battery charge level as a percentage. It can be conveniently operated using the LED Remote on the handlebars..",
+  "originalFilename": "card_F01169_product-options_1_1752931030356_7lh25a5z2.json"
+}

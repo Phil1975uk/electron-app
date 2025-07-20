@@ -83,6 +83,11 @@ async function cleanupLastUnsavedImage() {
 
 // Main handler for image input (file, data URL, or normal URL)
 async function handleImageInput(input) {
+    console.log('[handleImageInput] Input received:', input);
+    console.log('[handleImageInput] Input type:', typeof input);
+    console.log('[handleImageInput] Input instanceof File:', input instanceof File);
+    console.log('[handleImageInput] Input instanceof Blob:', input instanceof Blob);
+    
     let base64Data, extension = 'png';
     try {
         // Auto-delete previous unsaved image if not referenced
@@ -113,9 +118,11 @@ async function handleImageInput(input) {
         // Use savedPath as the card's image URL
         const imageUrlInput = document.getElementById('imageUrl');
         if (imageUrlInput) {
+            console.log('[handleImageInput] Setting imageUrlInput.value to:', savedPath);
             imageUrlInput.value = savedPath;
             imageUrlInput.dataset.fileDataUrl = '';
             imageUrlInput.dataset.fileName = '';
+            console.log('[handleImageInput] After setting, imageUrlInput.value is:', imageUrlInput.value);
         }
         if (typeof cardCreator !== 'undefined' && cardCreator.updatePreview) {
             cardCreator.updatePreview();
@@ -172,7 +179,7 @@ class CardCreator {
         this.setupEventListeners();
         this.selectCardType('feature'); // Set initial state
         this.updatePreview(); // Initial preview update
-        this.loadSavedCards(); // Load existing cards on page load
+        // loadSavedCards() is already called in loadConfigurations(), so we don't need to call it again
         this.updateStatusIndicator(); // Initialize status indicator
         
         // Initialize filter toggle checkbox
@@ -184,35 +191,26 @@ class CardCreator {
 
     async loadConfigurations() {
         try {
-            // Try to load from server first
+            // Load from server only - no localStorage fallback
             const response = await fetch('/api/configurations');
             if (response.ok) {
                 const serverData = await response.json();
                 // Handle both formats: direct array or { configurations: [...] }
                 const serverConfigs = Array.isArray(serverData) ? serverData : (serverData.configurations || []);
-                if (serverConfigs.length > 0) {
-                    this.configurations = serverConfigs;
-                    console.log('Loaded configurations from server:', serverConfigs.length, 'configurations');
-                } else {
-                    // Server returned empty array, try localStorage
-                    const storedConfigs = localStorage.getItem('bikeConfigurations');
-                    this.configurations = storedConfigs ? JSON.parse(storedConfigs) : [];
-                    console.log('Loaded configurations from localStorage:', this.configurations.length, 'configurations');
-                }
+                this.configurations = serverConfigs;
+                console.log('Loaded configurations from server:', serverConfigs.length, 'configurations');
             } else {
-                // Server error, fall back to localStorage
-                const storedConfigs = localStorage.getItem('bikeConfigurations');
-                this.configurations = storedConfigs ? JSON.parse(storedConfigs) : [];
-                console.log('Server error, loaded configurations from localStorage:', this.configurations.length, 'configurations');
+                // Server error, use empty array
+                console.warn('Server error loading configurations, using empty array');
+                this.configurations = [];
             }
             this.populateBrandSelect();
             await this.restoreSelectionsFromLocalStorage();
             this.loadSavedCards(); // Refresh the saved cards list
         } catch (error) {
             console.error('Error loading configurations:', error);
-            // Final fallback to localStorage
-            const storedConfigs = localStorage.getItem('bikeConfigurations');
-            this.configurations = storedConfigs ? JSON.parse(storedConfigs) : [];
+            // Use empty array on error - no localStorage fallback
+            this.configurations = [];
             this.populateBrandSelect();
             this.loadSavedCards();
         }
@@ -539,8 +537,22 @@ class CardCreator {
             console.log('[selectCardType] justCancelledEdit is true, allowing card type switch to', type);
             this.justCancelledEdit = false;
         } else if (this.editingCardId) {
-            if (!this.hasUnsavedChanges) {
-                // No unsaved changes, auto-cancel edit and switch
+            // If we're editing and the card type is the same, don't cancel edit mode
+            const currentCard = this.savedCards.find(card => String(card.id) === String(this.editingCardId));
+            const currentCardType = currentCard?.cardType || currentCard?.type;
+            const typeMap = {
+                'option': 'product-options',
+                'cargo': 'cargo-options',
+                'spec': 'specification-table'
+            };
+            const mappedCurrentType = typeMap[currentCardType] || currentCardType;
+            
+            if (mappedCurrentType === type) {
+                // Same card type, keep editing
+                console.log('[selectCardType] Same card type during edit, preserving edit state');
+            } else if (!this.hasUnsavedChanges) {
+                // Different card type, no unsaved changes, auto-cancel edit and switch
+                console.log('[selectCardType] Different card type, no unsaved changes, cancelling edit');
                 this.cancelEditMode();
                 // After cancelEditMode, proceed to switch card type
             } else {
@@ -590,7 +602,10 @@ class CardCreator {
             btn.classList.toggle('active', btn.dataset.type === type);
         });
         // Show/hide form sections based on card type
+        console.log('[selectCardType] About to call updateFormFields with type:', type);
         this.updateFormFields(type);
+        console.log('[selectCardType] updateFormFields completed');
+        console.log('[selectCardType] Price field after updateFormFields:', document.getElementById('price'));
         // Update the preview
         this.updatePreview();
         // Debug: Check if renderSavedCards is being called
@@ -671,6 +686,27 @@ class CardCreator {
                     <div class="form-text">Enter a price (numbers only), TBC, or leave blank for no extra cost.</div>
                 `;
                 subtitleField.insertAdjacentElement('afterend', priceFieldDiv);
+                console.log('[updateFormFields] Created price field for card type:', cardType);
+                console.log('[updateFormFields] Price field element:', document.getElementById('price'));
+                console.log('[updateFormFields] Price field is editable:', !document.getElementById('price')?.readOnly);
+                console.log('[updateFormFields] Price field is disabled:', document.getElementById('price')?.disabled);
+                
+                // Ensure the price field is properly enabled
+                const priceField = document.getElementById('price');
+                if (priceField) {
+                    priceField.removeAttribute('readonly');
+                    priceField.removeAttribute('disabled');
+                    priceField.style.pointerEvents = 'auto';
+                    priceField.style.opacity = '1';
+                    priceField.tabIndex = 0;
+                    console.log('[updateFormFields] Price field after enabling - readonly:', priceField.readOnly, 'disabled:', priceField.disabled, 'pointerEvents:', priceField.style.pointerEvents);
+                    
+                    // Test if the field can be interacted with
+                    setTimeout(() => {
+                        priceField.focus();
+                        console.log('[updateFormFields] Price field focus test completed');
+                    }, 100);
+                }
                 // Remove readonly/disabled from all relevant fields
                 titleInput.removeAttribute('readonly');
                 titleInput.removeAttribute('disabled');
@@ -689,6 +725,7 @@ class CardCreator {
                 }
                 break;
             case 'specification-table':
+                // For spec sheets, only show the HTML content field - hide everything else
                 descriptionField.style.display = 'block';
                 descriptionInput.setAttribute('required', 'required');
                 // Ensure we have a <textarea> for multi-line HTML input
@@ -697,8 +734,10 @@ class CardCreator {
                 }
                 const descriptionLabel = descriptionField.querySelector('label');
                 if (descriptionLabel) {
-                    descriptionLabel.textContent = 'HTML Content (paste specification table HTML here)';
+                    descriptionLabel.textContent = 'Specification Table HTML (paste complete HTML here)';
                 }
+                // Make the textarea larger for HTML content
+                descriptionInput.rows = 12;
                 break;
             default:
                 titleField.style.display = 'block';
@@ -889,13 +928,29 @@ class CardCreator {
 
     async populateForm(card) {
         await cleanupLastUnsavedImage(); // Clean up unsaved image on card selection/edit
+        
+        // Reset change tracking when starting to edit a new card
+        this.hasUnsavedChanges = false;
+        this.clearOriginalFormData();
+        
+        // Clear any unsaved image data from the image URL input
+        const imageUrlInput = document.getElementById('imageUrl');
+        if (imageUrlInput) {
+            // Clear any file data URL that might be lingering from unsaved changes
+            imageUrlInput.dataset.fileDataUrl = '';
+            imageUrlInput.dataset.fileName = '';
+            console.log('[populateForm] Cleared unsaved image data from input');
+        }
+        
         console.log('[populateForm] card:', card);
         this.editingCardId = card.id;
         this.editingCardFilename = card.filename;
         let cardType = card.cardType || card.type;
         if (cardType === 'spec') cardType = 'specification-table';
         if (cardType === 'weather') cardType = 'weather-protection';
+        console.log('[populateForm] Card type:', cardType, 'selectedCardType before switch:', this.selectedCardType);
         if (cardType) this.selectCardType(cardType);
+        console.log('[populateForm] selectedCardType after switch:', this.selectedCardType);
         this.removeDuplicatePriceFields();
         if (card.configuration) {
             document.getElementById('brand').value = card.configuration.brand || '';
@@ -932,22 +987,38 @@ class CardCreator {
         }
         document.getElementById('title').value = card.title || '';
         document.getElementById('description').value = card.description || card.htmlContent || card.content || '';
-        document.getElementById('imageUrl').value = card.imageUrl || '';
-        console.log('[populateForm] imageUrl set to:', card.imageUrl);
+        
+        // Handle image URL with debugging
+        const imageUrlToSet = card.imageUrl || '';
+        console.log('[populateForm] Original card.imageUrl:', card.imageUrl);
+        console.log('[populateForm] Type of card.imageUrl:', typeof card.imageUrl);
+        console.log('[populateForm] Setting imageUrl to:', imageUrlToSet);
+        document.getElementById('imageUrl').value = imageUrlToSet;
+        console.log('[populateForm] After setting, imageUrl.value is:', document.getElementById('imageUrl').value);
         if (cardType === 'feature') {
             document.getElementById('subtitle').value = card.subtitle || '';
             this.updatePreview();
         } else if (cardType === 'product-options' || cardType === 'cargo-options' || cardType === 'weather-protection') {
-            setTimeout(() => {
-                const priceField = document.getElementById('price');
-                if (priceField) {
-                    priceField.removeAttribute('readonly');
-                    priceField.removeAttribute('disabled');
-                    priceField.value = card.price || '';
-                    console.log('[populateForm] price set to:', card.price);
-                }
-                this.updatePreview();
-            }, 0);
+            // Ensure price field exists and is properly set up
+            let priceField = document.getElementById('price');
+            
+            // If price field doesn't exist, it might not have been created yet
+            if (!priceField) {
+                console.log('[populateForm] Price field not found, waiting for it to be created...');
+                // Wait a moment for the field to be created by updateFormFields
+                await new Promise(resolve => setTimeout(resolve, 100));
+                priceField = document.getElementById('price');
+            }
+            
+            if (priceField) {
+                priceField.removeAttribute('readonly');
+                priceField.removeAttribute('disabled');
+                priceField.value = card.price || '';
+                console.log('[populateForm] Price field found and set to:', card.price);
+            } else {
+                console.error('[populateForm] Price field still not found after waiting');
+            }
+            this.updatePreview();
         } else if (cardType === 'specification-table') {
             document.getElementById('description').value = card.htmlContent || card.description || card.content || '';
             this.updatePreview();
@@ -956,11 +1027,19 @@ class CardCreator {
         }
         
         // Store original form data for change tracking
+        console.log('[populateForm] About to store original form data for card type:', this.selectedCardType);
         this.storeOriginalFormData();
+        console.log('[populateForm] Original form data stored');
     }
 
     getFormData() {
-        const rawImageUrl = document.getElementById('imageUrl').value.trim();
+        const imageUrlInput = document.getElementById('imageUrl');
+        console.log('[getFormData] imageUrlInput:', imageUrlInput);
+        console.log('[getFormData] imageUrlInput.value:', imageUrlInput?.value);
+        console.log('[getFormData] imageUrlInput.value type:', typeof imageUrlInput?.value);
+        console.log('[getFormData] imageUrlInput.dataset:', imageUrlInput?.dataset);
+        
+        const rawImageUrl = imageUrlInput?.value?.trim() || '';
         const cleanedImageUrl = rawImageUrl.startsWith('@') ? rawImageUrl.substring(1) : rawImageUrl;
         console.log('[getFormData] rawImageUrl:', rawImageUrl);
         console.log('[getFormData] cleanedImageUrl:', cleanedImageUrl);
@@ -1021,11 +1100,20 @@ class CardCreator {
             primarySku = selectedVariants[0].sku || selectedVariants[0].name || '';
         }
 
-        // Gather all values first
-        const id = this.editingCardId || Date.now().toString();
+        // Generate unique ID for new cards or preserve existing ID for edits
+        let id;
+        if (this.editingCardId) {
+            // When editing, preserve the existing ID
+            id = String(this.editingCardId).replace(/\D/g, '') || Date.now().toString();
+        } else {
+            // When creating new card, generate unique ID with timestamp + random suffix
+            const timestamp = Date.now();
+            const randomSuffix = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            id = `${timestamp}${randomSuffix}`;
+        }
+
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
-        const imageUrlInput = document.getElementById('imageUrl');
         let imageUrl = '';
         if (imageUrlInput) {
             if (imageUrlInput.dataset.fileDataUrl) {
@@ -1047,9 +1135,32 @@ class CardCreator {
         } else {
             position = undefined;
         }
-        // Standardize filename
+        // Standardize filename - preserve original filename when editing
         const safe = s => (s || '').replace(/[^a-zA-Z0-9_-]/g, '_');
-        const filename = `card_${safe(brand)}_${safe(model)}_${safe(cardType)}_${safe(title)}_${id}.json`;
+        let filename;
+        
+        if (this.editingCardFilename) {
+            // When editing, use the original filename
+            filename = this.editingCardFilename;
+        } else {
+            // When creating new card, generate filename
+            if (cardType === 'specification-table') {
+                // For spec sheets, extract title from HTML content for filename
+                const htmlContent = document.getElementById('description').value;
+                let extractedTitle = 'specification-table';
+                if (htmlContent) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    const h2Element = doc.querySelector('h2');
+                    if (h2Element && h2Element.textContent.trim()) {
+                        extractedTitle = h2Element.textContent.trim();
+                    }
+                }
+                filename = `card_${safe(brand)}_${safe(model)}_${safe(cardType)}_${safe(extractedTitle)}_${id}.json`;
+            } else {
+                filename = `card_${safe(brand)}_${safe(model)}_${safe(cardType)}_${safe(title)}_${id}.json`;
+            }
+        }
         // Build standardized cardData
         const cardData = {
             id,
@@ -1073,6 +1184,7 @@ class CardCreator {
             importedFromHypa: false,
             hypaUpdated: false,
             lastModified: new Date().toISOString(),
+            savedAt: new Date().toISOString(), // Add savedAt property
             originalHypaData: {}
         };
         
@@ -1083,23 +1195,45 @@ class CardCreator {
         if (this.selectedCardType === 'feature') {
             cardData.title = document.getElementById('title').value;
             cardData.subtitle = document.getElementById('subtitle').value;
-            cardData.imageUrl = cleanedImageUrl;
         } else if (this.selectedCardType === 'product-options' || this.selectedCardType === 'cargo-options' || this.selectedCardType === 'weather-protection') {
             cardData.title = document.getElementById('title').value;
             cardData.price = document.getElementById('price')?.value || '';
-            cardData.imageUrl = cleanedImageUrl;
         } else if (this.selectedCardType === 'specification-table') {
-            cardData.title = "Specification Table";
-            cardData.htmlContent = document.getElementById('description').value;
+            // For spec sheets, extract title from H2 tag and store HTML content
+            const htmlContent = document.getElementById('description').value;
+            cardData.htmlContent = htmlContent;
+            
+            // Extract title from H2 tag in the HTML content
+            if (htmlContent) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                const h2Element = doc.querySelector('h2');
+                if (h2Element && h2Element.textContent.trim()) {
+                    cardData.title = h2Element.textContent.trim();
+                } else {
+                    // Fallback title if no H2 found
+                    cardData.title = 'Specification Table';
+                }
+            } else {
+                cardData.title = 'Specification Table';
+            }
         }
         
-        // Use the previewed image (data URL or URL) if available
+        // Handle image URL consistently for all card types
         if (imageUrlInput) {
             if (imageUrlInput.dataset.fileDataUrl) {
                 cardData.imageUrl = imageUrlInput.dataset.fileDataUrl;
+                console.log('[getFormData] Using fileDataUrl:', cardData.imageUrl);
             } else if (imageUrlInput.value) {
                 cardData.imageUrl = imageUrlInput.value;
+                console.log('[getFormData] Using imageUrlInput.value:', cardData.imageUrl);
+            } else {
+                cardData.imageUrl = cleanedImageUrl; // Fallback to cleaned URL
+                console.log('[getFormData] Using cleanedImageUrl fallback:', cardData.imageUrl);
             }
+        } else {
+            cardData.imageUrl = cleanedImageUrl; // Fallback to cleaned URL
+            console.log('[getFormData] Using cleanedImageUrl (no input):', cardData.imageUrl);
         }
         
         console.log('[getFormData] Final cardData:', cardData);
@@ -1109,9 +1243,18 @@ class CardCreator {
     async handleFormSubmit(event) {
         event.preventDefault();
         console.log('[handleFormSubmit] editingCardId:', this.editingCardId, 'editingCardFilename:', this.editingCardFilename);
+        console.log('[handleFormSubmit] hasUnsavedChanges:', this.hasUnsavedChanges);
+        console.log('[handleFormSubmit] justCancelledEdit:', this.justCancelledEdit);
         const form = document.getElementById('cardForm');
         const formData = new FormData(form);
         const cardData = this.getFormData();
+        
+        console.log('[handleFormSubmit] Form data collected, cardData:', {
+            id: cardData.id,
+            filename: cardData.filename,
+            editingCardId: this.editingCardId,
+            editingCardFilename: this.editingCardFilename
+        });
 
         // Auto-assign position for card types that need it (feature / product / cargo / weather)
         const positionRequiredTypes = ['feature', 'product-options', 'cargo-options', 'weather-protection'];
@@ -1157,11 +1300,65 @@ class CardCreator {
             }
         }
 
-        // If editing, preserve id and filename
+        // If editing, preserve original card metadata and update status fields
         if (this.editingCardId && this.editingCardFilename) {
-            cardData.id = this.editingCardId;
-            cardData.filename = this.editingCardFilename;
-            cardData.originalFilename = this.editingCardFilename; // Send original filename for backend deletion
+            // Find the original card to preserve its metadata
+            const originalCard = this.savedCards.find(card => String(card.id) === String(this.editingCardId));
+            
+            if (originalCard) {
+                // Preserve all original metadata fields
+                cardData.importedFromHypa = originalCard.importedFromHypa || false;
+                cardData.hypaUpdated = originalCard.hypaUpdated || false;
+                cardData.originalHypaData = originalCard.originalHypaData || {};
+                cardData.validationInfo = originalCard.validationInfo || { hasWarnings: false, warnings: [] };
+                cardData.webdavPath = originalCard.webdavPath || '';
+                cardData.uploadDate = originalCard.uploadDate || '';
+                cardData.uploadMetadata = originalCard.uploadMetadata || {};
+                cardData.savedAt = originalCard.savedAt || new Date().toISOString();
+                
+                // Preserve original content field structure to prevent nesting
+                // For specification tables, preserve the original structure but update with new content
+                if (this.selectedCardType === 'specification-table') {
+                    // For spec tables, always use the new content from the description field
+                    const newContent = document.getElementById('description').value;
+                    cardData.htmlContent = newContent;
+                    cardData.description = newContent;
+                    // Clear old content to prevent structure issues
+                    cardData.content = undefined;
+                } else {
+                    // For other card types, preserve original content if not provided
+                    if (originalCard.content && !cardData.content) {
+                        cardData.content = originalCard.content;
+                    }
+                    if (originalCard.htmlContent && !cardData.htmlContent) {
+                        cardData.htmlContent = originalCard.htmlContent;
+                    }
+                }
+                
+                // Preserve the original ID but strip non-digits; fallback to new timestamp if empty
+                cardData.id = String(this.editingCardId).replace(/\D/g, '') || Date.now().toString();
+                cardData.filename = this.editingCardFilename;
+                cardData.originalFilename = this.editingCardFilename; // Send original filename for backend deletion
+                
+                // Update status for edited cards
+                cardData.lastModified = new Date().toISOString();
+                
+                // If this was originally a Hypa import, mark it as manually updated
+                if (cardData.importedFromHypa) {
+                    cardData.hypaUpdated = true;
+                    // Clear validation warnings since user has manually edited the card
+                    if (cardData.validationInfo) {
+                        cardData.validationInfo.hasWarnings = false;
+                        cardData.validationInfo.warnings = [];
+                    }
+                }
+            } else {
+                // Fallback if original card not found
+                cardData.id = String(this.editingCardId).replace(/\D/g, '') || Date.now().toString();
+                cardData.filename = this.editingCardFilename;
+                cardData.originalFilename = this.editingCardFilename;
+                cardData.lastModified = new Date().toISOString();
+            }
         }
         console.log('[handleFormSubmit] cardData sent to backend:', cardData);
         formData.append('cardData', JSON.stringify(cardData));
@@ -1196,33 +1393,19 @@ class CardCreator {
                     cb.checked = checkedVariants.includes(cb.value);
                 });
                 this.updatePreview();
+                // ALWAYS reload from server to ensure consistency
+                console.log('[handleFormSubmit] Reloading cards from server after save...');
+                await this.loadSavedCards();
+                
+                // Clear edit state after successful save AND reload
                 if (this.editingCardId) {
-                    // Update the card in the list by id
-                    const idx = this.savedCards.findIndex(card => String(card.id) === String(this.editingCardId));
-                    if (idx !== -1) {
-                        this.savedCards[idx] = result.card;
-                        console.log('[handleFormSubmit] Updated card in list (edit mode):', result.card);
-                    } else {
-                        // If not found, add it (should not happen, but safe fallback)
-                        this.savedCards.unshift(result.card);
-                        console.log('[handleFormSubmit] Card not found in list, added as new (edit mode):', result.card);
-                    }
-                    // Only clear edit state after successful save
+                    console.log('[handleFormSubmit] Clearing edit state after successful save');
                     this.editingCardId = null;
                     this.editingCardFilename = null;
+                    this.hasUnsavedChanges = false; // Clear unsaved changes flag
+                    this.clearOriginalFormData(); // Clear original form data for change tracking
                     this.updateCancelBtnState();
-                } else {
-                    // Add the new card to the list
-                    this.savedCards.unshift(result.card);
-                    console.log('[handleFormSubmit] Added new card:', result.card);
                 }
-                // Sort cards so most recently updated is first
-                this.savedCards = this.savedCards.sort((a, b) => Number(b.id) - Number(a.id));
-                // Debug: show the full list after update
-                console.log('[handleFormSubmit] savedCards after update:', this.savedCards);
-                // Force sync with server after save
-                await this.loadSavedCards();
-                this.renderSavedCards();
             } else {
                 throw new Error(result.error || 'Failed to save card.');
             }
@@ -1405,101 +1588,22 @@ class CardCreator {
             `;
         }
         
-        // Wrap the HTML content with CSS styling without modifying the original HTML
+        // For spec sheets, show the raw HTML content exactly as it will be uploaded to Hypa
         return `
             <div style="
                 border: 1px solid #e0e0e0; 
                 border-radius: 8px; 
                 padding: 20px; 
                 background: #fff; 
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 max-width: 100%;
                 max-height: 600px;
                 overflow-y: auto;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             ">
-                <style>
-                    /* CSS for specification table styling */
-                    .specs {
-                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                        line-height: 1.6;
-                    }
-                    .specs__table {
-                        border-collapse: collapse;
-                        width: 100%;
-                    }
-                    .specs__item {
-                        border-bottom: 1px solid #e0e0e0;
-                        padding: 12px 0;
-                    }
-                    .specs__item:last-child {
-                        border-bottom: none;
-                    }
-                    .specs__item-inner {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        gap: 20px;
-                    }
-                    .specs__name {
-                        font-weight: 600;
-                        color: #333;
-                        min-width: 150px;
-                        flex-shrink: 0;
-                    }
-                    .specs__value {
-                        color: #666;
-                        text-align: right;
-                        flex: 1;
-                    }
-                    .specs__footer {
-                        margin-top: 20px;
-                        padding-top: 20px;
-                        border-top: 1px solid #e0e0e0;
-                        font-size: 0.875rem;
-                        color: #666;
-                    }
-                    .specs__footer small {
-                        line-height: 1.5;
-                    }
-                    .addition {
-                        color: #007bff;
-                        font-weight: 500;
-                        margin-bottom: 8px;
-                    }
-                    h2 {
-                        color: #333;
-                        margin-bottom: 24px;
-                        font-size: 1.5rem;
-                        font-weight: 600;
-                    }
-                    .grid {
-                        display: block;
-                    }
-                    .text-spaces {
-                        margin: 0;
-                        padding: 0;
-                    }
-                    .s-12, .m-12, .l-12 {
-                        width: 100%;
-                        margin-bottom: 16px;
-                    }
-                    .m30-layer-content {
-                        margin: 0;
-                        padding: 0;
-                    }
-                    .background-grey {
-                        background: transparent;
-                    }
-                    .module {
-                        margin: 0;
-                        padding: 0;
-                    }
-                    .container-center {
-                        margin: 0 auto;
-                        max-width: 100%;
-                    }
-                </style>
+                <div style="margin-bottom: 10px; font-size: 12px; color: #666; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                    <strong>Preview (HTML will be uploaded exactly as shown):</strong><br>
+                    <small>Title will be extracted from H2 tag for card management</small>
+                </div>
                 ${htmlContent}
             </div>
         `;
@@ -1511,6 +1615,7 @@ class CardCreator {
             if (!response.ok) throw new Error('Failed to fetch cards.');
             let cards = await response.json();
             console.log('[loadSavedCards] Raw cards from server:', cards.map(c => ({ id: c.id, cardType: c.cardType, type: c.type, title: c.title })));
+
             
             // Migrate any 'option' type cards to 'product-options'
             cards = cards.map(card => {
@@ -1570,6 +1675,8 @@ class CardCreator {
         // Filter cards based on current selections
         let filteredCards = this.savedCards;
         
+
+        
         // ALWAYS filter by current card type first (regardless of toggle state)
         filteredCards = this.savedCards.filter(card => {
             const cardType = card.cardType || card.type;
@@ -1580,15 +1687,30 @@ class CardCreator {
                 'spec': 'specification-table'
             };
             const mappedCardType = typeMap[cardType] || cardType;
+            
+
+            
             if (mappedCardType !== currentCardType) {
                 return false;
             }
             return true;
         });
         
+        console.log('[renderSavedCards] After card type filtering:', filteredCards.length, 'cards');
+
+        
         // If toggle is ON, also filter by brand/model/generation/variants
         if (this.filterByDetails) {
+            console.log('[renderSavedCards] Detailed filtering is ON');
+            console.log('[renderSavedCards] Current selections:', {
+                brand: currentBrand,
+                model: currentModel,
+                generation: currentGeneration,
+                variants: checkedVariants
+            });
+            
             filteredCards = filteredCards.filter(card => {
+                
                 // Filter by brand
                 if (currentBrand && card.configuration?.brand !== currentBrand) {
                     return false;
@@ -1658,6 +1780,9 @@ class CardCreator {
         
 
 
+        console.log('[renderSavedCards] Final filtered cards:', filteredCards.length, 'cards');
+        console.log('[renderSavedCards] Target card 1752931025649 in final filtered cards:', filteredCards.find(card => String(card.id) === '1752931025649'));
+        
         // Clear the list
         savedCardsList.innerHTML = '';
 
@@ -1702,10 +1827,32 @@ class CardCreator {
         filteredCards.forEach(card => {
             const cardDiv = document.createElement('div');
             cardDiv.className = 'saved-card-item mb-3 p-3 border rounded d-flex justify-content-between align-items-center';
+            
+            // Format price display - only show for card types that have price fields
+            let priceDisplay = '';
+            const cardType = card.cardType || card.type;
+            const hasPriceField = ['product-options', 'cargo-options', 'weather-protection'].includes(cardType);
+            
+            if (hasPriceField) {
+                if (card.price) {
+                    if (card.price.toLowerCase() === 'tbc') {
+                        priceDisplay = '<span class="badge bg-warning text-dark me-2">TBC</span>';
+                    } else if (card.price.trim() === '') {
+                        priceDisplay = '<span class="badge bg-success me-2">No Extra Cost</span>';
+                    } else {
+                        priceDisplay = `<span class="badge bg-info me-2">£${card.price}</span>`;
+                    }
+                } else {
+                    priceDisplay = '<span class="badge bg-success me-2">No Extra Cost</span>';
+                }
+            }
+            // For feature cards and spec table cards, don't show any price badge
+            
             cardDiv.innerHTML = `
                 <div>
                     <span class="badge bg-primary card-type-badge me-2">${this.getCardTypeLabel(card.cardType || card.type)}</span>
-                    <strong>${card.title || '(Untitled Card)'}</strong><br>
+                    <strong>${card.title || '(Untitled Card)'}</strong>
+                    ${priceDisplay}<br>
                     <span class="text-muted">Configuration:</span> ${card.configuration ? `${card.configuration.brand} - ${card.configuration.model} - ${card.configuration.generation}` : ''}<br>
                     <span class="text-muted">Variants:</span> ${card.configuration && card.configuration.variants ? card.configuration.variants.map(v => typeof v === 'object' ? v.name + (v.sku ? ` (${v.sku})` : '') : v).join(', ') : ''}
                 </div>
@@ -1766,6 +1913,12 @@ class CardCreator {
                 throw new Error(errorData.error || 'Failed to delete card.');
             }
             showToast('Card deleted successfully.', 'success');
+            
+            // Clear import tracking to ensure fresh import detection
+            if (window.clearImportTracking) {
+                window.clearImportTracking();
+            }
+            
             this.loadSavedCards(); // Refresh the list
         } catch (error) {
             console.error('Error deleting card:', error);
@@ -1775,14 +1928,27 @@ class CardCreator {
 
     async handleCardAction(cardId, action) {
         console.log(`[handleCardAction] Called with cardId: ${cardId}, action: ${action}`);
-        const card = this.savedCards.find(card => String(card.id) === String(cardId));
+        
+        // Convert all IDs to strings and remove any decimal points and following digits
+        const sanitizeId = (id) => String(id).split('.')[0].replace(/\D/g, '');
+        const targetId = sanitizeId(cardId);
+        
+        // Try to find the card by comparing sanitized IDs
+        let card = this.savedCards.find(card => {
+            const currentId = sanitizeId(card.id);
+            console.log(`[handleCardAction] Comparing ${currentId} with ${targetId}`);
+            return currentId === targetId;
+        });
+        
         if (!card) {
             console.error(`[handleCardAction] Card not found: ${cardId}`);
+            console.log(`[handleCardAction] Available card IDs:`, this.savedCards.map(c => c.id));
+            showToast(`Card with ID ${cardId} not found. The card may have been deleted or not saved properly.`, 'warning');
             return;
         }
         
         if (action === 'edit') {
-            await this.handleEditClick(cardId);
+            await this.handleEditClick(card.id); // Use the found card's ID
         } else if (action === 'duplicate') {
             await this.duplicateCard(card);
         }
@@ -1792,7 +1958,7 @@ class CardCreator {
         console.log('[duplicateCard] Duplicating card:', originalCard);
         // Deep copy the entire card and configuration
         const duplicatedCard = deepCopy(originalCard);
-        duplicatedCard.id = Date.now() + Math.random(); // Generate unique ID
+        duplicatedCard.id = Date.now().toString(); // Generate unique ID as string
         duplicatedCard.title = originalCard.title ? `${originalCard.title} (Copy)` : 'Copy';
         duplicatedCard.filename = null; // Clear filename so it gets a new one when saved
         duplicatedCard.webdavPath = null; // Clear WebDAV path
@@ -1833,11 +1999,238 @@ class CardCreator {
     }
     
     async handleEditClick(cardId) {
-        const cardToEdit = this.savedCards.find(card => String(card.id) === String(cardId));
+        // If we're already editing a card, save it first if there are unsaved changes
+        if (this.editingCardId && this.hasUnsavedChanges) {
+            console.log('[handleEditClick] Already editing card with unsaved changes, saving first...');
+            
+            // Create a temporary form submission to save the current card
+            const form = document.getElementById('cardForm');
+            const formData = new FormData(form);
+            const cardData = this.getFormData();
+            
+            // Auto-assign position for card types that need it
+            const positionRequiredTypes = ['feature', 'product-options', 'cargo-options', 'weather-protection'];
+            if (positionRequiredTypes.includes(this.selectedCardType) && !cardData.position) {
+                const nextPos = this.getNextAvailablePosition(cardData.cardType || this.selectedCardType, cardData.sku);
+                if (nextPos) {
+                    cardData.position = nextPos;
+                }
+            }
+            
+            // For save-before-switch, we'll be more lenient with validation
+            // Only validate the most critical fields to prevent completely invalid cards
+            const selectedVariants = Array.from(document.querySelectorAll('input[name="variant"]:checked')).map(el => el.value);
+            if (selectedVariants.length === 0) {
+                showToast('Please select at least one variant before switching cards.', 'warning');
+                return;
+            }
+            
+            // Basic validation - only check if we have the minimum required data
+            if (this.selectedCardType === 'feature') {
+                if (!cardData.title.trim()) {
+                    showToast('Title is required for feature cards.', 'warning');
+                    return;
+                }
+            } else if (this.selectedCardType === 'product-options' || this.selectedCardType === 'cargo-options' || this.selectedCardType === 'weather-protection') {
+                if (!cardData.title.trim()) {
+                    showToast('Title is required for this card type.', 'warning');
+                    return;
+                }
+            } else if (this.selectedCardType === 'specification-table') {
+                if (!cardData.htmlContent || !cardData.htmlContent.trim()) {
+                    showToast('HTML content is required for specification table cards.', 'warning');
+                    return;
+                }
+            }
+            
+            // Preserve original card metadata for editing
+            if (this.editingCardId && this.editingCardFilename) {
+                const originalCard = this.savedCards.find(card => String(card.id) === String(this.editingCardId));
+                if (originalCard) {
+                    cardData.importedFromHypa = originalCard.importedFromHypa || false;
+                    cardData.hypaUpdated = originalCard.hypaUpdated || false;
+                    cardData.originalHypaData = originalCard.originalHypaData || {};
+                    cardData.validationInfo = originalCard.validationInfo || { hasWarnings: false, warnings: [] };
+                    cardData.webdavPath = originalCard.webdavPath || '';
+                    cardData.uploadDate = originalCard.uploadDate || '';
+                    cardData.uploadMetadata = originalCard.uploadMetadata || {};
+                    cardData.savedAt = originalCard.savedAt || new Date().toISOString();
+                    
+                    if (this.selectedCardType === 'specification-table') {
+                        const newContent = document.getElementById('description').value;
+                        cardData.htmlContent = newContent;
+                        cardData.description = newContent;
+                        cardData.content = undefined;
+                    } else {
+                        if (originalCard.content && !cardData.content) {
+                            cardData.content = originalCard.content;
+                        }
+                        if (originalCard.htmlContent && !cardData.htmlContent) {
+                            cardData.htmlContent = originalCard.htmlContent;
+                        }
+                    }
+                    
+                    cardData.id = String(this.editingCardId).replace(/\D/g, '') || Date.now().toString();
+                    cardData.filename = this.editingCardFilename;
+                    cardData.originalFilename = this.editingCardFilename;
+                    cardData.lastModified = new Date().toISOString();
+                    
+                    if (cardData.importedFromHypa) {
+                        cardData.hypaUpdated = true;
+                        if (cardData.validationInfo) {
+                            cardData.validationInfo.hasWarnings = false;
+                            cardData.validationInfo.warnings = [];
+                        }
+                    }
+                }
+            }
+            
+            formData.append('cardData', JSON.stringify(cardData));
+            
+            try {
+                console.log('[handleEditClick] Saving current card before switching...');
+                const response = await fetch('/api/save-card', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('[handleEditClick] Current card saved successfully, now switching to new card');
+                    showToast('Current card saved. Now switching to edit the selected card.', 'success');
+                    
+                    // Reload cards from server to get the latest data
+                    console.log('[handleEditClick] Reloading cards from server...');
+                    await this.loadSavedCards();
+                    console.log('[handleEditClick] Cards reloaded, total cards:', this.savedCards.length);
+                    
+                    // Clear edit state after successful save
+                    this.editingCardId = null;
+                    this.editingCardFilename = null;
+                    this.hasUnsavedChanges = false;
+                    this.clearOriginalFormData(); // Clear original form data for change tracking
+                    this.updateCancelBtnState();
+                    
+                    // Continue with editing the new card
+                } else {
+                    throw new Error(result.error || 'Failed to save current card.');
+                }
+            } catch (error) {
+                console.error('[handleEditClick] Error saving current card:', error);
+                showToast('Failed to save current card. Please save manually before switching.', 'danger');
+                return;
+            }
+        } else if (this.hasUnsavedChanges) {
+            // Not editing but have unsaved changes (creating new card)
+            const confirmed = confirm('You have unsaved changes. Do you want to discard them and edit the selected card?');
+            if (!confirmed) {
+                console.log('[handleEditClick] User cancelled due to unsaved changes');
+                return;
+            }
+            // User confirmed, clear unsaved changes
+            console.log('[handleEditClick] User confirmed, clearing unsaved changes');
+            this.hasUnsavedChanges = false;
+            this.clearOriginalFormData(); // Clear original form data for change tracking
+        }
+        
+        // Use the same sanitization function as handleCardAction
+        const sanitizeId = (id) => String(id).split('.')[0].replace(/\D/g, '');
+        const targetId = sanitizeId(cardId);
+        
+        console.log(`[handleEditClick] Starting edit for cardId: ${cardId}, sanitized: ${targetId}`);
+        console.log(`[handleEditClick] Total saved cards: ${this.savedCards.length}`);
+        
+        // First, try to find the card without filtering to see if it exists
+        let cardToEdit = this.savedCards.find(card => {
+            const currentId = sanitizeId(card.id);
+            const exactMatch = String(card.id) === String(cardId);
+            const sanitizedMatch = currentId === targetId;
+            console.log(`[handleEditClick] Comparing ${currentId} with ${targetId} (exact: ${exactMatch}, sanitized: ${sanitizedMatch})`);
+            return exactMatch || sanitizedMatch;
+        });
+        
+        if (!cardToEdit) {
+            console.log(`[handleEditClick] Card not found in savedCards. Available cards:`, this.savedCards.map(c => ({ id: c.id, sanitizedId: sanitizeId(c.id), title: c.title, cardType: c.cardType || c.type })));
+            showToast('Could not find card data to edit.', 'warning');
+            return;
+        }
+        
+        console.log(`[handleEditClick] Found card to edit:`, cardToEdit);
+        
+        // Set the correct card type first so the card will be visible in the filtered list
+        const cardType = cardToEdit.cardType || cardToEdit.type;
+        const typeMap = {
+            'option': 'product-options',
+            'cargo': 'cargo-options',
+            'spec': 'specification-table'
+        };
+        const desiredType = typeMap[cardType] || cardType;
+        
+        if (desiredType && this.selectedCardType !== desiredType) {
+            console.log(`[handleEditClick] Switching card type from ${this.selectedCardType} to ${desiredType} to make card visible`);
+            this.selectCardType(desiredType);
+        }
+        
+        // Now try to find the card again after setting the correct card type
+        console.log(`[handleEditClick] Looking for card with targetId: ${targetId} after setting card type`);
+        console.log(`[handleEditClick] Current selected card type: ${this.selectedCardType}`);
+        console.log(`[handleEditClick] Filter by details: ${this.filterByDetails}`);
+        
         if (cardToEdit) {
+            console.log('[handleEditClick] Card found, adjusting form selections to match card configuration...');
+            
+            // Temporarily adjust form selections to match the card being edited
+            // This ensures the card will be visible in the filtered list
+            if (cardToEdit.configuration) {
+                const config = cardToEdit.configuration;
+                
+                // Set brand, model, generation to match the card
+                if (config.brand && document.getElementById('brand').value !== config.brand) {
+                    console.log('[handleEditClick] Setting brand to:', config.brand);
+                    document.getElementById('brand').value = config.brand;
+                    this.populateModelSelect(config.brand);
+                }
+                
+                if (config.model && document.getElementById('model').value !== config.model) {
+                    console.log('[handleEditClick] Setting model to:', config.model);
+                    document.getElementById('model').value = config.model;
+                    this.populateGenerationSelect(config.model);
+                }
+                
+                if (config.generation && document.getElementById('generation').value !== config.generation) {
+                    console.log('[handleEditClick] Setting generation to:', config.generation);
+                    document.getElementById('generation').value = config.generation;
+                    this.populateVariantCheckboxes();
+                }
+                
+                // Set variants to match the card
+                if (config.variants && Array.isArray(config.variants)) {
+                    console.log('[handleEditClick] Setting variants to:', config.variants);
+                    // Clear all variant checkboxes first
+                    document.querySelectorAll('input[name="variant"]').forEach(cb => cb.checked = false);
+                    
+                    // Check the variants that match the card
+                    config.variants.forEach(variant => {
+                        const variantSku = typeof variant === 'string' ? variant : variant.sku;
+                        if (variantSku) {
+                            const checkbox = document.querySelector(`input[name="variant"][value="${variantSku}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                }
+            }
+            
+
+            
+            // Re-render the saved cards list to show the card with updated filters
+            this.renderSavedCards();
+            
             this.editingCardId = cardToEdit.id; // Set edit mode
             this.editingCardFilename = cardToEdit.filename; // Ensure filename is set
             console.log('[handleEditClick] editingCardId:', this.editingCardId, 'editingCardFilename:', this.editingCardFilename);
+            console.log('[handleEditClick] Card found and edit mode set, populating form...');
             await this.populateForm(cardToEdit);
             this.updateCancelBtnState();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2053,7 +2446,15 @@ class CardCreator {
     
     // Check if form data has changed
     checkForChanges() {
+        // If we're not editing a card, don't track changes
+        if (!this.editingCardId) {
+            this.hasUnsavedChanges = false;
+            this.updateStatusIndicator();
+            return;
+        }
+        
         if (!this.originalFormData) {
+            console.log('[checkForChanges] No original form data, setting hasUnsavedChanges to false');
             this.hasUnsavedChanges = false;
             this.updateStatusIndicator();
             return;
@@ -2063,6 +2464,7 @@ class CardCreator {
         const hasChanges = JSON.stringify(currentData) !== JSON.stringify(this.originalFormData);
         
         if (hasChanges !== this.hasUnsavedChanges) {
+            console.log('[checkForChanges] Change detected:', hasChanges, 'previous state:', this.hasUnsavedChanges);
             this.hasUnsavedChanges = hasChanges;
             this.updateStatusIndicator();
         }
@@ -2070,16 +2472,20 @@ class CardCreator {
     
     // Store original form data for comparison
     storeOriginalFormData() {
+        console.log('[storeOriginalFormData] Storing original form data');
         this.originalFormData = this.getFormData();
         this.hasUnsavedChanges = false;
         this.updateStatusIndicator();
+        console.log('[storeOriginalFormData] Original data stored, hasUnsavedChanges set to false');
     }
     
     // Clear original form data
     clearOriginalFormData() {
+        console.log('[clearOriginalFormData] Clearing original form data');
         this.originalFormData = null;
         this.hasUnsavedChanges = false;
         this.updateStatusIndicator();
+        console.log('[clearOriginalFormData] Original data cleared, hasUnsavedChanges set to false');
     }
 
     // Add this method for card type label mapping

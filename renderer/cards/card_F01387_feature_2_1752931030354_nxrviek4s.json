@@ -1,0 +1,37 @@
+{
+  "id": "1752931025345",
+  "sku": "F01387",
+  "cardType": "feature",
+  "position": 2,
+  "title": "Flexible load transport",
+  "content": "Regardless of whether you need to transport the weekly shop or other goods – the Multitinker effortlessly carries the load on its rear, thanks to its powerful Bosch Performance Line Cargo motor with 625 Wh battery. The front luggage carrier provides additional space; and we’ve invented the frame bag for smaller items. Sideloaders are available if you need more space – holding max. 20 kg on each side – and there is also an interface for the attachment of a trailer coupling. The Multitinker is as compact as a normal E-Bike and, thanks to its low centre of gravity, is incredibly easy to ride even fully loaded up.",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Multitinker/FlexibleLoadTransport.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.345Z",
+  "originalHypaData": {
+    "productId": "509",
+    "columnName": "shared.feature-2-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Multitinker",
+    "generation": "Multitinker",
+    "variants": [
+      {
+        "name": "Silent",
+        "sku": "F01387"
+      }
+    ]
+  },
+  "filename": "card_F01387_feature_2_1752931030354_nxrviek4s.json"
+}

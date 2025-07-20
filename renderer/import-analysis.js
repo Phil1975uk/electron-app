@@ -1,5 +1,11 @@
 // Import Analysis Dashboard
 window.addEventListener('load', async () => {
+    // Initialize card manager for HTML generation
+    if (!window.cardManager) {
+        window.cardManager = new CardManager();
+        await window.cardManager.init();
+        console.log('Card manager initialized successfully');
+    }
     // Always fetch the cached Hypa CSV from the backend on page load
     await loadHypaCsvCacheFromServer();
     
@@ -48,6 +54,13 @@ window.addEventListener('load', async () => {
     // Add lightweight UI delay constant and helper
     const UI_DELAY_MS = 200;                       // Short, user-visible pause used by progress UI
     const delay = (ms = UI_DELAY_MS) => new Promise(r => setTimeout(r, ms));
+
+    // Simple non-cryptographic hash for duplicate keys (djb2)
+    function simpleHash(str = '') {
+        let h = 5381;
+        for (let i = 0; i < str.length; i++) h = ((h << 5) + h) + str.charCodeAt(i);
+        return (h >>> 0).toString(36); // base-36 for brevity
+    }
 
     // Initialize the application
     async function initializeElements() {
@@ -359,32 +372,17 @@ window.addEventListener('load', async () => {
             // Load configurations from file instead of localStorage
             configurations = await loadConfigurationsFromFile();
 
-            // Load cards data - try localStorage first for mobile compatibility
+            // Load cards data from server only
             let cardsData = null;
             
-            // Try localStorage first
-            const localStorageCards = localStorage.getItem('cards');
-            if (localStorageCards) {
-                try {
-                    cardsData = JSON.parse(localStorageCards);
-                    console.log('Loaded cards from localStorage:', cardsData.length);
-                } catch (error) {
-                    console.error('Error parsing localStorage cards:', error);
-                }
-            }
-            
-            // If no localStorage data, try server
-            if (!cardsData) {
-                const cardsResponse = await fetch('/api/cards');
-                if (cardsResponse.ok) {
-                    cardsData = await cardsResponse.json();
-                    console.log('Loaded cards from server:', cardsData.length);
-                    // Save to localStorage for future mobile access
-                    localStorage.setItem('cards', JSON.stringify(cardsData));
-                } else {
-                    console.log('No cards found on server, starting with empty array');
-                    cardsData = [];
-                }
+            // Load from server only (no localStorage)
+            const cardsResponse = await fetch('/api/cards');
+            if (cardsResponse.ok) {
+                cardsData = await cardsResponse.json();
+                console.log('Loaded cards from server:', cardsData.length);
+            } else {
+                console.log('No cards found on server, starting with empty array');
+                cardsData = [];
             }
 
             // Ensure both are arrays
@@ -2915,7 +2913,7 @@ Import Details:
             if (group.decision === 'create') {
                 // Create new configuration for this group
                 const newConfig = {
-                    id: Date.now() + Math.random(),
+                    id: Date.now().toString(),
                     brand: group.brand || 'Unknown',
                     model: group.variants[0]?.model || 'Unknown', // Use extracted model from first variant
                     generation: group.generation || '',
@@ -3030,6 +3028,8 @@ Import Details:
 
     // Hypa Import Functions
     function handleHypaCsvFileSelect(event) {
+        // New file selected – reset any persisted variant actions
+        localStorage.removeItem('hypaVariantActions');
         try {
             console.log('handleHypaCsvFileSelect fired', event);
         const file = event.target.files[0];
@@ -3085,7 +3085,8 @@ Import Details:
                     <span class="badge bg-secondary" id="step2Badge">Step 2: Parse CSV</span>
                     <span class="badge bg-secondary" id="step3Badge">Step 3: Validate Data</span>
                     <span class="badge bg-secondary" id="step4Badge">Step 4: Match SKUs</span>
-                    <span class="badge bg-secondary" id="step5Badge">Step 5: Ready to Import</span>
+                    <span class="badge bg-secondary" id="step5Badge">Step 5: Check Duplicates</span>
+                    <span class="badge bg-secondary" id="step6Badge">Step 6: Ready to Import</span>
                 </div>
             </div>
             
@@ -3180,6 +3181,50 @@ Import Details:
                 console.log('Original headers:', originalHypaCsvHeaders);
                 console.log('Original data rows:', originalHypaCsvData.length);
                 
+                // Save the Hypa CSV data to cache for export
+                try {
+                    const cacheResponse = await fetch('/api/hypa-csv-cache', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            data: csvData.data,
+                            headers: csvData.meta.fields
+                        })
+                    });
+                    
+                    if (cacheResponse.ok) {
+                        console.log('Hypa CSV cache saved successfully for export');
+                    } else {
+                        console.error('Failed to save Hypa CSV cache:', cacheResponse.status);
+                    }
+                } catch (error) {
+                    console.error('Error saving Hypa CSV cache:', error);
+                }
+                
+                // Save the Hypa CSV data to cache for export
+                try {
+                    const cacheResponse = await fetch('/api/hypa-csv-cache', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            data: csvData.data,
+                            headers: csvData.meta.fields
+                        })
+                    });
+                    
+                    if (cacheResponse.ok) {
+                        console.log('Hypa CSV cache saved successfully for export');
+                    } else {
+                        console.error('Failed to save Hypa CSV cache:', await cacheResponse.text());
+                    }
+                } catch (error) {
+                    console.error('Error saving Hypa CSV cache:', error);
+                }
+                
                 // Store the parsed data for later use
                 window.hypaCsvData = csvData.data;
                 console.log('CSV data stored in window.hypaCsvData');
@@ -3194,7 +3239,7 @@ Import Details:
                 
                 // Show validation results
                 console.log('Calling showHypaValidationResults...');
-                showHypaValidationResults(csvData.data);
+                await showHypaValidationResults(csvData.data);
                 
             } catch (error) {
                 console.error('Error reading Hypa CSV file:', error);
@@ -3230,7 +3275,8 @@ Import Details:
                     <span class="badge bg-secondary" id="step2Badge">Step 2: Parse CSV</span>
                     <span class="badge bg-secondary" id="step3Badge">Step 3: Validate Data</span>
                     <span class="badge bg-secondary" id="step4Badge">Step 4: Match SKUs</span>
-                    <span class="badge bg-secondary" id="step5Badge">Step 5: Ready to Import</span>
+                    <span class="badge bg-secondary" id="step5Badge">Step 5: Check Duplicates</span>
+                    <span class="badge bg-secondary" id="step6Badge">Step 6: Ready to Import</span>
                 </div>
             </div>
             
@@ -3294,7 +3340,7 @@ Import Details:
     function updateWorkflowProgress(step, stepName, description) {
         const progressBar = document.getElementById('workflowProgress');
         const currentStepText = document.getElementById('currentStepText');
-        const progress = (step / 5) * 100;
+        const progress = (step / 6) * 100;
         
         if (progressBar) {
             progressBar.style.width = progress + '%';
@@ -3305,8 +3351,8 @@ Import Details:
         }
         
         // Update step badges
-        const stepNames = ['File Upload', 'Parse CSV', 'Validate Data', 'Match SKUs', 'Ready to Import'];
-        for (let i = 1; i <= 5; i++) {
+        const stepNames = ['File Upload', 'Parse CSV', 'Validate Data', 'Match SKUs', 'Check Duplicates', 'Ready to Import'];
+        for (let i = 1; i <= 6; i++) {
             const badge = document.getElementById(`step${i}Badge`);
             if (badge) {
                 if (i < step) {
@@ -3323,7 +3369,7 @@ Import Details:
         }
     }
 
-    function showHypaValidationResults(data) {
+    async function showHypaValidationResults(data) {
         console.log('=== showHypaValidationResults START ===');
         // Load previously excluded SKUs from localStorage at the very top
         let excludedSkus = [];
@@ -3334,7 +3380,6 @@ Import Details:
         const modalBody = document.querySelector('#importHypaModal .modal-body');
         const modalFooter = document.querySelector('#importHypaModal .modal-footer');
         console.log('Modal body found:', modalBody);
-        updateWorkflowProgress(5, 'Ready to Import', 'Validation complete! Ready to import cards.');
         console.log('About to call validateHypaData...');
         const validation = validateHypaData(data);
         console.log('validateHypaData completed');
@@ -3355,9 +3400,14 @@ Import Details:
         console.log('About to process ALL Hypa CSV rows, count:', data ? data.length : 'null');
         
         // Process ALL rows from the Hypa CSV data, not just those in local configurations
-        data.forEach(row => {
+        console.log('Starting to process rows...');
+        for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
+            const row = data[rowIndex];
+            if (rowIndex % 50 === 0) {
+                console.log(`Processing row ${rowIndex}/${data.length}`);
+            }
             const sku = row.sku && row.sku.trim();
-            if (!sku) return;
+            if (!sku) continue;
             
             // Check if this SKU exists in local configurations
             let localConfig = null;
@@ -3391,7 +3441,7 @@ Import Details:
             validationStats.totalCards += extractedCards.length;
             
             // Validate and filter cards to collect statistics
-            const { validCards, invalidCards, placeholderCards } = validateAndFilterCards(extractedCards, row);
+                                const { validCards, invalidCards, placeholderCards } = await validateAndFilterCards(extractedCards, row);
             
             validationStats.validCards += validCards.length;
             validationStats.invalidCards += invalidCards.length;
@@ -3424,14 +3474,66 @@ Import Details:
                 importAction: localConfig ? 'import' : 'skip', // Skip if no local config
                 hasLocalConfig: !!localConfig
             });
-        });
+        }
         console.log('ALL Hypa CSV rows processed, skuToVariantPreview keys:', Object.keys(skuToVariantPreview));
+        console.log('About to build preview HTML...');
+        
+        // === DUPLICATE CHECK (after skuToVariantPreview is built) ===
+        updateWorkflowProgress(5, 'Check Duplicates', 'Checking for existing cards...');
+        console.log('=== DUPLICATE CHECK START ===');
+        console.log('Existing cards count:', window.cards ? window.cards.length : 'undefined');
+        
+        // Check for duplicates against existing cards
+        const existingCardKeys = new Set((window.cards || []).map(c => `${c.sku}-${c.cardType}-${c.position||1}-${simpleHash((c.title||'')+(c.content||''))}`));
+        console.log('Existing card keys count:', existingCardKeys.size);
+        
+        // Mark variants as having duplicates
+        let totalVariantsChecked = 0;
+        let totalCardsChecked = 0;
+        let totalDuplicatesFound = 0;
+        
+        Object.entries(skuToVariantPreview).forEach(([sku, info]) => {
+            console.log(`Checking SKU: ${sku} (${info.variants.length} variants)`);
+            info.variants.forEach((variant, vIdx) => {
+                variant.hasDuplicates = false;
+                variant.duplicateCount = 0;
+                totalVariantsChecked++;
+                
+                console.log(`  Variant ${vIdx}: ${variant.cards.length} cards`);
+                variant.cards.forEach((card, cardIdx) => {
+                    const cardKey = `${card.sku}-${card.cardType}-${card.position||1}-${simpleHash((card.title||'')+(card.content||''))}`;
+                    totalCardsChecked++;
+                    
+                    const isDuplicate = existingCardKeys.has(cardKey);
+                    const status = isDuplicate ? 'DUPLICATE' : 'NEW';
+                    console.log(`    Card ${cardIdx}: ${status} - ${card.cardType} - "${card.title || 'No title'}"`);
+                    
+                    if (isDuplicate) {
+                        variant.hasDuplicates = true;
+                        variant.duplicateCount++;
+                        totalDuplicatesFound++;
+                    }
+                });
+                
+                if (variant.hasDuplicates) {
+                    console.log(`  Variant ${vIdx}: ${variant.duplicateCount} duplicates found`);
+                }
+            });
+        });
+        
+        console.log('=== DUPLICATE CHECK SUMMARY ===');
+        console.log(`Total variants checked: ${totalVariantsChecked}`);
+        console.log(`Total cards checked: ${totalCardsChecked}`);
+        console.log(`Total duplicates found: ${totalDuplicatesFound}`);
+        console.log('=== DUPLICATE CHECK END ===');
+        
+        updateWorkflowProgress(6, 'Ready to Import', 'Duplicate check complete! Ready to import cards.');
         
         // --- Render variant-level preview table ---
         console.log('About to build preview HTML...');
-        let previewHtml = `<div class="table-responsive" style="max-height: 500px;">
+        let previewHtml = `<div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table class="table table-bordered table-striped">
-                <thead class="table-light">
+                <thead class="table-light" style="position: sticky; top: 0; z-index: 1000; background-color: #f8f9fa;">
                     <tr>
                         <th>SKU</th>
                         <th>Model</th>
@@ -3455,9 +3557,38 @@ Import Details:
 .card-grid-info { margin-left: auto; color: #0d6efd; font-size: 1.1em; cursor: pointer; }
 @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
 </style>`;
-        // Ensure this is before the previewHtml building loop:
-        window.variantPreviewCards = {};
-        window.invalidCardsForReview = [];
+            // Load any previously saved Import/Skip choices for this session
+    const savedVariantActions = JSON.parse(localStorage.getItem('hypaVariantActions') || '{}');
+   
+    // Ensure global preview / invalid arrays start clean
+    window.variantPreviewCards = {};   // reset state between imports
+    window.invalidCardsForReview = [];
+    
+    // Clear import tracking when cards are deleted
+    window.clearImportTracking = function() {
+        console.log('[clearImportTracking] Clearing import tracking data...');
+        
+        // Clear hypaCsvCache.json if it exists
+        fetch('/api/clear-import-cache', { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    console.log('[clearImportTracking] Import cache cleared successfully');
+                } else {
+                    console.warn('[clearImportTracking] Failed to clear import cache');
+                }
+            })
+            .catch(error => {
+                console.error('[clearImportTracking] Error clearing import cache:', error);
+            });
+        
+        // Reload cards from server to ensure fresh data
+        if (window.loadData) {
+            window.loadData();
+        }
+    };
+        
+        // Use saved actions as starting point, but ensure defaults are set for existing cards
+        const variantActions = { ...savedVariantActions };
         Object.entries(skuToVariantPreview).forEach(([sku, info]) => {
             info.variants.forEach((variant, vIdx) => {
                 const localConfigStatus = variant.hasLocalConfig ? 
@@ -3469,22 +3600,62 @@ Import Details:
                     <td>${info.model || ''}</td>
                     <td>${info.generation || ''}</td>
                     <td>${variant.name || ''}</td>
-                    <td>${localConfigStatus}</td>
+                    <td>
+                    ${localConfigStatus}
+                    ${variant.hasDuplicates ? `<br><span class="badge bg-info">${variant.duplicateCount} cards already imported</span>` : ''}
+                </td>
                     <td>
                         ${variant.cards.length === 0 ? '<span class="text-muted">No cards</span>' :
                             `${gridStyle}<div class="card-grid">${variant.cards.map((card, idx) => {
                                 const cardKey = `${sku}_${vIdx}_${idx}`;
                                 window.variantPreviewCards[cardKey] = card;
+                                
+                                // Check if this card already exists in the app
+                                const cardKeyForDuplicateCheck = `${card.sku}-${card.cardType}-${card.position||1}-${simpleHash((card.title||'')+(card.content||''))}`;
+                                const existingCardKeys = new Set((window.cards || []).map(c => `${c.sku}-${c.cardType}-${c.position||1}-${simpleHash((c.title||'')+(c.content||''))}`));
+                                const cardExists = existingCardKeys.has(cardKeyForDuplicateCheck);
+                                
+                                // Create the "Already Exists" indicator
+                                const existsIndicator = cardExists ? 
+                                    `<div class="position-absolute top-0 end-0 m-1">
+                                        <span class="badge bg-warning" style="font-size: 0.7em;">
+                                            <i class="fas fa-check me-1"></i>Exists
+                                        </span>
+                                    </div>` : '';
+                                
+                                // Create individual card action dropdown
+                                const cardActionKey = `${sku}_${vIdx}_${idx}`;
+                                const savedCardAction = savedVariantActions[cardActionKey] || (cardExists ? 'skip' : 'import');
+                                
+                                // Ensure the default action is stored in variantActions for the summary
+                                if (!variantActions[cardActionKey]) {
+                                    variantActions[cardActionKey] = cardExists ? 'skip' : 'import';
+                                    console.log(`Setting default action for ${cardActionKey}: ${variantActions[cardActionKey]} (cardExists: ${cardExists})`);
+                                }
+                                
+                                const cardActionDropdown = `
+                                    <div class="position-absolute bottom-0 start-0 m-1" style="z-index: 10;" onclick="event.stopPropagation();">
+                                        <select class="form-select form-select-sm card-import-action" data-card-key="${cardActionKey}" style="font-size: 0.7em; width: auto; min-width: 80px;" onclick="event.stopPropagation();">
+                                            <option value="import" ${savedCardAction === 'import' ? 'selected' : ''}>Import</option>
+                                            <option value="skip" ${savedCardAction === 'skip' ? 'selected' : ''}>Skip</option>
+                                        </select>
+                                    </div>
+                                `;
+                                
                                 if (card.cardType === 'specification-table') {
                                     // Show the <h2> heading (title) fully and styled to match the spec card, but smaller
-                                    return `<div class=\"card-grid-item\" tabindex=\"0\" aria-label=\"Spec card: ${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}\" data-card-key=\"${cardKey}\">
+                                    return `<div class=\"card-grid-item position-relative\" tabindex=\"0\" aria-label=\"Spec card: ${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}\" data-card-key=\"${cardKey}\">
+                                        ${existsIndicator}
+                                        ${cardActionDropdown}
                                         <span class=\"badge bg-secondary card-grid-badge\">${getCardTypeDisplayName(card.cardType)}</span>
                                         <span class=\"card-grid-title\" style=\"font-size:1.1rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;') : '(No Heading)'}</span>
                                         <span class=\"card-grid-info\"><i class=\"fas fa-info-circle\"></i></span>
                                     </div>`;
                                 } else {
                                     // Make all card titles match the spec card style, but smaller
-                                    return `<div class=\"card-grid-item\" tabindex=\"0\" aria-label=\"${getCardTypeDisplayName(card.cardType)} card: ${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) : '(No Title)'}\" data-card-key=\"${cardKey}\">
+                                    return `<div class=\"card-grid-item position-relative\" tabindex=\"0\" aria-label=\"${getCardTypeDisplayName(card.cardType)} card: ${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) : '(No Title)'}\" data-card-key=\"${cardKey}\">
+                                        ${existsIndicator}
+                                        ${cardActionDropdown}
                                         <span class=\"badge bg-secondary card-grid-badge\">${getCardTypeDisplayName(card.cardType)}</span>
                                         <span class=\"card-grid-title\" style=\"font-size:1.1rem;font-weight:600;color:#2a2a2a;white-space:normal;word-break:break-word;\">${card.title ? card.title.replace(/</g, '&lt;').slice(0, 32) + (card.title.length > 32 ? '…' : '') : '(No Title)'}</span>
                                         ${card.imageUrl ? `<img src=\"${card.imageUrl}\" class=\"card-grid-thumb\" alt=\"\">` : ''}
@@ -3494,10 +3665,9 @@ Import Details:
                             }).join('')}</div>`}
                         </td>
                     <td>
-                        <select class="form-select variant-import-action" data-sku="${sku}" data-variant-idx="${vIdx}">
-                            <option value="import" ${variant.hasLocalConfig ? 'selected' : 'disabled'}>Import & Overwrite</option>
-                            <option value="skip" ${!variant.hasLocalConfig ? 'selected' : ''}>Skip</option>
-                        </select>
+                        <div class="text-center">
+                            <small class="text-muted">Individual card controls above</small>
+                        </div>
                     </td>
                 </tr>`;
             });
@@ -3542,6 +3712,7 @@ Import Details:
             });
         });
         const totalUniqueCards = Object.values(uniqueCardTypeCounts).reduce((a, b) => a + b, 0);
+        
         // Update summaryHtml to show both total and unique counts
         const summaryHtml = `
             <div class="alert alert-secondary mt-3 mb-0">
@@ -3571,7 +3742,8 @@ Import Details:
                     <span class="badge bg-success" id="step2Badge">Step 2: Parse CSV ✓</span>
                     <span class="badge bg-success" id="step3Badge">Step 3: Validate Data ✓</span>
                     <span class="badge bg-success" id="step4Badge">Step 4: Match SKUs ✓</span>
-                    <span class="badge bg-success" id="step5Badge">Step 5: Ready to Import ✓</span>
+                    <span class="badge bg-success" id="step5Badge">Step 5: Check Duplicates ✓</span>
+                    <span class="badge bg-success" id="step6Badge">Step 6: Ready to Import ✓</span>
                 </div>
             </div>
             <div class="alert alert-info">
@@ -3600,19 +3772,17 @@ Import Details:
             </button>
         `;
         
-        // --- Listen for action changes ---
-        const variantActions = {};
-        document.querySelectorAll('.variant-import-action').forEach(sel => {
+        // --- Listen for individual card action changes ---
+        document.querySelectorAll('.card-import-action').forEach(sel => {
             sel.addEventListener('change', function() {
-                const sku = this.getAttribute('data-sku');
-                const vIdx = parseInt(this.getAttribute('data-variant-idx'));
-                if (!variantActions[sku]) variantActions[sku] = {};
-                variantActions[sku][vIdx] = this.value;
+                const cardKey = this.getAttribute('data-card-key');
+                variantActions[cardKey] = this.value;
+                localStorage.setItem('hypaVariantActions', JSON.stringify(variantActions));
             });
         });
-        // --- Update import button to use variantActions ---
+        // --- Update import button to show summary first ---
         document.getElementById('importCardsBtn').onclick = function() {
-            confirmHypaImport(variantActions);
+            showImportSummary(variantActions, skuToVariantPreview);
         };
         // After inserting previewHtml, add event listeners for card-grid-item:
         setTimeout(() => {
@@ -3636,10 +3806,243 @@ Import Details:
         console.log('=== showHypaValidationResults END ===');
     }
 
+    function showImportSummary(variantActions, skuToVariantPreview) {
+        console.log('=== showImportSummary function called ===');
+        console.log('skuToVariantPreview:', skuToVariantPreview);
+        
+        // Analyze the import actions
+        const summary = {
+            totalCards: 0,
+            toImport: 0,
+            toSkip: 0,
+            byType: { Feature: 0, Option: 0, Cargo: 0, Weather: 0, Spec: 0 },
+            byTypeImport: { Feature: 0, Option: 0, Cargo: 0, Weather: 0, Spec: 0 },
+            byTypeSkip: { Feature: 0, Option: 0, Cargo: 0, Weather: 0, Spec: 0 },
+            existingCards: 0,
+            newCards: 0
+        };
+        
+        // Count cards from the preview data
+        console.log('variantActions received:', variantActions);
+        console.log('variantActions keys:', Object.keys(variantActions));
+        console.log('variantActions values:', Object.values(variantActions));
+        
+        // Count actions to verify
+        const actionCounts = {};
+        Object.values(variantActions).forEach(action => {
+            actionCounts[action] = (actionCounts[action] || 0) + 1;
+        });
+        console.log('Action counts in variantActions:', actionCounts);
+        
+        let cardCount = 0;
+        Object.entries(skuToVariantPreview).forEach(([sku, info]) => {
+            info.variants.forEach((variant, vIdx) => {
+                variant.cards.forEach((card, idx) => {
+                    const cardKey = `${sku}_${vIdx}_${idx}`;
+                    const action = variantActions[cardKey] || 'import';
+                    cardCount++;
+                    
+                    console.log(`Card ${cardCount}: ${cardKey}: action = ${action}, title = "${card.title}", cardType = ${card.cardType}`);
+                    
+                    summary.totalCards++;
+                    
+                    // Count by action
+                    if (action === 'import') {
+                        summary.toImport++;
+                        console.log(`  → Counted as IMPORT`);
+                    } else if (action === 'skip') {
+                        summary.toSkip++;
+                        console.log(`  → Counted as SKIP`);
+                    } else {
+                        console.log(`  → WARNING: Unknown action "${action}"`);
+                    }
+                    
+                    // Count by type
+                    let typeKey = 'Feature';
+                    switch (card.cardType) {
+                        case 'feature': typeKey = 'Feature'; break;
+                        case 'product-options': typeKey = 'Option'; break;
+                        case 'cargo-options': typeKey = 'Cargo'; break;
+                        case 'weather-protection': typeKey = 'Weather'; break;
+                        case 'specification-table': typeKey = 'Spec'; break;
+                    }
+                    
+                    summary.byType[typeKey]++;
+                    if (action === 'import') {
+                        summary.byTypeImport[typeKey]++;
+                    } else {
+                        summary.byTypeSkip[typeKey]++;
+                    }
+                    
+                    // Check if card exists
+                    const cardKeyForDuplicateCheck = `${card.sku}-${card.cardType}-${card.position||1}-${simpleHash((card.title||'')+(card.content||''))}`;
+                    const existingCardKeys = new Set((window.cards || []).map(c => `${c.sku}-${c.cardType}-${c.position||1}-${simpleHash((c.title||'')+(c.content||''))}`));
+                    const cardExists = existingCardKeys.has(cardKeyForDuplicateCheck);
+                    
+                    if (cardExists) {
+                        summary.existingCards++;
+                    } else {
+                        summary.newCards++;
+                    }
+                });
+            });
+        });
+        
+        console.log('=== SUMMARY DEBUG ===');
+        console.log('Total cards counted in summary:', summary.totalCards);
+        console.log('To import:', summary.toImport);
+        console.log('To skip:', summary.toSkip);
+        console.log('By type:', summary.byType);
+        console.log('By type import:', summary.byTypeImport);
+        console.log('By type skip:', summary.byTypeSkip);
+        
+        // Verify the math
+        console.log('=== MATH VERIFICATION ===');
+        console.log('Total cards:', summary.totalCards);
+        console.log('To import + To skip:', summary.toImport + summary.toSkip);
+        console.log('Math check:', summary.totalCards === (summary.toImport + summary.toSkip) ? '✓ CORRECT' : '✗ WRONG');
+        
+        // Check if there's a mismatch with validation stats
+        if (window.hypaValidationStats) {
+            console.log('=== VALIDATION STATS COMPARISON ===');
+            console.log('validationStats.totalCards:', window.hypaValidationStats.totalCards);
+            console.log('validationStats.validCards:', window.hypaValidationStats.validCards);
+            console.log('validationStats.invalidCards:', window.hypaValidationStats.invalidCards);
+            console.log('validationStats.placeholderCards:', window.hypaValidationStats.placeholderCards);
+            console.log('Expected total (valid + placeholder):', window.hypaValidationStats.validCards + window.hypaValidationStats.placeholderCards);
+            
+
+        }
+        
+        // Create summary modal
+        const summaryHtml = `
+            <div class="modal fade" id="importSummaryModal" tabindex="-1" aria-labelledby="importSummaryModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="importSummaryModalLabel">
+                                <i class="fas fa-clipboard-list me-2"></i>Import Summary
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Review your import selections before proceeding.</strong>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Overall Summary</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Total Cards:</span>
+                                                <strong>${summary.totalCards}</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>To Import:</span>
+                                                <strong class="text-success">${summary.toImport}</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>To Skip:</span>
+                                                <strong class="text-warning">${summary.toSkip}</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>New Cards:</span>
+                                                <strong class="text-primary">${summary.newCards}</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Existing Cards:</span>
+                                                <strong class="text-secondary">${summary.existingCards}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="mb-0"><i class="fas fa-list me-2"></i>By Card Type</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            ${Object.entries(summary.byType).map(([type, total]) => `
+                                                <div class="mb-2">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span>${type}:</span>
+                                                        <span><strong>${total}</strong> total</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between text-muted small">
+                                                        <span>→ Import: <span class="text-success">${summary.byTypeImport[type]}</span></span>
+                                                        <span>→ Skip: <span class="text-warning">${summary.byTypeSkip[type]}</span></span>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            ${summary.toImport === 0 ? `
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>No cards selected for import!</strong> Please review your selections and choose at least one card to import.
+                                </div>
+                            ` : `
+                                <div class="alert alert-success mt-3">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <strong>Ready to import ${summary.toImport} cards!</strong> Click "Confirm Import" to proceed.
+                                </div>
+                            `}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Review
+                            </button>
+                            ${summary.toImport > 0 ? `
+                                <button type="button" class="btn btn-success" id="confirmImportBtn">
+                                    <i class="fas fa-download me-2"></i>Confirm Import (${summary.toImport} cards)
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add modal to page
+        document.body.insertAdjacentHTML('beforeend', summaryHtml);
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('importSummaryModal'));
+        modal.show();
+        
+        // Handle confirm button
+        document.getElementById('confirmImportBtn')?.addEventListener('click', function() {
+            modal.hide();
+            // Remove modal from DOM
+            document.getElementById('importSummaryModal').remove();
+            // Proceed with import
+            setTimeout(() => {
+                confirmHypaImport(variantActions);
+                // Clear saved choices after final import
+                localStorage.removeItem('hypaVariantActions');
+            }, 100);
+        });
+        
+        // Clean up modal when hidden
+        document.getElementById('importSummaryModal').addEventListener('hidden.bs.modal', function() {
+            this.remove();
+        });
+    }
+
     async function confirmHypaImport(variantActions) {
         // Add a global cancel flag
         window.hypaImportCancelRequested = false;
         console.log('=== confirmHypaImport function called ===');
+        console.log('variantActions:', variantActions);
         console.log('window.hypaCsvData:', window.hypaCsvData);
         const data = window.hypaCsvData;
         console.log('Hypa CSV data:', data);
@@ -3770,11 +4173,9 @@ Import Details:
         }
 
         // Process rows with progress updates
-        const shouldImportSku = (sku) => {
+        const shouldImportCard = (cardKey) => {
             if (!variantActions || Object.keys(variantActions).length === 0) return true;
-            const actions = variantActions[sku];
-            if (!actions) return false;
-            return Object.values(actions).some(v => v === 'import');
+            return variantActions[cardKey] !== 'skip';
         };
         for (let i = 0; i < data.length; i++) {
             const row = data[i];
@@ -3810,12 +4211,6 @@ Import Details:
                 continue;
             }
             
-            // Skip if user chose "Skip"
-            if (!shouldImportSku(row.sku)) {
-                skippedCount++;
-                continue;
-            }
-            
             // Yield every 200 rows to keep UI responsive
             if (i % 200 === 0) await delay(0);
             
@@ -3826,20 +4221,41 @@ Import Details:
                 
                 if (extractedCards.length > 0) {
                     // Validate and filter cards
-                    const { validCards, invalidCards, placeholderCards } = validateAndFilterCards(extractedCards, row);
+                    const { validCards, invalidCards, placeholderCards } = await validateAndFilterCards(extractedCards, row);
                     
                     console.log(`Valid cards: ${validCards.length}, Invalid cards: ${invalidCards.length}, Placeholder cards: ${placeholderCards.length}`);
                     
-                    // Add valid cards to import
-                    if (validCards.length > 0) {
-                        importedCards.push(...validCards);
-                        importedCount += validCards.length;
+                    // Filter cards based on individual card actions
+                    const filteredValidCards = validCards.filter((card, idx) => {
+                        const cardKey = `${row.sku}_0_${idx}`; // Assuming single variant for now
+                        const shouldImport = shouldImportCard(cardKey);
+                        if (!shouldImport) {
+                            console.log(`Skipping card ${idx} for SKU ${row.sku} (user chose skip)`);
+                            skippedCount++;
+                        }
+                        return shouldImport;
+                    });
+                    
+                    const filteredPlaceholderCards = placeholderCards.filter((card, idx) => {
+                        const cardKey = `${row.sku}_0_${validCards.length + idx}`; // Offset by valid cards count
+                        const shouldImport = shouldImportCard(cardKey);
+                        if (!shouldImport) {
+                            console.log(`Skipping placeholder card ${idx} for SKU ${row.sku} (user chose skip)`);
+                            skippedCount++;
+                        }
+                        return shouldImport;
+                    });
+                    
+                    // Add filtered valid cards to import
+                    if (filteredValidCards.length > 0) {
+                        importedCards.push(...filteredValidCards);
+                        importedCount += filteredValidCards.length;
                     }
                     
-                    // Add placeholder cards to import
-                    if (placeholderCards.length > 0) {
-                        importedCards.push(...placeholderCards);
-                        importedCount += placeholderCards.length;
+                    // Add filtered placeholder cards to import
+                    if (filteredPlaceholderCards.length > 0) {
+                        importedCards.push(...filteredPlaceholderCards);
+                        importedCount += filteredPlaceholderCards.length;
                     }
                     
                     // Store invalid cards for review
@@ -3850,8 +4266,8 @@ Import Details:
                         window.invalidCardsForReview.push(...invalidCards);
                     }
                     
-                    // Count as skipped if no valid or placeholder cards
-                    if (validCards.length === 0 && placeholderCards.length === 0) {
+                    // Count as skipped if no cards were imported
+                    if (filteredValidCards.length === 0 && filteredPlaceholderCards.length === 0) {
                         skippedCount++;
                     }
                 } else {
@@ -3947,6 +4363,13 @@ Only cards for existing products will be imported.`;
         // 2. Merge cards with identical content/cardType/model/generation, combining their variants
         const mergedCards = [];
         importedCards.forEach(card => {
+            // For specification-table keep one per SKU+title to avoid cross-variant merges
+            if (card.cardType === 'specification-table') {
+                const exists = mergedCards.find(c => c.cardType === 'specification-table' && c.sku === card.sku && c.title === card.title);
+                if (!exists) mergedCards.push(card);
+                return;
+            }
+            // Other card types – merge on brand/model/generation/content as before
             if (!card.configuration) {
                 mergedCards.push(card);
                 return;
@@ -3973,9 +4396,9 @@ Only cards for existing products will be imported.`;
         });
 
         // Add to existing cards (avoid duplicates by SKU + card type + position)
-        const existingCardKeys = new Set(cards.map(card => `${card.sku}-${card.cardType}-${card.position || 1}`));
+        const existingCardKeys = new Set(cards.map(c => `${c.sku}-${c.cardType}-${c.position||1}-${simpleHash((c.title||'')+(c.content||''))}`));
         const newCards = mergedCards.filter(card => {
-            const cardKey = `${card.sku}-${card.cardType}-${card.position || 1}`;
+            const cardKey = `${card.sku}-${card.cardType}-${card.position||1}-${simpleHash((card.title||'')+(card.content||''))}`;
             return !existingCardKeys.has(cardKey);
         });
         
@@ -4015,42 +4438,337 @@ Only cards for existing products will be imported.`;
     }
 
     function extractCardsFromHypaRow(row) {
-        console.log('extractCardsFromHypaRow called for SKU:', row.sku);
+        console.log('=== extractCardsFromHypaRow called for SKU:', row.sku, '===');
         const cards = [];
         const columns = Object.keys(row);
         
         console.log('Available columns:', columns);
         
-        // Extract feature cards
-        const featureCards = extractFeatureCards(row, columns);
-        cards.push(...featureCards);
+        // === COLUMN-DRIVEN CARD EXTRACTION ===
+        // Process all columns and determine card type from column name
+        console.log('--- Processing all card columns ---');
         
-        // Extract option cards
-        const optionCards = extractOptionCards(row, columns);
-        cards.push(...optionCards);
+        // Define column patterns and their corresponding card types
+        const columnPatterns = [
+            { pattern: /^shared\.feature-\d+-card$/, cardType: 'feature' },
+            { pattern: /^shared\.option-\d+-card$/, cardType: 'product-options' },
+            { pattern: /^shared\.cargo-option-\d+-card$/, cardType: 'cargo-options' },
+            { pattern: /^shared\.weather-option-\d+-card$/, cardType: 'weather-protection' },
+            { pattern: /^shared\.spec-table$/, cardType: 'specification-table' }
+        ];
         
-        // Extract cargo cards
-        const cargoCards = extractCargoCards(row, columns);
-        cards.push(...cargoCards);
+        // Process each column that matches a card pattern
+        columns.forEach(columnName => {
+            const pattern = columnPatterns.find(p => p.pattern.test(columnName));
+            if (pattern) {
+                const cardType = pattern.cardType;
+                console.log(`Processing ${columnName} as ${cardType} card`);
+                
+                const extractedCards = extractCardsFromColumn(row, columnName, cardType);
+                console.log(`Found ${extractedCards.length} ${cardType} cards in ${columnName}`);
+                cards.push(...extractedCards);
+            }
+        });
         
-        // Extract weather cards
-        const weatherCards = extractWeatherCards(row, columns);
-        cards.push(...weatherCards);
+        // Deduplicate cards within this row based on content
+        const deduplicatedCards = [];
+        const seenCardKeys = new Set();
         
-        // Extract spec table
-        const specTable = extractSpecTable(row, columns);
-        if (specTable) {
-            cards.push(specTable);
+        cards.forEach(card => {
+            // Create a unique key based on card type, title, and content
+            const cardKey = `${card.cardType}|${card.title || ''}|${card.content || ''}`;
+            
+            if (!seenCardKeys.has(cardKey)) {
+                seenCardKeys.add(cardKey);
+                deduplicatedCards.push(card);
+            } else {
+                console.log(`Deduplicating duplicate card: ${card.cardType} - "${card.title}"`);
+            }
+        });
+        
+        console.log(`=== SUMMARY for SKU ${row.sku} ===`);
+        console.log(`Total cards extracted: ${cards.length} -> ${deduplicatedCards.length} after deduplication`);
+        console.log('Card types:', deduplicatedCards.map(c => c.cardType));
+        console.log('Card titles:', deduplicatedCards.map(c => c.title));
+        console.log('=== END extractCardsFromHypaRow ===');
+        
+        return deduplicatedCards;
+    }
+
+    // === UNIFIED COLUMN-DRIVEN CARD EXTRACTION ===
+    function extractCardsFromColumn(row, columnName, cardType) {
+        const cards = [];
+        const htmlContent = row[columnName];
+        
+        console.log(`Extracting ${cardType} cards from ${columnName}: ${htmlContent ? 'Has content' : 'Empty'} (length: ${htmlContent ? htmlContent.length : 0})`);
+        
+        if (!htmlContent || !htmlContent.trim()) {
+            console.log(`Skipping ${columnName} - no content`);
+            return cards;
         }
         
-        console.log(`Total cards extracted for SKU ${row.sku}:`, cards.length);
-        console.log('Card types:', cards.map(c => c.cardType));
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, 'text/html');
+            
+            // Get the appropriate selectors based on card type
+            const selectors = getCardTypeSelectors(cardType);
+            
+            // Find all cards in this cell - look for top-level card containers
+            let cardContainers = [];
+            
+            // Different card types have different top-level container structures
+            switch (cardType) {
+                            case 'feature':
+                // Feature cards: look for divs with class "product-feature-card" OR the correct flex layout format
+                let featureContainers = Array.from(doc.querySelectorAll('div.product-feature-card'));
+                
+                // If no standard containers found, look for the correct flex layout format
+                if (featureContainers.length === 0) {
+                    featureContainers = Array.from(doc.querySelectorAll('div')).filter(div => {
+                        const style = div.getAttribute('style') || '';
+                        // Look for the correct feature card format: flex layout with border and padding
+                        return style.includes('display: flex') && 
+                               style.includes('align-items: center') && 
+                               style.includes('border') && 
+                               style.includes('padding') &&
+                               style.includes('background: #f9f9f9');
+                    });
+                }
+                
+                cardContainers = featureContainers;
+                break;
+                case 'product-options':
+                    // Option cards: look for divs with class "swiper-slide" containing cards
+                    cardContainers = Array.from(doc.querySelectorAll('div.swiper-slide'));
+                    break;
+                            case 'cargo-options':
+                // Cargo cards: look for divs with class "product-feature-card" (same as feature cards)
+                cardContainers = Array.from(doc.querySelectorAll('div.product-feature-card'));
+                break;
+            case 'weather-protection':
+                // Weather cards: look for divs with class "product-feature-card" (same as feature cards)
+                cardContainers = Array.from(doc.querySelectorAll('div.product-feature-card'));
+                break;
+                case 'specification-table':
+                    // Spec tables: look for table elements or divs with class "specs__table"
+                    const tables = Array.from(doc.querySelectorAll('table, .specs__table'));
+                    if (tables.length > 0) {
+                        cardContainers = [doc.body]; // Treat the whole body as one container
+                    }
+                    break;
+                default:
+                    // Fallback: look for any div with headings
+                    cardContainers = Array.from(doc.querySelectorAll('div')).filter(div => 
+                        div.querySelector(selectors.titleSelector) || 
+                        div.querySelector(selectors.headingSelector)
+                    );
+            }
+            
+            // If no specific containers found, try the fallback approach
+            if (cardContainers.length === 0) {
+                // Look for any div that has both a title/heading AND is a reasonable size (likely a card container)
+                cardContainers = Array.from(doc.querySelectorAll('div')).filter(div => {
+                    const hasTitle = div.querySelector(selectors.titleSelector);
+                    const hasHeading = div.querySelector(selectors.headingSelector);
+                    const hasContent = hasTitle || hasHeading;
+                    
+                    // Only consider divs that have content AND are likely card containers
+                    // (not just inner content divs)
+                    if (!hasContent) return false;
+                    
+                    // Check if this div looks like a card container (has meaningful content)
+                    const textContent = div.textContent.trim();
+                    
+                    // Additional checks for different card formats:
+                    // 1. Standard format: has meaningful content length
+                    if (textContent.length > 50) return true;
+                    
+                    // 2. Has both h2/h3 and img elements (typical card structure)
+                    if (div.querySelector('h2, h3') && div.querySelector('img')) {
+                        return true;
+                    }
+                    
+                    return false;
+                });
+            }
+            
+            console.log(`Found ${cardContainers.length} cards in ${columnName}`);
+            
+            // === FORMAT VALIDATION: Check if multiple cards in single cell ===
+            if (cardContainers.length > 1) {
+                console.log(`❌ FORMAT ERROR: Found ${cardContainers.length} cards in ${columnName} - this is incorrect format!`);
+                
+                // Create a single placeholder card for the entire cell
+                const placeholderCard = {
+                    id: `format_error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    sku: row.sku && row.sku.trim(),
+                    cardType: cardType,
+                    position: 1,
+                    title: `[FORMAT ERROR] Multiple cards in ${columnName}`,
+                    subtitle: '',
+                    content: generateMultipleCardsErrorContent(cardContainers, columnName),
+                    imageUrl: '',
+                    price: '',
+                    hypaUpdated: true,
+                    importedFromHypa: true,
+                    lastModified: new Date().toISOString(),
+                    isPlaceholder: true,
+                    isFormatError: true,
+                    formatErrorInfo: {
+                        columnName: columnName,
+                        cardCount: cardContainers.length,
+                        originalContent: htmlContent,
+                        needsRecreation: true
+                    },
+                    originalHypaData: {
+                        productId: row.id,
+                        columnName: columnName,
+                        isFormatError: true
+                    }
+                };
+                
+                cards.push(placeholderCard);
+                return cards;
+            }
+            
+            // Process single card found in this cell
+            if (cardContainers.length === 1) {
+                const cardDiv = cardContainers[0];
+                const card = extractCardFromDiv(cardDiv, cardType, columnName, row);
+                if (card) {
+                    cards.push(card);
+                }
+            }
+            
+            // If no cards with content found, try to extract from the body
+            if (cardContainers.length === 0) {
+                const card = extractCardFromDiv(doc.body, cardType, columnName, row);
+                if (card) {
+                    cards.push(card);
+                }
+            }
+            
+        } catch (err) {
+            console.error(`Error parsing HTML block for ${columnName}:`, err);
+        }
         
         return cards;
     }
 
+    // === CARD TYPE SELECTORS ===
+    function getCardTypeSelectors(cardType) {
+        switch (cardType) {
+            case 'feature':
+                return {
+                    titleSelector: 'h2, h3',
+                    headingSelector: 'h2, h3',
+                    descriptionSelector: 'p',
+                    imageSelector: 'img',
+                    priceSelector: null
+                };
+            case 'product-options':
+                return {
+                    titleSelector: '.card-title, h2, h3',
+                    headingSelector: '.card-title, h2, h3',
+                    descriptionSelector: '.card-description, p',
+                    imageSelector: 'img',
+                    priceSelector: '.card-price'
+                };
+            case 'cargo-options':
+                return {
+                    titleSelector: 'h2, h3',
+                    headingSelector: 'h2, h3',
+                    descriptionSelector: 'p',
+                    imageSelector: 'img',
+                    priceSelector: null
+                };
+            case 'weather-protection':
+                return {
+                    titleSelector: 'h2, h3',
+                    headingSelector: 'h2, h3',
+                    descriptionSelector: 'p',
+                    imageSelector: 'img',
+                    priceSelector: null
+                };
+            case 'specification-table':
+                return {
+                    titleSelector: 'h2, h3',
+                    headingSelector: 'h2, h3',
+                    descriptionSelector: 'table, .specs__table',
+                    imageSelector: null,
+                    priceSelector: null
+                };
+            default:
+                return {
+                    titleSelector: 'h2, h3',
+                    headingSelector: 'h2, h3',
+                    descriptionSelector: 'p',
+                    imageSelector: 'img',
+                    priceSelector: null
+                };
+        }
+    }
+
+    // === UNIFIED CARD EXTRACTION FROM DIV ===
+    function extractCardFromDiv(cardDiv, cardType, columnName, row) {
+        const selectors = getCardTypeSelectors(cardType);
+        
+        // Extract title
+        const titleElement = cardDiv.querySelector(selectors.titleSelector);
+        const title = titleElement ? titleElement.textContent.trim() : '';
+        
+        // Extract description/content
+        const descriptionElement = cardDiv.querySelector(selectors.descriptionSelector);
+        const description = descriptionElement ? descriptionElement.textContent.trim() : '';
+        
+        // Extract image
+        const img = selectors.imageSelector ? cardDiv.querySelector(selectors.imageSelector) : null;
+        const imageUrl = img ? img.getAttribute('src') : '';
+        
+        // Extract price (if applicable)
+        let price = '';
+        if (selectors.priceSelector) {
+            const priceElement = cardDiv.querySelector(selectors.priceSelector);
+            if (priceElement) {
+                price = priceElement.textContent.trim();
+            }
+        }
+        
+        // Only create a card if it has meaningful content
+        if (title || description || imageUrl) {
+            console.log(`Found ${cardType} card in ${columnName}: "${title}"`);
+            
+            // Extract position from column name
+            const positionMatch = columnName.match(/\d+/);
+            const position = positionMatch ? parseInt(positionMatch[0]) : 1;
+            
+            return {
+                id: Date.now().toString(),
+                sku: row.sku && row.sku.trim(),
+                cardType: cardType,
+                position: position,
+                title,
+                content: description,
+                imageUrl,
+                price,
+                hypaUpdated: true,
+                importedFromHypa: true,
+                lastModified: new Date().toISOString(),
+                originalHypaData: {
+                    productId: row.id,
+                    columnName: columnName,
+                    htmlSource: true
+                }
+            };
+        } else {
+            console.log(`Skipping ${cardType} card in ${columnName} - no valid content found`);
+            return null;
+        }
+    }
+
     // === NEW: Card validation system with format comparison ===
-    function validateCard(card, row) {
+    async function validateCard(card, row) {
         const errors = [];
         const warnings = [];
         
@@ -4132,13 +4850,16 @@ Only cards for existing products will be imported.`;
         }
         
         // === NEW: Format comparison validation ===
-        const formatValidation = validateCardFormat(card);
-        if (formatValidation.errors.length > 0) {
+        const formatValidation = await validateCardFormat(card);
+        if (card.cardType === 'specification-table') {
+            // For spec tables we keep strict validation – structural errors remain fatal
             errors.push(...formatValidation.errors);
+        } else {
+            // For other card types, treat format-mismatch as non-fatal warning so we don't turn every card into a placeholder
+            warnings.push(...formatValidation.errors);
         }
-        if (formatValidation.warnings.length > 0) {
-            warnings.push(...formatValidation.warnings);
-        }
+        // All card types get the softer warnings too
+        warnings.push(...formatValidation.warnings);
         
         return {
             isValid: errors.length === 0,
@@ -4151,12 +4872,12 @@ Only cards for existing products will be imported.`;
     }
 
     // === NEW: Format comparison validation functions ===
-    function validateCardFormat(card) {
+    async function validateCardFormat(card) {
         const errors = [];
         const warnings = [];
         
         // Generate expected HTML format for this card
-        const expectedHtml = generateExpectedCardHtml(card);
+        const expectedHtml = await generateExpectedCardHtml(card);
         const actualHtml = card.content || '';
         
         if (!expectedHtml) {
@@ -4178,7 +4899,7 @@ Only cards for existing products will be imported.`;
         return { errors, warnings, comparison };
     }
 
-    function generateExpectedCardHtml(card) {
+    async function generateExpectedCardHtml(card) {
         const data = {
             title: card.title || '',
             subtitle: card.subtitle || '',
@@ -4187,6 +4908,17 @@ Only cards for existing products will be imported.`;
             price: card.price || ''
         };
         
+        try {
+            // Try to load template from template manager first
+            const templateHtml = await loadTemplateForCardType(card.cardType);
+            if (templateHtml) {
+                return generateHtmlFromTemplate(templateHtml, data);
+            }
+        } catch (error) {
+            console.log(`Could not load template for ${card.cardType}, falling back to hardcoded template:`, error.message);
+        }
+        
+        // Fallback to hardcoded templates if template loading fails
         switch (card.cardType) {
             case 'feature':
                 return generateExpectedFeatureCardHtml(data);
@@ -4201,6 +4933,54 @@ Only cards for existing products will be imported.`;
             default:
                 return null;
         }
+    }
+
+    async function loadTemplateForCardType(cardType) {
+        try {
+            // Map card types to template names
+            const templateMap = {
+                'feature': 'feature',
+                'product-options': 'product-options',
+                'cargo-options': 'cargo-options',
+                'weather-protection': 'weather-protection',
+                'specification-table': 'specification-table'
+            };
+            
+            const templateName = templateMap[cardType];
+            if (!templateName) return null;
+            
+            // Try to load from master templates
+            const templatePath = `renderer/templates/master/${templateName}.html`;
+            const response = await fetch(templatePath);
+            if (response.ok) {
+                return await response.text();
+            }
+            
+            return null;
+        } catch (error) {
+            console.error(`Error loading template for ${cardType}:`, error);
+            return null;
+        }
+    }
+
+    function generateHtmlFromTemplate(templateHtml, data) {
+        // Replace placeholders in template with actual data
+        let html = templateHtml;
+        
+        // Replace basic placeholders
+        html = html.replace(/{title}/g, data.title || '');
+        html = html.replace(/{subtitle}/g, data.subtitle || '');
+        html = html.replace(/{content}/g, data.description || '');
+        html = html.replace(/{imageUrl}/g, data.imageUrl || '');
+        html = html.replace(/{price}/g, data.price || '');
+        
+        // Handle missing images
+        if (!data.imageUrl) {
+            html = html.replace(/<img[^>]*src="\{imageUrl\}"[^>]*>/g, 
+                '<div style="width: 100%; height: 100%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; text-align: center; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif; font-size: 0.75rem;">Enter an image URL to see a preview</div>');
+        }
+        
+        return html;
     }
 
     function generateExpectedFeatureCardHtml(data) {
@@ -4429,13 +5209,13 @@ Only cards for existing products will be imported.`;
         return { majorDifferences, minorDifferences };
     }
 
-    function validateAndFilterCards(cards, row) {
+    async function validateAndFilterCards(cards, row) {
         const validCards = [];
         const invalidCards = [];
         const placeholderCards = [];
         
-        cards.forEach(card => {
-            const validation = validateCard(card, row);
+        for (const card of cards) {
+            const validation = await validateCard(card, row);
             
             if (validation.isValid) {
                 // Add validation info to card for reference
@@ -4457,7 +5237,7 @@ Only cards for existing products will be imported.`;
                 const placeholderCard = createPlaceholderCard(card, validation, row);
                 placeholderCards.push(placeholderCard);
             }
-        });
+        }
         
         return { validCards, invalidCards, placeholderCards };
     }
@@ -4582,75 +5362,115 @@ Only cards for existing products will be imported.`;
         return content;
     }
 
-    function extractFeatureCards(row, columns) {
-        const cards = [];
+    function generateMultipleCardsErrorContent(divsWithHeadings, columnName) {
+        const cardTitles = divsWithHeadings.map((div, index) => {
+            const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
+            return `${index + 1}. ${title || 'Untitled Card'}`;
+        }).join('\n');
         
-        // Check for HTML blocks in shared.feature-X-card columns
-        for (let i = 1; i <= 10; i++) {
-            const columnName = `shared.feature-${i}-card`;
-            const htmlContent = row[columnName];
-            
-            if (htmlContent && htmlContent.trim()) {
-                try {
-                    console.log(`Processing ${columnName} for SKU ${row.sku}`);
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(htmlContent, 'text/html');
-                    
-                    // Find all card containers (divs with inline styles that look like cards)
-                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
-                        const style = div.getAttribute('style') || '';
-                        return style.includes('background: #ffffff') && 
-                               style.includes('border-radius: 10px') &&
-                               (div.querySelector('h2') || div.querySelector('h3'));
-                    });
-                    
-                    console.log(`Found ${cardDivs.length} feature cards in ${columnName}`);
-                    
-                    cardDivs.forEach((div, idx) => {
-                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
-                        const subtitle = (div.querySelector('h3') && div.querySelector('h2')) ? div.querySelector('h3').textContent.trim() : '';
-                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
-                        const img = div.querySelector('img');
-                        const imageUrl = img ? img.getAttribute('src') : '';
-                        
-                        if (title || description || imageUrl) {
-                            cards.push({
-                                id: Date.now() + Math.random(),
-                                sku: row.sku && row.sku.trim(),
-                                cardType: 'feature',
-                                position: (i - 1) * 10 + idx + 1, // Position based on column and card index
-                                title,
-                                subtitle,
-                                content: description,
-                                imageUrl,
-                                hypaUpdated: true,
-                                importedFromHypa: true,
-                                lastModified: new Date().toISOString(),
-                                originalHypaData: {
-                                    productId: row.id,
-                                    featureIndex: (i - 1) * 10 + idx + 1,
-                                    htmlSource: true,
-                                    columnName: columnName
-                                }
-                            });
-                        }
-                    });
-                } catch (err) {
-                    console.error(`Error parsing HTML block for ${columnName}:`, err);
-                }
-            }
-        }
-        
-        return cards;
+        return `
+<div style="
+    background: #f8d7da;
+    border: 2px dashed #dc3545;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
+">
+    <div style="
+        background: #dc3545;
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-weight: bold;
+        font-size: 1.1rem;
+    ">
+        🚨 FORMAT ERROR - MULTIPLE CARDS IN SINGLE CELL
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <strong>Problem:</strong> Found ${divsWithHeadings.length} cards in ${columnName}<br>
+        <strong>Expected:</strong> 1 card per cell<br>
+        <strong>Action Required:</strong> Recreate cards with correct format
+    </div>
+    
+    <div style="
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 15px;
+        margin: 15px 0;
+        text-align: left;
+    ">
+        <strong style="color: #dc3545;">Cards Found in ${columnName}:</strong>
+        <div style="margin: 10px 0; color: #dc3545; font-family: monospace; font-size: 0.9rem; white-space: pre-line;">
+${cardTitles}
+        </div>
+    </div>
+    
+    <div style="
+        background: #e7f3ff;
+        border: 1px solid #b3d9ff;
+        border-radius: 6px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 0.9rem;
+    ">
+        <strong>How to Fix:</strong><br>
+        1. Use the Card Creator to recreate each card individually<br>
+        2. Each card should be in its own column (shared.feature-1-card, shared.feature-2-card, etc.)<br>
+        3. Export with correct format: 1 card per cell
+    </div>
+    
+    <div style="
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 6px;
+        padding: 10px;
+        margin: 15px 0;
+        font-size: 0.8rem;
+        color: #856404;
+    ">
+        <strong>Note:</strong> This placeholder represents ${divsWithHeadings.length} cards that need to be recreated with the correct format.
+    </div>
+</div>
+        `;
     }
+
+    // === OLD FUNCTIONS REMOVED - Now using unified column-driven approach ===
 
     function extractOptionCards(row, columns) {
         const cards = [];
         
-        // Check for HTML blocks in shared.option-X-card columns
+        // Dynamically find all option card columns
+        const optionColumns = columns.filter(col => col.match(/^shared\.option-\d+-card$/));
+        const maxOptionIndex = optionColumns.length > 0 ? 
+            Math.max(...optionColumns.map(col => parseInt(col.match(/option-(\d+)-card/)[1]))) : 0;
+        
+        console.log(`Found ${optionColumns.length} option card columns (max index: ${maxOptionIndex})`);
+        
+        // Debug: Show what content is in each option column for this SKU
+        console.log(`=== DEBUG: Content in option columns for SKU ${row.sku} ===`);
         for (let i = 1; i <= 12; i++) {
             const columnName = `shared.option-${i}-card`;
+            const content = row[columnName];
+            if (content && content.trim()) {
+                console.log(`${columnName}: Has content (${content.length} chars)`);
+                console.log(`  Preview: ${content.substring(0, 100)}...`);
+            } else {
+                console.log(`${columnName}: Empty`);
+            }
+        }
+        console.log('==========================================');
+        
+        // Check for HTML blocks in shared.option-X-card columns
+        for (let i = 1; i <= maxOptionIndex; i++) {
+            const columnName = `shared.option-${i}-card`;
             const htmlContent = row[columnName];
+            
+            console.log(`Checking ${columnName}: ${htmlContent ? 'Has content' : 'Empty'} (length: ${htmlContent ? htmlContent.length : 0})`);
             
             if (htmlContent && htmlContent.trim()) {
                 try {
@@ -4658,36 +5478,82 @@ Only cards for existing products will be imported.`;
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlContent, 'text/html');
                     
-                    // Find all card containers (divs with inline styles that look like cards)
-                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
-                        const style = div.getAttribute('style') || '';
-                        return style.includes('background: #ffffff') && 
-                               style.includes('border-radius: 10px') &&
-                               (div.querySelector('h2') || div.querySelector('h3'));
-                    });
+                    // Enhanced approach: Handle multiple cards per cell (OPTION CARDS)
+                    const allDivs = Array.from(doc.querySelectorAll('div'));
+                    // For option cards, look for both h2/h3 tags AND card-title divs
+                    const divsWithHeadings = allDivs.filter(div => 
+                        div.querySelector('h2') || 
+                        div.querySelector('h3') || 
+                        div.querySelector('.card-title')
+                    );
                     
-                    console.log(`Found ${cardDivs.length} option cards in ${columnName}`);
+                    console.log(`Found ${divsWithHeadings.length} cards in ${columnName}`);
                     
-                    cardDivs.forEach((div, idx) => {
-                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
-                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
-                        const img = div.querySelector('img');
+                    // === FORMAT VALIDATION: Check if multiple cards in single cell ===
+                    if (divsWithHeadings.length > 1) {
+                        console.log(`❌ FORMAT ERROR: Found ${divsWithHeadings.length} cards in ${columnName} - this is incorrect format!`);
+                        
+                        // Create a single placeholder card for the entire cell
+                        const placeholderCard = {
+                            id: `format_error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                            sku: row.sku && row.sku.trim(),
+                            cardType: 'product-options',
+                            position: i * 100,
+                            title: `[FORMAT ERROR] Multiple cards in ${columnName}`,
+                            subtitle: '',
+                            content: generateMultipleCardsErrorContent(divsWithHeadings, columnName),
+                            imageUrl: '',
+                            price: '',
+                            hypaUpdated: true,
+                            importedFromHypa: true,
+                            lastModified: new Date().toISOString(),
+                            isPlaceholder: true,
+                            isFormatError: true,
+                            formatErrorInfo: {
+                                columnName: columnName,
+                                cardCount: divsWithHeadings.length,
+                                originalContent: htmlContent,
+                                needsRecreation: true
+                            },
+                            originalHypaData: {
+                                productId: row.id,
+                                optionIndex: i,
+                                isFormatError: true,
+                                columnName: columnName
+                            }
+                        };
+                        
+                        cards.push(placeholderCard);
+                        continue; // Skip processing individual cards, but continue with other columns
+                    }
+                    
+                    // Process single card found in this cell
+                    if (divsWithHeadings.length === 1) {
+                        const cardDiv = divsWithHeadings[0];
+                        // For option cards, also look for .card-title divs
+                        const title = (cardDiv.querySelector('h2') || cardDiv.querySelector('h3') || cardDiv.querySelector('.card-title'))?.textContent?.trim() || '';
+                        const description = (cardDiv.querySelector('p') || cardDiv.querySelector('.card-description')) ? 
+                            (cardDiv.querySelector('p') || cardDiv.querySelector('.card-description')).textContent.trim() : '';
+                        const img = cardDiv.querySelector('img');
                         const imageUrl = img ? img.getAttribute('src') : '';
                         
-                        // Try to extract price from the card content
+                        // Try to extract price from the card content (look for .card-price divs too)
                         let price = '';
-                        const priceElement = div.querySelector('[style*="font-weight: bold"]') || 
-                                           div.querySelector('[style*="color: #"]');
+                        const priceElement = cardDiv.querySelector('[style*="font-weight: bold"]') || 
+                                           cardDiv.querySelector('[style*="color: #"]') ||
+                                           cardDiv.querySelector('.card-price');
                         if (priceElement) {
                             price = priceElement.textContent.trim();
                         }
                         
+                        // Only create a card if it has meaningful content
                         if (title || description || imageUrl) {
+                            console.log(`Found option card in ${columnName}: "${title}"`);
                             cards.push({
-                                id: Date.now() + Math.random(),
+                                id: Date.now().toString(),
                                 sku: row.sku && row.sku.trim(),
                                 cardType: 'product-options',
-                                position: (i - 1) * 10 + idx + 1,
+                                position: i * 100,
                                 title,
                                 content: description,
                                 imageUrl,
@@ -4697,13 +5563,54 @@ Only cards for existing products will be imported.`;
                                 lastModified: new Date().toISOString(),
                                 originalHypaData: {
                                     productId: row.id,
-                                    optionIndex: (i - 1) * 10 + idx + 1,
+                                    optionIndex: i,
+                                    htmlSource: true,
+                                    columnName: columnName
+                                }
+                            });
+                        } else {
+                            console.log(`Skipping option card in ${columnName} - no valid content found`);
+                        }
+                    }
+                    
+                    // If no cards with headings found, try to extract from the body
+                    if (divsWithHeadings.length === 0) {
+                        const title = (doc.body.querySelector('h2') || doc.body.querySelector('h3'))?.textContent?.trim() || '';
+                        const description = (doc.body.querySelector('p')) ? doc.body.querySelector('p').textContent.trim() : '';
+                        const img = doc.body.querySelector('img');
+                        const imageUrl = img ? img.getAttribute('src') : '';
+                        
+                        // Try to extract price from the body
+                        let price = '';
+                        const priceElement = doc.body.querySelector('[style*="font-weight: bold"]') || 
+                                           doc.body.querySelector('[style*="color: #"]');
+                        if (priceElement) {
+                            price = priceElement.textContent.trim();
+                        }
+                        
+                        if (title || description || imageUrl) {
+                            console.log(`Found 1 fallback option card in ${columnName}: "${title}"`);
+                            cards.push({
+                                id: Date.now().toString(),
+                                sku: row.sku && row.sku.trim(),
+                                cardType: 'product-options',
+                                position: i,
+                                title,
+                                content: description,
+                                imageUrl,
+                                price,
+                                hypaUpdated: true,
+                                importedFromHypa: true,
+                                lastModified: new Date().toISOString(),
+                                originalHypaData: {
+                                    productId: row.id,
+                                    optionIndex: i,
                                     htmlSource: true,
                                     columnName: columnName
                                 }
                             });
                         }
-                    });
+                    }
                 } catch (err) {
                     console.error(`Error parsing HTML block for ${columnName}:`, err);
                 }
@@ -4716,8 +5623,29 @@ Only cards for existing products will be imported.`;
     function extractCargoCards(row, columns) {
         const cards = [];
         
-        // Check for HTML blocks in shared.cargo-option-X-card columns
+        // Dynamically find all cargo card columns
+        const cargoColumns = columns.filter(col => col.match(/^shared\.cargo-option-\d+-card$/));
+        const maxCargoIndex = cargoColumns.length > 0 ? 
+            Math.max(...cargoColumns.map(col => parseInt(col.match(/cargo-option-(\d+)-card/)[1]))) : 0;
+        
+        console.log(`Found ${cargoColumns.length} cargo card columns (max index: ${maxCargoIndex})`);
+        
+        // Debug: Show what content is in each cargo column for this SKU
+        console.log(`=== DEBUG: Content in cargo columns for SKU ${row.sku} ===`);
         for (let i = 1; i <= 12; i++) {
+            const columnName = `shared.cargo-option-${i}-card`;
+            const content = row[columnName];
+            if (content && content.trim()) {
+                console.log(`${columnName}: Has content (${content.length} chars)`);
+                console.log(`  Preview: ${content.substring(0, 100)}...`);
+            } else {
+                console.log(`${columnName}: Empty`);
+            }
+        }
+        console.log('==========================================');
+        
+        // Check for HTML blocks in shared.cargo-option-X-card columns
+        for (let i = 1; i <= maxCargoIndex; i++) {
             const columnName = `shared.cargo-option-${i}-card`;
             const htmlContent = row[columnName];
             
@@ -4727,52 +5655,89 @@ Only cards for existing products will be imported.`;
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlContent, 'text/html');
                     
-                    // Find all card containers (divs with inline styles that look like cards)
-                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
-                        const style = div.getAttribute('style') || '';
-                        return style.includes('background: #ffffff') && 
-                               style.includes('border-radius: 10px') &&
-                               (div.querySelector('h2') || div.querySelector('h3'));
-                    });
+                    // Simple approach: One card per cell, but only if it's a valid single card
+                    // Check if this cell contains multiple cards (old format) - if so, skip it
+                    const allDivs = Array.from(doc.querySelectorAll('div'));
+                    const divsWithHeadings = allDivs.filter(div => div.querySelector('h2') || div.querySelector('h3'));
                     
-                    console.log(`Found ${cardDivs.length} cargo cards in ${columnName}`);
+                    // === FORMAT VALIDATION: Check if multiple cards in single cell ===
+                    if (divsWithHeadings.length > 1) {
+                        console.log(`❌ FORMAT ERROR: Found ${divsWithHeadings.length} cards in ${columnName} - this is incorrect format!`);
+                        
+                        // Create a single placeholder card for the entire cell
+                        const placeholderCard = {
+                            id: `format_error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                            sku: row.sku && row.sku.trim(),
+                            cardType: 'cargo-options',
+                            position: i * 100,
+                            title: `[FORMAT ERROR] Multiple cards in ${columnName}`,
+                            subtitle: '',
+                            content: generateMultipleCardsErrorContent(divsWithHeadings, columnName),
+                            imageUrl: '',
+                            price: '',
+                            hypaUpdated: true,
+                            importedFromHypa: true,
+                            lastModified: new Date().toISOString(),
+                            isPlaceholder: true,
+                            isFormatError: true,
+                            formatErrorInfo: {
+                                columnName: columnName,
+                                cardCount: divsWithHeadings.length,
+                                originalContent: htmlContent,
+                                needsRecreation: true
+                            },
+                            originalHypaData: {
+                                productId: row.id,
+                                cargoIndex: i,
+                                isFormatError: true,
+                                columnName: columnName
+                            }
+                        };
+                        
+                        cards.push(placeholderCard);
+                        continue; // Skip processing individual cards
+                    }
                     
-                    cardDivs.forEach((div, idx) => {
-                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
-                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
-                        const img = div.querySelector('img');
-                        const imageUrl = img ? img.getAttribute('src') : '';
-                        
-                        // Try to extract price from the card content
-                        let price = '';
-                        const priceElement = div.querySelector('[style*="font-weight: bold"]') || 
-                                           div.querySelector('[style*="color: #"]');
-                        if (priceElement) {
-                            price = priceElement.textContent.trim();
-                        }
-                        
-                        if (title || description || imageUrl) {
-                            cards.push({
-                                id: Date.now() + Math.random(),
-                                sku: row.sku && row.sku.trim(),
-                                cardType: 'cargo-options',
-                                position: (i - 1) * 10 + idx + 1,
-                                title,
-                                content: description,
-                                imageUrl,
-                                price,
-                                hypaUpdated: true,
-                                importedFromHypa: true,
-                                lastModified: new Date().toISOString(),
-                                originalHypaData: {
-                                    productId: row.id,
-                                    cargoIndex: (i - 1) * 10 + idx + 1,
-                                    htmlSource: true,
-                                    columnName: columnName
-                                }
-                            });
-                        }
-                    });
+                    // Extract the single card from this cell
+                    const cardDiv = divsWithHeadings[0] || doc.body;
+                    const title = (cardDiv.querySelector('h2') || cardDiv.querySelector('h3'))?.textContent?.trim() || '';
+                    const description = (cardDiv.querySelector('p')) ? cardDiv.querySelector('p').textContent.trim() : '';
+                    const img = cardDiv.querySelector('img');
+                    const imageUrl = img ? img.getAttribute('src') : '';
+                    
+                    // Try to extract price from the card content
+                    let price = '';
+                    const priceElement = cardDiv.querySelector('[style*="font-weight: bold"]') || 
+                                       cardDiv.querySelector('[style*="color: #"]');
+                    if (priceElement) {
+                        price = priceElement.textContent.trim();
+                    }
+                    
+                    // Only create a card if it has meaningful content
+                    if (title || description || imageUrl) {
+                        console.log(`Found 1 valid cargo card in ${columnName}: "${title}"`);
+                        cards.push({
+                            id: Date.now().toString(),
+                            sku: row.sku && row.sku.trim(),
+                            cardType: 'cargo-options',
+                            position: i, // Simple position based on column number
+                            title,
+                            content: description,
+                            imageUrl,
+                            price,
+                            hypaUpdated: true,
+                            importedFromHypa: true,
+                            lastModified: new Date().toISOString(),
+                            originalHypaData: {
+                                productId: row.id,
+                                cargoIndex: i,
+                                htmlSource: true,
+                                columnName: columnName
+                            }
+                        });
+                    } else {
+                        console.log(`Skipping ${columnName} - no valid card content found`);
+                    }
                 } catch (err) {
                     console.error(`Error parsing HTML block for ${columnName}:`, err);
                 }
@@ -4785,8 +5750,15 @@ Only cards for existing products will be imported.`;
     function extractWeatherCards(row, columns) {
         const cards = [];
         
+        // Dynamically find all weather card columns
+        const weatherColumns = columns.filter(col => col.match(/^shared\.weather-option-\d+-card$/));
+        const maxWeatherIndex = weatherColumns.length > 0 ? 
+            Math.max(...weatherColumns.map(col => parseInt(col.match(/weather-option-(\d+)-card/)[1]))) : 0;
+        
+        console.log(`Found ${weatherColumns.length} weather card columns (max index: ${maxWeatherIndex})`);
+        
         // Check for HTML blocks in shared.weather-option-X-card columns
-        for (let i = 1; i <= 12; i++) {
+        for (let i = 1; i <= maxWeatherIndex; i++) {
             const columnName = `shared.weather-option-${i}-card`;
             const htmlContent = row[columnName];
             
@@ -4796,52 +5768,57 @@ Only cards for existing products will be imported.`;
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlContent, 'text/html');
                     
-                    // Find all card containers (divs with inline styles that look like cards)
-                    const cardDivs = Array.from(doc.querySelectorAll('div')).filter(div => {
-                        const style = div.getAttribute('style') || '';
-                        return style.includes('background: #ffffff') && 
-                               style.includes('border-radius: 10px') &&
-                               (div.querySelector('h2') || div.querySelector('h3'));
-                    });
+                    // Simple approach: One card per cell, but only if it's a valid single card
+                    // Check if this cell contains multiple cards (old format) - if so, skip it
+                    const allDivs = Array.from(doc.querySelectorAll('div'));
+                    const divsWithHeadings = allDivs.filter(div => div.querySelector('h2') || div.querySelector('h3'));
                     
-                    console.log(`Found ${cardDivs.length} weather cards in ${columnName}`);
+                    // If there are multiple divs with headings, this might be an old multi-card cell - skip it
+                    if (divsWithHeadings.length > 1) {
+                        console.log(`Skipping ${columnName} - contains ${divsWithHeadings.length} cards (old multi-card format)`);
+                        continue;
+                    }
                     
-                    cardDivs.forEach((div, idx) => {
-                        const title = (div.querySelector('h2') || div.querySelector('h3'))?.textContent?.trim() || '';
-                        const description = (div.querySelector('p')) ? div.querySelector('p').textContent.trim() : '';
-                        const img = div.querySelector('img');
-                        const imageUrl = img ? img.getAttribute('src') : '';
-                        
-                        // Try to extract price from the card content
-                        let price = '';
-                        const priceElement = div.querySelector('[style*="font-weight: bold"]') || 
-                                           div.querySelector('[style*="color: #"]');
-                        if (priceElement) {
-                            price = priceElement.textContent.trim();
-                        }
-                        
-                        if (title || description || imageUrl) {
-                            cards.push({
-                                id: Date.now() + Math.random(),
-                                sku: row.sku && row.sku.trim(),
-                                cardType: 'weather-protection',
-                                position: (i - 1) * 10 + idx + 1,
-                                title,
-                                content: description,
-                                imageUrl,
-                                price,
-                                hypaUpdated: true,
-                                importedFromHypa: true,
-                                lastModified: new Date().toISOString(),
-                                originalHypaData: {
-                                    productId: row.id,
-                                    weatherIndex: (i - 1) * 10 + idx + 1,
-                                    htmlSource: true,
-                                    columnName: columnName
-                                }
-                            });
-                        }
-                    });
+                    // Extract the single card from this cell
+                    const cardDiv = divsWithHeadings[0] || doc.body;
+                    const title = (cardDiv.querySelector('h2') || cardDiv.querySelector('h3'))?.textContent?.trim() || '';
+                    const description = (cardDiv.querySelector('p')) ? cardDiv.querySelector('p').textContent.trim() : '';
+                    const img = cardDiv.querySelector('img');
+                    const imageUrl = img ? img.getAttribute('src') : '';
+                    
+                    // Try to extract price from the card content
+                    let price = '';
+                    const priceElement = cardDiv.querySelector('[style*="font-weight: bold"]') || 
+                                       cardDiv.querySelector('[style*="color: #"]');
+                    if (priceElement) {
+                        price = priceElement.textContent.trim();
+                    }
+                    
+                    // Only create a card if it has meaningful content
+                    if (title || description || imageUrl) {
+                        console.log(`Found 1 valid weather card in ${columnName}: "${title}"`);
+                        cards.push({
+                            id: Date.now().toString(),
+                            sku: row.sku && row.sku.trim(),
+                            cardType: 'weather-protection',
+                            position: i, // Simple position based on column number
+                            title,
+                            content: description,
+                            imageUrl,
+                            price,
+                            hypaUpdated: true,
+                            importedFromHypa: true,
+                            lastModified: new Date().toISOString(),
+                            originalHypaData: {
+                                productId: row.id,
+                                weatherIndex: i,
+                                htmlSource: true,
+                                columnName: columnName
+                            }
+                        });
+                    } else {
+                        console.log(`Skipping ${columnName} - no valid card content found`);
+                    }
                 } catch (err) {
                     console.error(`Error parsing HTML block for ${columnName}:`, err);
                 }
@@ -4854,6 +5831,16 @@ Only cards for existing products will be imported.`;
     function extractSpecTable(row, columns) {
         // Check for spec table in shared.spec-table column
         const specTableContent = row['shared.spec-table'];
+        
+        // Debug: Show spec table content for this SKU
+        console.log(`=== DEBUG: Spec table content for SKU ${row.sku} ===`);
+        if (specTableContent && specTableContent.trim()) {
+            console.log(`shared.spec-table: Has content (${specTableContent.length} chars)`);
+            console.log(`  Preview: ${specTableContent.substring(0, 100)}...`);
+        } else {
+            console.log(`shared.spec-table: Empty`);
+        }
+        console.log('==========================================');
         
         if (specTableContent && specTableContent.trim()) {
             try {
@@ -4871,7 +5858,7 @@ Only cards for existing products will be imported.`;
                 }
                 
                 return {
-                    id: Date.now() + Math.random(),
+                    id: Date.now().toString(),
                     sku: row.sku && row.sku.trim(),
                     cardType: 'specification-table',
                     title: title.trim(),
@@ -4925,7 +5912,7 @@ Only cards for existing products will be imported.`;
     initializeElements();
 
     // Test function for debugging
-    function testHypaFlow() {
+    async function testHypaFlow() {
         console.log('Testing Hypa flow...');
         const testData = [
             {
@@ -4937,7 +5924,7 @@ Only cards for existing products will be imported.`;
             }
         ];
         console.log('Test data created:', testData);
-        showHypaValidationResults(testData);
+        await showHypaValidationResults(testData);
         console.log('Test validation results shown');
     }
 
@@ -5519,7 +6506,7 @@ Only cards for existing products will be imported.`;
 
         // Create new card with current format
         const newCard = {
-            id: Date.now() + Math.random(),
+            id: Date.now().toString(),
             sku: oldCard.sku || 'Unknown',
             cardType: oldCard.cardType || 'feature',
             position: oldCard.position || 1,
@@ -5566,7 +6553,7 @@ Only cards for existing products will be imported.`;
         let migratedCount = 0;
         oldCards.forEach(oldCard => {
             const newCard = {
-                id: Date.now() + Math.random() + migratedCount,
+                id: Date.now().toString() + migratedCount.toString(),
                 sku: oldCard.sku || 'Unknown',
                 cardType: oldCard.cardType || 'feature',
                 position: oldCard.position || 1,
@@ -5613,121 +6600,893 @@ Only cards for existing products will be imported.`;
     window.bulkMigrateCards = bulkMigrateCards;
 
     // Export back to Hypa format with perfect round-trip preservation
-    function exportToHypaFormat() {
-        if (!originalHypaCsvData || !originalHypaCsvHeaders) {
-            showAnalysisToast('No original Hypa CSV data found. Please import from Hypa first.', 'error');
-            return;
-        }
-
-        console.log('Exporting to Hypa format with original structure preservation');
-        console.log('Original headers:', originalHypaCsvHeaders);
-        console.log('Original data rows:', originalHypaCsvData.length);
-
-        // Create a copy of the original data to modify
-        const exportData = originalHypaCsvData.map(row => ({ ...row }));
-
-        // Map our local cards back to the original CSV structure
-        cards.forEach(card => {
-            // Find the corresponding row in the original data
-            const rowIndex = exportData.findIndex(row => row.sku === card.sku);
-            if (rowIndex === -1) {
-                console.log(`Card for SKU ${card.sku} not found in original data, skipping`);
+    async function exportToHypaFormat() {
+        try {
+            // Try to load Hypa CSV data from cache first
+            let hypaCsvData = originalHypaCsvData;
+            let hypaCsvHeaders = originalHypaCsvHeaders;
+            
+            if (!hypaCsvData || !hypaCsvHeaders) {
+                try {
+                    const cacheResponse = await fetch('/api/hypa-csv-cache');
+                    if (cacheResponse.ok) {
+                        const cacheData = await cacheResponse.json();
+                        if (cacheData && cacheData.data && cacheData.headers) {
+                            hypaCsvData = cacheData.data;
+                            hypaCsvHeaders = cacheData.headers;
+                            console.log('Loaded Hypa data from cache for export:', hypaCsvData.length, 'rows');
+                        }
+                    }
+                } catch (error) {
+                    console.log('No Hypa CSV cache found:', error.message);
+                }
+            }
+            
+            if (!hypaCsvData || !hypaCsvHeaders) {
+                showAnalysisToast('No original Hypa CSV data found. Please import from Hypa first.', 'error');
                 return;
             }
 
-            const row = exportData[rowIndex];
-            console.log(`Updating row for SKU ${card.sku}, card type: ${card.cardType}`);
+            console.log('Exporting to Hypa format with original structure preservation');
+            console.log('Original headers:', hypaCsvHeaders);
+            console.log('Original data rows:', hypaCsvData.length);
 
-            // Update the appropriate columns based on card type
-            switch (card.cardType) {
-                case 'feature':
-                    if (card.position) {
-                        // Update feature card flag
-                        const featureFlag = `shared.feature-${card.position}-card`;
-                        if (originalHypaCsvHeaders.includes(featureFlag)) {
-                            row[featureFlag] = 'enabled';
-                        }
-                        
-                        // Update feature content
-                        if (card.title && originalHypaCsvHeaders.includes(`features.feature_${card.position}_title`)) {
-                            row[`features.feature_${card.position}_title`] = card.title;
-                        }
-                        if (card.content && originalHypaCsvHeaders.includes(`features.feature_${card.position}_description`)) {
-                            row[`features.feature_${card.position}_description`] = card.content;
-                        }
-                        if (card.imageUrl && originalHypaCsvHeaders.includes(`features.feature_${card.position}_image`)) {
-                            row[`features.feature_${card.position}_image`] = card.imageUrl;
-                        }
-                    }
-                    break;
-
-                case 'product-options':
-                    if (card.position) {
-                        // Update option card flag
-                        const optionFlag = `shared.option-${card.position}-card`;
-                        if (originalHypaCsvHeaders.includes(optionFlag)) {
-                            row[optionFlag] = 'enabled';
-                        }
-                        
-                        // Update option content
-                        if (card.title && originalHypaCsvHeaders.includes(`options.option_${card.position}_title`)) {
-                            row[`options.option_${card.position}_title`] = card.title;
-                        }
-                        if (card.content && originalHypaCsvHeaders.includes(`options.option_${card.position}_description`)) {
-                            row[`options.option_${card.position}_description`] = card.content;
-                        }
-                        if (card.imageUrl && originalHypaCsvHeaders.includes(`options.option_${card.position}_image`)) {
-                            row[`options.option_${card.position}_image`] = card.imageUrl;
-                        }
-                    }
-                    break;
-                case 'specification-table':
-                case 'spec':
-                    if (originalHypaCsvHeaders.includes('shared.spec-table')) {
-                        row['shared.spec-table'] = 'enabled';
-                    }
-                    if (card.content && originalHypaCsvHeaders.includes('specification_table_content')) {
-                        row['specification_table_content'] = card.content;
-                    }
-                    break;
-                // Add other cardType cases as needed
+            // Get selected items for export
+            const selectedItems = window.selectedExportItems;
+            if (!selectedItems || selectedItems.length === 0) {
+                showAnalysisToast('No cards selected for export. Please go through the export selection process first.', 'error');
+                return;
             }
-            // Mark card as exported to Hypa
-            card.exportedToHypa = true;
+
+            console.log(`Exporting ${selectedItems.length} selected items to Hypa format`);
+
+            // Get all SKUs from selected items (main SKU + variant SKUs)
+            const allSelectedSkus = new Set();
+            
+            selectedItems.forEach(item => {
+                // Add main SKU
+                if (item.sku) {
+                    allSelectedSkus.add(item.sku);
+                }
+                
+                // Add variant SKUs from configuration
+                if (item.configuration && item.configuration.variants) {
+                    item.configuration.variants.forEach(variant => {
+                        if (typeof variant === 'string') {
+                            // Old format: string variant
+                            allSelectedSkus.add(variant);
+                        } else if (typeof variant === 'object' && variant.sku) {
+                            // New format: object with sku property
+                            allSelectedSkus.add(variant.sku);
+                        }
+                    });
+                }
+                
+                // Add SKUs from associatedSkus if available
+                if (item.associatedSkus && Array.isArray(item.associatedSkus)) {
+                    item.associatedSkus.forEach(sku => allSelectedSkus.add(sku));
+                }
+            });
+            
+            const selectedSkus = Array.from(allSelectedSkus);
+            console.log('All selected SKUs for export (main + variants):', selectedSkus);
+
+            // Filter the original data to only include rows for selected SKUs
+            const exportData = hypaCsvData
+                .filter(row => selectedSkus.includes(row.sku))
+                .map(row => ({ ...row }));
+
+            console.log(`Filtered export data to ${exportData.length} rows (from ${hypaCsvData.length} original rows)`);
+
+                    // Group selected items by SKU and card type to assign positions
+        const skuCardGroups = new Map();
+        
+        selectedItems.forEach(item => {
+            const groupKey = `${item.sku}_${item.cardType}`;
+            if (!skuCardGroups.has(groupKey)) {
+                skuCardGroups.set(groupKey, []);
+            }
+            skuCardGroups.get(groupKey).push(item);
         });
+        
+        // Assign positions to cards within each group
+        skuCardGroups.forEach((cards, groupKey) => {
+            cards.forEach((card, index) => {
+                // Assign position based on order in the group (1-based)
+                card.assignedPosition = index + 1;
+            });
+        });
+        
+        // Map our selected cards back to the original CSV structure
+        selectedItems.forEach(item => {
+            // Use assigned position if available, otherwise use original position
+            const finalPosition = item.assignedPosition || item.position || 1;
+            
+            // Create a unique identifier using SKU + title + cardType + assigned position
+            const uniqueId = `${item.sku}_${item.title || 'no-title'}_${item.cardType}_${finalPosition}`;
+            
+            // Get all SKUs for this card (main SKU + variant SKUs)
+            const allCardSkus = new Set();
+            
+            // Add main SKU
+            if (item.sku) {
+                allCardSkus.add(item.sku);
+            }
+            
+            // Add variant SKUs from configuration
+            if (item.configuration && item.configuration.variants) {
+                item.configuration.variants.forEach(variant => {
+                    if (typeof variant === 'string') {
+                        allCardSkus.add(variant);
+                    } else if (typeof variant === 'object' && variant.sku) {
+                        allCardSkus.add(variant.sku);
+                    }
+                });
+            }
+            
+            // Add SKUs from associatedSkus if available
+            if (item.associatedSkus && Array.isArray(item.associatedSkus)) {
+                item.associatedSkus.forEach(sku => allCardSkus.add(sku));
+            }
+            
+            console.log(`Processing card: ${uniqueId} for SKUs: ${Array.from(allCardSkus).join(', ')}, card type: ${item.cardType}, position: ${item.position}, action: ${item.action}`);
+            
+            // Process each SKU for this card
+            Array.from(allCardSkus).forEach(cardSku => {
+                // Find the corresponding row in the original data for this SKU
+                const rowIndex = exportData.findIndex(row => row.sku === cardSku);
+                if (rowIndex === -1) {
+                    console.log(`Card for SKU ${cardSku} not found in original data, skipping`);
+                    return;
+                }
 
-        // Determine export format
-        const exportFormat = document.getElementById('exportFormat')?.value || 'csv';
-        let exportContent, mimeType, fileExtension;
-        if (exportFormat === 'json') {
-            exportContent = JSON.stringify(exportData, null, 2);
-            mimeType = 'application/json';
-            fileExtension = 'json';
-        } else {
-            // Use PapaParse to convert to CSV
-            exportContent = Papa.unparse(exportData, { columns: originalHypaCsvHeaders });
-            mimeType = 'text/csv';
-            fileExtension = 'csv';
+                const row = exportData[rowIndex];
+                console.log(`Processing card: ${uniqueId} for SKU ${item.sku}, card type: ${item.cardType}, position: ${item.position}, action: ${item.action}`);
+
+                // Validate card format before processing
+                const validationResult = validateCardForHypaExport(item, hypaCsvHeaders);
+                if (!validationResult.isValid) {
+                    console.error(`Validation failed for ${uniqueId}: ${validationResult.error}`);
+                    showAnalysisToast(`Export validation failed for ${uniqueId}: ${validationResult.error}`, 'error');
+                    return;
+                }
+
+                // Update the appropriate columns based on card type
+                switch (item.cardType) {
+                    case 'feature':
+                        if (finalPosition) {
+                            // Update feature card with HTML content
+                            const featureFlag = `shared.feature-${finalPosition}-card`;
+                            if (hypaCsvHeaders.includes(featureFlag)) {
+                                try {
+                                    // Clear any existing content first
+                                    row[featureFlag] = '';
+                                    
+                                    // Generate HTML using local function (fallback if CardManager not available)
+                                    const htmlContent = generateFeatureCardHtml(item);
+                                    if (!htmlContent) {
+                                        throw new Error(`Failed to generate HTML for feature card ${finalPosition} (${uniqueId})`);
+                                    }
+
+                                    // Add single card HTML to its dedicated column
+                                    row[featureFlag] = htmlContent;
+                                    
+                                    console.log(`Exported feature card ${finalPosition} to column ${featureFlag} for ${uniqueId}`);
+                                } catch (error) {
+                                    console.error(`Error exporting feature card ${finalPosition} (${uniqueId}):`, error);
+                                    showAnalysisToast(`Failed to export feature card: ${error.message}`, 'error');
+                                    return;
+                                }
+                            } else {
+                                console.warn(`Feature card column ${featureFlag} not found in Hypa headers for ${uniqueId}`);
+                            }
+                        }
+                        break;
+
+                    case 'product-options':
+                        if (finalPosition) {
+                            // Update option card with HTML content
+                            const optionFlag = `shared.option-${finalPosition}-card`;
+                            if (hypaCsvHeaders.includes(optionFlag)) {
+                                try {
+                                    // Clear any existing content first
+                                    row[optionFlag] = '';
+                                    
+                                    const htmlContent = generateProductOptionCardHtml(item);
+                                    
+                                    // Validate generated HTML against reference template
+                                    const validation = validateGeneratedHtml(item, htmlContent);
+                                    if (!validation.isValid) {
+                                        console.error(`HTML validation failed for ${uniqueId}, product option card ${item.position}:`, validation.errors);
+                                        showAnalysisToast(`HTML validation failed for ${uniqueId}: ${validation.errors.join(', ')}`, 'error');
+                                        return;
+                                    }
+                                    
+                                    row[optionFlag] = htmlContent;
+                                    console.log(`Exported product option card ${finalPosition} to column ${optionFlag} for ${uniqueId}`);
+                                } catch (error) {
+                                    console.error(`Error exporting product option card ${finalPosition} (${uniqueId}):`, error);
+                                    showAnalysisToast(`Failed to export product option card: ${error.message}`, 'error');
+                                    return;
+                                }
+                            } else {
+                                console.warn(`Product option card column ${optionFlag} not found in Hypa headers for ${uniqueId}`);
+                            }
+                        }
+                        break;
+                        
+                    case 'specification-table':
+                    case 'spec':
+                        if (hypaCsvHeaders.includes('shared.spec-table')) {
+                            try {
+                                // Clear any existing content first
+                                row['shared.spec-table'] = '';
+                                
+                                // For specification tables, put the content directly in the cell
+                                const content = item.content || item.description || '';
+                                row['shared.spec-table'] = content;
+                                
+                                console.log(`Exported specification table to column shared.spec-table for ${uniqueId}`);
+                            } catch (error) {
+                                console.error(`Error exporting specification table (${uniqueId}):`, error);
+                                showAnalysisToast(`Failed to export specification table: ${error.message}`, 'error');
+                                return;
+                            }
+                        } else {
+                            console.warn(`Specification table column shared.spec-table not found in Hypa headers for ${uniqueId}`);
+                        }
+                        break;
+                        
+                    case 'cargo-options':
+                        if (finalPosition) {
+                            // Update cargo option card with HTML content
+                            const cargoFlag = `shared.cargo-option-${finalPosition}-card`;
+                            if (hypaCsvHeaders.includes(cargoFlag)) {
+                                try {
+                                    // Clear any existing content first
+                                    row[cargoFlag] = '';
+                                    
+                                    // Generate HTML content for the cargo option card
+                                    const htmlContent = generateCargoOptionCardHtml(item);
+                                    
+                                    // Validate generated HTML against reference template
+                                    const validation = validateGeneratedHtml(item, htmlContent);
+                                    if (!validation.isValid) {
+                                        console.error(`HTML validation failed for ${uniqueId}, cargo option card ${item.position}:`, validation.errors);
+                                        showAnalysisToast(`HTML validation failed for ${uniqueId}: ${validation.errors.join(', ')}`, 'error');
+                                        return;
+                                    }
+                                    
+                                    row[cargoFlag] = htmlContent;
+                                    console.log(`Exported cargo option card ${finalPosition} to column ${cargoFlag} for ${uniqueId}`);
+                                } catch (error) {
+                                    console.error(`Error exporting cargo option card ${finalPosition} (${uniqueId}):`, error);
+                                    showAnalysisToast(`Failed to export cargo option card: ${error.message}`, 'error');
+                                    return;
+                                }
+                            } else {
+                                console.warn(`Cargo option card column ${cargoFlag} not found in Hypa headers for ${uniqueId}`);
+                            }
+                        }
+                        break;
+                        
+                    case 'weather-protection':
+                        if (finalPosition) {
+                            // Update weather protection card with HTML content
+                            const weatherFlag = `shared.weather-option-${finalPosition}-card`;
+                            if (hypaCsvHeaders.includes(weatherFlag)) {
+                                try {
+                                    // Clear any existing content first
+                                    row[weatherFlag] = '';
+                                    
+                                    const htmlContent = generateWeatherProtectionCardHtml(item);
+                                    
+                                    // Validate generated HTML against reference template
+                                    const validation = validateGeneratedHtml(item, htmlContent);
+                                    if (!validation.isValid) {
+                                        console.error(`HTML validation failed for ${uniqueId}, weather protection card ${item.position}:`, validation.errors);
+                                        showAnalysisToast(`HTML validation failed for ${uniqueId}: ${validation.errors.join(', ')}`, 'error');
+                                        return;
+                                    }
+                                    
+                                    row[weatherFlag] = htmlContent;
+                                    console.log(`Exported weather protection card ${finalPosition} to column ${weatherFlag} for ${uniqueId}`);
+                                } catch (error) {
+                                    console.error(`Error exporting weather protection card ${finalPosition} (${uniqueId}):`, error);
+                                    showAnalysisToast(`Failed to export weather protection card: ${error.message}`, 'error');
+                                    return;
+                                }
+                            } else {
+                                console.warn(`Weather protection card column ${weatherFlag} not found in Hypa headers for ${uniqueId}`);
+                            }
+                        }
+                        break;
+                        
+                    default:
+                        console.warn(`Unknown card type: ${item.cardType} for ${uniqueId}`);
+                        break;
+                }
+                // Mark item as exported to Hypa
+                item.exportedToHypa = true;
+            }); // End of forEach(cardSku)
+        }); // End of forEach(selectedItems)
+                
+            // Determine export format
+            const exportFormat = document.getElementById('exportFormat')?.value || 'csv';
+            let exportContent, mimeType, fileExtension;
+            if (exportFormat === 'json') {
+                exportContent = JSON.stringify(exportData, null, 2);
+                mimeType = 'application/json';
+                fileExtension = 'json';
+            } else {
+                // Use PapaParse to convert to CSV
+                exportContent = Papa.unparse(exportData, { columns: hypaCsvHeaders });
+                mimeType = 'text/csv';
+                fileExtension = 'csv';
+            }
+
+            // Trigger download
+            const blob = new Blob([exportContent], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hypa-export-${new Date().toISOString().replace(/[:.]/g, '-')}.${fileExtension}`;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+
+            showAnalysisToast('Export completed! Download started.', 'success');
+        } catch (error) {
+            console.error('Error during export:', error);
+            showAnalysisToast('Export failed: ' + error.message, 'error');
         }
+    }
 
-        // Trigger download
-        const blob = new Blob([exportContent], { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `hypa-export-${new Date().toISOString().replace(/[:.]/g, '-')}.${fileExtension}`;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => {
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }, 100);
+    // Validate card format for Hypa export
+    function validateCardForHypaExport(card, hypaHeaders) {
+        const errors = [];
+        
+        // Check required fields based on card type
+        switch (card.cardType) {
+            case 'feature':
+                if (!card.position) errors.push('Missing position for feature card');
+                if (!card.title) errors.push('Missing title for feature card');
+                if (!card.content && !card.description) errors.push('Missing content/description for feature card');
+                break;
+            case 'product-options':
+                if (!card.position) errors.push('Missing position for product option card');
+                if (!card.title) errors.push('Missing title for product option card');
+                if (!card.content && !card.description) errors.push('Missing content/description for product option card');
+                if (!card.price) errors.push('Missing price for product option card');
+                break;
+            case 'specification-table':
+            case 'spec':
+                if (!card.content) errors.push('Missing content for specification table card');
+                break;
+            case 'cargo-options':
+                if (!card.position) errors.push('Missing position for cargo option card');
+                if (!card.title) errors.push('Missing title for cargo option card');
+                if (!card.content && !card.description) errors.push('Missing content/description for cargo option card');
+                if (!card.price) errors.push('Missing price for cargo option card');
+                break;
+            case 'weather-protection':
+                if (!card.position) errors.push('Missing position for weather protection card');
+                if (!card.title) errors.push('Missing title for weather protection card');
+                if (!card.content && !card.description) errors.push('Missing content/description for weather protection card');
+                if (!card.price) errors.push('Missing price for weather protection card');
+                break;
+            default:
+                errors.push(`Unknown card type: ${card.cardType}`);
+        }
+        
+        // Check if required Hypa headers exist (only check for the actual combined card columns)
+        if (card.cardType === 'feature' && card.position) {
+            const requiredHeader = `shared.feature-${card.position}-card`;
+            if (!hypaHeaders.includes(requiredHeader)) {
+                errors.push(`Missing required Hypa header: ${requiredHeader}`);
+            }
+        }
+        
+        if (card.cardType === 'product-options' && card.position) {
+            const requiredHeader = `shared.option-${card.position}-card`;
+            if (!hypaHeaders.includes(requiredHeader)) {
+                errors.push(`Missing required Hypa header: ${requiredHeader}`);
+            }
+        }
+        
+        if (card.cardType === 'specification-table' || card.cardType === 'spec') {
+            const requiredHeader = 'shared.spec-table';
+            if (!hypaHeaders.includes(requiredHeader)) {
+                errors.push(`Missing required Hypa header: ${requiredHeader}`);
+            }
+        }
+        
+        if (card.cardType === 'cargo-options' && card.position) {
+            const requiredHeader = `shared.cargo-option-${card.position}-card`;
+            if (!hypaHeaders.includes(requiredHeader)) {
+                errors.push(`Missing required Hypa header: ${requiredHeader}`);
+            }
+        }
+        
+        if (card.cardType === 'weather-protection' && card.position) {
+            const requiredHeader = `shared.weather-option-${card.position}-card`;
+            if (!hypaHeaders.includes(requiredHeader)) {
+                errors.push(`Missing required Hypa header: ${requiredHeader}`);
+            }
+        }
+        
+        return {
+            isValid: errors.length === 0,
+            error: errors.join(', ')
+        };
+    }
 
-        showAnalysisToast('Export completed! Download started.', 'success');
+    // Helper function to get the correct image URL (WebDAV if available, otherwise original)
+    function getCorrectImageUrl(card) {
+        // If card has been uploaded to WebDAV, use the WebDAV URL
+        if (card.webdavPath) {
+            // Convert internal webdavPath to public URL
+            let path = card.webdavPath.replace(/^\/dav/, '/product_images');
+            path = path.replace(/\/product_images\/product_images\//, '/product_images/');
+            path = path.replace(/([^:])\/+/, '$1/');
+            const webdavUrl = 'https://store-c8jhcan2jv.mybigcommerce.com' + path;
+            console.log(`Using WebDAV URL for card ${card.id}: ${webdavUrl}`);
+            return webdavUrl;
+        }
+        
+        // Otherwise use the original imageUrl
+        console.log(`Using original imageUrl for card ${card.id}: ${card.imageUrl}`);
+        return card.imageUrl || '';
+    }
+
+    // Generate HTML for feature cards
+    function generateFeatureCardHtml(card) {
+        const title = card.title || '';
+        const subtitle = card.subtitle || '';
+        const description = card.description || card.content || '';
+        const imageUrl = getCorrectImageUrl(card);
+        
+        return `<!-- Product feature card container -->
+
+<div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
+<!-- Text content -->
+
+<div style="flex: 1; min-width: 300px;">
+<h2>${title}</h2>
+<h3>
+</h3>
+<p>${description}</p>
+</div>
+<!-- Image -->
+
+<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+</div>
+<div class="se-component se-image-container __se__float-"><figure style="width: 400px;">
+<img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${imageUrl.split('/').pop()}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
+</figure>
+</div>
+<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+</div>
+</div>`;
+    }
+
+    // Generate HTML for product option cards
+    function generateProductOptionCardHtml(card) {
+        const title = card.title || '';
+        const description = card.description || card.content || '';
+        const price = card.price || '';
+        const imageUrl = getCorrectImageUrl(card);
+        
+        return `<!-- Example of another card -->
+
+<div class="swiper-slide">
+  ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__float-none"><figure>
+  <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-file-name="${imageUrl.split('/').pop()}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto" data-index="0">
+  </figure>
+  </div>` : ''}
+  <div class="card">
+  <div class="card-info">
+  <div class="card-title">${title}</div>
+  <div class="card-description">${description}</div>
+  <div class="card-price">${price || ''}</div>
+  <button class="more-info-btn">More Information</button>
+  </div>
+  </div>
+  </div>`;
+    }
+
+    // Generate HTML for cargo option cards
+    function generateCargoOptionCardHtml(card) {
+        const title = card.title || '';
+        const description = card.description || card.content || '';
+        const price = card.price || '';
+        const imageUrl = getCorrectImageUrl(card);
+        
+        return `<!-- Product feature card container -->
+<div class="product-feature-card">
+<!-- Text content -->
+<div class="feature-content">
+<h2>${title}</h2>
+
+${price ? `<h3>&pound;${price}</h3>` : ''}
+
+<p>${description}</p>
+</div>
+
+<!-- Image -->
+${imageUrl ? `<div class="se-component se-image-container __se__float- __se__float-none">
+    <figure>
+      <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-index="0" data-file-name="${imageUrl.split('/').pop()}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto">
+    </figure>
+</div>` : ''}
+</div>`;
+    }
+
+    // Generate HTML for weather protection cards
+    function generateWeatherProtectionCardHtml(card) {
+        const title = card.title || '';
+        const description = card.description || card.content || '';
+        const price = card.price || '';
+        const imageUrl = getCorrectImageUrl(card);
+        
+        return `<div class="product-feature-card">
+<!-- Text content -->
+<div class="feature-content">
+<h2>${title}</h2>
+
+${price ? `<h3>&pound;${price}</h3>` : ''}
+
+<p>${description}</p>
+</div>
+
+<!-- Image -->
+${imageUrl ? `<div class="se-component se-image-container __se__float- __se__float-none">
+    <figure>
+      <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-index="0" data-file-name="${imageUrl.split('/').pop()}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto">
+    </figure>
+</div>` : ''}
+</div>`;
+    }
+
+    // Validate generated HTML against reference templates
+    function validateGeneratedHtml(card, generatedHtml) {
+        const errors = [];
+        
+        // Load reference template based on card type
+        let referenceTemplate = '';
+        switch (card.cardType) {
+            case 'feature':
+                referenceTemplate = `<!-- Product feature card container -->
+<div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
+<!-- Text content -->
+<div style="flex: 1; min-width: 300px;">
+<h2>TITLE_PLACEHOLDER</h2>
+<h3>SUBTITLE_PLACEHOLDER</h3>
+<p>DESCRIPTION_PLACEHOLDER</p>
+</div>
+<!-- Image -->
+<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+</div>
+<div class="se-component se-image-container __se__float-"><figure style="width: 400px;">
+<img src="IMAGE_URL_PLACEHOLDER" alt="TITLE_PLACEHOLDER" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="FILENAME_PLACEHOLDER" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
+</figure>
+</div>
+<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+</div>
+</div>`;
+                break;
+            case 'cargo-options':
+                referenceTemplate = `<!-- Product feature card container -->
+<div class="product-feature-card">
+<!-- Text content -->
+<div class="feature-content">
+<h2>TITLE_PLACEHOLDER</h2>
+
+<h3>PRICE_PLACEHOLDER</h3>
+
+<p>DESCRIPTION_PLACEHOLDER</p>
+</div>
+
+<!-- Image -->
+<div class="se-component se-image-container __se__float- __se__float-none">
+    <figure>
+      <img src="IMAGE_URL_PLACEHOLDER" alt="TITLE_PLACEHOLDER" data-proportion="true" data-align="none" data-index="0" data-file-name="FILENAME_PLACEHOLDER" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto">
+    </figure>
+</div>
+</div>`;
+                break;
+            case 'product-options':
+                referenceTemplate = `<!-- Example of another card -->
+
+<div class="swiper-slide">
+  <div class="se-component se-image-container __se__float- __se__float-none"><figure>
+  <img src="IMAGE_URL_PLACEHOLDER" alt="TITLE_PLACEHOLDER" data-proportion="true" data-align="none" data-file-name="FILENAME_PLACEHOLDER" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto" data-index="0">
+  </figure>
+  </div>
+  <div class="card">
+  <div class="card-info">
+  <div class="card-title">TITLE_PLACEHOLDER</div>
+  <div class="card-description">DESCRIPTION_PLACEHOLDER</div>
+  <div class="card-price">PRICE_PLACEHOLDER</div>
+  <button class="more-info-btn">More Information</button>
+  </div>
+</div>
+</div>`;
+                break;
+            case 'weather-protection':
+                referenceTemplate = `<div class="product-feature-card">
+<!-- Text content -->
+<div class="feature-content">
+<h2>TITLE_PLACEHOLDER</h2>
+
+<h3>PRICE_PLACEHOLDER</h3>
+
+<p>DESCRIPTION_PLACEHOLDER</p>
+</div>
+
+<!-- Image -->
+<div class="se-component se-image-container __se__float- __se__float-none">
+    <figure>
+      <img src="IMAGE_URL_PLACEHOLDER" alt="TITLE_PLACEHOLDER" data-proportion="true" data-align="none" data-index="0" data-file-name="FILENAME_PLACEHOLDER" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto">
+    </figure>
+</div>
+</div>`;
+                break;
+        }
+        
+        if (!referenceTemplate) {
+            return { isValid: true, errors: [] }; // No template to validate against
+        }
+        
+        // Normalize both HTML strings for comparison
+        const normalizeHtml = (html) => {
+            return html
+                .replace(/\s+/g, ' ')
+                .replace(/>\s+</g, '><')
+                .trim();
+        };
+        
+        const normalizedGenerated = normalizeHtml(generatedHtml);
+        const normalizedReference = normalizeHtml(referenceTemplate);
+        
+        // Check for required structural elements
+        const requiredElements = {
+            'feature': ['h2', 'p', 'div[style*="display: flex"]'],
+            'cargo-options': ['h2', 'p', '.product-feature-card', '.feature-content'],
+            'product-options': ['.swiper-slide', '.card', '.card-title', '.card-description', '.more-info-btn'],
+            'weather-protection': ['h2', 'p', '.product-feature-card', '.feature-content']
+        };
+        
+        const elements = requiredElements[card.cardType] || [];
+        const parser = new DOMParser();
+        const generatedDoc = parser.parseFromString(generatedHtml, 'text/html');
+        
+        elements.forEach(element => {
+            if (!generatedDoc.querySelector(element)) {
+                errors.push(`Missing required element: ${element}`);
+            }
+        });
+        
+        // Check for required CSS classes
+        const requiredClasses = {
+            'cargo-options': ['product-feature-card', 'feature-content'],
+            'product-options': ['swiper-slide', 'card', 'card-info', 'card-title', 'card-description', 'card-price', 'more-info-btn'],
+            'weather-protection': ['product-feature-card', 'feature-content']
+        };
+        
+        const classes = requiredClasses[card.cardType] || [];
+        classes.forEach(className => {
+            if (!generatedDoc.querySelector(`.${className}`)) {
+                errors.push(`Missing required CSS class: ${className}`);
+            }
+        });
+        
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
     }
 
     // Make export function available globally
     window.exportToHypaFormat = exportToHypaFormat;
+
+    // Export cards to a simple CSV format (fallback when no Hypa data)
+    async function exportCardsToSimpleCsv() {
+        try {
+            // Load cards data
+            let localCards = [];
+            if (!window.cards || window.cards.length === 0) {
+                console.log('Loading cards from server for simple export...');
+                try {
+                    const response = await fetch('/api/cards');
+                    if (response.ok) {
+                        localCards = await response.json();
+                        console.log('Loaded cards for simple export:', localCards.length);
+                    } else {
+                        console.error('Failed to load cards for simple export, status:', response.status);
+                        showAnalysisToast('Failed to load cards data for export.', 'error');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error loading cards for simple export:', error);
+                    showAnalysisToast('Error loading cards data for export.', 'error');
+                    return;
+                }
+            } else {
+                localCards = window.cards;
+                console.log('Using existing cards data for simple export:', localCards.length);
+            }
+
+            if (localCards.length === 0) {
+                showAnalysisToast('No cards found to export. Please create some cards first.', 'warning');
+                return;
+            }
+
+            // Create a simple CSV structure
+            const csvData = localCards.map(card => ({
+                SKU: card.sku || '',
+                'Card Type': card.cardType || '',
+                'Position': card.position || '',
+                'Title': card.title || '',
+                'Content': card.content || card.description || '',
+                'Image URL': card.imageUrl || '',
+                'WebDAV Path': card.webdavPath || '',
+                'Price': card.price || '',
+                'Created Date': card.createdDate || new Date().toISOString(),
+                'Last Modified': card.lastModified || new Date().toISOString()
+            }));
+
+            // Convert to CSV
+            const csvContent = Papa.unparse(csvData);
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cards-export-${new Date().toISOString().replace(/[:.]/g, '-')}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+
+            showAnalysisToast('Simple CSV export completed! Download started.', 'success');
+        } catch (error) {
+            console.error('Error during simple export:', error);
+            showAnalysisToast('Simple export failed: ' + error.message, 'error');
+        }
+    }
+
+    // Make simple export function available globally
+    window.exportCardsToSimpleCsv = exportCardsToSimpleCsv;
+
+    // Initialize export modal when it opens
+    async function initializeExportModal() {
+        console.log('Initializing export modal...');
+        
+        // Load local cards data immediately
+        let localCards = [];
+        try {
+            const response = await fetch('/api/cards');
+            if (response.ok) {
+                localCards = await response.json();
+                console.log('Loaded cards for modal initialization:', localCards.length);
+                window.cards = localCards;
+            } else {
+                console.error('Failed to load cards for modal initialization, status:', response.status);
+            }
+        } catch (err) {
+            console.error('Error loading cards for modal initialization:', err);
+        }
+        
+        // Calculate local stats
+        const localTotalCards = localCards.length;
+        const localWithWebdavImages = localCards.filter(card => {
+            if ((card.id && String(card.id).toLowerCase().includes('placeholder')) || 
+                (card.title && String(card.title).toLowerCase().includes('placeholder'))) {
+                return false;
+            }
+            return card.webdavPath && card.uploadDate;
+        }).length;
+        const localReadyToExport = localCards.filter(card => {
+            if ((card.id && String(card.id).toLowerCase().includes('placeholder')) || 
+                (card.title && String(card.title).toLowerCase().includes('placeholder'))) {
+                return false;
+            }
+            let ready = false;
+            let missing = [];
+            const type = (card.cardType || card.type || '').toLowerCase();
+            if (type === 'feature') {
+                if (!card.title) missing.push('title');
+                if (!card.description) missing.push('description');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            } else if (type === 'product-options' || type === 'option') {
+                if (!card.title) missing.push('title');
+                if (!card.price) missing.push('price');
+                if (!card.description) missing.push('description');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            } else if (type === 'specification-table' || type === 'spec') {
+                if (!card.content) missing.push('content');
+                ready = missing.length === 0;
+            } else if (type === 'cargo-options' || type === 'cargo') {
+                if (!card.title) missing.push('title');
+                if (!card.description) missing.push('description');
+                if (!card.price) missing.push('price');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            } else if (type === 'weather-protection' || type === 'weather') {
+                if (!card.title) missing.push('title');
+                if (!card.description) missing.push('description');
+                if (!card.price) missing.push('price');
+                if (!card.webdavPath) missing.push('webdavPath');
+                ready = missing.length === 0;
+            }
+            return ready;
+        }).length;
+        
+        // Update local stats immediately
+        document.getElementById('localTotalCards').textContent = localTotalCards;
+        document.getElementById('localWithImages').textContent = localWithWebdavImages;
+        document.getElementById('localReadyToExport').textContent = localReadyToExport;
+        
+        // Load Hypa data from cache immediately
+        let hypaData = null;
+        let hypaLastUpdated = 'Not imported';
+        let hypaStatus = 'No data';
+        
+        try {
+            const cacheResponse = await fetch('/api/hypa-csv-cache');
+            if (cacheResponse.ok) {
+                const cacheData = await cacheResponse.json();
+                if (cacheData && cacheData.data && cacheData.data.length > 0) {
+                    hypaData = cacheData.data;
+                    hypaLastUpdated = cacheData.timestamp ? new Date(cacheData.timestamp).toLocaleString() : 'Available';
+                    hypaStatus = 'Connected';
+                    console.log('Loaded Hypa data from cache for modal initialization:', hypaData.length, 'rows');
+                }
+            }
+        } catch (error) {
+            console.log('No Hypa CSV cache found for modal initialization:', error.message);
+        }
+        
+        // Fallback to window.hypaCsvData if cache is not available
+        if (!hypaData && window.hypaCsvData) {
+            hypaData = window.hypaCsvData;
+            hypaLastUpdated = 'Available (in memory)';
+            hypaStatus = 'Connected';
+            console.log('Using Hypa data from memory for modal initialization:', hypaData.length, 'rows');
+        }
+        
+        const hypaTotalMetafields = hypaData ? hypaData.length : 0;
+        
+        // Update Hypa stats immediately
+        document.getElementById('hypaExistingCount').textContent = hypaTotalMetafields;
+        document.getElementById('hypaLastUpdated').textContent = hypaLastUpdated;
+        document.getElementById('hypaConnectionStatus').textContent = hypaStatus;
+        
+        console.log('Export modal initialized with:', {
+            localCards: localTotalCards,
+            localWithImages: localWithWebdavImages,
+            localReadyToExport: localReadyToExport,
+            hypaTotalMetafields: hypaTotalMetafields,
+            hypaLastUpdated: hypaLastUpdated,
+            hypaStatus: hypaStatus
+        });
+    }
+
+    // Add export modal event listener
+    const exportHypaModal = document.getElementById('exportHypaModal');
+    if (exportHypaModal) {
+        exportHypaModal.addEventListener('shown.bs.modal', function () {
+            console.log('Export modal shown, initializing...');
+            initializeExportModal();
+        });
+    }
 
     // Add this at the top of the file, before showHypaValidationResults
     function validateHypaData(data) {
@@ -5898,12 +7657,12 @@ Only cards for existing products will be imported.`;
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="alert alert-warning">
+            <div class="alert alert-warning">
                     <i class="fas fa-info-circle me-2"></i>
                     <strong>${stats.invalidCards} cards failed validation</strong> and were replaced with placeholder cards.
                     You can review the details below and decide if you want to adjust the validation rules.
-                </div>
-                
+            </div>
+            
                 <div class="accordion" id="validationAccordion">
     `;
         
@@ -5922,14 +7681,14 @@ Only cards for existing products will be imported.`;
                             <div class="table-responsive">
                                 <table class="table table-sm">
                                     <thead>
-                                        <tr>
-                                            <th>SKU</th>
+                        <tr>
+                            <th>SKU</th>
                                             <th>Card Title</th>
-                                            <th>Card Type</th>
+                            <th>Card Type</th>
                                             <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                        </tr>
+                    </thead>
+                    <tbody>
         `;
         
         errors.forEach(error => {
@@ -5940,31 +7699,31 @@ Only cards for existing products will be imported.`;
                     <td><span class="badge bg-secondary">${error.cardType}</span></td>
                     <td>
                         <button type="button" class="btn btn-outline-info btn-sm" onclick="viewHypaCardDetails('${error.sku}', '${error.cardTitle}')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                </tr>
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
             `;
         });
         
         modalContent += `
-                                    </tbody>
-                                </table>
-                            </div>
+                    </tbody>
+                </table>
+            </div>
                         </div>
                     </div>
-                </div>
-            `;
+            </div>
+        `;
         });
         
         modalContent += `
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-warning" onclick="exportHypaValidationReport()">
                     <i class="fas fa-download me-2"></i>Export Report
-                </button>
+            </button>
             </div>
         `;
         
@@ -6113,11 +7872,36 @@ Only cards for existing products will be imported.`;
         
         console.log('Local stats updated:', { localTotalCards, localWithWebdavImages, localReadyToExport });
         
-        // Check for existing Hypa data
-        const hypaData = window.hypaCsvData || null;
+        // Check for existing Hypa data from cache
+        let hypaData = null;
+        let hypaLastUpdated = 'Not imported';
+        let hypaStatus = 'No data';
+        
+        try {
+            // Try to load from Hypa CSV cache first
+            const cacheResponse = await fetch('/api/hypa-csv-cache');
+            if (cacheResponse.ok) {
+                const cacheData = await cacheResponse.json();
+                if (cacheData && cacheData.data && cacheData.data.length > 0) {
+                    hypaData = cacheData.data;
+                    hypaLastUpdated = cacheData.timestamp ? new Date(cacheData.timestamp).toLocaleString() : 'Available';
+                    hypaStatus = 'Connected';
+                    console.log('Loaded Hypa data from cache:', hypaData.length, 'rows');
+                }
+            }
+        } catch (error) {
+            console.log('No Hypa CSV cache found or error loading:', error.message);
+        }
+        
+        // Fallback to window.hypaCsvData if cache is not available
+        if (!hypaData && window.hypaCsvData) {
+            hypaData = window.hypaCsvData;
+            hypaLastUpdated = 'Available (in memory)';
+            hypaStatus = 'Connected';
+            console.log('Using Hypa data from memory:', hypaData.length, 'rows');
+        }
+        
         const hypaTotalMetafields = hypaData ? hypaData.length : 0;
-        const hypaLastUpdated = hypaData ? 'Available' : 'Not imported';
-        const hypaStatus = hypaData ? 'Connected' : 'No data';
         
         // Update Hypa stats (fix IDs to match HTML)
         document.getElementById('hypaExistingCount').textContent = hypaTotalMetafields;
@@ -6126,15 +7910,18 @@ Only cards for existing products will be imported.`;
         
         console.log('Hypa stats updated:', { hypaTotalMetafields, hypaLastUpdated, hypaStatus });
         
+        // Perform comparison and store results
+        console.log('Performing export comparison...');
+        const comparisonResults = await performExportComparison(localCards);
+        window.exportComparisonResults = comparisonResults;
+        
         // Move to step 2
-        console.log('Analysis complete. Moving to comparison step in 10 seconds...');
-        setTimeout(() => {
-            showExportStep(2);
-        }, 10000);
+        console.log('Analysis complete. Moving to comparison step...');
+        showExportStep(2);
     }
     
     // Perform comparison between local cards and Hypa data
-    function performExportComparison(localCards) {
+    async function performExportComparison(localCards) {
         console.log('Performing export comparison...');
         
         const results = {
@@ -6142,78 +7929,423 @@ Only cards for existing products will be imported.`;
             updates: [],
             keep: [],
             remove: [],
+            excluded: [], // New: SKUs excluded due to incomplete cards
             summary: {
                 new: 0,
                 updates: 0,
                 keep: 0,
-                remove: 0
+                remove: 0,
+                excluded: 0
             }
         };
         
-        // If no Hypa data, all cards are new
-        if (!originalHypaCsvData || originalHypaCsvData.length === 0) {
+        // Try to load Hypa data from cache if not available
+        let hypaData = originalHypaCsvData;
+        if (!hypaData || hypaData.length === 0) {
+                try {
+                    const cacheResponse = await fetch('/api/hypa-csv-cache');
+                    if (cacheResponse.ok) {
+                        const cacheData = await cacheResponse.json();
+                    if (cacheData && cacheData.data && cacheData.data.length > 0) {
+                        hypaData = cacheData.data;
+                        console.log('Loaded Hypa data from cache for comparison:', hypaData.length, 'rows');
+                        }
+                    }
+                } catch (error) {
+                console.log('No Hypa CSV cache found for comparison:', error.message);
+            }
+        }
+        
+        // If no Hypa data, no cards can be exported (criteria #1: SKU must exist in original CSV)
+        if (!hypaData || hypaData.length === 0) {
             localCards.forEach(card => {
-                results.new.push({
+                results.remove.push({
                     ...card,
-                    action: 'new',
-                    reason: 'No Hypa data available'
+                    action: 'remove',
+                    reason: 'Cannot export: No Hypa CSV imported (SKU validation required)'
                 });
             });
-            results.summary.new = localCards.length;
+            results.summary.remove = localCards.length;
             return results;
         }
         
-        // Compare each local card with Hypa data
+        // Group cards by SKU to check completeness
+        // Each card can have multiple SKUs from its configuration.variants
+        const cardsBySku = {};
         localCards.forEach(card => {
-            const hypaRow = originalHypaCsvData.find(row => row.sku === card.sku);
+            // Get all SKUs for this card (primary SKU + variant SKUs)
+            const cardSkus = [card.sku];
             
-            if (!hypaRow) {
-                // New card - doesn't exist in Hypa
-                results.new.push({
-                    ...card,
-                    action: 'new',
-                    reason: 'SKU not found in Hypa data'
-                });
-                results.summary.new++;
-            } else {
-                // Check if card exists in Hypa
-                const cardExistsInHypa = checkCardExistsInHypa(card, hypaRow);
-                
-                if (!cardExistsInHypa) {
-                    // New card for existing SKU
-                    results.new.push({
-                        ...card,
-                        action: 'new',
-                        reason: 'Card type not found in Hypa data'
-                    });
-                    results.summary.new++;
-                } else {
-                    // Check if content is different
-                    const contentChanged = checkCardContentChanged(card, hypaRow);
-                    
-                    if (contentChanged) {
-                        results.updates.push({
-                            ...card,
-                            action: 'update',
-                            reason: 'Content differs from Hypa version'
-                        });
-                        results.summary.updates++;
-                    } else {
-                        results.keep.push({
-                            ...card,
-                            action: 'keep',
-                            reason: 'Identical to Hypa version'
-                        });
-                        results.summary.keep++;
+            // Add variant SKUs if they exist
+            if (card.configuration && card.configuration.variants) {
+                card.configuration.variants.forEach(variant => {
+                    if (variant.sku && !cardSkus.includes(variant.sku)) {
+                        cardSkus.push(variant.sku);
                     }
+                });
+            }
+            
+            // Add this card to each of its associated SKUs
+            cardSkus.forEach(sku => {
+                if (!cardsBySku[sku]) {
+                    cardsBySku[sku] = [];
+                }
+                cardsBySku[sku].push(card);
+            });
+        });
+        
+        // Check each SKU for completeness
+        const incompleteSkus = [];
+        const completeCards = [];
+        
+        Object.entries(cardsBySku).forEach(([sku, cards]) => {
+            const incompleteCards = [];
+            const skuCompleteCards = [];
+            
+            cards.forEach(card => {
+                const completenessCheck = checkCardCompleteness(card);
+                
+                // Debug logging for F01169, F01170, F01171
+                if (card.sku === 'F01169' || card.sku === 'F01170' || card.sku === 'F01171') {
+                    console.log(`🔍 COMPLETENESS CHECK for ${card.sku} - ${card.cardType}:`);
+                    console.log(`  Is complete: ${completenessCheck.isComplete}`);
+                    console.log(`  Missing fields: ${completenessCheck.missingFields.join(', ')}`);
+                }
+                
+                if (!completenessCheck.isComplete) {
+                    incompleteCards.push({
+                        ...card,
+                        missingFields: completenessCheck.missingFields
+                    });
+                } else {
+                    skuCompleteCards.push(card);
+                }
+            });
+            
+            if (incompleteCards.length > 0) {
+                // SKU has incomplete cards - exclude entire SKU
+                incompleteSkus.push({
+                    sku: sku,
+                    incompleteCards: incompleteCards,
+                    reason: `SKU excluded: ${incompleteCards.length} incomplete cards`
+                });
+                results.excluded.push(...incompleteCards);
+                results.summary.excluded += incompleteCards.length;
+                
+                // Debug logging for F01169, F01170, F01171
+                if (sku === 'F01169' || sku === 'F01170' || sku === 'F01171') {
+                    console.log(`❌ SKU ${sku} EXCLUDED due to incomplete cards:`);
+                    incompleteCards.forEach(card => {
+                        console.log(`  - ${card.cardType}: missing ${card.missingFields.join(', ')}`);
+                    });
+                }
+            } else {
+                // SKU is complete - add all cards for processing
+                completeCards.push(...skuCompleteCards);
+                
+                // Debug logging for F01169, F01170, F01171
+                if (sku === 'F01169' || sku === 'F01170' || sku === 'F01171') {
+                    console.log(`✅ SKU ${sku} COMPLETE - ${skuCompleteCards.length} cards ready for export`);
                 }
             }
         });
         
+        console.log(`Export validation: ${Object.keys(cardsBySku).length} SKUs checked`);
+        console.log(`- ${completeCards.length} complete cards ready for export`);
+        console.log(`- ${incompleteSkus.length} SKUs excluded due to incomplete cards`);
+        
+        // Store excluded SKUs info for display
+        results.excludedSkus = incompleteSkus;
+        
+        // First pass: Process cards individually to determine initial actions
+        const cardActions = new Map(); // Map to store card -> action
+        const skuUpdateFlags = new Map(); // Map to track which SKUs need updates
+        
+        completeCards.forEach(card => {
+            // Get all SKUs for this card (primary SKU + variant SKUs)
+            const cardSkus = [card.sku];
+            
+            // Add variant SKUs if they exist
+            if (card.configuration && card.configuration.variants) {
+                card.configuration.variants.forEach(variant => {
+                    if (variant.sku && !cardSkus.includes(variant.sku)) {
+                        cardSkus.push(variant.sku);
+                    }
+                });
+            }
+            
+            // Debug logging for F01169, F01170, F01171
+            if (card.sku === 'F01169' || card.sku === 'F01170' || card.sku === 'F01171') {
+                console.log(`🔍 PROCESSING CARD for ${card.sku}:`);
+                console.log(`  Card type: "${card.cardType}"`);
+                console.log(`  All associated SKUs: ${cardSkus.join(', ')}`);
+            }
+            
+            // Handle different card types differently:
+            // - Shared cards (feature, cargo, product-options): appear once but associated with all SKUs
+            // - Spec cards: appear once per SKU (unique per SKU)
+            const isSharedCard = ['feature', 'cargo-options', 'product-options', 'weather-protection'].includes(card.cardType);
+            const isSpecCard = card.cardType === 'specification-table';
+            
+            if (isSharedCard) {
+                // Shared card: process once but associate with all SKUs
+                // Find if ANY of the associated SKUs exist in Hypa data
+                const validSkus = [];
+                const invalidSkus = [];
+                
+                cardSkus.forEach(sku => {
+                    const hypaRow = hypaData.find(row => {
+                        const hypaSku = row.sku || row.SKU || row.sku_number || row['SKU Number'];
+                        if (!hypaSku) return false;
+                        
+                        const cleanHypaSku = hypaSku.trim().toLowerCase();
+                        const cleanCardSku = sku.trim().toLowerCase();
+                        
+                        return cleanHypaSku === cleanCardSku;
+                    });
+                    
+                    if (hypaRow) {
+                        validSkus.push({ sku, hypaRow });
+                            } else {
+                        invalidSkus.push(sku);
+                    }
+                });
+                
+                // If any SKU is valid, the card can be exported
+                if (validSkus.length > 0) {
+                    // Use the first valid SKU for processing, but show all associated SKUs
+                    const primarySku = validSkus[0];
+                    
+                    // Debug logging for F01169, F01170, F01171
+                    if (card.sku === 'F01169' || card.sku === 'F01170' || card.sku === 'F01171') {
+                        console.log(`🔍 SHARED CARD ${card.sku}:`);
+                        console.log(`  Valid SKUs: ${validSkus.map(v => v.sku).join(', ')}`);
+                        console.log(`  Invalid SKUs: ${invalidSkus.join(', ')}`);
+                    }
+                    
+                    // Check if card exists in Hypa
+                    const cardExistsInHypa = checkCardExistsInHypa(card, primarySku.hypaRow);
+                    
+                    if (!cardExistsInHypa) {
+                        // New shared card
+                        const action = 'new';
+                        cardActions.set(card, {
+                            ...card,
+                            sku: primarySku.sku,
+                            associatedSkus: cardSkus,
+                            action: action,
+                            reason: 'Shared card type not found in Hypa data'
+                        });
+                        
+                        // Mark all associated SKUs as needing updates
+                        cardSkus.forEach(sku => {
+                            skuUpdateFlags.set(sku, true);
+                        });
+                    } else {
+                        // Check if content is different
+                        const contentChanged = checkCardContentChanged(card, primarySku.hypaRow);
+                        
+                        if (contentChanged) {
+                            const action = 'update';
+                            cardActions.set(card, {
+                                ...card,
+                                sku: primarySku.sku,
+                                associatedSkus: cardSkus,
+                                action: action,
+                                reason: 'Shared card content differs from Hypa version'
+                            });
+                            
+                            // Mark all associated SKUs as needing updates
+                            cardSkus.forEach(sku => {
+                                skuUpdateFlags.set(sku, true);
+                            });
+                        } else {
+                            const action = 'keep';
+                            cardActions.set(card, {
+                                ...card,
+                                sku: primarySku.sku,
+                                associatedSkus: cardSkus,
+                                action: action,
+                                reason: 'Shared card identical to Hypa version (no changes needed)'
+                            });
+                        }
+                    }
+                } else {
+                    // No valid SKUs found
+                    cardActions.set(card, {
+                        ...card,
+                        sku: card.sku,
+                        associatedSkus: cardSkus,
+                        action: 'remove',
+                        reason: 'Cannot export: No associated SKUs found in original Hypa CSV'
+                    });
+                }
+            } else if (isSpecCard) {
+                // Spec card: process once with all SKUs
+                // Find if ANY of the associated SKUs exist in Hypa data
+                const validSkus = [];
+                const invalidSkus = [];
+                
+                cardSkus.forEach(sku => {
+                    // Debug: Log the SKU we're looking for
+                    console.log(`Looking for SKU: "${sku}" in Hypa data`);
+                    
+                    // Special debug for F01169, F01170 and F01171
+                    if (sku === 'F01169' || sku === 'F01170' || sku === 'F01171') {
+                        console.log(`🔍 SPECIAL DEBUG for ${sku}:`);
+                        console.log(`  Card SKU: "${sku}"`);
+                        console.log(`  Card type: "${card.cardType}"`);
+                        console.log(`  Available Hypa SKUs (first 10):`, hypaData.slice(0, 10).map(row => row.sku || row.SKU || row.sku_number || row['SKU Number']));
+                    }
+                    
+                    // Try different SKU field names and formats
+                    let hypaRow = hypaData.find(row => {
+                        const hypaSku = row.sku || row.SKU || row.sku_number || row['SKU Number'];
+                        if (!hypaSku) return false;
+                        
+                        // Clean and normalize SKUs for comparison
+                        const cleanHypaSku = hypaSku.trim().toLowerCase();
+                        const cleanCardSku = sku.trim().toLowerCase();
+                        
+                        // Special debug for F01169, F01170 and F01171
+                        if (sku === 'F01169' || sku === 'F01170' || sku === 'F01171') {
+                            console.log(`  Comparing "${cleanCardSku}" with "${cleanHypaSku}"`);
+                        }
+                        
+                        // Direct match only - each SKU is unique
+                        if (cleanHypaSku === cleanCardSku) {
+                            console.log(`✓ Direct match found: "${sku}" = "${hypaSku}"`);
+                            return true;
+                        }
+                        
+                        return false;
+                    });
+                    
+                    if (!hypaRow) {
+                        // Debug: Log available SKUs in Hypa data for comparison
+                        console.log(`❌ No match found for SKU: "${sku}"`);
+                        console.log('Available SKUs in Hypa data (first 5):', hypaData.slice(0, 5).map(row => row.sku || row.SKU || row.sku_number || row['SKU Number']));
+                    }
+                    
+                                        if (hypaRow) {
+                        validSkus.push({ sku, hypaRow });
+                    } else {
+                        invalidSkus.push(sku);
+                    }
+                });
+
+                // If any SKU is valid, the card can be exported
+                if (validSkus.length > 0) {
+                    // Use the first valid SKU for processing, but show all associated SKUs
+                    const primarySku = validSkus[0];
+                    
+                    // Debug logging for F01169, F01170, F01171
+                    if (card.sku === 'F01169' || card.sku === 'F01170' || card.sku === 'F01171') {
+                        console.log(`🔍 SPEC CARD ${card.sku}:`);
+                        console.log(`  Valid SKUs: ${validSkus.map(v => v.sku).join(', ')}`);
+                        console.log(`  Invalid SKUs: ${invalidSkus.join(', ')}`);
+                    }
+                    
+                    // Check if card exists in Hypa
+                    const cardExistsInHypa = checkCardExistsInHypa(card, primarySku.hypaRow);
+                    
+                    if (!cardExistsInHypa) {
+                        // New spec card
+                        const action = 'new';
+                        cardActions.set(card, {
+                            ...card,
+                            sku: primarySku.sku,
+                            associatedSkus: cardSkus,
+                            action: action,
+                            reason: 'Spec card type not found in Hypa data'
+                        });
+                        
+                        // Mark all associated SKUs as needing updates
+                        cardSkus.forEach(sku => {
+                            skuUpdateFlags.set(sku, true);
+                        });
+                    } else {
+                        // Check if content is different
+                        const contentChanged = checkCardContentChanged(card, primarySku.hypaRow);
+                        
+                        if (contentChanged) {
+                            const action = 'update';
+                            cardActions.set(card, {
+                                ...card,
+                                sku: primarySku.sku,
+                                associatedSkus: cardSkus,
+                                action: action,
+                                reason: 'Spec card content differs from Hypa version'
+                            });
+                            
+                            // Mark all associated SKUs as needing updates
+                            cardSkus.forEach(sku => {
+                                skuUpdateFlags.set(sku, true);
+                            });
+                        } else {
+                            const action = 'keep';
+                            cardActions.set(card, {
+                                ...card,
+                                sku: primarySku.sku,
+                                associatedSkus: cardSkus,
+                                action: action,
+                                reason: 'Spec card identical to Hypa version (no changes needed)'
+                            });
+                        }
+                    }
+                } else {
+                    // No valid SKUs found
+                    cardActions.set(card, {
+                        ...card,
+                        sku: card.sku,
+                        associatedSkus: cardSkus,
+                        action: 'remove',
+                        reason: 'Cannot export: No associated SKUs found in original Hypa CSV'
+                    });
+                }
+            }
+        });
+        
+        // Second pass: Apply SKU-level rule - if ANY card in a SKU needs updating, ALL cards for that SKU get updated
+        console.log('=== APPLYING SKU-LEVEL RULE ===');
+        console.log('SKUs that need updates:', Array.from(skuUpdateFlags.keys()));
+        
+        cardActions.forEach((cardData, card) => {
+            const cardSkus = cardData.associatedSkus || [cardData.sku];
+            const needsUpdate = cardSkus.some(sku => skuUpdateFlags.get(sku));
+            
+            if (needsUpdate && cardData.action === 'keep') {
+                // Upgrade from 'keep' to 'update' if any card in the SKU needs updating
+                cardData.action = 'update';
+                cardData.reason = 'SKU-level rule: Other cards in this SKU need updating';
+                console.log(`🔄 Upgraded card ${card.sku} (${card.cardType}) from 'keep' to 'update' due to SKU-level rule`);
+            }
+            
+            // Add to appropriate results array
+            switch (cardData.action) {
+                case 'new':
+                    results.new.push(cardData);
+                    results.summary.new++;
+                    break;
+                case 'update':
+                    results.updates.push(cardData);
+                    results.summary.updates++;
+                    break;
+                case 'keep':
+                    results.keep.push(cardData);
+                    results.summary.keep++;
+                    break;
+                case 'remove':
+                    results.remove.push(cardData);
+                    results.summary.remove++;
+                    break;
+            }
+        });
+        
         // Find cards in Hypa that should be removed (not in local cards)
-        originalHypaCsvData.forEach(hypaRow => {
+        hypaData.forEach(hypaRow => {
             const sku = hypaRow.sku;
-            const localCardsForSku = localCards.filter(card => card.sku === sku);
+            const localCardsForSku = completeCards.filter(card => card.sku === sku);
             
             // Check for cards in Hypa that don't exist locally
             const hypaCardTypes = getHypaCardTypes(hypaRow);
@@ -6235,8 +8367,73 @@ Only cards for existing products will be imported.`;
             });
         });
         
+        // Debug: Show SKU comparison
+        const localSkus = completeCards.map(card => card.sku).filter(sku => sku);
+        const hypaSkus = hypaData.map(row => row.sku || row.SKU || row.sku_number || row['SKU Number']).filter(sku => sku);
+        
+        console.log('=== SKU COMPARISON DEBUG ===');
+        console.log('Local SKUs (first 10):', localSkus.slice(0, 10));
+        console.log('Hypa SKUs (first 10):', hypaSkus.slice(0, 10));
+        
+        // Show which specific SKUs are missing
+        const missingSkus = localSkus.filter(sku => !hypaSkus.includes(sku));
+        if (missingSkus.length > 0) {
+            console.log('❌ Missing SKUs (not in Hypa data):', missingSkus.slice(0, 10));
+        }
+        
+        // Count exact matches only
+        const matchingSkus = localSkus.filter(sku => hypaSkus.includes(sku));
+        console.log('Matching SKUs (exact matches only):', matchingSkus.length, 'out of', localSkus.length);
+        
+        // Show sample of matching SKUs
+        if (matchingSkus.length > 0) {
+            console.log('✅ Sample matching SKUs:', matchingSkus.slice(0, 5));
+        }
+        console.log('================================');
+        
         console.log('Export comparison results:', results);
         return results;
+    }
+    
+    // Check if a card is complete and ready for export (criteria #2)
+    function checkCardCompleteness(card) {
+        const missingFields = [];
+        const type = (card.cardType || card.type || '').toLowerCase();
+        
+        // Check for placeholder cards
+        if ((card.id && String(card.id).toLowerCase().includes('placeholder')) || 
+            (card.title && String(card.title).toLowerCase().includes('placeholder'))) {
+            missingFields.push('placeholder card detected');
+        }
+        
+        // Check required fields based on card type
+        if (type === 'feature') {
+            if (!card.title || card.title.trim() === '') missingFields.push('title');
+            if ((!card.description || card.description.trim() === '') && (!card.content || card.content.trim() === '')) missingFields.push('description');
+            if (card.imageUrl && (!card.webdavPath || !card.uploadDate)) missingFields.push('image not uploaded to WebDAV');
+        } else if (type === 'product-options' || type === 'option') {
+            if (!card.title || card.title.trim() === '') missingFields.push('title');
+            if (!card.price || card.price.trim() === '') missingFields.push('price');
+            if ((!card.description || card.description.trim() === '') && (!card.content || card.content.trim() === '')) missingFields.push('description');
+            if (card.imageUrl && (!card.webdavPath || !card.uploadDate)) missingFields.push('image not uploaded to WebDAV');
+        } else if (type === 'specification-table' || type === 'spec') {
+            if ((!card.content || card.content.trim() === '') && (!card.description || card.description.trim() === '')) missingFields.push('content');
+        } else if (type === 'cargo-options' || type === 'cargo') {
+            if (!card.title || card.title.trim() === '') missingFields.push('title');
+            if ((!card.description || card.description.trim() === '') && (!card.content || card.content.trim() === '')) missingFields.push('description');
+            if (!card.price || card.price.trim() === '') missingFields.push('price');
+            if (card.imageUrl && (!card.webdavPath || !card.uploadDate)) missingFields.push('image not uploaded to WebDAV');
+        } else if (type === 'weather-protection' || type === 'weather') {
+            if (!card.title || card.title.trim() === '') missingFields.push('title');
+            if ((!card.description || card.description.trim() === '') && (!card.content || card.content.trim() === '')) missingFields.push('description');
+            if (!card.price || card.price.trim() === '') missingFields.push('price');
+            if (card.imageUrl && (!card.webdavPath || !card.uploadDate)) missingFields.push('image not uploaded to WebDAV');
+        }
+        
+        return {
+            isComplete: missingFields.length === 0,
+            missingFields: missingFields
+        };
     }
     
     // Check if a card exists in Hypa data
@@ -6247,28 +8444,28 @@ Only cards for existing products will be imported.`;
             case 'feature':
                 if (card.position) {
                     const featureFlag = `shared.feature-${card.position}-card`;
-                    return columns.includes(featureFlag) && hypaRow[featureFlag] === 'enabled';
+                    return columns.includes(featureFlag) && (hypaRow[featureFlag] === 'enabled' || hypaRow[featureFlag].trim() !== '');
                 }
                 break;
             case 'product-options':
                 if (card.position) {
                     const optionFlag = `shared.option-${card.position}-card`;
-                    return columns.includes(optionFlag) && hypaRow[optionFlag] === 'enabled';
+                    return columns.includes(optionFlag) && (hypaRow[optionFlag] === 'enabled' || hypaRow[optionFlag].trim() !== '');
                 }
                 break;
             case 'specification-table':
             case 'spec':
-                return columns.includes('shared.spec-table') && hypaRow['shared.spec-table'] === 'enabled';
+                return columns.includes('shared.spec-table') && (hypaRow['shared.spec-table'] === 'enabled' || hypaRow['shared.spec-table'].trim() !== '');
             case 'cargo-options':
                 if (card.position) {
                     const cargoFlag = `shared.cargo-option-${card.position}-card`;
-                    return columns.includes(cargoFlag) && hypaRow[cargoFlag] === 'enabled';
+                    return columns.includes(cargoFlag) && (hypaRow[cargoFlag] === 'enabled' || hypaRow[cargoFlag].trim() !== '');
                 }
                 break;
             case 'weather-protection':
                 if (card.position) {
                     const weatherFlag = `shared.weather-option-${card.position}-card`;
-                    return columns.includes(weatherFlag) && hypaRow[weatherFlag] === 'enabled';
+                    return columns.includes(weatherFlag) && (hypaRow[weatherFlag] === 'enabled' || hypaRow[weatherFlag].trim() !== '');
                 }
                 break;
         }
@@ -6278,6 +8475,11 @@ Only cards for existing products will be imported.`;
     // Check if card content has changed
     function checkCardContentChanged(card, hypaRow) {
         const columns = Object.keys(hypaRow);
+        
+        // For cards imported from Hypa, always mark as needing update to ensure fresh HTML generation
+        if (card.importedFromHypa) {
+            return true;
+        }
         
         switch (card.cardType) {
             case 'feature':
@@ -6316,19 +8518,19 @@ Only cards for existing products will be imported.`;
         const columns = Object.keys(hypaRow);
         
         columns.forEach(column => {
-            if (column.match(/^shared\.feature-\d+-card$/) && hypaRow[column] === 'enabled') {
+            if (column.match(/^shared\.feature-\d+-card$/) && (hypaRow[column] === 'enabled' || hypaRow[column].trim() !== '')) {
                 const position = column.match(/feature-(\d+)-card/)[1];
                 cardTypes.push({ cardType: 'feature', position: parseInt(position) });
-            } else if (column.match(/^shared\.option-\d+-card$/) && hypaRow[column] === 'enabled') {
+            } else if (column.match(/^shared\.option-\d+-card$/) && (hypaRow[column] === 'enabled' || hypaRow[column].trim() !== '')) {
                 const position = column.match(/option-(\d+)-card/)[1];
                 cardTypes.push({ cardType: 'product-options', position: parseInt(position) });
-            } else if (column.match(/^shared\.cargo-option-\d+-card$/) && hypaRow[column] === 'enabled') {
+            } else if (column.match(/^shared\.cargo-option-\d+-card$/) && (hypaRow[column] === 'enabled' || hypaRow[column].trim() !== '')) {
                 const position = column.match(/cargo-option-(\d+)-card/)[1];
                 cardTypes.push({ cardType: 'cargo-options', position: parseInt(position) });
-            } else if (column.match(/^shared\.weather-option-\d+-card$/) && hypaRow[column] === 'enabled') {
+            } else if (column.match(/^shared\.weather-option-\d+-card$/) && (hypaRow[column] === 'enabled' || hypaRow[column].trim() !== '')) {
                 const position = column.match(/weather-option-(\d+)-card/)[1];
                 cardTypes.push({ cardType: 'weather-protection', position: parseInt(position) });
-            } else if (column === 'shared.spec-table' && hypaRow[column] === 'enabled') {
+            } else if (column === 'shared.spec-table' && (hypaRow[column] === 'enabled' || hypaRow[column].trim() !== '')) {
                 cardTypes.push({ cardType: 'specification-table', position: 1 });
             }
         });
@@ -6350,6 +8552,30 @@ Only cards for existing products will be imported.`;
         document.getElementById('exportSkipCount').textContent = results.summary.keep;
         document.getElementById('exportConflictCount').textContent = results.summary.remove;
         
+        // Add excluded count if element exists
+        const excludedCountElement = document.getElementById('exportExcludedCount');
+        if (excludedCountElement) {
+            excludedCountElement.textContent = results.summary.excluded;
+        }
+        
+        // Show excluded SKUs summary
+        if (results.excludedSkus && results.excludedSkus.length > 0) {
+            const excludedSummary = document.getElementById('excludedSkusSummary');
+            if (excludedSummary) {
+                const excludedList = results.excludedSkus.map(skuInfo => 
+                    `${skuInfo.sku} (${skuInfo.incompleteCards.length} incomplete cards)`
+                ).join(', ');
+                
+                excludedSummary.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>${results.excludedSkus.length} SKUs excluded from export:</strong> ${excludedList}
+                        <br><small>These SKUs have incomplete cards and will not be included in the export to prevent data loss.</small>
+                    </div>
+                `;
+            }
+        }
+        
         // Build comparison table
         const tableBody = document.getElementById('exportComparisonTableBody');
         tableBody.innerHTML = '';
@@ -6358,11 +8584,31 @@ Only cards for existing products will be imported.`;
         
         allResults.forEach(item => {
             const row = document.createElement('tr');
+            
+            // Determine Hypa status based on action
+            let hypaStatus, hypaStatusClass;
+            if (item.action === 'new') {
+                hypaStatus = '✗ Hypa';
+                hypaStatusClass = 'danger';
+            } else if (item.action === 'update') {
+                hypaStatus = '✓ Hypa (different)';
+                hypaStatusClass = 'warning';
+            } else if (item.action === 'keep') {
+                hypaStatus = '✓ Hypa (same)';
+                hypaStatusClass = 'info';
+            } else if (item.action === 'remove') {
+                hypaStatus = '✓ Hypa (will remove)';
+                hypaStatusClass = 'danger';
+            } else {
+                hypaStatus = '? Hypa';
+                hypaStatusClass = 'secondary';
+            }
+            
             row.innerHTML = `
                 <td>${item.sku || 'N/A'}</td>
                 <td><span class="badge bg-secondary">${getCardTypeDisplayName(item.cardType)}</span></td>
                 <td><span class="badge bg-success">✓ Local</span></td>
-                <td><span class="badge bg-info">✓ Hypa</span></td>
+                <td><span class="badge bg-${hypaStatusClass}">${hypaStatus}</span></td>
                 <td><span class="badge bg-${getActionBadgeClass(item.action)}">${getActionText(item.action)}</span></td>
                 <td><small>${item.reason}</small></td>
             `;
@@ -6380,34 +8626,290 @@ Only cards for existing products will be imported.`;
             return;
         }
         
-        // Build selection table
-        const tableBody = document.getElementById('exportSelectionTableBody');
-        tableBody.innerHTML = '';
+        // Store all results for filtering/sorting (including excluded cards)
+        window.allExportResults = [...results.new, ...results.updates, ...results.keep, ...results.remove, ...results.excluded];
         
-        const allResults = [...results.new, ...results.updates, ...results.keep, ...results.remove];
+        // Show override options if there are excluded cards
+        const overrideOptions = document.getElementById('overrideOptions');
+        if (results.excluded && results.excluded.length > 0) {
+            overrideOptions.style.display = 'block';
+        } else {
+            overrideOptions.style.display = 'none';
+        }
         
-        allResults.forEach((item, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <input type="checkbox" class="form-check-input export-checkbox" 
-                           data-action="${item.action}" data-index="${index}" 
-                           ${item.action === 'remove' ? '' : 'checked'}>
-                </td>
-                <td>${item.sku || 'N/A'}</td>
-                <td><span class="badge bg-secondary">${getCardTypeDisplayName(item.cardType)}</span></td>
-                <td>${item.sku || 'N/A'}</td>
-                <td><span class="badge bg-${getActionBadgeClass(item.action)}">${getActionText(item.action)}</span></td>
-                <td>${item.lastModified || 'Unknown'}</td>
-                <td><span class="badge bg-success">Ready</span></td>
-            `;
-            tableBody.appendChild(row);
-        });
+        // Populate filter dropdowns
+        populateExportFilterDropdowns();
+        
+        // Build selection table with sorting and filtering
+        buildExportSelectionTable();
+        
+        // Attach filter event listeners
+        attachExportFilterListeners();
         
         // Update summary panel
         updateExportSelectionSummary();
         
         updateExportProgress(3, 'Selection ready');
+    }
+    
+    // Populate filter dropdowns with available values
+    function populateExportFilterDropdowns() {
+        const allResults = window.allExportResults || [];
+        
+        // Use the actual model and generation fields from card configuration
+        const itemsWithModelGen = allResults.map(item => {
+            const model = item.configuration?.model || '';
+            const generation = item.configuration?.generation || '';
+            return { ...item, model, generation };
+        });
+        
+        // Update the allExportResults with model and generation
+        window.allExportResults = itemsWithModelGen;
+        
+        // Get unique models and generations
+        const models = [...new Set(itemsWithModelGen.map(item => item.model).filter(Boolean))].sort();
+        const generations = [...new Set(itemsWithModelGen.map(item => item.generation).filter(Boolean))].sort();
+        
+        console.log('Available models from configuration:', models);
+        console.log('Available generations from configuration:', generations);
+        
+        // Populate model filter
+        const modelFilter = document.getElementById('modelFilter');
+        if (modelFilter) {
+            modelFilter.innerHTML = '<option value="">All Models</option>';
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelFilter.appendChild(option);
+            });
+        }
+        
+        // Populate generation filter
+        const generationFilter = document.getElementById('generationFilter');
+        if (generationFilter) {
+            generationFilter.innerHTML = '<option value="">All Generations</option>';
+            generations.forEach(generation => {
+                const option = document.createElement('option');
+                option.value = generation;
+                option.textContent = generation;
+                generationFilter.appendChild(option);
+            });
+        }
+    }
+    
+    // Build the export selection table with current filters
+    function buildExportSelectionTable() {
+        const tableBody = document.getElementById('exportSelectionTableBody');
+        tableBody.innerHTML = '';
+        
+        let filteredResults = [...window.allExportResults];
+        
+        // Check if user wants to include excluded cards
+        const includeExcludedCards = document.getElementById('includeExcludedCards')?.checked || false;
+        
+        // Filter out excluded cards unless override is enabled
+        if (!includeExcludedCards) {
+            filteredResults = filteredResults.filter(item => item.action !== 'excluded');
+        }
+        
+        // Apply filters
+        const skuFilter = document.getElementById('skuSearchFilter')?.value?.toLowerCase() || '';
+        const modelFilter = document.getElementById('modelFilter')?.value || '';
+        const generationFilter = document.getElementById('generationFilter')?.value || '';
+        const cardTypeFilter = document.getElementById('cardTypeFilter')?.value || '';
+        const actionFilter = document.getElementById('actionFilter')?.value || '';
+        
+        if (skuFilter) {
+            filteredResults = filteredResults.filter(item => 
+                (item.sku && item.sku.toLowerCase().includes(skuFilter)) ||
+                (item.title && item.title.toLowerCase().includes(skuFilter))
+            );
+        }
+        
+        if (modelFilter) {
+            filteredResults = filteredResults.filter(item => item.model === modelFilter);
+        }
+        
+        if (generationFilter) {
+            filteredResults = filteredResults.filter(item => item.generation === generationFilter);
+        }
+        
+        if (cardTypeFilter) {
+            filteredResults = filteredResults.filter(item => item.cardType === cardTypeFilter);
+        }
+        
+        if (actionFilter) {
+            filteredResults = filteredResults.filter(item => item.action === actionFilter);
+        }
+        
+        // Apply sorting
+        const sortBy = document.getElementById('sortFilter')?.value || 'sku';
+        filteredResults.sort((a, b) => {
+            switch (sortBy) {
+                case 'sku':
+                    return (a.sku || '').localeCompare(b.sku || '');
+                case 'sku-desc':
+                    return (b.sku || '').localeCompare(a.sku || '');
+                case 'model':
+                    return (a.model || '').localeCompare(b.model || '');
+                case 'generation':
+                    return (a.generation || '').localeCompare(b.generation || '');
+                case 'cardType':
+                    return (a.cardType || '').localeCompare(b.cardType || '');
+                case 'action':
+                    return (a.action || '').localeCompare(b.action || '');
+                case 'lastModified':
+                    return new Date(b.lastModified || 0) - new Date(a.lastModified || 0);
+            default:
+                    return 0;
+            }
+        });
+        
+        // Group cards by their unique identifier (combination of cardType, title, and content)
+        const uniqueCards = new Map();
+        
+        filteredResults.forEach(item => {
+            const cardKey = `${item.cardType}_${item.title}_${item.content}`;
+            if (!uniqueCards.has(cardKey)) {
+                uniqueCards.set(cardKey, item);
+            } else {
+                // Merge SKUs if this is another instance of the same card
+                const existingCard = uniqueCards.get(cardKey);
+                if (item.associatedSkus) {
+                    existingCard.associatedSkus = [...new Set([
+                        ...(existingCard.associatedSkus || []),
+                        ...(item.associatedSkus || [])
+                    ])];
+                }
+            }
+        });
+        
+        // Build table rows for unique cards
+        Array.from(uniqueCards.values()).forEach((item, index) => {
+            const originalIndex = window.allExportResults.indexOf(item);
+            const row = document.createElement('tr');
+            
+            // Determine action display and class
+            let actionDisplay = getActionText(item.action);
+            let actionClass = getActionBadgeClass(item.action);
+            let isChecked = true;
+            let isDisabled = false;
+            
+            // Special handling for different action types
+            if (item.action === 'remove') {
+                actionDisplay = 'Remove (can override)';
+                actionClass = 'warning';
+                isChecked = false;
+            } else if (item.action === 'excluded') {
+                actionDisplay = 'Excluded (incomplete)';
+                actionClass = 'secondary';
+                isChecked = false;
+                isDisabled = !includeExcludedCards;
+            }
+            
+            row.innerHTML = `
+                <td>
+                    <input type="checkbox" class="form-check-input export-checkbox" 
+                           data-action="${item.action}" data-index="${originalIndex}" 
+                           data-original-action="${item.action}"
+                           ${isChecked ? 'checked' : ''}
+                           ${isDisabled ? 'disabled' : ''}>
+                </td>
+                <td>
+                    <strong>${item.sku || 'N/A'}</strong>
+                    ${item.associatedSkus ? 
+                        `<br><small class="text-muted">Also: ${item.associatedSkus.filter(sku => sku !== item.sku).join(', ')}</small>` 
+                        : ''}
+                </td>
+                <td><span class="badge bg-secondary">${getCardTypeDisplayName(item.cardType)}</span></td>
+                <td>${item.title || item.sku || 'N/A'}</td>
+                <td><span class="badge bg-${actionClass}">${actionDisplay}</span></td>
+                <td>${item.lastModified || 'Unknown'}</td>
+                <td><span class="badge bg-${item.action === 'excluded' ? 'warning' : 'success'}">${item.action === 'excluded' ? 'Incomplete' : 'Ready'}</span></td>
+            `;
+            tableBody.appendChild(row);
+        });
+        
+        // Update row count display
+        const totalCount = window.allExportResults.length;
+        const filteredCount = filteredResults.length;
+        const countDisplay = document.getElementById('exportSelectionCount');
+        if (countDisplay) {
+            countDisplay.textContent = `Showing ${filteredCount} of ${totalCount} cards`;
+        }
+        
+        // Add CSS for SKU grouping if not already added
+        if (!document.getElementById('sku-grouping-styles')) {
+            const style = document.createElement('style');
+            style.id = 'sku-grouping-styles';
+            style.textContent = `
+                .sku-group-start {
+                    border-left: 3px solid #007bff !important;
+                    background-color: #f8f9fa;
+                }
+                .sku-group-start small {
+                    display: block;
+                    margin-top: 2px;
+                    font-size: 0.85em;
+                    color: #6c757d;
+                }
+                .sku-group-continue {
+                    border-left: 3px solid #dee2e6;
+                    padding-left: 10px;
+                }
+                .sku-group-continue span {
+                    color: #6c757d;
+                    font-size: 0.9em;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    
+    // Attach event listeners for filtering and sorting
+    function attachExportFilterListeners() {
+        const filters = ['skuSearchFilter', 'modelFilter', 'generationFilter', 'cardTypeFilter', 'actionFilter', 'sortFilter'];
+        
+        filters.forEach(filterId => {
+            const element = document.getElementById(filterId);
+            if (element) {
+                element.addEventListener('change', buildExportSelectionTable);
+                if (filterId === 'skuSearchFilter') {
+                    element.addEventListener('input', buildExportSelectionTable);
+                }
+            }
+        });
+        
+        // Select all checkbox
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', (e) => {
+                const checkboxes = document.querySelectorAll('.export-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = e.target.checked;
+                });
+                updateExportSelectionSummary();
+            });
+        }
+        
+        // Individual checkboxes
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('export-checkbox')) {
+                updateExportSelectionSummary();
+                }
+            });
+        }
+        
+    // Clear all export filters
+    function clearExportFilters() {
+        document.getElementById('skuSearchFilter').value = '';
+        document.getElementById('modelFilter').value = '';
+        document.getElementById('generationFilter').value = '';
+        document.getElementById('cardTypeFilter').value = '';
+        document.getElementById('actionFilter').value = '';
+        document.getElementById('sortFilter').value = 'sku';
+        buildExportSelectionTable();
     }
     
     // Step 4: Final export
@@ -6424,10 +8926,18 @@ Only cards for existing products will be imported.`;
         
         selectedCheckboxes.forEach(checkbox => {
             const index = parseInt(checkbox.dataset.index);
-            const action = checkbox.dataset.action;
+            const originalAction = checkbox.dataset.originalAction;
             const allResults = [...results.new, ...results.updates, ...results.keep, ...results.remove];
             if (allResults[index]) {
-                selectedItems.push(allResults[index]);
+                const item = { ...allResults[index] };
+                
+                // If this was originally a "remove" item but is now checked, treat it as "force export"
+                if (originalAction === 'remove') {
+                    item.action = 'force-export';
+                    item.reason = 'User override: Force export despite removal recommendation';
+                }
+                
+                selectedItems.push(item);
             }
         });
         
@@ -6435,13 +8945,13 @@ Only cards for existing products will be imported.`;
         const finalCounts = {
             new: selectedItems.filter(item => item.action === 'new').length,
             updates: selectedItems.filter(item => item.action === 'update').length,
-            conflicts: selectedItems.filter(item => item.action === 'remove').length,
+            forceExport: selectedItems.filter(item => item.action === 'force-export').length,
             total: selectedItems.length
         };
         
         document.getElementById('finalExportNewCount').textContent = finalCounts.new;
         document.getElementById('finalExportUpdateCount').textContent = finalCounts.updates;
-        document.getElementById('finalExportConflictCount').textContent = finalCounts.conflicts;
+        document.getElementById('finalExportConflictCount').textContent = finalCounts.forceExport;
         document.getElementById('finalExportTotalCount').textContent = finalCounts.total;
         
         // Store selected items for export
@@ -6503,6 +9013,7 @@ Only cards for existing products will be imported.`;
             case 'update': return 'warning';
             case 'keep': return 'info';
             case 'remove': return 'danger';
+            case 'excluded': return 'secondary';
             default: return 'secondary';
         }
     }
@@ -6513,6 +9024,7 @@ Only cards for existing products will be imported.`;
             case 'update': return 'Update';
             case 'keep': return 'Keep';
             case 'remove': return 'Remove';
+            case 'excluded': return 'Excluded';
             default: return action;
         }
     }
@@ -6523,23 +9035,42 @@ Only cards for existing products will be imported.`;
             new: 0,
             updates: 0,
             keep: 0,
-            remove: 0
+            remove: 0,
+            forceExport: 0,
+            excluded: 0
         };
         
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
+                const originalAction = checkbox.dataset.originalAction;
                 const action = checkbox.dataset.action;
-                summary[action]++;
+                
+                if (originalAction === 'remove') {
+                    summary.forceExport++;
+                } else if (originalAction === 'excluded') {
+                    summary.excluded++;
+                } else {
+                    summary[action]++;
+                }
             }
         });
         
         const summaryPanel = document.getElementById('exportSelectionSummaryPanel');
+        const total = summary.new + summary.updates + summary.keep + summary.forceExport + summary.excluded;
+        
+        let summaryText = `${summary.new} new, ${summary.updates} updates, ${summary.keep} keep`;
+        if (summary.forceExport > 0) {
+            summaryText += `, ${summary.forceExport} force export`;
+        }
+        if (summary.excluded > 0) {
+            summaryText += `, ${summary.excluded} excluded (incomplete)`;
+        }
+        
         summaryPanel.innerHTML = `
             <div class="alert alert-info">
                 <strong>Selected for export:</strong> 
-                ${summary.new} new, ${summary.updates} updates, ${summary.keep} keep, ${summary.remove} remove
-                (${summary.new + summary.updates + summary.keep + summary.remove} total)
-            </div>
+                ${summaryText} (${total} total)
+</div>
         `;
     }
     
@@ -6615,6 +9146,15 @@ Only cards for existing products will be imported.`;
             }
         });
         
+        // Override checkbox for excluded cards
+        const includeExcludedCards = document.getElementById('includeExcludedCards');
+        if (includeExcludedCards) {
+            includeExcludedCards.addEventListener('change', () => {
+                buildExportSelectionTable();
+                updateExportSelectionSummary();
+            });
+        }
+        
         // Final export button
         const confirmExportBtn = document.getElementById('confirmExportBtn');
         if (confirmExportBtn) {
@@ -6631,7 +9171,6 @@ Only cards for existing products will be imported.`;
     });
 
     // Attach event listener when the Export to Hypa modal is shown
-    const exportHypaModal = document.getElementById('exportHypaModal');
     if (exportHypaModal) {
         exportHypaModal.addEventListener('shown.bs.modal', function () {
             console.log('Export to Hypa modal shown, attaching export event listeners');

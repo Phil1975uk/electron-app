@@ -79,3 +79,18 @@ This is a Python web application using HTML, CSS, and JavaScript. The backend us
 - Exclude sensitive files in .gitignore
 - Don't commit compiled files or cache directories
 - Include requirements.txt and environment setup files
+
+## Imported Specification Table HTML Rules
+- HTML for spec tables (Specification tables) must not be altered in any way. It is inthe correct format for Hypa and will break the website if changed.
+
+## Local File Storage
+- Where possible all data is to be saved to disk, this should prevent conflicts and enables the app to be used on other mechines.
+
+## After changes are made
+- After changes are made give a brief explanation of how to test the changes. Thisngs like if the app needs restarting or i need to carry out some actions on the app.
+
+## SKU's in the app
+- SKU is the main reference for our cards. SKU's are unique to a Variant and each . These are our master ids. 
+
+## Starting the app
+- When you want to start the app please always ensure the app is closed before trying to start.

@@ -1,0 +1,49 @@
+{
+  "id": "1752931025005",
+  "sku": "F01133",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Kiox 300 cockpit",
+  "content": "The Kiox 300 display is perfect for sporty riders: it displays more than just fitness data, helping riders to optimise their training. It is even possible to pair it with heart rate monitors via Bluetooth. Map-free navigation (only in conjunction with a smartphone) completes the features of the Kiox 300. It can be intuitively operated using the LED Remote on the handlebars.",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/roadster-kiox-300.jpg?t=1713531059",
+  "price": "£47.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T13:17:05.005Z",
+  "originalHypaData": {
+    "productId": "518",
+    "columnName": "shared.option-1-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Roadster",
+    "generation": "Roadster4",
+    "variants": [
+      {
+        "name": "Vario Hs",
+        "sku": "F01133"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01132"
+      },
+      {
+        "name": "Touring Hs",
+        "sku": "F01131"
+      },
+      {
+        "name": "Touring",
+        "sku": "F01130"
+      }
+    ]
+  },
+  "filename": "card_F01133_product-options_1_1752931030353_6mwwucgv1.json"
+}

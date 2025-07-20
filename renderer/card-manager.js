@@ -125,6 +125,7 @@ class CardManager {
         this.filters = {
             cardType: '',
             uploadStatus: '',
+            hypaImport: '',
             brand: '',
             model: '',
             generation: '',
@@ -132,9 +133,8 @@ class CardManager {
             selectedVariants: [],
             sku: ''
         };
-        this.lastDeletedCard = null; // Store last deleted card for undo
-        this.undoTimeout = null;
-        this.init();
+        this.undoState = null;
+        this.isUiEnabled = false; // New flag to track if we're in a UI context
     }
 
     async init() {
@@ -142,65 +142,48 @@ class CardManager {
         
         try {
             await this.loadConfigurations();
-            if (window.debugLogEnabled && window.electronAPI && window.electronAPI.logDebugInfo) {
-                window.electronAPI.logDebugInfo({
-                    message: 'CardManager: Configurations loaded',
-                    data: { count: this.configurations.length },
-                    timestamp: new Date().toISOString(),
-                    page: 'card-manager'
-                });
-            }
         } catch (error) {
             console.warn('Configurations failed to load, continuing without them:', error);
-            if (window.debugLogEnabled && window.electronAPI && window.electronAPI.logDebugInfo) {
-                window.electronAPI.logDebugInfo({
-                    message: 'CardManager: Configurations failed to load',
-                    data: { error: error.message, stack: error.stack },
-                    timestamp: new Date().toISOString(),
-                    page: 'card-manager'
-                });
-            }
         }
         
         try {
             await this.loadCards();
-            if (window.debugLogEnabled && window.electronAPI && window.electronAPI.logDebugInfo) {
-                window.electronAPI.logDebugInfo({
-                    message: 'CardManager: Cards loaded',
-                    data: { count: this.allCards.length },
-                    timestamp: new Date().toISOString(),
-                    page: 'card-manager'
-                });
-            }
         } catch (error) {
             console.error('Failed to load cards:', error);
-            showToast('Failed to load cards. Please refresh the page.', 'danger');
-            if (window.debugLogEnabled && window.electronAPI && window.electronAPI.logDebugInfo) {
-                window.electronAPI.logDebugInfo({
-                    message: 'CardManager: Error loading cards',
-                    data: { error: error.message, stack: error.stack },
-                    timestamp: new Date().toISOString(),
-                    page: 'card-manager'
-                });
+            // Show error in the cards list area
+            const cardsList = document.getElementById('cardsList');
+            if (cardsList) {
+                cardsList.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i>Failed to Load Cards</h5>
+                        <p>Error: ${error.message}</p>
+                        <button class="btn btn-primary" onclick="location.reload()">Refresh Page</button>
+                    </div>
+                `;
             }
             return;
         }
+
+        // Check if we're in a UI context by looking for key elements
+        this.isUiEnabled = !!document.getElementById('filterCardType');
         
-        console.log('Setting up event listeners...');
-        this.setupEventListeners();
-        
-        console.log('Populating filter options...');
-        this.populateFilterOptions();
-        
-        console.log('Updating stats...');
-        this.updateStats();
-        
-        console.log('Rendering cards...');
-        this.renderCards();
+        if (this.isUiEnabled) {
+            console.log('Setting up event listeners...');
+            this.setupEventListeners();
+            
+            console.log('Populating filter options...');
+            this.populateFilterOptions();
+            
+            console.log('Updating stats...');
+            this.updateStats();
+            
+            console.log('Rendering cards...');
+            this.renderCards();
+            
+            this.setupUndoButtonListener();
+        }
         
         console.log('Card Manager initialization complete!');
-
-        this.setupUndoButtonListener();
     }
 
     async loadConfigurations() {
@@ -239,14 +222,36 @@ class CardManager {
             console.log('Loading cards...');
             // Always fetch from server, never use localStorage
             const response = await fetch('/api/load-cards');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Server response error:', errorText);
+                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+            }
+            
             let cardsData = await response.json();
-            console.log('Loaded cards from server:', cardsData.length);
+            console.log('Loaded cards from server:', cardsData);
+            console.log('Cards data type:', typeof cardsData);
+            console.log('Cards data length:', cardsData ? cardsData.length : 'null/undefined');
+            
             // Ensure it's an array
             if (!Array.isArray(cardsData)) {
+                console.warn('Cards data is not an array, converting to empty array');
                 cardsData = [];
             }
-            this.allCards = cardsData;
+            
+            // Sanitize legacy IDs that may contain non-digit characters (e.g. dots)
+            this.allCards = cardsData.map(card => {
+                if (card && card.id != null) {
+                    const cleanId = String(card.id).replace(/\D/g, '');
+                    if (cleanId !== String(card.id) && cleanId !== '') {
+                        card.id = cleanId;
+                    }
+                }
+                return card;
+            });
             this.filteredCards = [...this.allCards];
             this.populateVariantFilter();
             console.log('Cards loaded successfully:', this.allCards.length);
@@ -274,14 +279,29 @@ class CardManager {
     }
 
     setupEventListeners() {
+        if (!this.isUiEnabled) return;
+        
         // Card Type filter
-        document.getElementById('filterCardType').addEventListener('change', (e) => {
-            this.filters.cardType = e.target.value;
-            this.applyFilters();
-        });
+        const filterCardType = document.getElementById('filterCardType');
+        if (filterCardType) {
+            filterCardType.addEventListener('change', (e) => {
+                this.filters.cardType = e.target.value;
+                this.applyFilters();
+            });
+        }
+        
         // Upload Status filter
-        document.getElementById('filterUploadStatus').addEventListener('change', (e) => {
-            this.filters.uploadStatus = e.target.value;
+        const filterUploadStatus = document.getElementById('filterUploadStatus');
+        if (filterUploadStatus) {
+            filterUploadStatus.addEventListener('change', (e) => {
+                this.filters.uploadStatus = e.target.value;
+                this.applyFilters();
+            });
+        }
+        
+        // Hypa Import filter
+        document.getElementById('filterHypaImport').addEventListener('change', (e) => {
+            this.filters.hypaImport = e.target.value;
             this.applyFilters();
         });
         // Brand filter
@@ -414,16 +434,20 @@ class CardManager {
     }
 
     populateVariantFilter() {
-        const variantSelect = document.getElementById('filterVariants');
-        variantSelect.innerHTML = '<option value="">All Variants</option><option value="specific">Specific Variants</option>';
+        if (!this.isUiEnabled) return;
         
-        console.log('populateVariantFilter called with filters:', this.filters);
+        const variantSelect = document.getElementById('filterVariants');
+        if (!variantSelect) return;
+        
+        variantSelect.innerHTML = '<option value="">All Variants</option><option value="specific">Specific Variants</option>';
         
         // Only populate checkboxes if we have all required filters
         if (!this.filters.brand || !this.filters.model || !this.filters.generation) {
-            console.log('Not all filters selected, skipping variant checkbox population');
-            document.getElementById('variantCheckboxes').innerHTML = '';
-            document.getElementById('variantCheckboxes').style.display = 'none';
+            const variantCheckboxes = document.getElementById('variantCheckboxes');
+            if (variantCheckboxes) {
+                variantCheckboxes.innerHTML = '';
+                variantCheckboxes.style.display = 'none';
+            }
             return;
         }
         
@@ -467,10 +491,12 @@ class CardManager {
     }
 
     populateVariantCheckboxes(variants) {
-        const container = document.getElementById('variantCheckboxes');
-        container.innerHTML = '';
+        if (!this.isUiEnabled) return;
         
-        console.log('populateVariantCheckboxes called with variants:', variants);
+        const container = document.getElementById('variantCheckboxes');
+        if (!container) return;
+        
+        container.innerHTML = '';
         
         if (variants.length === 0) {
             container.innerHTML = '<small class="text-muted">No variants available.</small>';
@@ -491,15 +517,21 @@ class CardManager {
     }
 
     toggleVariantCheckboxes() {
+        if (!this.isUiEnabled) return;
+        
         const container = document.getElementById('variantCheckboxes');
+        if (!container) return;
+        
         const shouldShow = this.filters.variants === 'specific';
         container.style.display = shouldShow ? 'block' : 'none';
-        console.log('toggleVariantCheckboxes called, shouldShow:', shouldShow, 'filters.variants:', this.filters.variants);
-        console.log('Container display style:', container.style.display);
     }
 
     updateSelectedVariants() {
+        if (!this.isUiEnabled) return;
+        
         const checkboxes = document.querySelectorAll('#variantCheckboxes input[type="checkbox"]:checked');
+        if (!checkboxes) return;
+        
         this.filters.selectedVariants = Array.from(checkboxes).map(cb => cb.value);
     }
 
@@ -535,6 +567,16 @@ class CardManager {
                 const isUploaded = card.webdavPath && card.uploadDate;
                 if (this.filters.uploadStatus === 'uploaded' && !isUploaded) return false;
                 if (this.filters.uploadStatus === 'awaiting' && isUploaded) return false;
+            }
+            
+            // Hypa import filter
+            if (this.filters.hypaImport) {
+                const isImportedFromHypa = card.importedFromHypa === true;
+                const isRecentlyUpdated = card.hypaUpdated === true;
+                
+                if (this.filters.hypaImport === 'imported' && !isImportedFromHypa) return false;
+                if (this.filters.hypaImport === 'local' && isImportedFromHypa) return false;
+                if (this.filters.hypaImport === 'updated' && !isRecentlyUpdated) return false;
             }
             
             // Brand filter
@@ -591,6 +633,7 @@ class CardManager {
         this.filters = {
             cardType: '',
             uploadStatus: '',
+            hypaImport: '',
             brand: '',
             model: '',
             generation: '',
@@ -602,6 +645,7 @@ class CardManager {
         // Reset form elements
         document.getElementById('filterCardType').value = '';
         document.getElementById('filterUploadStatus').value = '';
+        document.getElementById('filterHypaImport').value = '';
         document.getElementById('filterBrand').value = '';
         document.getElementById('filterModel').value = '';
         document.getElementById('filterGeneration').value = '';
@@ -617,6 +661,11 @@ class CardManager {
     }
 
     updateStats() {
+        if (!this.isUiEnabled) return;
+        
+        const statsElement = document.getElementById('cardStats');
+        if (!statsElement) return;
+        
         const totalCards = this.allCards.length;
         const filteredCards = this.filteredCards.length;
         
@@ -628,15 +677,33 @@ class CardManager {
             card.imageUrl && (!card.webdavPath || !card.uploadDate)
         ).length;
         
+        // Calculate Hypa import statistics
+        const hypaImportedCards = this.allCards.filter(card => 
+            card.importedFromHypa === true
+        ).length;
+        const recentlyUpdatedCards = this.allCards.filter(card => 
+            card.hypaUpdated === true
+        ).length;
+        
         // Update the DOM elements
-        document.getElementById('totalCards').textContent = totalCards;
-        document.getElementById('filteredCards').textContent = filteredCards;
-        document.getElementById('uploadedImages').textContent = uploadedImages;
-        document.getElementById('awaitingUpload').textContent = awaitingUpload;
+        statsElement.innerHTML = `
+            <strong>Total Cards:</strong> ${totalCards}<br>
+            <strong>Filtered Cards:</strong> ${filteredCards}<br>
+            <strong>Uploaded Images:</strong> ${uploadedImages}<br>
+            <strong>Awaiting Upload:</strong> ${awaitingUpload}<br>
+            <strong>Hypa Imported Cards:</strong> ${hypaImportedCards}<br>
+            <strong>Recently Updated Cards:</strong> ${recentlyUpdatedCards}
+        `;
     }
 
     renderCards() {
+        if (!this.isUiEnabled) return;
+        
         const container = document.getElementById('cardsList');
+        if (!container) {
+            console.error('Cards container not found! Looking for element with id="cardsList"');
+            return;
+        }
         
         if (this.filteredCards.length === 0) {
             container.innerHTML = `
@@ -829,8 +896,9 @@ class CardManager {
         let displayTitle = card.title || '';
         if (card.cardType === 'spec' || card.cardType === 'specification-table') {
             // Try to extract the h2 title from the HTML content
-            if (card.content) {
-                const h2Match = card.content.match(/<h2[^>]*>([^<]+)<\/h2>/);
+            const contentToCheck = card.content || card.htmlContent || card.description || '';
+            if (contentToCheck) {
+                const h2Match = contentToCheck.match(/<h2[^>]*>([^<]+)<\/h2>/);
                 if (h2Match && h2Match[1]) {
                     displayTitle = h2Match[1].trim();
                 }
@@ -853,14 +921,18 @@ class CardManager {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-7" style="max-height: 300px; overflow: hidden;">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="mb-1">${displayTitle}</h5>
-                            <span class="badge bg-${typeColor} card-type-badge">${typeLabel}</span>
+                            <div class="d-flex gap-1">
+                                <span class="badge bg-${typeColor} card-type-badge">${typeLabel}</span>
+                                ${card.importedFromHypa ? '<span class="badge bg-info"><i class="fas fa-download me-1"></i>Hypa Import</span>' : ''}
+                                ${card.hypaUpdated ? '<span class="badge bg-success"><i class="fas fa-check me-1"></i>Updated</span>' : ''}
+                            </div>
                         </div>
                         ${cardType === 'option' && card.price ? `<p class="text-success mb-2"><strong>${card.price}</strong></p>` : ''}
-                        ${cardType !== 'option' && cardType !== 'spec' && card.subtitle ? `<p class="text-muted mb-2">${card.subtitle}</p>` : ''}
-                        ${cardType === 'spec' ? 
+                        ${cardType !== 'option' && cardType !== 'spec' && cardType !== 'specification-table' && card.subtitle ? `<p class="text-muted mb-2">${card.subtitle}</p>` : ''}
+                        ${(cardType === 'spec' || cardType === 'specification-table') ? 
                             `<p class="mb-2"><small class="text-muted">HTML Content: ${(card.htmlContent || card.description || '').substring(0, 100)}${(card.htmlContent || card.description || '').length > 100 ? '...' : ''}</small></p>` : 
                             card.description ? `<p class="mb-2">${card.description.substring(0, 150)}${card.description.length > 150 ? '...' : ''}</p>` : ''
                         }
@@ -873,6 +945,19 @@ class CardManager {
                         </div>
                         ${variantTags ? `<div class="mb-2">${variantTags}</div>` : ''}
                         ${skuDisplayHtml}
+                        
+                        <!-- Hypa Import Information - Compact -->
+                        ${card.importedFromHypa ? `
+                            <div class="mb-1">
+                                <small class="text-info">
+                                    <i class="fas fa-download me-1"></i>Hypa Import
+                                    ${card.originalHypaData ? ` • ID: ${card.originalHypaData.productId}` : ''}
+                                    ${card.validationInfo && card.validationInfo.hasWarnings ? ` • ${card.validationInfo.warnings.length} warnings` : ''}
+                                    ${card.lastModified ? ` • ${new Date(card.lastModified).toLocaleDateString()}` : ''}
+                                </small>
+                            </div>
+                        ` : ''}
+                        
                         ${isUploaded ? `
                             <div class="mb-2">
                                 <small class="text-success">
@@ -888,7 +973,7 @@ class CardManager {
                         ${metadataHtml}
                     </div>
                     <div class="col-md-3">
-                        <div class="d-flex flex-column gap-2">
+                        <div class="d-flex flex-wrap gap-2">
                             <button class="btn btn-outline-primary btn-sm" onclick="cardManager.editCard('${card.id}')">
                                 <i class="fas fa-edit me-1"></i>Edit
                             </button>
@@ -905,7 +990,7 @@ class CardManager {
                         </div>
                         <div class="mt-2">
                             <small class="text-muted">
-                                Created: ${card.savedAt ? new Date(card.savedAt).toLocaleDateString() : 'Unknown'}
+                                Created: ${card.savedAt ? new Date(card.savedAt).toLocaleDateString() : (card.lastModified ? new Date(card.lastModified).toLocaleDateString() : 'Unknown')}
                             </small>
                         </div>
                     </div>
@@ -954,13 +1039,18 @@ class CardManager {
             }
 
             // Store the deleted card for undo
-            this.lastDeletedCard = { ...cardToDelete };
+            this.undoState = { ...cardToDelete };
             if (this.undoTimeout) clearTimeout(this.undoTimeout);
             this.showPersistentUndoButton();
             // Remove from local array
             this.allCards = this.allCards.filter(card => String(card.id) !== String(cardId));
             this.filteredCards = this.filteredCards.filter(card => String(card.id) !== String(cardId));
 
+            // Clear import tracking to ensure fresh import detection
+            if (window.clearImportTracking) {
+                window.clearImportTracking();
+            }
+            
             // Reload the card list from the server to ensure UI is in sync
             await this.loadCards();
             this.applyFilters();
@@ -973,34 +1063,38 @@ class CardManager {
     }
 
     showPersistentUndoButton() {
-        const undoBtn = document.getElementById('undoDeleteBtnPersistent');
+        if (!this.isUiEnabled) return;
+        
+        const undoBtn = document.getElementById('undoDeleteBtn');
         if (!undoBtn) return;
-        undoBtn.style.display = '';
-        undoBtn.disabled = false;
+        
+        undoBtn.style.display = 'block';
     }
 
     hidePersistentUndoButton() {
-        const undoBtn = document.getElementById('undoDeleteBtnPersistent');
+        if (!this.isUiEnabled) return;
+        
+        const undoBtn = document.getElementById('undoDeleteBtn');
         if (!undoBtn) return;
+        
         undoBtn.style.display = 'none';
-        undoBtn.disabled = true;
     }
 
     async undoDelete() {
-        if (!this.lastDeletedCard) return;
+        if (!this.undoState) return;
         try {
             // Restore the card by POSTing to the backend
             const response = await fetch('/api/restore-card', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.lastDeletedCard)
+                body: JSON.stringify(this.undoState)
             });
             if (!response.ok) {
                 showToast('Failed to restore card.', 'danger');
                 return;
             }
             showToast('Card restored!', 'success');
-            this.lastDeletedCard = null;
+            this.undoState = null;
             this.hidePersistentUndoButton();
             await this.loadCards();
             this.applyFilters();
@@ -1013,16 +1107,18 @@ class CardManager {
 
     // Call this after any card-changing action except delete
     clearUndoState() {
-        this.lastDeletedCard = null;
+        this.undoState = null;
         this.hidePersistentUndoButton();
     }
 
     // In init or after DOMContentLoaded
     setupUndoButtonListener() {
-        const undoBtn = document.getElementById('undoDeleteBtnPersistent');
-        if (undoBtn) {
-            undoBtn.onclick = () => this.undoDelete();
-        }
+        if (!this.isUiEnabled) return;
+        
+        const undoBtn = document.getElementById('undoDeleteBtn');
+        if (!undoBtn) return;
+        
+        undoBtn.addEventListener('click', () => this.undoDelete());
     }
 
     duplicateCard(cardId) {
@@ -1050,78 +1146,57 @@ class CardManager {
     }
 
     async generateCardHtml(card) {
-        const config = card.configuration || {};
+        if (!card) return '';
         
-        // Construct the full image URL from WebDAV path with proper URL encoding (only for cards that need images)
         let imageUrl = '';
-        if (card.webdavPath && (card.cardType === 'feature' || card.cardType === 'product-options' || card.cardType === 'weather-protection' || card.cardType === 'cargo-options' || card.type === 'feature' || card.type === 'product-options' || card.type === 'weather-protection' || card.type === 'cargo-options' || card.type === 'option' || card.type === 'weather' || card.type === 'cargo')) {
-            const webdavBaseUrl = 'https://store-c8jhcan2jv.mybigcommerce.com';
-            // Remove the /dav prefix from the webdavPath for public URL access
-            const publicPath = card.webdavPath.replace(/^\/dav/, '');
-            // Properly encode the path for URL use - manually encode & and spaces
-            const encodedPath = publicPath
-                .replace(/&/g, '%26')
-                .replace(/ /g, '%20');
-            imageUrl = webdavBaseUrl + encodedPath;
-            
-            // Validate the image URL before proceeding
-            const isValidImage = await validateImageUrl(imageUrl);
-            if (!isValidImage) {
-                console.warn(`Image URL validation failed for card ${card.id}: ${imageUrl}`);
-                showToast(`Warning: Image for "${card.title}" may not be accessible. The HTML will be generated without the image section.`, 'warning');
-                // Continue without the image URL
-                imageUrl = '';
-            }
+        if (card.imageUrl) {
+            imageUrl = card.imageUrl;
+        } else if (card.webdavPath) {
+            imageUrl = getPublicWebDavUrl(card.webdavPath);
         }
-        
-        // Generate HTML based on card type
+
         switch (card.cardType || card.type) {
             case 'feature':
                 return this.generateFeatureCardHtml(card, imageUrl);
-            case 'option':
             case 'product-options':
                 return this.generateProductOptionsCardHtml(card, imageUrl);
-            case 'spec':
             case 'specification-table':
+            case 'spec':
                 return this.generateSpecificationTableCardHtml(card);
-            case 'weather':
             case 'weather-protection':
+            case 'weather':
                 return this.generateWeatherProtectionCardHtml(card, imageUrl);
-            case 'cargo':
             case 'cargo-options':
+            case 'cargo':
                 return this.generateCargoOptionsCardHtml(card, imageUrl);
             default:
-                return this.generateFeatureCardHtml(card, imageUrl);
+                console.warn('Unknown card type:', card.cardType || card.type);
+                return '';
         }
     }
 
     generateFeatureCardHtml(card, imageUrl) {
         const title = card.title || '';
         const subtitle = card.subtitle || '';
-        const description = card.description || '';
-        
-        // If no valid image URL, generate HTML without image section
-        if (!imageUrl || imageUrl.trim() === '') {
-            return `<!-- Product feature card container -->
-<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9;">
-  <div style="flex: 1 1 300px; min-width: 200px;">
-    <h2>${title}</h2>
-    <h3>${subtitle}</h3>
-    <p>${description}</p>
-  </div>
-</div>`;
-        }
+        const description = card.description || card.content || '';
         
         return `<!-- Product feature card container -->
-<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9;">
-  <div style="flex: 1 1 300px; min-width: 200px;">
-    <h2>${title}</h2>
-    <h3>${subtitle}</h3>
-    <p>${description}</p>
-  </div>
-  <div style="flex: 0 1 350px; max-width: 100%; text-align: center;">
-    <img src="${imageUrl}" alt="Feature Image" style="max-width: 100%; height: auto; display: block; border-radius: 5px;">
-  </div>
+<div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
+<!-- Text content -->
+<div style="flex: 1; min-width: 300px;">
+<h2>${title}</h2>
+<h3>${subtitle}</h3>
+<p>${description}</p>
+</div>
+<!-- Image -->
+<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+</div>
+<div class="se-component se-image-container __se__float-"><figure style="width: 400px;">
+<img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${imageUrl.split('/').pop()}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
+</figure>
+</div>
+<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+</div>
 </div>`;
     }
 
@@ -1262,98 +1337,35 @@ class CardManager {
     }
 
     showHtmlModal(htmlCode) {
-        // Clean up the HTML code by removing excessive whitespace and empty lines
-        const cleanedHtml = htmlCode
-            // Remove excessive whitespace between tags
-            .replace(/>\s+</g, '><')
-            // Remove multiple consecutive empty lines
-            .replace(/\n\s*\n\s*\n/g, '\n\n')
-            // Remove leading/trailing whitespace from each line
-            .split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0) // Remove completely empty lines
-            .join('\n')
-            // Add some spacing back for readability
-            .replace(/><\//g, '>\n</')
-            .replace(/><div/g, '>\n<div')
-            .replace(/><h/g, '>\n<h')
-            .replace(/><p/g, '>\n<p')
-            .replace(/><span/g, '>\n<span')
-            .replace(/><button/g, '>\n<button')
-            .replace(/><img/g, '>\n<img')
-            .replace(/><!--/g, '>\n<!--')
-            .replace(/-->/g, '-->\n');
+        if (!this.isUiEnabled) return;
         
-        // Create a modal to show the HTML code if clipboard copy fails
-        const modal = document.createElement('div');
-        modal.className = 'modal fade';
-        modal.innerHTML = `
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Card HTML Code</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted mb-3">Copy the HTML code below:</p>
-                        <pre class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;"><code>${cleanedHtml.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="modalCopyBtn">Copy to Clipboard</button>
-                    </div>
-                </div>
-            </div>
-        `;
+        const modal = document.getElementById('htmlModal');
+        const codeContainer = document.getElementById('htmlCodeContainer');
+        if (!modal || !codeContainer) return;
         
-        document.body.appendChild(modal);
+        codeContainer.textContent = htmlCode;
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
+    }
+
+    updateUploadStatus(message, type = 'info') {
+        if (!this.isUiEnabled) return;
         
-        // Add improved clipboard handling to the modal copy button
-        const copyBtn = modal.querySelector('#modalCopyBtn');
-        copyBtn.addEventListener('click', async () => {
-            try {
-                // Try the modern clipboard API first
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    await navigator.clipboard.writeText(cleanedHtml);
-                    showToast('HTML copied to clipboard!', 'success');
-                    return;
-                }
-            } catch (err) {
-                console.warn('Modern clipboard API failed, trying fallback:', err);
-            }
-            
-            // Fallback: use the legacy document.execCommand method
-            try {
-                const textArea = document.createElement('textarea');
-                textArea.value = cleanedHtml;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-999999px';
-                textArea.style.top = '-999999px';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                
-                const successful = document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                if (successful) {
-                    showToast('HTML copied to clipboard!', 'success');
-                    return;
-                }
-            } catch (fallbackErr) {
-                console.warn('Legacy clipboard method failed:', fallbackErr);
-            }
-            
-            // If all methods fail
-            showToast('Copy failed - please select and copy manually', 'danger');
-        });
+        const statusElement = document.getElementById('uploadStatus');
+        if (!statusElement) return;
         
-        // Clean up modal after it's hidden
-        modal.addEventListener('hidden.bs.modal', () => {
-            document.body.removeChild(modal);
-        });
+        statusElement.textContent = message;
+        statusElement.className = `alert alert-${type}`;
+        statusElement.style.display = 'block';
+    }
+
+    hideUploadStatus() {
+        if (!this.isUiEnabled) return;
+        
+        const statusElement = document.getElementById('uploadStatus');
+        if (!statusElement) return;
+        
+        statusElement.style.display = 'none';
     }
 
     async handleUploadClick(cardId, isUpdate) {
@@ -1662,57 +1674,6 @@ class CardManager {
         return `/dav/product_images/product_modules/${encodedBrand}/${encodedModel}/${encodedGeneration}/${encodedCardType}/`;
     }
 
-    updateUploadStatus(message, type = 'info') {
-        // Create or update upload status bar
-        let statusBar = document.getElementById('upload-status-bar');
-        if (!statusBar) {
-            statusBar = document.createElement('div');
-            statusBar.id = 'upload-status-bar';
-            statusBar.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                max-width: 400px;
-                padding: 15px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 10000;
-                font-family: Arial, sans-serif;
-                font-size: 14px;
-                line-height: 1.4;
-            `;
-            document.body.appendChild(statusBar);
-        }
-
-        // Set background color based on type
-        switch (type) {
-            case 'success':
-                statusBar.style.backgroundColor = '#d4edda';
-                statusBar.style.color = '#155724';
-                statusBar.style.border = '1px solid #c3e6cb';
-                break;
-            case 'error':
-                statusBar.style.backgroundColor = '#f8d7da';
-                statusBar.style.color = '#721c24';
-                statusBar.style.border = '1px solid #f5c6cb';
-                break;
-            default:
-                statusBar.style.backgroundColor = '#d1ecf1';
-                statusBar.style.color = '#0c5460';
-                statusBar.style.border = '1px solid #bee5eb';
-        }
-
-        statusBar.innerHTML = message;
-        statusBar.style.display = 'block';
-    }
-
-    hideUploadStatus() {
-        const statusBar = document.getElementById('upload-status-bar');
-        if (statusBar) {
-            statusBar.style.display = 'none';
-        }
-    }
-
     async resetImageStatus() {
         if (confirm('Are you sure you want to reset the image upload status for all cards? This will mark all cards as "awaiting upload" so you can test the image upload process again.')) {
             try {
@@ -1771,29 +1732,43 @@ class CardManager {
 
     async saveAllCards() {
         try {
-            // Save all cards to localStorage
-            localStorage.setItem('cards', JSON.stringify(this.allCards));
+            // Save all cards to server only - no localStorage
+            const response = await fetch('/api/save-all-cards', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cards: this.allCards })
+            });
             
-            // Also save to server if available
-            if (window.electronAPI && window.electronAPI.saveCards) {
-                await window.electronAPI.saveCards(this.allCards);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            console.log('All cards saved successfully');
+            const result = await response.json();
+            if (result.success) {
+                console.log('All cards saved to server successfully');
+                showToast('All cards saved successfully!', 'success');
+            } else {
+                throw new Error(result.error || 'Failed to save cards');
+            }
         } catch (error) {
             console.error('Error saving cards:', error);
+            showToast('Error saving cards: ' + error.message, 'danger');
             throw error;
         }
     }
 
     async deleteAllCards() {
         try {
-            // Clear localStorage first
-            localStorage.removeItem('cards');
-            
-            // Clear server files
+            // Clear server files only - no localStorage
             const response = await fetch('/api/delete-all-cards', { method: 'DELETE' });
             if (response.ok) {
+                // Clear import tracking to ensure fresh import detection
+                if (window.clearImportTracking) {
+                    window.clearImportTracking();
+                }
+                
                 // Clear local arrays
                 this.allCards = [];
                 this.filteredCards = [];
@@ -1814,6 +1789,11 @@ class CardManager {
         try {
             const response = await fetch('/api/delete-all-data', { method: 'DELETE' });
             if (response.ok) {
+                // Clear import tracking to ensure fresh import detection
+                if (window.clearImportTracking) {
+                    window.clearImportTracking();
+                }
+                
                 showToast('All data deleted. App will reload...', 'success');
                 setTimeout(() => window.location.reload(), 1500);
             } else {
@@ -1853,42 +1833,27 @@ class CardManager {
 
     async refreshCards() {
         try {
-            console.log('Refreshing cards from localStorage and server...');
+            console.log('Refreshing cards from server...');
             
-            // Load cards from localStorage
-            const localStorageCards = JSON.parse(localStorage.getItem('cards') || '[]');
-            console.log('Cards from localStorage:', localStorageCards.length);
-            
-            // Load cards from server
+            // Load cards from server only
             const response = await fetch('/api/load-cards');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const serverCards = await response.json();
             console.log('Cards from server:', serverCards.length);
             
-            // Merge cards, preferring server versions for duplicates
-            const mergedCards = [...localStorageCards];
-            const existingKeys = new Set(localStorageCards.map(card => `${card.sku}-${card.cardType}-${card.position || 1}`));
-            
-            serverCards.forEach(serverCard => {
-                const cardKey = `${serverCard.sku}-${serverCard.cardType}-${serverCard.position || 1}`;
-                if (!existingKeys.has(cardKey)) {
-                    mergedCards.push(serverCard);
-                    existingKeys.add(cardKey);
-                }
-            });
-            
-            // Update localStorage with merged cards
-            localStorage.setItem('cards', JSON.stringify(mergedCards));
-            
             // Update the cards array and UI
-            this.allCards = mergedCards;
+            this.allCards = serverCards;
             this.filteredCards = [...this.allCards];
             
             // Update UI
             this.updateStats();
             this.renderCards();
             
-            console.log('Cards refreshed successfully. Total cards:', mergedCards.length);
-            showToast(`Cards refreshed successfully. Total: ${mergedCards.length}`, 'success');
+            console.log('Cards refreshed successfully. Total cards:', serverCards.length);
+            showToast(`Cards refreshed successfully. Total: ${serverCards.length}`, 'success');
         } catch (error) {
             console.error('Error refreshing cards:', error);
             showToast('Error refreshing cards: ' + error.message, 'error');
@@ -1898,8 +1863,16 @@ class CardManager {
 
 // Initialize the card manager when the page loads
 let cardManager;
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('DOM loaded, initializing CardManager...');
     cardManager = new CardManager();
+    try {
+        await cardManager.init();
+        console.log('CardManager initialized successfully!');
+    } catch (error) {
+        console.error('Failed to initialize CardManager:', error);
+        showToast('Failed to initialize Card Manager. Please refresh the page.', 'danger');
+    }
 }); 
 
 // Cancel Operation logic
@@ -1942,3 +1915,6 @@ function hideCancelButton() {
 //     // ... upload logic ...
 // }
 // hideCancelButton();
+
+// Make CardManager available globally
+window.CardManager = CardManager;

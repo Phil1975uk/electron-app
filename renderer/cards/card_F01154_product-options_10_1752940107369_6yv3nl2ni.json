@@ -1,0 +1,53 @@
+{
+  "id": "1752940104636",
+  "sku": "F01154",
+  "cardType": "product-options",
+  "position": 10,
+  "title": "Pannier rack",
+  "content": "The minimalist pannier rack is ideal for fixing panniers weighing up to 5 kg each. The rear and brake lights are unobtrusively integrated into it. The “Form follows function” design principle has been exceptionally well executed with the pannier rack",
+  "imageUrl": "https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/44-12-detail.jpg.695x464-q80-upscale-1-.jpg?t=1713282578",
+  "price": "£0.00",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.636Z",
+  "originalHypaData": {
+    "productId": "309",
+    "columnName": "shared.option-10-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing card-info container, Missing \"More Information\" button",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Delite",
+    "generation": "Delite4",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01154"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01153"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F1152"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01151"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01150"
+      }
+    ]
+  },
+  "filename": "card_F01154_product-options_10_1752940107369_6yv3nl2ni.json"
+}

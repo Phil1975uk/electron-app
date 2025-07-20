@@ -10,7 +10,7 @@ const DigestAuthClient = require('./digest-auth');
 const { exiftool } = require('exiftool-vendored');
 const tmp = require('tmp-promise');
 const os = require('os');
-const templateManager = require('./renderer/data/template-manager');
+const templateManager = require('./lib/template-manager');
 
 let mainWindow;
 let server;
@@ -133,12 +133,24 @@ function startServer() {
       const files = await fs.readdir(cardsDir);
       const jsonFiles = files.filter(file => file.endsWith('.json'));
       const cards = await Promise.all(jsonFiles.map(async file => {
-        const content = await fs.readFile(path.join(cardsDir, file), 'utf8');
-        return JSON.parse(content);
+        try {
+          const content = await fs.readFile(path.join(cardsDir, file), 'utf8');
+          const card = JSON.parse(content);
+
+          return card;
+        } catch (error) {
+          console.error(`[api/cards] Error loading card file ${file}:`, error.message);
+          return null;
+        }
       }));
       
-      console.log(`[api/cards] Loaded ${cards.length} cards from server`);
-      res.json(cards);
+      // Filter out any null cards (failed to load)
+      const validCards = cards.filter(card => card !== null);
+      
+      console.log(`[api/cards] Loaded ${validCards.length} cards from server (${cards.length - validCards.length} failed to load)`);
+      
+
+      res.json(validCards);
     } catch (error) {
       console.error('Error reading cards:', error);
       res.status(500).json({ error: error.message });
@@ -157,6 +169,29 @@ function startServer() {
     } catch (error) {
       console.error('Error reading Hypa CSV cache:', error);
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  // API route to save Hypa CSV cache
+  app.post('/api/hypa-csv-cache', async (req, res) => {
+    try {
+      const { data, headers } = req.body;
+      const cachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');
+      
+      // Ensure the data directory exists
+      const dataDir = path.dirname(cachePath);
+      if (!fsSync.existsSync(dataDir)) {
+        fsSync.mkdirSync(dataDir, { recursive: true });
+      }
+
+      const cacheData = { data, headers, timestamp: new Date().toISOString() };
+      await fs.writeFile(cachePath, JSON.stringify(cacheData, null, 2));
+      
+      console.log('[hypa-csv-cache] Cache saved successfully:', cacheData.data?.length || 0, 'rows');
+      res.json({ success: true, message: 'Hypa CSV cache saved successfully' });
+    } catch (error) {
+      console.error('Error saving Hypa CSV cache:', error);
+      res.status(500).json({ success: false, error: error.message });
     }
   });
 
@@ -213,6 +248,10 @@ function startServer() {
       }
 
       let filename = cardData.filename;
+      logToFile(`[API/save-card] Received filename: "${filename}"`);
+      logToFile(`[API/save-card] Received originalFilename: "${cardData.originalFilename}"`);
+      logToFile(`[API/save-card] Received id: "${cardData.id}"`);
+      
       // If editing and originalFilename is present and different, delete the old file
       if (cardData.originalFilename && cardData.originalFilename !== filename) {
         const oldFilepath = path.join(cardsDir, cardData.originalFilename);
@@ -221,22 +260,40 @@ function startServer() {
           logToFile(`[API/save-card] Deleted old card file: ${oldFilepath}`);
         }
       }
-      if (!filename) {
+      
+      // Check if this is an edit operation (has originalFilename or editingCardId)
+      const isEditOperation = cardData.originalFilename || cardData.editingCardId;
+      
+      if (!filename && !isEditOperation) {
         // New card: generate filename and id
         const brand = cardData.configuration?.brand || 'unknown';
         const model = cardData.configuration?.model || 'unknown';
         const title = cardData.title || 'untitled';
-        filename = `card_${brand}_${model}_${title}_${Date.now()}.json`;
+        
+        // Generate unique ID with timestamp + random suffix
+        const timestamp = Date.now();
+        const randomSuffix = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        const uniqueId = `${timestamp}${randomSuffix}`;
+        
+        filename = `card_${brand}_${model}_${title}_${uniqueId}.json`;
         cardData.filename = filename;
-        cardData.id = Date.now().toString();
-        logToFile(`[API/save-card] No filename provided, creating new file: ${filename}`);
+        cardData.id = uniqueId;
+        logToFile(`[API/save-card] No filename provided, creating new file: ${filename} with ID: ${uniqueId}`);
+      } else if (isEditOperation && !filename) {
+        // Edit operation but no filename - use originalFilename
+        filename = cardData.originalFilename;
+        cardData.filename = filename;
+        logToFile(`[API/save-card] Edit operation with no filename, using originalFilename: ${filename}`);
       } else {
         // Editing existing card
         logToFile(`[API/save-card] Editing existing card, will overwrite file: ${filename}`);
       }
       // If editing, preserve the id
       if (!cardData.id) {
-        cardData.id = Date.now().toString();
+        // Generate unique ID with timestamp + random suffix
+        const timestamp = Date.now();
+        const randomSuffix = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        cardData.id = `${timestamp}${randomSuffix}`;
       }
 
       const filepath = path.join(cardsDir, filename);
@@ -321,9 +378,41 @@ function startServer() {
           }
         }));
       }
+      
+      // Clear import cache when all cards are deleted
+      const hypaCachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');
+      if (fsSync.existsSync(hypaCachePath)) {
+        await fs.unlink(hypaCachePath);
+        console.log('[delete-all-cards] Deleted hypaCsvCache.json');
+      }
+      
       res.json({ success: true });
     } catch (error) {
       console.error('Error deleting all cards:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Clear import cache endpoint
+  app.post('/api/clear-import-cache', async (req, res) => {
+    try {
+      // Delete hypaCsvCache.json if it exists
+      const hypaCachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');
+      if (fsSync.existsSync(hypaCachePath)) {
+        await fs.unlink(hypaCachePath);
+        console.log('[clear-import-cache] Deleted hypaCsvCache.json');
+      }
+      
+      // Clear Electron app cache and storage
+      if (mainWindow && mainWindow.webContents) {
+        await mainWindow.webContents.session.clearCache();
+        await mainWindow.webContents.session.clearStorageData();
+        console.log('[clear-import-cache] Cleared Electron cache and storage');
+      }
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error clearing import cache:', error);
       res.status(500).json({ error: error.message });
     }
   });
@@ -353,6 +442,12 @@ function startServer() {
       const thumbDir = path.join(__dirname, 'renderer', 'thumbnail-cache');
       if (fsSync.existsSync(thumbDir)) {
         await fs.rm(thumbDir, { recursive: true, force: true });
+      }
+      // Delete import cache
+      const hypaCachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');
+      if (fsSync.existsSync(hypaCachePath)) {
+        await fs.unlink(hypaCachePath);
+        console.log('[delete-all-data] Deleted hypaCsvCache.json');
       }
       // Clear Electron app cache and storage
       if (mainWindow && mainWindow.webContents) {

@@ -1,0 +1,57 @@
+{
+  "id": "1752935729743",
+  "sku": "F01170",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Suspension seatpost with cover",
+  "description": "The by,schulz G.2 ST parallelogram-shaped spring seatpost offers a degree of comfort that makes any dirt track feel like a freshly paved road. There are five different hardness levels of suspension element to choose from depending on the rider’s weight and comfort preferences. The neoprene cover supplied protects the suspension element from dirt.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01170/29_15_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "140.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie",
+    "variants": [
+      {
+        "name": "Touring",
+        "sku": "F01170"
+      },
+      {
+        "name": "Vario",
+        "sku": "F01171"
+      },
+      {
+        "name": "City",
+        "sku": "F01169"
+      },
+      {
+        "name": "City - Anise - Stock",
+        "sku": "F01169_040105171611071510"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_Suspension_seatpost_with_cover_1752935729743.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie/product-options/Carrie_Carrie_product-options_suspension-seatpost-with-cover.jpg",
+  "uploadDate": "2025-07-19T20:46:11.281Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie",
+    "Variants": "Touring, Vario, City, City - Anise - Stock",
+    "DateCreated": "2025-07-19T20:46:07.282Z",
+    "DateUploaded": "2025-07-19T20:46:07.282Z",
+    "ImageDescription": "Carrie Carrie - Touring, Vario, City, City - Anise - Stock",
+    "UserComment": "Generation: Carrie, Variants: Touring, Vario, City, City - Anise - Stock",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-19T18:33:46.537Z",
+  "savedAt": "2025-07-19T14:35:29.743Z",
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Carrie_product-options_Suspension_seatpost_with_cover_1752935729743.json"
+}

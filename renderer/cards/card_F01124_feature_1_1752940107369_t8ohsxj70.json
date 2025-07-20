@@ -1,0 +1,53 @@
+{
+  "id": "1752940104380",
+  "sku": "F01124",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Control Technology",
+  "content": "Discover the pinnacle of riding pleasure with Riese & Müller's Control Technology. Engineered for maximum safety and dynamism, this advanced system guarantees an exhilarating journey every time. Experience the seamless harmony of the perfectly tuned full suspension rear swing arm, delivering unparalleled sportiness and superior traction, even at top speeds. At the heart of Control Technology lies an active rear swing arm, complemented by optimized front wheel suspension and a co-sprung luggage carrier. Together, they ensure powerful propulsion and a sporty ride, all while minimizing energy loss. Welcome to a new level of riding enjoyment.",
+  "imageUrl": "https://store-c8jhcan2jv.mybigcommerce.com/product_images/Homage4GT/ControlTechnology.jpg",
+  "price": "",
+  "hypaUpdated": true,
+  "importedFromHypa": true,
+  "lastModified": "2025-07-19T15:48:24.380Z",
+  "originalHypaData": {
+    "productId": "314",
+    "columnName": "shared.feature-1-card",
+    "htmlSource": true
+  },
+  "validationInfo": {
+    "hasWarnings": true,
+    "warnings": [
+      "Format mismatch: Missing title (h2) element, Missing description (p) element, Missing image or placeholder",
+      "Minor format differences: Missing border-radius styling, Missing box-shadow styling, Missing font-family styling"
+    ]
+  },
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Homage",
+    "generation": "Homage4",
+    "variants": [
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01124"
+      },
+      {
+        "name": "Gt Vario Hs",
+        "sku": "F01123"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01122"
+      },
+      {
+        "name": "Gt Touring Hs",
+        "sku": "F01121"
+      },
+      {
+        "name": "Gt Touring",
+        "sku": "F01120"
+      }
+    ]
+  },
+  "filename": "card_F01124_feature_1_1752940107369_t8ohsxj70.json"
+}
