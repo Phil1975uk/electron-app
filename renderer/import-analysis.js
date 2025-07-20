@@ -8803,6 +8803,9 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
             row.setAttribute('data-index', index);
             row.setAttribute('data-original-index', originalIndex);
             
+            // Check if filters are applied (Model, Generation, and Card Type selected)
+            const hasFiltersApplied = checkIfFiltersApplied();
+            
             row.innerHTML = `
                 <td>
                     <input type="checkbox" class="form-check-input export-checkbox" 
@@ -8813,17 +8816,21 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
                 </td>
                 <td>
                     <div class="d-flex align-items-center">
-                        <span class="badge bg-primary me-2">${position}</span>
-                        <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-outline-secondary btn-sm move-up-btn" 
-                                    data-index="${index}" ${index === 0 ? 'disabled' : ''}>
-                                <i class="fas fa-chevron-up"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm move-down-btn" 
-                                    data-index="${index}" ${index === Array.from(uniqueCards.values()).length - 1 ? 'disabled' : ''}>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                        </div>
+                        ${hasFiltersApplied ? `
+                            <span class="badge bg-primary me-2">${position}</span>
+                            <div class="btn-group btn-group-sm">
+                                <button type="button" class="btn btn-outline-secondary btn-sm move-up-btn" 
+                                        data-index="${index}" ${index === 0 ? 'disabled' : ''}>
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm move-down-btn" 
+                                        data-index="${index}" ${index === Array.from(uniqueCards.values()).length - 1 ? 'disabled' : ''}>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                        ` : `
+                            <small class="text-muted">Use filters above to reorder cards</small>
+                        `}
                     </div>
                 </td>
                 <td>
@@ -8943,6 +8950,19 @@ ${imageUrl ? `<div class="se-component se-image-container __se__float- __se__flo
         buildExportSelectionTable();
         
         showAnalysisToast(`Card "${card.title || card.sku}" moved down to position ${index + 2}`, 'success');
+    }
+    
+    // Check if Model, Generation, and Card Type filters are applied
+    function checkIfFiltersApplied() {
+        const modelFilter = document.getElementById('modelFilter');
+        const generationFilter = document.getElementById('generationFilter');
+        const cardTypeFilter = document.getElementById('cardTypeFilter');
+        
+        const hasModelFilter = modelFilter && modelFilter.value && modelFilter.value !== 'all';
+        const hasGenerationFilter = generationFilter && generationFilter.value && generationFilter.value !== 'all';
+        const hasCardTypeFilter = cardTypeFilter && cardTypeFilter.value && cardTypeFilter.value !== 'all';
+        
+        return hasModelFilter && hasGenerationFilter && hasCardTypeFilter;
     }
 
     // Attach event listeners for filtering and sorting
