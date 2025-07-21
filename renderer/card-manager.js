@@ -663,9 +663,6 @@ class CardManager {
     updateStats() {
         if (!this.isUiEnabled) return;
         
-        const statsElement = document.getElementById('cardStats');
-        if (!statsElement) return;
-        
         const totalCards = this.allCards.length;
         const filteredCards = this.filteredCards.length;
         
@@ -685,15 +682,20 @@ class CardManager {
             card.hypaUpdated === true
         ).length;
         
-        // Update the DOM elements
-        statsElement.innerHTML = `
-            <strong>Total Cards:</strong> ${totalCards}<br>
-            <strong>Filtered Cards:</strong> ${filteredCards}<br>
-            <strong>Uploaded Images:</strong> ${uploadedImages}<br>
-            <strong>Awaiting Upload:</strong> ${awaitingUpload}<br>
-            <strong>Hypa Imported Cards:</strong> ${hypaImportedCards}<br>
-            <strong>Recently Updated Cards:</strong> ${recentlyUpdatedCards}
-        `;
+        // Update individual DOM elements
+        const totalCardsElement = document.getElementById('totalCards');
+        const filteredCardsElement = document.getElementById('filteredCards');
+        const uploadedImagesElement = document.getElementById('uploadedImages');
+        const awaitingUploadElement = document.getElementById('awaitingUpload');
+        const hypaImportedCardsElement = document.getElementById('hypaImportedCards');
+        const recentlyUpdatedCardsElement = document.getElementById('recentlyUpdatedCards');
+        
+        if (totalCardsElement) totalCardsElement.textContent = totalCards;
+        if (filteredCardsElement) filteredCardsElement.textContent = filteredCards;
+        if (uploadedImagesElement) uploadedImagesElement.textContent = uploadedImages;
+        if (awaitingUploadElement) awaitingUploadElement.textContent = awaitingUpload;
+        if (hypaImportedCardsElement) hypaImportedCardsElement.textContent = hypaImportedCards;
+        if (recentlyUpdatedCardsElement) recentlyUpdatedCardsElement.textContent = recentlyUpdatedCards;
     }
 
     renderCards() {
@@ -1179,25 +1181,29 @@ class CardManager {
         const title = card.title || '';
         const subtitle = card.subtitle || '';
         const description = card.description || card.content || '';
+        const filename = imageUrl ? imageUrl.split('/').pop().split('?')[0] : '';
         
         return `<!-- Product feature card container -->
-<div style="display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
-<!-- Text content -->
-<div style="flex: 1; min-width: 300px;">
-<h2>${title}</h2>
-<h3>${subtitle}</h3>
-<p>${description}</p>
-</div>
-<!-- Image -->
-<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
-</div>
-<div class="se-component se-image-container __se__float-"><figure style="width: 400px;">
-<img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${imageUrl.split('/').pop()}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
-</figure>
-</div>
-<div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
-</div>
-</div>`;
+
+<div style="display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
+    <!-- Text content -->
+    
+    <div style="flex: 1; min-width: 300px;">
+    <h2>${title}</h2>
+    <h3>${subtitle}</h3>
+    <p>${description}</p>
+    </div>
+    <!-- Image -->
+    
+    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+    </div>
+    <div class="se-component se-image-container __se__float-"><figure style="width: 400px;">
+    <img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${filename}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
+    </figure>
+    </div>
+    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
+    </div>
+    </div>`;
     }
 
     generateProductOptionsCardHtml(card, imageUrl) {
@@ -1915,6 +1921,57 @@ function hideCancelButton() {
 //     // ... upload logic ...
 // }
 // hideCancelButton();
+
+// Copy HTML to clipboard function
+function copyHtmlToClipboard() {
+    const codeContainer = document.getElementById('htmlCodeContainer');
+    if (!codeContainer) {
+        showToast('HTML code container not found', 'error');
+        return;
+    }
+    
+    const htmlCode = codeContainer.textContent;
+    
+    // Use the modern clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(htmlCode).then(() => {
+            showToast('HTML code copied to clipboard!', 'success');
+        }).catch(err => {
+            console.error('Failed to copy to clipboard:', err);
+            // Fallback to old method
+            fallbackCopyTextToClipboard(htmlCode);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        fallbackCopyTextToClipboard(htmlCode);
+    }
+}
+
+// Fallback copy function for older browsers
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showToast('HTML code copied to clipboard!', 'success');
+        } else {
+            showToast('Failed to copy to clipboard', 'error');
+        }
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        showToast('Failed to copy to clipboard', 'error');
+    }
+    
+    document.body.removeChild(textArea);
+}
 
 // Make CardManager available globally
 window.CardManager = CardManager;

@@ -376,6 +376,53 @@
             </div>
           </div>
 
+          <!-- HTML Code Modal -->
+          <div
+            class="modal fade"
+            id="htmlModal"
+            tabindex="-1"
+            aria-labelledby="htmlModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="htmlModalLabel">
+                    <i class="fas fa-code me-2"></i>Card HTML Code
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="mb-0">Copy the HTML code below to use this card:</p>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onclick="copyHtmlToClipboard()"
+                    >
+                      <i class="fas fa-copy me-2"></i>Copy to Clipboard
+                    </button>
+                  </div>
+                  <pre id="htmlCodeContainer" style="background: #f8f9fa; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word;"></pre>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div id="cardsList">
             <div class="text-center py-5">
               <div class="spinner-border text-primary" role="status">
