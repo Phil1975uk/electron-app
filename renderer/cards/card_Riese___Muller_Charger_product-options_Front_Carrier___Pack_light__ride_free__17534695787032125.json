@@ -1,0 +1,64 @@
+{
+  "id": "17534695787032125",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Front Carrier – Pack light, ride free.",
+  "description": "Carry up to 5 kg up front — the frame-mounted rack is co-sprung for a smooth ride. Bungee cords hold your gear tight, whether it’s a sleeping bag, gym kit, or snacks. Ready when you are.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01105/10_10_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "94.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_Front_Carrier___Pack_light__ride_free__17534695787032125.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_front-carrier-pack-light-ride-free.jpg",
+  "uploadDate": "2025-07-25T19:05:56.720Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:52.631Z",
+    "DateUploaded": "2025-07-25T19:05:52.631Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:52:58.703Z",
+  "savedAt": "2025-07-25T18:52:58.703Z",
+  "originalHypaData": {}
+}

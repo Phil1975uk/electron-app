@@ -89,6 +89,22 @@ window.addEventListener('load', () => {
             editModal = new bootstrap.Modal(editModalElement);
         }
 
+        // DEBUG: Check and enable all form inputs
+        console.log('DEBUG: Checking form inputs...');
+        const allInputs = document.querySelectorAll('#bikeConfigForm input, #bikeConfigForm select, #bikeConfigForm textarea');
+        allInputs.forEach((input, index) => {
+            console.log(`DEBUG: Input ${index}:`, input.id, 'disabled:', input.disabled, 'readonly:', input.readOnly, 'type:', input.type);
+            
+            // Force enable all inputs
+            input.removeAttribute('disabled');
+            input.removeAttribute('readonly');
+            input.style.pointerEvents = 'auto';
+            input.style.opacity = '1';
+            input.style.background = '#fff';
+            
+            console.log(`DEBUG: After enabling - disabled:`, input.disabled, 'readonly:', input.readOnly);
+        });
+
         // Add event listeners
         if (bikeConfigForm) {
             bikeConfigForm.addEventListener('submit', handleFormSubmit);
@@ -148,6 +164,26 @@ window.addEventListener('load', () => {
         updateBrandSelect();
         updateFilterOptions();
         // updateExcelFile(); // Removed automatic Excel generation on page load
+        
+        // DEBUG: Final check of form inputs
+        console.log('DEBUG: Final check of form inputs...');
+        const finalInputs = document.querySelectorAll('#bikeConfigForm input, #bikeConfigForm select, #bikeConfigForm textarea');
+        finalInputs.forEach((input, index) => {
+            console.log(`DEBUG: Final Input ${index}:`, input.id, 'disabled:', input.disabled, 'readonly:', input.readOnly);
+            
+            // Add test event listeners
+            input.addEventListener('focus', () => {
+                console.log(`DEBUG: Input ${input.id} focused`);
+            });
+            
+            input.addEventListener('input', () => {
+                console.log(`DEBUG: Input ${input.id} value changed to:`, input.value);
+            });
+            
+            input.addEventListener('click', () => {
+                console.log(`DEBUG: Input ${input.id} clicked`);
+            });
+        });
     }
     
     // Variant management functions
@@ -369,6 +405,61 @@ window.addEventListener('load', () => {
             return;
         }
 
+        // Check for duplicate SKUs across all configurations
+        const allSkus = [];
+        configurations.forEach(config => {
+            if (config.variants && Array.isArray(config.variants)) {
+                config.variants.forEach(variant => {
+                    if (variant.sku) {
+                        allSkus.push({ sku: variant.sku, config: config });
+                    }
+                });
+            }
+        });
+        
+        // Check for duplicates within the current variants being added
+        const currentSkus = variants.map(v => v.sku).filter(sku => sku);
+        const duplicateCurrentSkus = currentSkus.filter((sku, index) => currentSkus.indexOf(sku) !== index);
+        
+        if (duplicateCurrentSkus.length > 0) {
+            alert(`⚠️ DUPLICATE SKUs IN CURRENT CONFIGURATION!\n\n` +
+                  `The following SKUs are duplicated within this configuration:\n` +
+                  `${[...new Set(duplicateCurrentSkus)].join(', ')}\n\n` +
+                  `Each SKU must be unique within a single configuration.`);
+            return;
+        }
+        
+        // Check for duplicates with existing configurations
+        const duplicateWithExisting = [];
+        currentSkus.forEach(sku => {
+            const existingConfigs = allSkus.filter(item => item.sku === sku);
+            if (existingConfigs.length > 0) {
+                duplicateWithExisting.push({ sku, configs: existingConfigs });
+            }
+        });
+        
+        if (duplicateWithExisting.length > 0) {
+            let warningMessage = `⚠️ DUPLICATE SKUs DETECTED!\n\n`;
+            warningMessage += `The following SKUs are already used in other configurations:\n\n`;
+            
+            duplicateWithExisting.forEach(duplicate => {
+                warningMessage += `SKU: "${duplicate.sku}" is used in:\n`;
+                duplicate.configs.forEach(config => {
+                    warningMessage += `• ${config.config.brand} - ${config.config.model} - ${config.config.generation}\n`;
+                });
+                warningMessage += `\n`;
+            });
+            
+            warningMessage += `This will cause issues with Hypa Metafields uploads.\n`;
+            warningMessage += `Each SKU must be unique across all products.\n\n`;
+            warningMessage += `Continue anyway?`;
+            
+            const continueAnyway = confirm(warningMessage);
+            if (!continueAnyway) {
+                return;
+            }
+        }
+
         const newConfig = {
             id: Date.now(),
             brand,
@@ -411,44 +502,46 @@ window.addEventListener('load', () => {
             return;
         }
         
-        // Check for duplicate SKUs across all configurations
+        // Check for duplicate SKUs across all configurations (excluding current config)
         const allSkus = [];
-        configurations.forEach(config => {
-            if (config.variants && Array.isArray(config.variants)) {
-                config.variants.forEach(variant => {
-                    if (variant.sku) {
-                        allSkus.push({ sku: variant.sku, config: config });
-                    }
-                });
+        configurations.forEach((config) => {
+            if (config.id.toString() !== id.toString()) { // Exclude current config being edited
+                if (config.variants && Array.isArray(config.variants)) {
+                    config.variants.forEach(variant => {
+                        if (variant.sku) {
+                            allSkus.push({ sku: variant.sku, config: config });
+                        }
+                    });
+                }
             }
         });
         
-        // Add current variants to check
-        variants.forEach(variant => {
-            if (variant.sku) {
-                allSkus.push({ sku: variant.sku, config: { brand, model, generation } });
+        // Check for duplicates within the current variants being edited
+        const currentSkus = variants.map(v => v.sku).filter(sku => sku);
+        const duplicateCurrentSkus = currentSkus.filter((sku, index) => currentSkus.indexOf(sku) !== index);
+        
+        if (duplicateCurrentSkus.length > 0) {
+            alert(`⚠️ DUPLICATE SKUs IN CURRENT CONFIGURATION!\n\n` +
+                  `The following SKUs are duplicated within this configuration:\n` +
+                  `${[...new Set(duplicateCurrentSkus)].join(', ')}\n\n` +
+                  `Each SKU must be unique within a single configuration.`);
+            return;
+        }
+        
+        // Check for duplicates with existing configurations
+        const duplicateWithExisting = [];
+        currentSkus.forEach(sku => {
+            const existingConfigs = allSkus.filter(item => item.sku === sku);
+            if (existingConfigs.length > 0) {
+                duplicateWithExisting.push({ sku, configs: existingConfigs });
             }
         });
         
-        // Find duplicate SKUs
-        const duplicateSkus = [];
-        const skuCounts = {};
-        allSkus.forEach(item => {
-            skuCounts[item.sku] = (skuCounts[item.sku] || 0) + 1;
-        });
-        
-        Object.keys(skuCounts).forEach(sku => {
-            if (skuCounts[sku] > 1) {
-                const configsWithSku = allSkus.filter(item => item.sku === sku);
-                duplicateSkus.push({ sku, configs: configsWithSku });
-            }
-        });
-        
-        if (duplicateSkus.length > 0) {
+        if (duplicateWithExisting.length > 0) {
             let warningMessage = `⚠️ DUPLICATE SKUs DETECTED!\n\n`;
-            warningMessage += `The following SKUs are used in multiple configurations:\n\n`;
+            warningMessage += `The following SKUs are already used in other configurations:\n\n`;
             
-            duplicateSkus.forEach(duplicate => {
+            duplicateWithExisting.forEach(duplicate => {
                 warningMessage += `SKU: "${duplicate.sku}" is used in:\n`;
                 duplicate.configs.forEach(config => {
                     warningMessage += `• ${config.config.brand} - ${config.config.model} - ${config.config.generation}\n`;
@@ -465,34 +558,12 @@ window.addEventListener('load', () => {
                 return;
             }
         }
-
+        
         // Find config by stringified ID for robustness
         let index = configurations.findIndex(config => config.id.toString() === id.toString());
         console.log('Found config at index:', index);
 
         if (index !== -1) {
-            // Check for duplicate brand/model/generation combination (excluding current config)
-            const isDuplicate = configurations.some((config, i) =>
-                i !== index &&
-                config.brand === brand &&
-                config.model === model &&
-                config.generation === generation
-            );
-            
-            if (isDuplicate) {
-                alert(
-                    `⚠️ DUPLICATE CONFIGURATION DETECTED!\n\n` +
-                    `A configuration with Brand: "${brand}", Model: "${model}", Generation: "${generation}" already exists.\n\n` +
-                    `This will cause issues with Hypa Metafields because:\n` +
-                    `• SKUs must be unique across all products\n` +
-                    `• Duplicate configurations can cause data conflicts\n\n` +
-                    `Please either:\n` +
-                    `• Edit the existing configuration instead\n` +
-                    `• Use a different model/generation name\n` +
-                    `• Or ensure all variants have unique SKUs`
-                );
-                return;
-            }
             configurations[index] = {
                 ...configurations[index],
                 brand,
@@ -521,28 +592,69 @@ window.addEventListener('load', () => {
             document.getElementById('editModel').value = config.model;
             document.getElementById('editGeneration').value = config.generation;
             setEditVariants(config.variants || []);
-            // DEBUG: Highlight overlays and force-enable fields
-            setTimeout(() => {
-                // Highlight overlays
-                document.querySelectorAll('div, .modal-backdrop').forEach(el => {
-                    const z = window.getComputedStyle(el).zIndex;
-                    if (z && parseInt(z) > 1000) {
-                        el.style.outline = '2px solid red';
-                    }
-                });
-                // Force-enable all inputs in the modal
-                const modal = document.getElementById('editModal');
-                if (modal) {
-                    modal.querySelectorAll('input, select, textarea').forEach(input => {
-                        input.removeAttribute('readonly');
-                        input.removeAttribute('disabled');
-                        input.style.pointerEvents = 'auto';
-                        input.style.background = '#fff';
-                    });
-                }
-            }, 200);
+            
+            // Show the modal first
             editModal.show();
+            
+            // Enable inputs once after modal is shown
+            setTimeout(() => {
+                forceEnableModalInputs();
+            }, 100);
         }
+    }
+    
+    function forceEnableModalInputs() {
+        const modal = document.getElementById('editModal');
+        if (!modal) return;
+        
+        console.log('Force enabling modal inputs...');
+        
+        // Force modal to front
+        modal.style.zIndex = '9999';
+        modal.style.position = 'relative';
+        
+        // Force backdrop to proper z-index
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach((backdrop, index) => {
+            if (index > 0) { // Keep only the first backdrop
+                backdrop.remove();
+            } else {
+                backdrop.style.zIndex = '9998';
+            }
+        });
+        
+        const inputs = modal.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            // Remove any disabled/readonly attributes
+            input.removeAttribute('disabled');
+            input.removeAttribute('readonly');
+            
+            // Ensure proper styling
+            input.style.pointerEvents = 'auto';
+            input.style.opacity = '1';
+            input.style.background = '#fff';
+            input.style.color = '#000';
+            input.style.position = 'relative';
+            input.style.zIndex = '10000';
+            input.style.cursor = 'text';
+            
+            // Remove any event listeners that might be blocking
+            input.onclick = null;
+            input.onfocus = null;
+            input.oninput = null;
+            
+            console.log(`Enabled input: ${input.id} - disabled: ${input.disabled}, readonly: ${input.readOnly}`);
+        });
+        
+        // Remove any potential blocking elements (second check)
+        const extraBackdrops = document.querySelectorAll('.modal-backdrop');
+        extraBackdrops.forEach((backdrop, index) => {
+            if (index > 0) { // Keep only the first backdrop
+                backdrop.remove();
+            }
+        });
+        
+        console.log('Modal inputs force-enabled');
     }
 
     // Utility: Robust deep copy (uses structuredClone if available, else JSON fallback)
@@ -557,41 +669,78 @@ window.addEventListener('load', () => {
     function duplicateConfiguration(id) {
         const config = configurations.find(config => config.id === id);
         if (config) {
-            // Check for duplicate brand/model/generation combination
-            const isDuplicate = configurations.some(existingConfig => 
-                existingConfig.brand === config.brand &&
-                existingConfig.model === config.model &&
-                existingConfig.generation === config.generation
-            );
+            // Check for potential SKU conflicts if variants are copied
+            const hasVariants = config.variants && config.variants.length > 0;
+            let shouldCopyVariants = false;
             
-            if (isDuplicate) {
-                const result = confirm(
-                    `A configuration with Brand: "${config.brand}", Model: "${config.model}", Generation: "${config.generation}" already exists.\n\n` +
-                    `Duplicating will create another configuration with the same brand/model/generation but NO variants.\n\n` +
-                    `You will need to add unique variants with unique SKUs manually.\n\n` +
-                    `Continue with duplication?`
-                );
-                if (!result) return;
+            if (hasVariants) {
+                // Check if any SKUs from this config already exist in other configs
+                const existingSkus = [];
+                configurations.forEach(existingConfig => {
+                    if (existingConfig.id !== config.id && existingConfig.variants) {
+                        existingConfig.variants.forEach(variant => {
+                            if (variant.sku) {
+                                existingSkus.push(variant.sku);
+                            }
+                        });
+                    }
+                });
+                
+                const conflictingSkus = config.variants
+                    .filter(variant => variant.sku && existingSkus.includes(variant.sku))
+                    .map(variant => variant.sku);
+                
+                if (conflictingSkus.length > 0) {
+                    const result = confirm(
+                        `⚠️ SKU CONFLICTS DETECTED!\n\n` +
+                        `The following SKUs from this configuration already exist in other configurations:\n` +
+                        `${conflictingSkus.join(', ')}\n\n` +
+                        `Duplicating will create another configuration with the same brand/model/generation but NO variants to prevent SKU conflicts.\n\n` +
+                        `You will need to add unique variants with unique SKUs manually.\n\n` +
+                        `Continue with duplication?`
+                    );
+                    if (!result) return;
+                    shouldCopyVariants = false;
+                } else {
+                    const result = confirm(
+                        `Duplicate configuration: ${config.brand} - ${config.model} - ${config.generation}\n\n` +
+                        `This will create another configuration with the same brand/model/generation.\n\n` +
+                        `Would you like to copy the variants as well? (Only if SKUs are unique)\n\n` +
+                        `Click OK to copy variants, Cancel to create without variants.`
+                    );
+                    shouldCopyVariants = result;
+                }
             }
             
-            // Deep copy the configuration but CLEAR the variants to prevent SKU conflicts
+            // Deep copy the configuration
             const newConfig = deepCopy(config);
             newConfig.id = Date.now();
-            newConfig.variants = []; // Clear variants - user must add unique ones
+            
+            if (!shouldCopyVariants) {
+                newConfig.variants = []; // Clear variants - user must add unique ones
+            }
             
             configurations.push(newConfig);
             saveConfigurations();
             updateFilterOptions();
             applyFilters();
             
-            // Show warning about adding variants
+            // Show appropriate message
             setTimeout(() => {
-                alert(
-                    `Configuration duplicated successfully!\n\n` +
-                    `⚠️ IMPORTANT: Variants were NOT copied to prevent SKU conflicts.\n\n` +
-                    `You must now add unique variants with unique SKUs for this configuration.\n\n` +
-                    `Remember: Each SKU must be unique across all products for Hypa Metafields to work correctly.`
-                );
+                if (shouldCopyVariants) {
+                    alert(
+                        `Configuration duplicated successfully!\n\n` +
+                        `✅ Variants were copied because all SKUs are unique.\n\n` +
+                        `You can now edit this configuration to modify variants if needed.`
+                    );
+                } else {
+                    alert(
+                        `Configuration duplicated successfully!\n\n` +
+                        `⚠️ IMPORTANT: Variants were NOT copied to prevent SKU conflicts.\n\n` +
+                        `You must now add unique variants with unique SKUs for this configuration.\n\n` +
+                        `Remember: Each SKU must be unique across all products for Hypa Metafields to work correctly.`
+                    );
+                }
             }, 100);
             
             editConfiguration(newConfig.id);
@@ -1040,7 +1189,142 @@ window.addEventListener('load', () => {
     window.editConfiguration = editConfiguration;
     window.duplicateConfiguration = duplicateConfiguration;
     window.deleteConfiguration = deleteConfiguration;
-
+    
+    // DEBUG: Global test function
+    window.testFormInputs = function() {
+        console.log('DEBUG: Testing form inputs...');
+        
+        const inputs = document.querySelectorAll('#bikeConfigForm input, #bikeConfigForm select, #bikeConfigForm textarea');
+        inputs.forEach((input, index) => {
+            console.log(`Input ${index}:`, {
+                id: input.id,
+                type: input.type,
+                disabled: input.disabled,
+                readonly: input.readOnly,
+                value: input.value,
+                style: {
+                    pointerEvents: input.style.pointerEvents,
+                    opacity: input.style.opacity,
+                    background: input.style.background
+                }
+            });
+            
+            // Try to focus each input
+            try {
+                input.focus();
+                console.log(`Successfully focused input ${input.id}`);
+            } catch (error) {
+                console.error(`Failed to focus input ${input.id}:`, error);
+            }
+        });
+        
+        // Test clicking on inputs
+        inputs.forEach((input, index) => {
+            try {
+                input.click();
+                console.log(`Successfully clicked input ${input.id}`);
+            } catch (error) {
+                console.error(`Failed to click input ${input.id}:`, error);
+            }
+        });
+        
+        alert('Check console for form input test results');
+    };
+    
+    // Global function to force enable modal inputs (for debug buttons)
+    window.forceModalFocus = function() {
+        console.log('Force modal focus called...');
+        
+        // Force window to front
+        if (window.electronAPI && window.electronAPI.focusWindow) {
+            window.electronAPI.focusWindow();
+        }
+        window.focus();
+        
+        // Force enable all modal inputs
+        forceEnableModalInputs();
+        
+        console.log('Force modal focus completed');
+    };
+    
+    // Global function to test modal inputs
+    window.testEditModalInputs = function() {
+        console.log('Testing edit modal inputs...');
+        
+        const modal = document.getElementById('editModal');
+        if (!modal) {
+            console.log('Modal not found');
+            return;
+        }
+        
+        const inputs = modal.querySelectorAll('input, select, textarea');
+        console.log('Found inputs:', inputs.length);
+        
+        inputs.forEach((input, index) => {
+            console.log(`Input ${index + 1}:`, {
+                id: input.id,
+                type: input.type,
+                disabled: input.disabled,
+                readonly: input.readOnly,
+                value: input.value,
+                style: {
+                    pointerEvents: input.style.pointerEvents,
+                    opacity: input.style.opacity,
+                    background: input.style.background,
+                    color: input.style.color,
+                    cursor: input.style.cursor,
+                    zIndex: input.style.zIndex
+                }
+            });
+            
+            // Try to focus each input
+            try {
+                input.focus();
+                console.log(`Successfully focused: ${input.id}`);
+            } catch (error) {
+                console.log(`Failed to focus: ${input.id}`, error);
+            }
+        });
+        
+        // Force enable inputs
+        forceEnableModalInputs();
+        
+        console.log('Edit modal input test completed');
+    };
+    
+    // DEBUG: Check for hidden modals or overlays
+    function checkForBlockingElements() {
+        console.log('DEBUG: Checking for blocking elements...');
+        
+        // Check for modal backdrops
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach((backdrop, index) => {
+            console.log(`DEBUG: Found modal backdrop ${index}:`, backdrop);
+            if (backdrop.style.display !== 'none') {
+                console.log('DEBUG: Removing modal backdrop');
+                backdrop.remove();
+            }
+        });
+        
+        // Check for any elements with high z-index that might be blocking
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(element => {
+            const zIndex = window.getComputedStyle(element).zIndex;
+            if (zIndex && parseInt(zIndex) > 1000) {
+                console.log('DEBUG: High z-index element:', element, 'z-index:', zIndex);
+            }
+        });
+        
+        // Check for any hidden modals
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach((modal, index) => {
+            console.log(`DEBUG: Modal ${index}:`, modal.id, 'display:', window.getComputedStyle(modal).display);
+        });
+    }
+    
+    // Run the check after a short delay
+    setTimeout(checkForBlockingElements, 1000);
+    
     // Initialize the application
     initializeElements();
 }); 

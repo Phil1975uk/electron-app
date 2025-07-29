@@ -94,3 +94,6 @@ This is a Python web application using HTML, CSS, and JavaScript. The backend us
 
 ## Starting the app
 - When you want to start the app please always ensure the app is closed before trying to start.
+
+## Data Storage
+- All dat is to be saved to disk not in local memory

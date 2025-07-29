@@ -307,36 +307,60 @@ class CardManager {
         // Brand filter
         document.getElementById('filterBrand').addEventListener('change', (e) => {
             this.filters.brand = e.target.value;
+            // Reset dependent filters
+            this.filters.model = '';
+            this.filters.generation = '';
+            this.filters.variants = '';
+            this.filters.selectedVariants = [];
+            
+            // Update dependent filter dropdowns
             this.populateModelFilter();
             this.populateGenerationFilter();
             this.populateVariantFilter();
-            // Auto-select generation if only one is available
-            const generationSelect = document.getElementById('filterGeneration');
-            if (generationSelect.options.length === 2) {
-                generationSelect.selectedIndex = 1;
-                this.filters.generation = generationSelect.options[1].value;
-                this.populateVariantFilter();
-            }
+            
+            // Reset form elements
+            document.getElementById('filterModel').value = '';
+            document.getElementById('filterGeneration').value = '';
+            document.getElementById('filterVariants').value = '';
+            this.toggleVariantCheckboxes();
+            
             this.applyFilters();
         });
+        
         // Model filter
         document.getElementById('filterModel').addEventListener('change', (e) => {
             this.filters.model = e.target.value;
+            // Reset dependent filters
+            this.filters.generation = '';
+            this.filters.variants = '';
+            this.filters.selectedVariants = [];
+            
+            // Update dependent filter dropdowns
             this.populateGenerationFilter();
             this.populateVariantFilter();
-            // Auto-select generation if only one is available
-            const generationSelect = document.getElementById('filterGeneration');
-            if (generationSelect.options.length === 2) {
-                generationSelect.selectedIndex = 1;
-                this.filters.generation = generationSelect.options[1].value;
-                this.populateVariantFilter();
-            }
+            
+            // Reset form elements
+            document.getElementById('filterGeneration').value = '';
+            document.getElementById('filterVariants').value = '';
+            this.toggleVariantCheckboxes();
+            
             this.applyFilters();
         });
+        
         // Generation filter
         document.getElementById('filterGeneration').addEventListener('change', (e) => {
             this.filters.generation = e.target.value;
+            // Reset dependent filters
+            this.filters.variants = '';
+            this.filters.selectedVariants = [];
+            
+            // Update dependent filter dropdowns
             this.populateVariantFilter();
+            
+            // Reset form elements
+            document.getElementById('filterVariants').value = '';
+            this.toggleVariantCheckboxes();
+            
             this.applyFilters();
         });
         // Variants filter (dropdown)
@@ -365,6 +389,11 @@ class CardManager {
         // Clear data modal buttons
         document.getElementById('deleteAllCardsBtn').addEventListener('click', () => this.deleteAllCards());
         document.getElementById('deleteAllDataBtn').addEventListener('click', () => this.deleteAllData());
+        // Sort dropdown
+        document.getElementById('sortCardsBy').addEventListener('change', (e) => {
+            this.sortCards(e.target.value);
+        });
+        
         // Variant checkbox event listeners
         document.addEventListener('change', (e) => {
             if (e.target.type === 'checkbox' && e.target.name === 'variantFilter') {
@@ -415,17 +444,27 @@ class CardManager {
         const generationSelect = document.getElementById('filterGeneration');
         generationSelect.innerHTML = '<option value="">All Generations</option>';
         
-        if (!this.filters.brand || !this.filters.model) return;
+        let filteredCards = this.allCards;
+        
+        // Apply brand filter if selected
+        if (this.filters.brand) {
+            filteredCards = filteredCards.filter(card => 
+                card.configuration?.brand === this.filters.brand
+            );
+        }
+        
+        // Apply model filter if selected
+        if (this.filters.model) {
+            filteredCards = filteredCards.filter(card => 
+                card.configuration?.model === this.filters.model
+            );
+        }
         
         const generations = [...new Set(
-            this.allCards
-                .filter(card => 
-                    card.configuration?.brand === this.filters.brand && 
-                    card.configuration?.model === this.filters.model
-                )
+            filteredCards
                 .map(card => card.configuration?.generation)
                 .filter(Boolean)
-        )];
+        )].sort();
         
         generations.forEach(generation => {
             const option = new Option(generation, generation);
@@ -441,28 +480,32 @@ class CardManager {
         
         variantSelect.innerHTML = '<option value="">All Variants</option><option value="specific">Specific Variants</option>';
         
-        // Only populate checkboxes if we have all required filters
-        if (!this.filters.brand || !this.filters.model || !this.filters.generation) {
-            const variantCheckboxes = document.getElementById('variantCheckboxes');
-            if (variantCheckboxes) {
-                variantCheckboxes.innerHTML = '';
-                variantCheckboxes.style.display = 'none';
-            }
-            return;
+        let filteredCards = this.allCards;
+        
+        // Apply brand filter if selected
+        if (this.filters.brand) {
+            filteredCards = filteredCards.filter(card => 
+                card.configuration?.brand === this.filters.brand
+            );
         }
         
-        // Get all variants from cards that match the selected brand, model, and generation
-        const matchingCards = this.allCards.filter(card => 
-            card.configuration?.brand === this.filters.brand && 
-            card.configuration?.model === this.filters.model && 
-            card.configuration?.generation === this.filters.generation
-        );
+        // Apply model filter if selected
+        if (this.filters.model) {
+            filteredCards = filteredCards.filter(card => 
+                card.configuration?.model === this.filters.model
+            );
+        }
         
-        console.log('Matching cards for variant filter:', matchingCards);
+        // Apply generation filter if selected
+        if (this.filters.generation) {
+            filteredCards = filteredCards.filter(card => 
+                card.configuration?.generation === this.filters.generation
+            );
+        }
         
         // Extract all unique variants from these cards
         const allVariants = new Set();
-        matchingCards.forEach(card => {
+        filteredCards.forEach(card => {
             if (card.configuration?.variants) {
                 card.configuration.variants.forEach(variant => {
                     if (typeof variant === 'string') {
@@ -485,8 +528,11 @@ class CardManager {
         if (allVariants.size > 0) {
             this.populateVariantCheckboxes(Array.from(allVariants).sort());
         } else {
-            document.getElementById('variantCheckboxes').innerHTML = '<small class="text-muted">No variants found for this configuration.</small>';
-            document.getElementById('variantCheckboxes').style.display = 'none';
+            const variantCheckboxes = document.getElementById('variantCheckboxes');
+            if (variantCheckboxes) {
+                variantCheckboxes.innerHTML = '<small class="text-muted">No variants found for this configuration.</small>';
+                variantCheckboxes.style.display = 'none';
+            }
         }
     }
 
@@ -507,7 +553,7 @@ class CardManager {
             const variantId = variant.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
             container.innerHTML += `
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="${variant}" id="variant-${variantId}">
+                    <input class="form-check-input" type="checkbox" name="variantFilter" value="${variant}" id="variant-${variantId}">
                     <label class="form-check-label" for="variant-${variantId}">${variant}</label>
                 </div>
             `;
@@ -533,6 +579,55 @@ class CardManager {
         if (!checkboxes) return;
         
         this.filters.selectedVariants = Array.from(checkboxes).map(cb => cb.value);
+    }
+
+    sortCards(sortBy) {
+        if (!this.filteredCards || this.filteredCards.length === 0) return;
+        
+        this.filteredCards.sort((a, b) => {
+            const configA = a.configuration || {};
+            const configB = b.configuration || {};
+            
+            switch (sortBy) {
+                case 'model-generation':
+                    // Sort by brand, then model, then generation
+                    const brandCompare = (configA.brand || '').localeCompare(configB.brand || '');
+                    if (brandCompare !== 0) return brandCompare;
+                    
+                    const modelCompare = (configA.model || '').localeCompare(configB.model || '');
+                    if (modelCompare !== 0) return modelCompare;
+                    
+                    return (configA.generation || '').localeCompare(configB.generation || '');
+                
+                case 'model':
+                    // Sort by brand, then model
+                    const brandCompare2 = (configA.brand || '').localeCompare(configB.brand || '');
+                    if (brandCompare2 !== 0) return brandCompare2;
+                    
+                    return (configA.model || '').localeCompare(configB.model || '');
+                
+                case 'generation':
+                    // Sort by generation
+                    return (configA.generation || '').localeCompare(configB.generation || '');
+                
+                case 'cardType':
+                    // Sort by card type
+                    const cardTypeA = a.cardType || a.type || '';
+                    const cardTypeB = b.cardType || b.type || '';
+                    return cardTypeA.localeCompare(cardTypeB);
+                
+                case 'created':
+                    // Sort by creation date (newest first)
+                    const dateA = new Date(a.createdAt || a.created || 0);
+                    const dateB = new Date(b.createdAt || b.created || 0);
+                    return dateB - dateA;
+                
+                default:
+                    return 0;
+            }
+        });
+        
+        this.renderCards();
     }
 
     applyFilters() {
@@ -625,6 +720,11 @@ class CardManager {
             
             return true;
         });
+        
+        // Apply current sort
+        const sortBy = document.getElementById('sortCardsBy')?.value || 'model-generation';
+        this.sortCards(sortBy);
+        
         this.updateStats();
         this.renderCards();
     }
@@ -651,6 +751,7 @@ class CardManager {
         document.getElementById('filterGeneration').value = '';
         document.getElementById('filterVariants').value = '';
         document.getElementById('filterSku').value = '';
+        document.getElementById('sortCardsBy').value = 'model-generation';
         document.getElementById('variantCheckboxes').style.display = 'none';
         document.getElementById('variantCheckboxes').innerHTML = '';
         this.populateVariantFilter();
@@ -1864,6 +1965,58 @@ class CardManager {
             console.error('Error refreshing cards:', error);
             showToast('Error refreshing cards: ' + error.message, 'error');
         }
+    }
+
+    // Debug function to test variant filtering
+    debugVariantFilter() {
+        console.log('🔍 Debugging variant filter...');
+        console.log('Current filters:', this.filters);
+        
+        const selectedVariant = this.filters.selectedVariants[0];
+        console.log('Selected variant:', selectedVariant);
+        
+        // Find cards for the current brand/model/generation
+        const matchingCards = this.allCards.filter(card => {
+            const config = card.configuration || {};
+            return config.brand === this.filters.brand && 
+                   config.model === this.filters.model && 
+                   config.generation === this.filters.generation;
+        });
+        
+        console.log('Cards matching brand/model/generation:', matchingCards.length);
+        
+        // Check each card's variants
+        matchingCards.forEach(card => {
+            const config = card.configuration || {};
+            const variants = config.variants || [];
+            const cardType = card.cardType || card.type;
+            
+            console.log(`Card ${card.id} (${cardType}):`, {
+                title: card.title,
+                variants: variants,
+                hasSelectedVariant: variants.some(v => {
+                    if (typeof v === 'string') return v === selectedVariant;
+                    if (typeof v === 'object' && v.name) return v.name === selectedVariant;
+                    return String(v) === selectedVariant;
+                })
+            });
+        });
+        
+        // Show what should be filtered
+        const shouldShow = matchingCards.filter(card => {
+            const config = card.configuration || {};
+            const variants = config.variants || [];
+            return variants.some(v => {
+                if (typeof v === 'string') return v === selectedVariant;
+                if (typeof v === 'object' && v.name) return v.name === selectedVariant;
+                return String(v) === selectedVariant;
+            });
+        });
+        
+        console.log('Cards that should show for variant', selectedVariant, ':', shouldShow.length);
+        shouldShow.forEach(card => {
+            console.log(`- ${card.cardType || card.type}: ${card.title}`);
+        });
     }
 }
 

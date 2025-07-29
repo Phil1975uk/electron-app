@@ -1,0 +1,64 @@
+{
+  "id": "17534696777959902",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Front Carrier with Bag – Carry more, ride smarter.",
+  "description": "With 18 L of weatherproof storage and space for up to 5 kg, this frame-mounted bag keeps your gear secure and dry — even on rough roads. Quick to detach, it doubles as a shoulder bag for easy off-bike carry. Two waterproof outer pockets keep the small stuff safe.\n\nPrefer your headlight on the carrier? No problem — it mounts there too for steady, road-following illumination.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01105/10_11_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "159.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_Front_Carrier_with_Bag___Carry_more__ride_smarter__17534696777959902.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_front-carrier-with-bag-carry-more-ride-smarter.jpg",
+  "uploadDate": "2025-07-25T19:05:51.497Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:47.444Z",
+    "DateUploaded": "2025-07-25T19:05:47.444Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:54:37.795Z",
+  "savedAt": "2025-07-25T18:54:37.795Z",
+  "originalHypaData": {}
+}

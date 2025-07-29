@@ -1,0 +1,77 @@
+{
+  "id": "17534672268768553",
+  "sku": "F01102",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Integrated cockpit. Total control.",
+  "description": "Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/65/8f/658fd767-32d7-4b00-9378-196ad4eacff1/22_hlf_cha4_cockpit_kiox300_0750_1600x1067.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "Gt vario SELECT",
+        "sku": "F01282"
+      },
+      {
+        "name": "GT touring CORE",
+        "sku": "F01280"
+      },
+      {
+        "name": "GT vario CORE",
+        "sku": "F01281"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_feature_Integrated_cockpit__Total_control__17534672268768553.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg",
+  "uploadDate": "2025-07-25T19:05:07.097Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:02.466Z",
+    "DateUploaded": "2025-07-25T19:05:02.466Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:13:46.876Z",
+  "savedAt": "2025-07-25T18:13:46.876Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

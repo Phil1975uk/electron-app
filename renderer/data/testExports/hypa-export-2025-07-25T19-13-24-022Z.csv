@@ -1,0 +1,1407 @@
+id,sku,shared.feature-1-card,shared.feature-2-card,shared.feature-3-card,shared.feature-4-card,shared.feature-5-card,shared.feature-6-card,shared.feature-7-card,shared.feature-8-card,shared.feature-9-card,shared.feature-10-card,shared.option-1-card,shared.option-2-card,shared.option-3-card,shared.option-4-card,shared.option-5-card,shared.option-6-card,shared.option-7-card,shared.option-8-card,shared.option-9-card,shared.option-10-card,shared.option-11-card,shared.option-12-card,shared.spec-table,shared.cargo-option-1-card,shared.cargo-option-2-card,shared.cargo-option-3-card,shared.cargo-option-4-card,shared.cargo-option-5-card,shared.cargo-option-6-card,shared.cargo-option-7-card,shared.cargo-option-8-card,shared.cargo-option-9-card,shared.cargo-option-10-card,shared.cargo-option-11-card,shared.cargo-option-12-card,shared.weather-option-1-card,shared.weather-option-2-card,shared.weather-option-3-card,shared.weather-option-4-card,shared.weather-option-5-card,shared.weather-option-6-card,shared.weather-option-7-card,shared.weather-option-8-card,shared.weather-option-9-card,shared.weather-option-10-card,shared.weather-option-11-card,shared.weather-option-12-card
+459,F01282,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+458,F01281,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+457,F01280,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+456,F01108,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+317,F01107,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+316,F01106,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+226,F01105,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+225,F01103,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+224,F01104,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+223,F01102,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Comfort that smooths it all out.</h2>
+<h3>
+</h3>
+<p>Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" alt=""Comfort that smooths it all out."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Confidence built in.</h2>
+<h3>
+</h3>
+<p>With optional Bosch ABS 2.0, sudden stops stay smooth — no skidding, no surprises. Powerful Magura disc brakes deliver instant control, and the rear light with brake light keeps you seen. A bright headlight and wide beam cut through the dark, lighting every ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_confidence-built-in.jpg"" alt=""Confidence built in."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_confidence-built-in.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Connected e-bike.</h2>
+<h3>
+</h3>
+<p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Integrated cockpit. Total control.</h2>
+<h3>
+</h3>
+<p>Tidy cables, smart tech. The optional cockpit with Kiox 300 display keeps your ride stats front and centre on a crisp colour screen. Adjust the stem for comfort or speed. Prefer simple? The standard Intuvia 100 still keeps it clean and clear. Switch modes on the fly with the LED Remote — colour-coded, at your fingertips.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" alt=""Integrated cockpit. Total control."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_integrated-cockpit-total-control.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Ready for anything.</h2>
+<h3>
+</h3>
+<p>The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg"" alt=""Ready for anything."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_ready-for-anything.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+<!-- Text content -->
+
+<div style=""flex: 1; min-width: 300px;"">
+<h2>Sleek frame. Serious power.</h2>
+<h3>
+</h3>
+<p>A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.</p>
+</div>
+<!-- Image -->
+
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+<div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+<img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg"" alt=""Sleek frame. Serious power."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""Charger_Charger4_feature_sleek-frame-serious-power.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+</figure>
+</div>
+<div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+</div>
+</div>",,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" alt=""RX Chip – Your bike, now connected."" data-proportion=""true"" data-align=""none"" data-file-name=""Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"">
+  <div class=""card-title"">RX Chip – Your bike, now connected.</div>
+  <div class=""card-description"">Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.
+
+Note: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.</div>
+  <div class=""card-price"">122.00</div>
+  <button class=""more-info-btn"">More Information</button>
+  </div>
+  </div>
+  </div>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

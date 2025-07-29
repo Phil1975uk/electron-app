@@ -1,0 +1,64 @@
+{
+  "id": "17534697485665560",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Comfort Kit – Sit back and enjoy the ride.",
+  "description": "A wider saddle and swept-back bars let you ride upright and relaxed — comfort, built in.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01107/49_9_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_Comfort_Kit___Sit_back_and_enjoy_the_ride__17534697485665560.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_comfort-kit-sit-back-and-enjoy-the-ride.jpg",
+  "uploadDate": "2025-07-25T19:05:41.187Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:36.844Z",
+    "DateUploaded": "2025-07-25T19:05:36.844Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:55:48.566Z",
+  "savedAt": "2025-07-25T18:55:48.566Z",
+  "originalHypaData": {}
+}

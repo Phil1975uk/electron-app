@@ -1,0 +1,77 @@
+{
+  "id": "17534671219252897",
+  "sku": "F01102",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Sleek frame. Serious power.",
+  "description": "A sleek 750 Wh battery and Bosch motor deliver up to 100 km per charge. Add the bottle-sized PowerMore 250 for 50 km more — just clip it on and ride.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/db/2d/db2dbd20-1918-4ddd-8d6e-2501a2c4f51c/22_hlf_cha4_rahmendesign_batterie_neu.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "Gt vario SELECT",
+        "sku": "F01282"
+      },
+      {
+        "name": "GT touring CORE",
+        "sku": "F01280"
+      },
+      {
+        "name": "GT vario CORE",
+        "sku": "F01281"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_feature_Sleek_frame__Serious_power__17534671219252897.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_sleek-frame-serious-power.jpg",
+  "uploadDate": "2025-07-25T19:05:18.751Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:14.196Z",
+    "DateUploaded": "2025-07-25T19:05:14.196Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:12:01.925Z",
+  "savedAt": "2025-07-25T18:12:01.925Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

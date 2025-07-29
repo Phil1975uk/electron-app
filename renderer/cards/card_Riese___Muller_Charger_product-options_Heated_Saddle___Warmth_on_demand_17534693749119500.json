@@ -1,0 +1,64 @@
+{
+  "id": "17534693749119500",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Heated Saddle – Warmth on demand",
+  "description": "Chilly morning? No problem. The saddle heats to a cozy 37°C in minutes — just tap the button underneath to switch it on. Low on battery use, high on comfort. It auto-switches off with the bike, so you can set it and forget it. (Note: not compatible with suspension seatpost or HS models.)",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01106/48_43_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_Heated_Saddle___Warmth_on_demand_17534693749119500.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_heated-saddle-warmth-on-demand.jpg",
+  "uploadDate": "2025-07-25T19:06:02.309Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:57.962Z",
+    "DateUploaded": "2025-07-25T19:05:57.962Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:49:34.911Z",
+  "savedAt": "2025-07-25T18:49:34.911Z",
+  "originalHypaData": {}
+}

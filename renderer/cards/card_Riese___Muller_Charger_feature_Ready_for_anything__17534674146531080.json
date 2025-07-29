@@ -1,0 +1,77 @@
+{
+  "id": "17534674146531080",
+  "sku": "F01102",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Ready for anything.",
+  "description": "The MIK carrier system handles it all — bags, baskets, panniers, even a child seat (up to 27 kg). Swap accessories in seconds. Whatever you’re carrying, it’s secure, stable, and hassle-free.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/42/d5/42d53c39-2afd-45c5-9764-7258faaa8217/25_hlf_charger4_gptr_bremslicht_black_2532.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "Gt vario SELECT",
+        "sku": "F01282"
+      },
+      {
+        "name": "GT touring CORE",
+        "sku": "F01280"
+      },
+      {
+        "name": "GT vario CORE",
+        "sku": "F01281"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_feature_Ready_for_anything__17534674146531080.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_ready-for-anything.jpg",
+  "uploadDate": "2025-07-25T19:05:13.093Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:08.228Z",
+    "DateUploaded": "2025-07-25T19:05:08.228Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:16:54.653Z",
+  "savedAt": "2025-07-25T18:16:54.653Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

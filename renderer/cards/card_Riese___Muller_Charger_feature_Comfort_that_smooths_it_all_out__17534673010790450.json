@@ -1,0 +1,77 @@
+{
+  "id": "17534673010790450",
+  "sku": "F01102",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Comfort that smooths it all out.",
+  "description": "Cobblestones, gravel, potholes — barely noticeable thanks to the suspension fork and seatpost. Add the comfort kit for a relaxed upright ride with a wide saddle and swept-back bars. Like riding on fresh tarmac, wherever you go.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/c6/c0/c6c081b3-f269-4536-bb8d-98bc6206359a/21_hlf_gefederte_sattelstuetze_cane-creek_0400.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "Gt vario SELECT",
+        "sku": "F01282"
+      },
+      {
+        "name": "GT touring CORE",
+        "sku": "F01280"
+      },
+      {
+        "name": "GT vario CORE",
+        "sku": "F01281"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_feature_Comfort_that_smooths_it_all_out__17534673010790450.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/feature/Charger_Charger4_feature_comfort-that-smooths-it-all-out.jpg",
+  "uploadDate": "2025-07-25T19:04:49.406Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:04:42.010Z",
+    "DateUploaded": "2025-07-25T19:04:42.010Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring CORE, GT vario CORE, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:15:01.079Z",
+  "savedAt": "2025-07-25T18:15:01.079Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

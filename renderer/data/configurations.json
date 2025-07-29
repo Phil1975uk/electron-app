@@ -533,22 +533,6 @@
       ]
     },
     {
-      "id": 1751272330421.1335,
-      "brand": "Riese & Muller",
-      "model": "Charger",
-      "generation": "Charger4",
-      "variants": [
-        {
-          "name": "Mixte Touring",
-          "sku": "F01110"
-        },
-        {
-          "name": "Mixte Vario",
-          "sku": "F01111"
-        }
-      ]
-    },
-    {
       "id": 1751272330421.1384,
       "brand": "Riese & Muller",
       "model": "Supercharger",
@@ -1281,6 +1265,78 @@
         {
           "name": "TesterSPT",
           "sku": "F99999"
+        }
+      ]
+    },
+    {
+      "id": 1753447618979,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger4 Mixte",
+      "variants": [
+        {
+          "name": "GT rohloff HS",
+          "sku": "F01117"
+        },
+        {
+          "name": "GT touring HS",
+          "sku": "F01114"
+        },
+        {
+          "name": "GT vario HS",
+          "sku": "F01115"
+        }
+      ]
+    },
+    {
+      "id": 1753448091193,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger4 Mixte",
+      "variants": [
+        {
+          "name": "GT vario CORE",
+          "sku": "F01286"
+        },
+        {
+          "name": "GT touring CORE",
+          "sku": "F01285"
+        }
+      ]
+    },
+    {
+      "id": 1753465012220,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger4 Mixte",
+      "variants": [
+        {
+          "name": "GT rohloff",
+          "sku": "F01116"
+        },
+        {
+          "name": "GT touring",
+          "sku": "F01112"
+        },
+        {
+          "name": "GT vario",
+          "sku": "F01113"
+        },
+        {
+          "name": "GT automatic",
+          "sku": "F01118"
+        }
+      ]
+    },
+    {
+      "id": 1753466132551,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger4 Mixte",
+      "variants": [
+        {
+          "name": "GT vario SELECT",
+          "sku": "F01287"
         }
       ]
     }

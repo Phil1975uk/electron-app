@@ -1,0 +1,68 @@
+{
+  "id": "17534698951605101",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "RX Chip – Your bike, now connected.",
+  "description": "Unlock smart features with the built-in RX Chip and free RX Connect app. Track, monitor, and manage your ride like never before. Just register your bike and choose a service package that fits your needs.\n\nNote: RX Services vary by model and country — check your model’s page or the RX Services shop for full details.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01105/84_15_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "122.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "Gt vario SELECT",
+        "sku": "F01282"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_RX_Chip___Your_bike__now_connected__17534698951605101.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_rx-chip-your-bike-now-connected.jpg",
+  "uploadDate": "2025-07-25T19:06:12.662Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:06:08.681Z",
+    "DateUploaded": "2025-07-25T19:06:08.681Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, Gt vario SELECT, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:58:15.160Z",
+  "savedAt": "2025-07-25T18:58:15.160Z",
+  "originalHypaData": {}
+}

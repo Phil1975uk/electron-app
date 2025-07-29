@@ -1,0 +1,64 @@
+{
+  "id": "17534692791316240",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Bosch eBike ABS 2.0 — Brake hard, stay in control.",
+  "description": "Whether it’s tarmac or gravel, ABS keeps your wheels grounded and your ride steady. No slipping, no skidding, no drama. With Magura MT5 four-piston brakes front and rear, stopping power meets total confidence.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/8a/af/8aafc9a4-b053-4945-bdc6-10c54530eb3c/24_hlf_abs_smart.jpg",
+  "price": "373.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_Bosch_eBike_ABS_2_0___Brake_hard__stay_in_control__17534692791316240.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_bosch-ebike-abs-20-brake-hard-stay-in-control.jpg",
+  "uploadDate": "2025-07-25T19:05:29.867Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:25.204Z",
+    "DateUploaded": "2025-07-25T19:05:25.204Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:47:59.131Z",
+  "savedAt": "2025-07-25T18:47:59.131Z",
+  "originalHypaData": {}
+}

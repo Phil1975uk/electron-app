@@ -1,0 +1,64 @@
+{
+  "id": "17534694477621908",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "750 Wh + PowerMore 250 — Go even further.",
+  "description": "Add the 250 Wh range extender to your 750 Wh setup for up to 50 km more. It’s bottle-sized, just 1.6 kg, and fits in your bag. Clip it on when the ride turns into an adventure — no charging stop needed.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01107/73_38_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "392.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_750_Wh___PowerMore_250___Go_even_further__17534694477621908.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_750-wh-powermore-250-go-even-further.jpg",
+  "uploadDate": "2025-07-25T19:05:24.094Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:19.648Z",
+    "DateUploaded": "2025-07-25T19:05:19.648Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:50:47.762Z",
+  "savedAt": "2025-07-25T18:50:47.762Z",
+  "originalHypaData": {}
+}

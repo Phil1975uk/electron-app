@@ -1,0 +1,64 @@
+{
+  "id": "17534698148392362",
+  "sku": "F01102",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Extra security, neatly packed.",
+  "description": "The 130 cm Abus chain lock adds serious theft protection — tough 6 mm links that loop through a lamppost or even lock multiple bikes. One key fits the frame, chain, and battery locks. The recycled Vaude bag mounts under the saddle, keeping the lock close and easy to grab.\n\nNote: May limit lowest saddle position on smaller frames.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01102/81_14_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger4",
+    "variants": [
+      {
+        "name": "Gt Touring",
+        "sku": "F01102"
+      },
+      {
+        "name": "Gt Vario",
+        "sku": "F01104"
+      },
+      {
+        "name": "Gt Rohloff",
+        "sku": "F01106"
+      },
+      {
+        "name": "Gt Automatic",
+        "sku": "F01108"
+      },
+      {
+        "name": "GT touring HS",
+        "sku": "F01103"
+      },
+      {
+        "name": "GT vario HS",
+        "sku": "F01105"
+      },
+      {
+        "name": "GT rohloff HS",
+        "sku": "F01107"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_product-options_Extra_security__neatly_packed__17534698148392362.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Charger/Charger4/product-options/Charger_Charger4_product-options_extra-security-neatly-packed.jpg",
+  "uploadDate": "2025-07-25T19:05:46.371Z",
+  "uploadMetadata": {
+    "Model": "Charger",
+    "Generation": "Charger4",
+    "Variants": "Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "DateCreated": "2025-07-25T19:05:42.299Z",
+    "DateUploaded": "2025-07-25T19:05:42.299Z",
+    "ImageDescription": "Charger Charger4 - Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "UserComment": "Generation: Charger4, Variants: Gt Touring, Gt Vario, Gt Rohloff, Gt Automatic, GT touring HS, GT vario HS, GT rohloff HS",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-25T18:56:54.839Z",
+  "savedAt": "2025-07-25T18:56:54.839Z",
+  "originalHypaData": {}
+}
