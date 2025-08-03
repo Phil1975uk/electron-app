@@ -1,0 +1,53 @@
+{
+  "id": "17539029435975169",
+  "sku": "F01201",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Effortless to ride. Easy to live with.",
+  "description": "The Packster2 70 handles like a pro — smooth to steer, simple to park, and easy to hop on and off. Its cable steering lets you glide through tight spots, even fully loaded. Need more space? The rear carrier adds room for up to 27 kg of extra cargo.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/26/1f/261f1a2e-1307-4b7c-a974-79e4f3dd92c6/my2025_pck2-70_hlf_2_1600x1067_web.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_feature_Effortless_to_ride__Easy_to_live_with__17539029435975169.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_effortless-to-ride-easy-to-live-with.jpg",
+  "uploadDate": "2025-07-30T19:19:21.498Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T19:19:16.373Z",
+    "DateUploaded": "2025-07-30T19:19:16.373Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T19:15:43.597Z",
+  "savedAt": "2025-07-30T19:15:43.597Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

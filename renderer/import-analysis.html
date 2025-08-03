@@ -179,6 +179,33 @@
                         <button class="btn btn-primary me-2" id="refreshAnalysisBtn">
                             <i class="fas fa-sync-alt me-2"></i>Refresh Analysis
                         </button>
+                                <button class="btn btn-outline-danger me-2" id="clearCacheBtn" onclick="clearAllCaches()">
+            <i class="fas fa-broom me-2"></i>Clear All Caches
+        </button>
+        <button class="btn btn-outline-info me-2" id="debugCardsBtn" onclick="console.log('Debug: Cards loaded:', window.cards ? window.cards.length : 'none')">
+            <i class="fas fa-bug me-2"></i>Debug Cards
+        </button>
+        <button class="btn btn-outline-danger me-2" id="testSimpleExportBtn" onclick="testSimpleExport()">
+            <i class="fas fa-bolt me-2"></i>Test Simple Export
+        </button>
+        <button class="btn btn-outline-secondary me-2" id="debugExportSystemBtn" onclick="debugExportSystem()">
+            <i class="fas fa-bug me-2"></i>Debug Export System
+        </button>
+        <button class="btn btn-outline-warning me-2" id="testDirectCardsBtn" onclick="testDirectCards()">
+            <i class="fas fa-eye me-2"></i>Test Direct Cards
+        </button>
+        <button class="btn btn-outline-info me-2" id="checkFunctionsBtn" onclick="checkAllFunctions()">
+            <i class="fas fa-check me-2"></i>Check All Functions
+        </button>
+        <button class="btn btn-outline-secondary me-2" id="debugVisibilityBtn" onclick="debugCardVisibility()">
+            <i class="fas fa-eye me-2"></i>Debug Visibility
+        </button>
+        <button class="btn btn-outline-primary me-2" id="refreshSummaryBtn" onclick="refreshSummary()">
+            <i class="fas fa-sync me-2"></i>Refresh Summary
+        </button>
+        <button class="btn btn-outline-warning me-2" id="debugCardContentBtn" onclick="debugCardContent()">
+            <i class="fas fa-file-text me-2"></i>Debug Card Content
+        </button>
                         <button class="btn btn-success me-2" id="importBigCommerceBtn" data-bs-toggle="modal" data-bs-target="#importBigCommerceModal">
                             <i class="fas fa-shopping-cart me-2"></i>Import BigCommerce Products
                         </button>
@@ -187,6 +214,12 @@
                         </button>
                         <button class="btn btn-warning me-2" id="exportHypaBtn" data-bs-toggle="modal" data-bs-target="#exportHypaModal">
                             <i class="fas fa-upload me-2"></i>Export to Hypa Metafields
+                        </button>
+                        <button class="btn btn-danger me-2" onclick="generateDeleteCsv()">
+                            <i class="fas fa-trash me-2"></i>Delete Metafields
+                        </button>
+                        <button class="btn btn-warning me-2" onclick="generateReplaceCsv()">
+                            <i class="fas fa-sync me-2"></i>Replace Metafields
                         </button>
                         <button class="btn btn-outline-warning" id="placeholderSummaryBtn" onclick="showPlaceholderCardSummary()">
                             <i class="fas fa-exclamation-triangle me-2"></i>Placeholder Cards
@@ -970,87 +1003,6 @@
                         </div>
                     </div>
 
-                    <!-- Step 3: Export Selection -->
-                    <div id="exportSelectionStep" style="display: none;">
-                        <!-- Fixed Header with Search/Filter Controls -->
-                        <div class="sticky-top bg-white border-bottom pb-2 mb-2" style="z-index: 1020;">
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <label class="form-label small mb-1">Search:</label>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control" id="productSearchFilter" placeholder="SKU, model, or brand...">
-                                        <button type="button" class="btn btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="left" 
-                                                title="Select which cards you want to export to Hypa. Cards are grouped by product for easy selection. Use the search and filter controls to find specific cards.">
-                                            <i class="fas fa-question-circle"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary" onclick="clearSearchBox()">
-                                            <i class="fas fa-times me-1"></i>Clear
-                                        </button>
-                                        <button type="button" class="btn btn-outline-success" id="selectFilteredResultsBtn" onclick="selectFilteredResults()">
-                                            <i class="fas fa-check me-1"></i>Select Filtered
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small mb-1">Filter:</label>
-                                    <select class="form-select form-select-sm" id="showFilter">
-                                        <option value="all">All Cards</option>
-                                        <option value="exportable">Exportable Only</option>
-                                        <option value="new">New Only</option>
-                                        <option value="updated">Updated Only</option>
-                                        <option value="remove">Remove Only</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small mb-1">Actions:</label>
-                                    <div class="d-flex gap-1">
-                                        <button type="button" class="btn btn-sm btn-outline-primary" id="toggleSelectAllBtn" onclick="toggleSelectAll()">
-                                            <i class="fas fa-check-double me-1"></i>Select All
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Scrollable Product Cards Container -->
-                        <div id="productCardsContainer" style="max-height: 60vh; overflow-y: auto; margin-bottom: 10px;">
-                            <!-- Product cards will be generated here -->
-                        </div>
-
-                        <!-- Fixed Footer with Export Summary and Navigation -->
-                        <div class="sticky-bottom bg-white border-top pt-2" style="z-index: 1020;">
-                            <!-- Compact Export Summary -->
-                            <div id="exportSummary" class="card border-primary mb-2">
-                                <div class="card-body py-2">
-                                    <div class="row text-center">
-                                        <div class="col-md-3">
-                                            <div class="border-end">
-                                                <h5 id="summaryNew" class="text-success mb-0">0</h5>
-                                                <small class="text-muted">New</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="border-end">
-                                                <h5 id="summaryUpdated" class="text-warning mb-0">0</h5>
-                                                <small class="text-muted">Updated</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="border-end">
-                                                <h5 id="summaryRemove" class="text-danger mb-0">0</h5>
-                                                <small class="text-muted">Remove</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <h5 id="summaryTotal" class="text-primary mb-0">0</h5>
-                                            <small class="text-muted">Total</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Step 4: Final Export -->
                     <div id="exportFinalStep" style="display: none;">
                         <h6><i class="fas fa-download me-2"></i>Final Export</h6>
@@ -1104,6 +1056,34 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label">Hypa Mode:</label>
+                            <select class="form-select" id="hypaMode">
+                                <option value="replace">Replace (Delete all existing, then add new)</option>
+                                <option value="merge">Merge (Add/Update metafields)</option>
+                                <option value="remove">Remove (Delete all metafields)</option>
+                                <option value="skip">Skip (No changes)</option>
+                            </select>
+                            <small class="form-text text-muted">
+                                <strong>Replace:</strong> Deletes all existing metafields first, then adds new ones (recommended)<br>
+                                <strong>Merge:</strong> Adds new metafields or updates existing ones<br>
+                                <strong>Remove:</strong> Deletes all metafields for the selected SKUs<br>
+                                <strong>Skip:</strong> No changes will be made
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Per-SKU Mode Selection:</label>
+                            <div id="skuModeSelection" class="border rounded p-3 bg-light">
+                                <p class="text-muted mb-2">Select mode for each SKU individually:</p>
+                                <div id="skuModeList">
+                                    <!-- SKU mode selections will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="mb-3">
                             <label class="form-label">Export Options:</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="includeMetadata" checked>
@@ -1144,6 +1124,12 @@
                             </button>
                             <button type="button" class="btn btn-info" onclick="exportCardsToSimpleCsv()">
                                 <i class="fas fa-file-csv me-2"></i>Export Simple CSV
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="generateDeleteCsv()">
+                                <i class="fas fa-trash me-2"></i>Generate Delete CSV
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="generateReplaceCsv()">
+                                <i class="fas fa-sync me-2"></i>Generate Replace CSV
                             </button>
                         </div>
                     </div>
@@ -1211,7 +1197,7 @@
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="card-manager.js"></script>
-    <script src="export-manager.js"></script>
+    <!-- Removed export-manager.js - using simple export system instead -->
     <script src="import-analysis.js"></script>
 </body>
 </html> 

@@ -1,0 +1,52 @@
+{
+  "id": "17539103522101587",
+  "sku": "F01201",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Glove Compartment Lock – Small items, safely stored.",
+  "description": "The glove compartment lock means small items are safely stowed away. The lock uses the same key as the battery lock and Abus frame lock and replaces the standard magnetic closure.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01352/101_27_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "28.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_cargo-options_Glove_Compartment_Lock___Small_items__safely_stored__17539103522101587.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/cargo-options/Packster_Packster2_cargo-options_glove-compartment-lock-small-items-safely-stored.jpg",
+  "uploadDate": "2025-07-30T21:20:36.756Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T21:20:32.660Z",
+    "DateUploaded": "2025-07-30T21:20:32.660Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T21:19:12.210Z",
+  "savedAt": "2025-07-30T21:19:12.210Z",
+  "originalHypaData": {}
+}

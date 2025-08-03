@@ -1,0 +1,52 @@
+{
+  "id": "17539096365232150",
+  "sku": "F01200",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Additional Chain Lock with Vaude Bag – Extra security, neatly packed.",
+  "description": "The 130 cm Abus chain lock pairs with the frame lock for added protection — tough 6 mm links that secure your bike to fixed objects or lock multiple bikes together. One key fits the frame, chain, and battery locks. The lock stows in a Vaude saddle bag made from 100% recycled polyester, with a roll-top design for quick, easy access.\n\nNote: May limit saddle height on smaller frames.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01352/81_28_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_product-options_Additional_Chain_Lock_with_Vaude_Bag___Extra_security__neatly_packed__17539096365232150.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_additional-chain-lock-with-vaude-bag-extra-security-neatly-packed.jpg",
+  "uploadDate": "2025-07-30T21:20:46.845Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T21:20:42.680Z",
+    "DateUploaded": "2025-07-30T21:20:42.680Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T21:07:16.523Z",
+  "savedAt": "2025-07-30T21:07:16.523Z",
+  "originalHypaData": {}
+}

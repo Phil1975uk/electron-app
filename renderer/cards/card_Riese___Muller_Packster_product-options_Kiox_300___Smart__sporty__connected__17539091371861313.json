@@ -1,0 +1,52 @@
+{
+  "id": "17539091371861313",
+  "sku": "F01201",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Kiox 300 – Smart, sporty, connected.",
+  "description": "Track fitness, pair with heart rate monitors via Bluetooth, and navigate without maps when linked to your phone. The Kiox 300 puts training insights and ride control right at your fingertips — all operated through the intuitive LED Remote.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01353/26_14_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_product-options_Kiox_300___Smart__sporty__connected__17539091371861313.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_kiox-300-smart-sporty-connected.jpg",
+  "uploadDate": "2025-07-30T21:21:07.654Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T21:21:03.505Z",
+    "DateUploaded": "2025-07-30T21:21:03.505Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T20:58:57.186Z",
+  "savedAt": "2025-07-30T20:58:57.186Z",
+  "originalHypaData": {}
+}

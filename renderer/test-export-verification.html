@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Verification Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { margin: 5px; padding: 10px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Export Functionality Verification</h1>
+    
+    <button onclick="runAllTests()">Run All Tests</button>
+    <button onclick="testCardsLoaded()">Test Cards Loaded</button>
+    <button onclick="testExportFlow()">Test Export Flow</button>
+    <button onclick="testExportInterface()">Test Export Interface</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            results.appendChild(div);
+            console.log(message);
+        }
+
+        async function testCardsLoaded() {
+            log('🔍 Testing if cards are loaded...');
+            
+            if (window.cards && window.cards.length > 0) {
+                log(`✅ Cards are loaded! Found ${window.cards.length} cards`, 'success');
+                log(`Card types: ${[...new Set(window.cards.map(c => c.cardType))]}`, 'info');
+                log(`Sample SKUs: ${[...new Set(window.cards.map(c => c.sku))].slice(0, 3)}`, 'info');
+                return true;
+            } else {
+                log('❌ No cards loaded', 'error');
+                return false;
+            }
+        }
+
+        async function testExportFlow() {
+            log('🧪 Testing export flow...');
+            
+            if (typeof window.testExportFlow === 'function') {
+                try {
+                    await window.testExportFlow();
+                    log('✅ Export flow test completed', 'success');
+                    return true;
+                } catch (error) {
+                    log(`❌ Export flow test failed: ${error.message}`, 'error');
+                    return false;
+                }
+            } else {
+                log('❌ testExportFlow function not available', 'error');
+                return false;
+            }
+        }
+
+        async function testExportInterface() {
+            log('🔍 Testing export interface...');
+            
+            const container = document.getElementById('productCardsContainer');
+            if (container) {
+                const cards = container.querySelectorAll('.sku-card');
+                log(`Found ${cards.length} SKU cards in the DOM`, cards.length > 0 ? 'success' : 'error');
+                
+                if (cards.length > 0) {
+                    log('✅ Cards are displayed in the interface', 'success');
+                    return true;
+                } else {
+                    log('❌ No cards displayed in the interface', 'error');
+                    return false;
+                }
+            } else {
+                log('❌ productCardsContainer not found', 'error');
+                return false;
+            }
+        }
+
+        async function runAllTests() {
+            log('🚀 Running all tests...');
+            
+            const results = [];
+            
+            // Test 1: Cards loaded
+            results.push(await testCardsLoaded());
+            
+            // Test 2: Export flow
+            results.push(await testExportFlow());
+            
+            // Test 3: Export interface
+            results.push(await testExportInterface());
+            
+            const passed = results.filter(r => r).length;
+            const total = results.length;
+            
+            log(`🎉 Test Results: ${passed}/${total} tests passed`, passed === total ? 'success' : 'error');
+            
+            if (passed === total) {
+                log('🎉 ALL TESTS PASSED! Export functionality is working correctly.', 'success');
+            } else {
+                log('❌ Some tests failed. Export functionality needs attention.', 'error');
+            }
+        }
+
+        // Auto-run tests when page loads
+        window.addEventListener('load', () => {
+            log('🚀 Page loaded, waiting for scripts to initialize...');
+            setTimeout(runAllTests, 3000);
+        });
+    </script>
+</body>
+</html> 

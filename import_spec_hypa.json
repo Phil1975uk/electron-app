@@ -1,0 +1,24 @@
+{
+    "import_type": "shared" | "custom",  // choose "shared" for shared metafields, "custom" for item‑specific
+    "resource_type": "product" | "variant" | "category" | "brand" | "channel" | "order" | "customer" | "location",
+    "rows": [
+      {
+        "name": "string",             // display name (e.g. Warranty Details)
+        "namespace": "string",        // e.g. "shared" or custom grouping
+        "key": "string",              // unique identifier within namespace, no spaces
+        "description": "string|null", // optional description
+        "content_type": "string",     // type: Text, Rich Text, Number, Decimal, Boolean, Date, Date & Time, URL, Select, File, JSON, HTML, Product, Brand, Category, Page, Checkbox, Color, Multi-select
+        "single_or_list": "single" | "list", // for list type support
+        "select_options": "string|null",     // comma-separated values if content_type == Select or Multi-select
+        "use_on_storefront": "true" | "false", // whether visible via GraphQL storefront API
+        "read_only": "true" | "false",      // only relevant for shared metafields
+        "sort_order": "integer|null",       // optional UI ordering
+        "mode": "replace" | "append" | null // only when uploading values; for definitions it's null
+        // for value import:
+        , "entity_id": "number",
+        "entity_type": "product" | "variant" | "category" | "brand" | "channel" | "order" | "customer" | "location",
+        "value": "string"                 // actual stored data for that metafield
+      }
+    ]
+  }
+  

@@ -1,0 +1,53 @@
+{
+  "id": "17539030270220848",
+  "sku": "F01201",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Built for families. Better for the planet.",
+  "description": "<br>",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public_thumbnails/filer_public/af/8b/af8bcead-67c2-46bb-b696-cf9242216e4e/my2025_pck2-70_hlc_2_1890x1063_web.jpg__720x405_q90_crop_subsampling-2_upscale.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_feature_Built_for_families__Better_for_the_planet__17539030270220848.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_built-for-families-better-for-the-planet.jpg",
+  "uploadDate": "2025-07-30T19:19:09.096Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T19:19:01.424Z",
+    "DateUploaded": "2025-07-30T19:19:01.424Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T19:17:07.022Z",
+  "savedAt": "2025-07-30T19:17:07.022Z",
+  "originalHypaData": {},
+  "subtitle": "The Packster2 70 simplifies everyday life — and it’s made from eco-friendly materials throughout."
+}

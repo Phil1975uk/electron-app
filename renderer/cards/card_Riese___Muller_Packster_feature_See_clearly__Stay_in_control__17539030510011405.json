@@ -1,0 +1,53 @@
+{
+  "id": "17539030510011405",
+  "sku": "F01201",
+  "cardType": "feature",
+  "position": 1,
+  "title": "See clearly. Stay in control.",
+  "description": "A powerful headlight with daytime running light and well-placed reflectors keeps you visible at all times. The optional Bosch ABS and Magura disc brakes add extra stopping power and control — preventing skids and slips, even in sudden stops.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/7c/51/7c51fdec-a21c-4534-bf5f-3308de09b272/my2025_pck2-70_hlf_3_1600x1067_web.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_feature_See_clearly__Stay_in_control__17539030510011405.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_see-clearly-stay-in-control.jpg",
+  "uploadDate": "2025-07-30T19:19:33.735Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T19:19:28.437Z",
+    "DateUploaded": "2025-07-30T19:19:28.437Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T19:17:31.001Z",
+  "savedAt": "2025-07-30T19:17:31.001Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

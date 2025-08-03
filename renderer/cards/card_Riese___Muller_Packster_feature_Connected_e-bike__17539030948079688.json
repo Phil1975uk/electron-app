@@ -1,0 +1,53 @@
+{
+  "id": "17539030948079688",
+  "sku": "F01201",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Connected e-bike.",
+  "description": "RX Connect takes your riding experience to a new level. You can completely secure your bike with the standard, integrated RX Chip and the RX Service to go along with it. Activate ConnectRide Free for one year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/8d/1d/8d1d37f1-91bf-4c30-953d-597987e450df/my2025_rx-connect.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_feature_Connected_e-bike__17539030948079688.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_connected-e-bike.jpg",
+  "uploadDate": "2025-07-30T19:19:15.221Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T19:19:10.634Z",
+    "DateUploaded": "2025-07-30T19:19:10.634Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T19:18:14.807Z",
+  "savedAt": "2025-07-30T19:18:14.807Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

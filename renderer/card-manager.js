@@ -659,9 +659,13 @@ class CardManager {
             
             // Upload status filter
             if (this.filters.uploadStatus) {
-                const isUploaded = card.webdavPath && card.uploadDate;
-                if (this.filters.uploadStatus === 'uploaded' && !isUploaded) return false;
-                if (this.filters.uploadStatus === 'awaiting' && isUploaded) return false;
+                // Spec cards don't have images, so exclude them from upload status filtering
+                const isSpecCard = cardType === 'specification-table' || cardType === 'spec';
+                if (!isSpecCard) {
+                    const isUploaded = card.webdavPath && card.uploadDate;
+                    if (this.filters.uploadStatus === 'uploaded' && !isUploaded) return false;
+                    if (this.filters.uploadStatus === 'awaiting' && isUploaded) return false;
+                }
             }
             
             // Hypa import filter

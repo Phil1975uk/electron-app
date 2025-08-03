@@ -1,0 +1,57 @@
+{
+  "id": "17539093079065953",
+  "sku": "F01201",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Performance Kit – Built to push harder.",
+  "description": "With powerful Tektro TRP C 2.3 brakes, premium Supernova lighting, and a suspension seatpost, the Performance Kit delivers serious control, comfort, and confidence. Brake harder, see further, and ride smoother — even under heavy loads.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01352/100_1_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "466.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_product-options_Performance_Kit___Built_to_push_harder__17539093079065953.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_performance-kit-built-to-push-harder.jpg",
+  "uploadDate": "2025-07-30T21:21:23.134Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T21:21:18.831Z",
+    "DateUploaded": "2025-07-30T21:21:18.831Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T21:02:02.878Z",
+  "savedAt": "2025-07-30T21:01:47.907Z",
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_product-options_Performance_Kit___Built_to_push_harder__17539093079065953.json"
+}

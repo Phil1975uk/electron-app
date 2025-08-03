@@ -1,0 +1,52 @@
+{
+  "id": "17539100668935809",
+  "sku": "F01201",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Cargo Carry System – Adaptable by design.",
+  "description": "Modular polypropylene elements let you customise the space to suit your load. Configure up to three compartments, use the flat surface, or secure Euro boxes with built-in holders and side pockets. Four eyelets allow for extra straps when carrying taller cargo.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01352/70_20_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "187.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_cargo-options_Cargo_Carry_System___Adaptable_by_design__17539100668935809.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/cargo-options/Packster_Packster2_cargo-options_cargo-carry-system-adaptable-by-design.jpg",
+  "uploadDate": "2025-07-30T21:20:20.876Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T21:20:16.501Z",
+    "DateUploaded": "2025-07-30T21:20:16.501Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T21:14:26.893Z",
+  "savedAt": "2025-07-30T21:14:26.893Z",
+  "originalHypaData": {}
+}

@@ -1,0 +1,52 @@
+{
+  "id": "17539094768837589",
+  "sku": "F01200",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Bosch eBike ABS 2.0 – Control when it counts.",
+  "description": "Stay firmly in the saddle, even under hard braking. On asphalt or gravel, ABS 2.0 prevents skids, rear wheel lift, and sideways slips — for safer, more confident stops in any situation.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01352/79_22_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "466.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_product-options_Bosch_eBike_ABS_2_0___Control_when_it_counts__17539094768837589.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_bosch-ebike-abs-20-control-when-it-counts.jpg",
+  "uploadDate": "2025-07-30T21:20:51.988Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T21:20:47.783Z",
+    "DateUploaded": "2025-07-30T21:20:47.783Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T21:04:36.883Z",
+  "savedAt": "2025-07-30T21:04:36.883Z",
+  "originalHypaData": {}
+}

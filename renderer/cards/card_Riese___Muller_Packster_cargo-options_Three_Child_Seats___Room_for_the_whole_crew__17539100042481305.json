@@ -1,0 +1,52 @@
+{
+  "id": "17539100042481305",
+  "sku": "F01201",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Three Child Seats – Room for the whole crew.",
+  "description": "Carry up to three children (age seven or younger) with secure five-point belts and recycled headrests. The third seat folds down for cargo space, or all seats can be folded to free up even more room.\n\n<sub>Check local regulations before transporting children by bike.</sub>",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01352/70_19_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "271.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_cargo-options_Three_Child_Seats___Room_for_the_whole_crew__17539100042481305.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/cargo-options/Packster_Packster2_cargo-options_three-child-seats-room-for-the-whole-crew.jpg",
+  "uploadDate": "2025-07-30T21:20:41.700Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T21:20:37.728Z",
+    "DateUploaded": "2025-07-30T21:20:37.728Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T21:13:24.248Z",
+  "savedAt": "2025-07-30T21:13:24.248Z",
+  "originalHypaData": {}
+}

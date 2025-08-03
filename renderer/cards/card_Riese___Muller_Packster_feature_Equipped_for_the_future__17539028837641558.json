@@ -1,0 +1,53 @@
+{
+  "id": "17539028837641558",
+  "sku": "F01201",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Equipped for the future.",
+  "description": "The EPP transport box is fully recyclable and made with zero emissions. Optional child seats include five-point belts and side-impact protection for peace of mind. Add the buggy kit for easy access with half-height side walls — all within a tough frame that supports the weather cover and shields your passengers.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/0f/c7/0fc7cbd3-4efe-460c-8ce0-e4c3da249a1b/my2025_pck2-70_hlf_1_1600x1067_web.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Packster",
+    "generation": "Packster2",
+    "variants": [
+      {
+        "name": "70 Touring",
+        "sku": "F01201"
+      },
+      {
+        "name": "70 Family",
+        "sku": "F01200"
+      },
+      {
+        "name": "70 Automatic",
+        "sku": "F01203"
+      },
+      {
+        "name": "70 Vario",
+        "sku": "F01202"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Packster_feature_Equipped_for_the_future__17539028837641558.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_equipped-for-the-future.jpg",
+  "uploadDate": "2025-07-30T19:19:27.318Z",
+  "uploadMetadata": {
+    "Model": "Packster",
+    "Generation": "Packster2",
+    "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "DateCreated": "2025-07-30T19:19:22.658Z",
+    "DateUploaded": "2025-07-30T19:19:22.658Z",
+    "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-07-30T19:14:43.764Z",
+  "savedAt": "2025-07-30T19:14:43.764Z",
+  "originalHypaData": {},
+  "subtitle": "Smart, safe, and sustainable."
+}

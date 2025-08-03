@@ -194,7 +194,21 @@ class ExportManager {
         
         // Get items from window.allExportResults (from export comparison)
         if (window.allExportResults && Array.isArray(window.allExportResults)) {
-            items.push(...window.allExportResults);
+            // Transform import analysis format to export manager format
+            const transformedItems = window.allExportResults.map(result => {
+                // Handle both formats: direct card structure vs nested card structure
+                const card = result.card || result;
+                const sku = result.sku || card.sku;
+                const action = result.action || card.action;
+                
+                return {
+                    ...card,
+                    sku: sku,
+                    action: action,
+                    configuration: card.configuration || {}
+                };
+            });
+            items.push(...transformedItems);
             console.log('✅ Found items in window.allExportResults');
         } else {
             console.warn('❌ No export results available in window.allExportResults');
@@ -203,8 +217,22 @@ class ExportManager {
             if (window.exportComparisonResults) {
                 console.log('🔍 Trying window.exportComparisonResults as fallback...');
                 const results = window.exportComparisonResults;
-                const allResults = [...(results.new || []), ...(results.updates || []), ...(results.keep || []), ...(results.remove || []), ...(results.excluded || [])];
-                items.push(...allResults);
+                const allResults = [...(results.new || []), ...(results.updated || []), ...(results.keep || []), ...(results.remove || []), ...(results.excluded || [])];
+                
+                // Transform import analysis format to export manager format
+                const transformedItems = allResults.map(result => {
+                    const card = result.card || result;
+                    const sku = result.sku || card.sku;
+                    const action = result.action || card.action;
+                    
+                    return {
+                        ...card,
+                        sku: sku,
+                        action: action,
+                        configuration: card.configuration || {}
+                    };
+                });
+                items.push(...transformedItems);
                 console.log(`✅ Found ${allResults.length} items in window.exportComparisonResults`);
             } else {
                 console.error('❌ No export results available anywhere. Please run export analysis first.');
@@ -760,6 +788,10 @@ class ExportManager {
         console.log('Current SKU cards:', this.currentSkuCards ? this.currentSkuCards.length : 0);
         console.log('Export summary:', this.exportSummary);
         console.log('Selected items:', this.getSelectedItems().length);
+        console.log('🔍 Window state:');
+        console.log('window.allExportResults:', window.allExportResults ? window.allExportResults.length : 'undefined');
+        console.log('window.exportComparisonResults:', window.exportComparisonResults);
+        console.log('window.exportManager:', window.exportManager);
         console.log('==================================');
     }
 
@@ -934,17 +966,92 @@ class ExportManager {
 // Create global instance
 window.exportManager = new ExportManager();
 
-// Test the export manager on load
-window.addEventListener('load', () => {
-    if (window.exportManager) {
-        console.log('🚀 Export Manager loaded successfully');
-        console.log('🔍 Export Manager instance:', window.exportManager);
-        // Uncomment the line below to run tests
-        // window.exportManager.test();
-    } else {
-        console.error('❌ Export Manager failed to load');
-    }
-});
+    // Test the export manager on load
+    window.addEventListener('load', () => {
+        if (window.exportManager) {
+            console.log('🚀 Export Manager loaded successfully');
+            console.log('🔍 Export Manager instance:', window.exportManager);
+            
+            // Add a global debug function
+            window.debugExportManager = () => {
+                console.log('🔍 Debugging Export Manager...');
+                console.log('window.exportManager:', window.exportManager);
+                console.log('window.allExportResults:', window.allExportResults);
+                console.log('window.exportComparisonResults:', window.exportComparisonResults);
+                console.log('window.lastComparisonResults:', window.lastComparisonResults);
+                
+                if (window.exportManager) {
+                    console.log('Export Manager methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(window.exportManager)));
+                    console.log('Export Manager state:', {
+                        currentProductCards: window.exportManager.currentProductCards,
+                        exportableItems: window.exportManager.exportableItems,
+                        exportSummary: window.exportManager.exportSummary
+                    });
+                    
+                    // Test getExportableItems
+                    console.log('🔍 Testing getExportableItems...');
+                    const items = window.exportManager.getExportableItems();
+                    console.log('Items returned:', items.length);
+                    if (items.length > 0) {
+                        console.log('First item:', items[0]);
+                    }
+                    
+                    // Test buildExportSelectionCards
+                    console.log('🔍 Testing buildExportSelectionCards...');
+                    try {
+                        window.exportManager.buildExportSelectionCards();
+                        console.log('✅ buildExportSelectionCards completed');
+                    } catch (error) {
+                        console.error('❌ Error in buildExportSelectionCards:', error);
+                    }
+                }
+            };
+            
+            // Add a test function to run comparison and then export
+            window.testExportFlow = async () => {
+                console.log('🧪 Testing export flow...');
+                
+                // First, run the comparison
+                if (typeof performExportComparison === 'function') {
+                    console.log('🔍 Running performExportComparison...');
+                    await performExportComparison();
+                    console.log('✅ Comparison completed');
+                } else {
+                    console.error('❌ performExportComparison function not found');
+                }
+                
+                // Then try to show export selection
+                if (typeof showExportSelection === 'function') {
+                    console.log('🔍 Running showExportSelection...');
+                    showExportSelection();
+                    console.log('✅ Export selection completed');
+                } else {
+                    console.error('❌ showExportSelection function not found');
+                }
+            };
+            
+            // Add a simple test to check if cards are loaded
+            window.testCardsLoaded = () => {
+                console.log('🧪 Testing if cards are loaded...');
+                console.log('window.cards:', window.cards);
+                console.log('cards.length:', window.cards ? window.cards.length : 'undefined');
+                
+                if (window.cards && window.cards.length > 0) {
+                    console.log('✅ Cards are loaded!');
+                    console.log('First card:', window.cards[0]);
+                    console.log('Card types:', [...new Set(window.cards.map(c => c.cardType))]);
+                    console.log('SKUs:', [...new Set(window.cards.map(c => c.sku))].slice(0, 5));
+                } else {
+                    console.log('❌ No cards loaded');
+                }
+            };
+            
+            // Uncomment the line below to run tests
+            // window.exportManager.test();
+        } else {
+            console.error('❌ Export Manager failed to load');
+        }
+    });
 
 // Also log when the script loads
 console.log('📦 Export Manager script loaded'); 
