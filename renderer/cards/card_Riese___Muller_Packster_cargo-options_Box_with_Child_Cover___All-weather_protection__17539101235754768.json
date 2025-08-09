@@ -1,6 +1,6 @@
 {
   "id": "17539101235754768",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "cargo-options",
   "position": 1,
   "title": "Box with Child Cover – All-weather protection.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_cargo-options_Box_with_Child_Cover___All-weather_protection__17539101235754768.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/cargo-options/Packster_Packster2_cargo-options_box-with-child-cover-all-weather-protection.jpg",
-  "uploadDate": "2025-07-30T21:19:54.954Z",
+  "uploadDate": "2025-08-08T18:53:05.446Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:19:48.416Z",
-    "DateUploaded": "2025-07-30T21:19:48.416Z",
+    "DateCreated": "2025-08-08T18:52:57.545Z",
+    "DateUploaded": "2025-08-08T18:52:57.545Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,12 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T21:15:23.575Z",
+  "lastModified": "2025-08-08T18:49:53.028Z",
   "savedAt": "2025-07-30T21:15:23.575Z",
-  "originalHypaData": {}
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_cargo-options_Box_with_Child_Cover___All-weather_protection__17539101235754768.json"
 }

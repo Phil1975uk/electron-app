@@ -1,6 +1,6 @@
 {
   "id": "17539030948079688",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "feature",
   "position": 1,
   "title": "Connected e-bike.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_feature_Connected_e-bike__17539030948079688.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_connected-e-bike.jpg",
-  "uploadDate": "2025-07-30T19:19:15.221Z",
+  "uploadDate": "2025-08-08T18:55:32.919Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T19:19:10.634Z",
-    "DateUploaded": "2025-07-30T19:19:10.634Z",
+    "DateCreated": "2025-08-08T18:55:27.658Z",
+    "DateUploaded": "2025-08-08T18:55:27.658Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,8 +46,13 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T19:18:14.807Z",
+  "lastModified": "2025-08-08T18:43:32.935Z",
   "savedAt": "2025-07-30T19:18:14.807Z",
   "originalHypaData": {},
-  "subtitle": ""
+  "subtitle": "",
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_feature_Connected_e-bike__17539030948079688.json"
 }

@@ -1,6 +1,6 @@
 {
   "id": "17539030270220848",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "feature",
   "position": 1,
   "title": "Built for families. Better for the planet.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_feature_Built_for_families__Better_for_the_planet__17539030270220848.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_built-for-families-better-for-the-planet.jpg",
-  "uploadDate": "2025-07-30T19:19:09.096Z",
+  "uploadDate": "2025-08-08T18:55:04.731Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T19:19:01.424Z",
-    "DateUploaded": "2025-07-30T19:19:01.424Z",
+    "DateCreated": "2025-08-08T18:55:00.224Z",
+    "DateUploaded": "2025-08-08T18:55:00.224Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,8 +46,13 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T19:17:07.022Z",
+  "lastModified": "2025-08-08T18:43:16.329Z",
   "savedAt": "2025-07-30T19:17:07.022Z",
   "originalHypaData": {},
-  "subtitle": "The Packster2 70 simplifies everyday life — and it’s made from eco-friendly materials throughout."
+  "subtitle": "The Packster2 70 simplifies everyday life — and it’s made from eco-friendly materials throughout.",
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_feature_Built_for_families__Better_for_the_planet__17539030270220848.json"
 }

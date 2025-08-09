@@ -1,6 +1,6 @@
 {
   "id": "17539093739084527",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "product-options",
   "position": 1,
   "title": "Offroad Kit – Grip that goes anywhere.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_product-options_Offroad_Kit___Grip_that_goes_anywhere__17539093739084527.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_offroad-kit-grip-that-goes-anywhere.jpg",
-  "uploadDate": "2025-07-30T21:21:12.891Z",
+  "uploadDate": "2025-08-08T18:59:42.278Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:21:08.660Z",
-    "DateUploaded": "2025-07-30T21:21:08.660Z",
+    "DateCreated": "2025-08-08T18:59:37.665Z",
+    "DateUploaded": "2025-08-08T18:59:37.665Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,7 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T21:03:09.852Z",
+  "lastModified": "2025-08-08T18:47:40.017Z",
   "savedAt": "2025-07-30T21:02:53.908Z",
   "originalHypaData": {},
   "validationInfo": {

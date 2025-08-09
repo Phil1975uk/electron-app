@@ -1262,190 +1262,143 @@ class CardManager {
             imageUrl = getPublicWebDavUrl(card.webdavPath);
         }
 
-        switch (card.cardType || card.type) {
-            case 'feature':
-                return this.generateFeatureCardHtml(card, imageUrl);
-            case 'product-options':
-                return this.generateProductOptionsCardHtml(card, imageUrl);
-            case 'specification-table':
-            case 'spec':
-                return this.generateSpecificationTableCardHtml(card);
-            case 'weather-protection':
-            case 'weather':
-                return this.generateWeatherProtectionCardHtml(card, imageUrl);
-            case 'cargo-options':
-            case 'cargo':
-                return this.generateCargoOptionsCardHtml(card, imageUrl);
-            default:
-                console.warn('Unknown card type:', card.cardType || card.type);
-                return '';
+        // Prepare card data for template processing
+        const cardData = {
+            title: card.title || '',
+            subtitle: card.subtitle || '',
+            description: card.description || card.content || '',
+            imageUrl: imageUrl,
+            price: card.price || ''
+        };
+
+        // Get card type
+        const cardType = card.cardType || card.type;
+        
+        try {
+            // Try to get processed template from server
+            const response = await fetch(`/api/template/${cardType}/process`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    templateName: 'reference', // Default to reference template
+                    cardData: cardData
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                return result.processedTemplate;
+            } else {
+                // Fallback to hardcoded generation if template system fails
+                return this.generateFallbackHtml(card, imageUrl);
+            }
+        } catch (error) {
+            // Fallback to hardcoded generation if template system fails
+            return this.generateFallbackHtml(card, imageUrl);
         }
     }
 
-    generateFeatureCardHtml(card, imageUrl) {
+    generateFallbackHtml(card, imageUrl) {
+        const cardType = card.cardType || card.type;
         const title = card.title || '';
         const subtitle = card.subtitle || '';
         const description = card.description || card.content || '';
+        const price = card.price || '';
         const filename = imageUrl ? imageUrl.split('/').pop().split('?')[0] : '';
-        
-        return `<!-- Product feature card container -->
 
+        switch (cardType) {
+            case 'feature':
+                return `<!-- Product feature card container -->
 <div style="display: flex; align-items: center; gap: 20px; max-width: 1498px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;">
-    <!-- Text content -->
-    
     <div style="flex: 1; min-width: 300px;">
-    <h2>${title}</h2>
-    <h3>${subtitle}</h3>
+        <h2>${title}</h2>
+        <h3>${subtitle}</h3>
+        <p>${description}</p>
+    </div>
+    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;"></div>
+    <div class="se-component se-image-container __se__float-">
+        <figure style="width: 400px;">
+            <img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${filename}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
+        </figure>
+    </div>
+    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;"></div>
+</div>`;
+
+            case 'product-options':
+                if (!imageUrl || imageUrl.trim() === '') {
+                    return `<!-- Product options card -->
+<div class="swiper-slide">
+    <div class="card">
+        <div class="card-info">
+            <div class="card-title">${title}</div>
+            <div class="card-description">${description}</div>
+            <div class="card-price">${price}</div>
+            <button class="more-info-btn">More Information</button>
+        </div>
+    </div>
+</div>`;
+                }
+                return `<!-- Product options card -->
+<div class="swiper-slide">
+    <div class="se-component se-image-container __se__float- __se__float-none">
+        <figure>
+            <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-file-name="${filename}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto" data-index="0">
+        </figure>
+    </div>
+    <div class="card">
+        <div class="card-info">
+            <div class="card-title">${title}</div>
+            <div class="card-description">${description}</div>
+            <div class="card-price">${price}</div>
+            <button class="more-info-btn">More Information</button>
+        </div>
+    </div>
+</div>`;
+
+            case 'specification-table':
+            case 'spec':
+                return card.htmlContent || card.description || '<!-- No HTML content provided for specification table -->';
+
+            case 'weather-protection':
+            case 'weather':
+            case 'cargo-options':
+            case 'cargo':
+                if (!imageUrl || imageUrl.trim() === '') {
+                    return `<!-- Product feature card container -->
+<div class="product-feature-card">
+    <div class="feature-content">
+        <h2>${title}</h2>
+        <h3>${price}</h3>
+        <p>${description}</p>
+    </div>
+</div>`;
+                }
+                return `<!-- Product feature card container -->
+<div class="product-feature-card">
+    <div class="feature-content">
+        <h2>${title}</h2>
+        <h3>${price}</h3>
+        <p>${description}</p>
+    </div>
+    <div class="se-component se-image-container __se__float- __se__float-none">
+        <figure>
+            <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-index="0" data-file-name="${filename}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto">
+        </figure>
+    </div>
+</div>`;
+
+            default:
+                return `<!-- Unknown card type: ${cardType} -->
+<div class="unknown-card">
+    <h3>${title}</h3>
     <p>${description}</p>
-    </div>
-    <!-- Image -->
-    
-    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
-    </div>
-    <div class="se-component se-image-container __se__float-"><figure style="width: 400px;">
-    <img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;" data-proportion="true" width="400" height="auto" data-size="400px,auto" data-align="" data-index="2" data-file-name="${filename}" data-file-size="0" origin-size="1600,1067" data-origin="400px,auto">
-    </figure>
-    </div>
-    <div style="flex: 0 0 auto; max-width: 400px; min-width: 250px;">
-    </div>
-    </div>`;
-    }
-
-    generateProductOptionsCardHtml(card, imageUrl) {
-        const title = card.title || '';
-        const price = card.price || '';
-        const description = card.description || '';
-        const filename = imageUrl ? imageUrl.split('/').pop().split('?')[0] : ''; // Get filename from URL
-
-        // If no valid image URL, generate HTML without image section
-        if (!imageUrl || imageUrl.trim() === '') {
-            return `<!-- Example of another card -->
-<div class="swiper-slide">
-<div class="card">
-<div class="card-info">
-<div class="card-title">${title}</div>
-
-<div class="card-description">${description}</div>
-
-<div class="card-price">${price}</div>
-<button class="more-info-btn">More Information</button></div>
-</div>
 </div>`;
         }
-
-        return `<!-- Example of another card -->
-<div class="swiper-slide">
-<div class="se-component se-image-container __se__float- __se__float-none">
-    <figure>
-      <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-file-name="${filename}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto" data-index="0">
-    </figure>
-</div>
-
-<div class="card">
-<div class="card-info">
-<div class="card-title">${title}</div>
-
-<div class="card-description">${description}</div>
-
-<div class="card-price">${price}</div>
-<button class="more-info-btn">More Information</button></div>
-</div>
-</div>`;
     }
 
-    generateSpecificationTableCardHtml(card) {
-        // For specification table cards, return the HTML content exactly as pasted
-        const htmlContent = card.htmlContent || card.description || '';
-        
-        if (!htmlContent.trim()) {
-            return '<!-- No HTML content provided for specification table -->';
-        }
-        
-        // Return the HTML content exactly as provided, no modifications
-        return htmlContent;
-    }
 
-    generateWeatherProtectionCardHtml(card, imageUrl) {
-        const title = card.title || '';
-        const price = card.price || '';
-        const description = card.description || '';
-        const filename = imageUrl ? imageUrl.split('/').pop().split('?')[0] : ''; // Get filename from URL
-        
-        // If no valid image URL, generate HTML without image section
-        if (!imageUrl || imageUrl.trim() === '') {
-            return `<!-- Product feature card container -->
-<div class="product-feature-card">
-<!-- Text content -->
-<div class="feature-content">
-<h2>${title}</h2>
-
-<h3>${price}</h3>
-
-<p>${description}</p>
-    </div>
-</div>`;
-        }
-        
-        return `<!-- Product feature card container -->
-<div class="product-feature-card">
-<!-- Text content -->
-<div class="feature-content">
-<h2>${title}</h2>
-
-<h3>${price}</h3>
-
-<p>${description}</p>
-    </div>
-
-<!-- Image -->
-<div class="se-component se-image-container __se__float- __se__float-none">
-    <figure>
-      <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-index="0" data-file-name="${filename}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto">
-    </figure>
-</div>
-</div>`;
-    }
-
-    generateCargoOptionsCardHtml(card, imageUrl) {
-        const title = card.title || '';
-        const price = card.price || '';
-        const description = card.description || '';
-        const filename = imageUrl ? imageUrl.split('/').pop().split('?')[0] : ''; // Get filename from URL
-        
-        // If no valid image URL, generate HTML without image section
-        if (!imageUrl || imageUrl.trim() === '') {
-            return `<!-- Product feature card container -->
-<div class="product-feature-card">
-<!-- Text content -->
-<div class="feature-content">
-<h2>${title}</h2>
-
-<h3>${price}</h3>
-
-<p>${description}</p>
-    </div>
-</div>`;
-        }
-        
-        return `<!-- Product feature card container -->
-<div class="product-feature-card">
-<!-- Text content -->
-<div class="feature-content">
-<h2>${title}</h2>
-
-<h3>${price}</h3>
-
-<p>${description}</p>
-    </div>
-
-<!-- Image -->
-<div class="se-component se-image-container __se__float- __se__float-none">
-    <figure>
-      <img src="${imageUrl}" alt="${title}" data-proportion="true" data-align="none" data-index="0" data-file-name="${filename}" data-file-size="0" data-origin="," data-size="," data-rotate="" data-rotatex="" data-rotatey="" style="" width="" height="" data-percentage="auto,auto">
-    </figure>
-</div>
-</div>`;
-    }
 
     showHtmlModal(htmlCode) {
         if (!this.isUiEnabled) return;

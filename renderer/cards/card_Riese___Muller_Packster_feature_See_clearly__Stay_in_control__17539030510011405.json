@@ -1,6 +1,6 @@
 {
   "id": "17539030510011405",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "feature",
   "position": 1,
   "title": "See clearly. Stay in control.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_feature_See_clearly__Stay_in_control__17539030510011405.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/feature/Packster_Packster2_feature_see-clearly-stay-in-control.jpg",
-  "uploadDate": "2025-07-30T19:19:33.735Z",
+  "uploadDate": "2025-08-08T18:58:51.016Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T19:19:28.437Z",
-    "DateUploaded": "2025-07-30T19:19:28.437Z",
+    "DateCreated": "2025-08-08T18:58:45.592Z",
+    "DateUploaded": "2025-08-08T18:58:45.592Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,8 +46,13 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T19:17:31.001Z",
+  "lastModified": "2025-08-08T18:44:19.024Z",
   "savedAt": "2025-07-30T19:17:31.001Z",
   "originalHypaData": {},
-  "subtitle": ""
+  "subtitle": "",
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_feature_See_clearly__Stay_in_control__17539030510011405.json"
 }

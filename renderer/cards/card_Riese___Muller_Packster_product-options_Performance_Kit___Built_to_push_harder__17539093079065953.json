@@ -1,6 +1,6 @@
 {
   "id": "17539093079065953",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "product-options",
   "position": 1,
   "title": "Performance Kit – Built to push harder.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_product-options_Performance_Kit___Built_to_push_harder__17539093079065953.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_performance-kit-built-to-push-harder.jpg",
-  "uploadDate": "2025-07-30T21:21:23.134Z",
+  "uploadDate": "2025-08-08T18:59:58.106Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:21:18.831Z",
-    "DateUploaded": "2025-07-30T21:21:18.831Z",
+    "DateCreated": "2025-08-08T18:59:54.080Z",
+    "DateUploaded": "2025-08-08T18:59:54.080Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,7 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T21:02:02.878Z",
+  "lastModified": "2025-08-08T18:48:12.720Z",
   "savedAt": "2025-07-30T21:01:47.907Z",
   "originalHypaData": {},
   "validationInfo": {

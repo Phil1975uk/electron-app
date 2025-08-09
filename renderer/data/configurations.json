@@ -920,19 +920,19 @@
       "variants": [
         {
           "name": "70 Touring",
-          "sku": "F01201"
+          "sku": "F01652"
         },
         {
           "name": "70 Family",
-          "sku": "F01200"
+          "sku": "F01651"
         },
         {
           "name": "70 Automatic",
-          "sku": "F01203"
+          "sku": "F01654"
         },
         {
           "name": "70 Vario",
-          "sku": "F01202"
+          "sku": "F01653"
         }
       ]
     },
@@ -1168,15 +1168,15 @@
         },
         {
           "name": "70 Ct Touring",
-          "sku": "F01355"
+          "sku": "F01655"
         },
         {
-          "name": "70 Ct Vario 4d4s",
-          "sku": "F01356_"
+          "name": "70 Ct Vario",
+          "sku": "F01656"
         },
         {
           "name": "70 Ct Automatic",
-          "sku": "F01357"
+          "sku": "F01657"
         }
       ]
     },

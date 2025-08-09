@@ -1,6 +1,6 @@
 {
   "id": "17539095840504786",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "product-options",
   "position": 1,
   "title": "Pannier Rack – Minimalist, functional, integrated.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_product-options_Pannier_Rack___Minimalist__functional__integrated__17539095840504786.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_pannier-rack-minimalist-functional-integrated.jpg",
-  "uploadDate": "2025-07-30T21:21:17.846Z",
+  "uploadDate": "2025-08-08T18:59:49.388Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:21:13.809Z",
-    "DateUploaded": "2025-07-30T21:21:13.809Z",
+    "DateCreated": "2025-08-08T18:59:45.076Z",
+    "DateUploaded": "2025-08-08T18:59:45.076Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,12 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T21:06:24.050Z",
+  "lastModified": "2025-08-08T18:47:57.400Z",
   "savedAt": "2025-07-30T21:06:24.050Z",
-  "originalHypaData": {}
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_product-options_Pannier_Rack___Minimalist__functional__integrated__17539095840504786.json"
 }

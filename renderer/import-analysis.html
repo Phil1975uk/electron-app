@@ -182,30 +182,7 @@
                                 <button class="btn btn-outline-danger me-2" id="clearCacheBtn" onclick="clearAllCaches()">
             <i class="fas fa-broom me-2"></i>Clear All Caches
         </button>
-        <button class="btn btn-outline-info me-2" id="debugCardsBtn" onclick="console.log('Debug: Cards loaded:', window.cards ? window.cards.length : 'none')">
-            <i class="fas fa-bug me-2"></i>Debug Cards
-        </button>
-        <button class="btn btn-outline-danger me-2" id="testSimpleExportBtn" onclick="testSimpleExport()">
-            <i class="fas fa-bolt me-2"></i>Test Simple Export
-        </button>
-        <button class="btn btn-outline-secondary me-2" id="debugExportSystemBtn" onclick="debugExportSystem()">
-            <i class="fas fa-bug me-2"></i>Debug Export System
-        </button>
-        <button class="btn btn-outline-warning me-2" id="testDirectCardsBtn" onclick="testDirectCards()">
-            <i class="fas fa-eye me-2"></i>Test Direct Cards
-        </button>
-        <button class="btn btn-outline-info me-2" id="checkFunctionsBtn" onclick="checkAllFunctions()">
-            <i class="fas fa-check me-2"></i>Check All Functions
-        </button>
-        <button class="btn btn-outline-secondary me-2" id="debugVisibilityBtn" onclick="debugCardVisibility()">
-            <i class="fas fa-eye me-2"></i>Debug Visibility
-        </button>
-        <button class="btn btn-outline-primary me-2" id="refreshSummaryBtn" onclick="refreshSummary()">
-            <i class="fas fa-sync me-2"></i>Refresh Summary
-        </button>
-        <button class="btn btn-outline-warning me-2" id="debugCardContentBtn" onclick="debugCardContent()">
-            <i class="fas fa-file-text me-2"></i>Debug Card Content
-        </button>
+
                         <button class="btn btn-success me-2" id="importBigCommerceBtn" data-bs-toggle="modal" data-bs-target="#importBigCommerceModal">
                             <i class="fas fa-shopping-cart me-2"></i>Import BigCommerce Products
                         </button>
@@ -416,7 +393,7 @@
                         <tr>
                             <th>Date</th>
                             <th>File</th>
-                            <th>Items</th>
+                            <th>Products/Variants</th>
                             <th>Success</th>
                             <th>Errors</th>
                             <th>Status</th>

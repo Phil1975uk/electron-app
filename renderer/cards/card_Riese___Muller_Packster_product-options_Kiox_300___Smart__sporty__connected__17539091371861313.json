@@ -1,6 +1,6 @@
 {
   "id": "17539091371861313",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "product-options",
   "position": 1,
   "title": "Kiox 300 – Smart, sporty, connected.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_product-options_Kiox_300___Smart__sporty__connected__17539091371861313.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_kiox-300-smart-sporty-connected.jpg",
-  "uploadDate": "2025-07-30T21:21:07.654Z",
+  "uploadDate": "2025-08-08T18:59:30.576Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:21:03.505Z",
-    "DateUploaded": "2025-07-30T21:21:03.505Z",
+    "DateCreated": "2025-08-08T18:59:26.381Z",
+    "DateUploaded": "2025-08-08T18:59:26.381Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,12 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T20:58:57.186Z",
+  "lastModified": "2025-08-08T18:47:25.852Z",
   "savedAt": "2025-07-30T20:58:57.186Z",
-  "originalHypaData": {}
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_product-options_Kiox_300___Smart__sporty__connected__17539091371861313.json"
 }

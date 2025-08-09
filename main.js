@@ -162,7 +162,7 @@ function startServer() {
     try {
       const cachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');
       if (!fsSync.existsSync(cachePath)) {
-        return res.status(404).json({ error: 'Cache not found' });
+        return res.json({ data: [] });
       }
       const cacheData = await fs.readFile(cachePath, 'utf8');
       res.json(JSON.parse(cacheData));
@@ -191,6 +191,75 @@ function startServer() {
       res.json({ success: true, message: 'Hypa CSV cache saved successfully' });
     } catch (error) {
       console.error('Error saving Hypa CSV cache:', error);
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // API route to import Hypa CSV
+  app.post('/api/import-hypa-csv', upload.single('hypaCsvFile'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ success: false, error: 'No file uploaded' });
+      }
+
+      console.log('[import-hypa-csv] Processing file:', req.file.originalname);
+      
+      // Read the CSV file from buffer (memory storage)
+      const csvContent = req.file.buffer.toString('utf8');
+      const lines = csvContent.split('\n');
+      
+      if (lines.length < 2) {
+        return res.status(400).json({ success: false, error: 'CSV file is empty or invalid' });
+      }
+
+      // Parse headers
+      const headers = lines[0].split(',').map(h => h.trim());
+      console.log('[import-hypa-csv] Headers:', headers);
+
+      // Parse data rows
+      const data = [];
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line) {
+          const values = line.split(',').map(v => v.trim());
+          if (values.length >= headers.length) {
+            const row = {};
+            headers.forEach((header, index) => {
+              row[header] = values[index] || '';
+            });
+            data.push(row);
+          }
+        }
+      }
+
+      console.log('[import-hypa-csv] Parsed', data.length, 'data rows');
+
+      // Save to cache
+      const cachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');
+      const cacheData = { 
+        data, 
+        headers, 
+        timestamp: new Date().toISOString(),
+        filename: req.file.originalname
+      };
+      
+      // Ensure the data directory exists
+      const dataDir = path.dirname(cachePath);
+      if (!fsSync.existsSync(dataDir)) {
+        fsSync.mkdirSync(dataDir, { recursive: true });
+      }
+
+      await fs.writeFile(cachePath, JSON.stringify(cacheData, null, 2));
+
+      console.log('[import-hypa-csv] Import successful:', data.length, 'rows saved to cache');
+      res.json({ 
+        success: true, 
+        message: 'Hypa CSV imported successfully',
+        rows: data.length,
+        headers: headers
+      });
+    } catch (error) {
+      console.error('Error importing Hypa CSV:', error);
       res.status(500).json({ success: false, error: error.message });
     }
   });
@@ -1146,7 +1215,16 @@ function startServer() {
     try {
       const { path: templatePath } = req.query;
       if (!templatePath) return res.status(400).json({ error: 'Missing template path' });
-      const templateName = templatePath.includes('master') ? 'master' : templatePath.split('/').pop().replace(`${req.params.cardType}-`, '').replace('.html', '');
+      
+      let templateName;
+      if (templatePath.includes('reference-templates')) {
+        templateName = 'reference';
+      } else if (templatePath.includes('master')) {
+        templateName = 'master';
+      } else {
+        templateName = templatePath.split('/').pop().replace(`${req.params.cardType}-`, '').replace('.html', '');
+      }
+      
       const content = await templateManager.getTemplateContent(req.params.cardType, templateName);
       res.json({ content });
     } catch (err) {
@@ -1158,7 +1236,23 @@ function startServer() {
   app.post('/api/template/:cardType', async (req, res) => {
     try {
       const { name, content } = req.body;
-      await templateManager.saveCustomTemplate(req.params.cardType, name, content);
+      const result = await templateManager.saveCustomTemplate(req.params.cardType, name, content);
+      res.json({ 
+        success: true, 
+        exists: result.exists,
+        willOverwrite: result.willOverwrite,
+        filePath: result.filePath
+      });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Write template file after confirmation
+  app.post('/api/template/:cardType/write', async (req, res) => {
+    try {
+      const { filePath, content } = req.body;
+      await templateManager.writeTemplateFile(filePath, content);
       res.json({ success: true });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -1181,6 +1275,17 @@ function startServer() {
     try {
       const templatePath = await templateManager.getActiveTemplatePath(req.params.cardType);
       res.json({ templatePath });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Get processed template with card data
+  app.post('/api/template/:cardType/process', async (req, res) => {
+    try {
+      const { templateName, cardData } = req.body;
+      const processedTemplate = await templateManager.getProcessedTemplate(req.params.cardType, templateName, cardData);
+      res.json({ processedTemplate });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

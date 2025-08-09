@@ -1,6 +1,6 @@
 {
   "id": "17539100668935809",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "cargo-options",
   "position": 1,
   "title": "Cargo Carry System – Adaptable by design.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_cargo-options_Cargo_Carry_System___Adaptable_by_design__17539100668935809.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/cargo-options/Packster_Packster2_cargo-options_cargo-carry-system-adaptable-by-design.jpg",
-  "uploadDate": "2025-07-30T21:20:20.876Z",
+  "uploadDate": "2025-08-08T18:54:15.982Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:20:16.501Z",
-    "DateUploaded": "2025-07-30T21:20:16.501Z",
+    "DateCreated": "2025-08-08T18:54:11.797Z",
+    "DateUploaded": "2025-08-08T18:54:11.797Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,12 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T21:14:26.893Z",
+  "lastModified": "2025-08-08T18:51:16.903Z",
   "savedAt": "2025-07-30T21:14:26.893Z",
-  "originalHypaData": {}
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_cargo-options_Cargo_Carry_System___Adaptable_by_design__17539100668935809.json"
 }

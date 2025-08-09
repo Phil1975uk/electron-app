@@ -89,20 +89,15 @@ window.addEventListener('load', () => {
             editModal = new bootstrap.Modal(editModalElement);
         }
 
-        // DEBUG: Check and enable all form inputs
-        console.log('DEBUG: Checking form inputs...');
+        // Enable all form inputs
         const allInputs = document.querySelectorAll('#bikeConfigForm input, #bikeConfigForm select, #bikeConfigForm textarea');
-        allInputs.forEach((input, index) => {
-            console.log(`DEBUG: Input ${index}:`, input.id, 'disabled:', input.disabled, 'readonly:', input.readOnly, 'type:', input.type);
-            
+        allInputs.forEach((input) => {
             // Force enable all inputs
             input.removeAttribute('disabled');
             input.removeAttribute('readonly');
             input.style.pointerEvents = 'auto';
             input.style.opacity = '1';
             input.style.background = '#fff';
-            
-            console.log(`DEBUG: After enabling - disabled:`, input.disabled, 'readonly:', input.readOnly);
         });
 
         // Add event listeners
@@ -165,25 +160,7 @@ window.addEventListener('load', () => {
         updateFilterOptions();
         // updateExcelFile(); // Removed automatic Excel generation on page load
         
-        // DEBUG: Final check of form inputs
-        console.log('DEBUG: Final check of form inputs...');
-        const finalInputs = document.querySelectorAll('#bikeConfigForm input, #bikeConfigForm select, #bikeConfigForm textarea');
-        finalInputs.forEach((input, index) => {
-            console.log(`DEBUG: Final Input ${index}:`, input.id, 'disabled:', input.disabled, 'readonly:', input.readOnly);
-            
-            // Add test event listeners
-            input.addEventListener('focus', () => {
-                console.log(`DEBUG: Input ${input.id} focused`);
-            });
-            
-            input.addEventListener('input', () => {
-                console.log(`DEBUG: Input ${input.id} value changed to:`, input.value);
-            });
-            
-            input.addEventListener('click', () => {
-                console.log(`DEBUG: Input ${input.id} clicked`);
-            });
-        });
+
     }
     
     // Variant management functions
@@ -493,9 +470,7 @@ window.addEventListener('load', () => {
         const generation = document.getElementById('editGeneration').value;
         const variants = getEditVariants();
 
-        console.log('Edit Save Debug:', { id, brand, model, generation, variants });
-        console.log('All configuration IDs:', configurations.map(c => ({ id: c.id, type: typeof c.id })));
-        console.log('Looking for ID:', id, 'Type:', typeof id);
+
 
         if (!brand || !model || !generation || variants.length === 0) {
             alert('Please fill in all fields and add at least one variant');
@@ -561,7 +536,6 @@ window.addEventListener('load', () => {
         
         // Find config by stringified ID for robustness
         let index = configurations.findIndex(config => config.id.toString() === id.toString());
-        console.log('Found config at index:', index);
 
         if (index !== -1) {
             configurations[index] = {
@@ -571,13 +545,10 @@ window.addEventListener('load', () => {
                 generation,
                 variants
             };
-            console.log('Updated configuration:', configurations[index]);
             saveConfigurations();
             updateFilterOptions();
             applyFilters();
             editModal.hide();
-            // Debug: Print all configs after save
-            console.log('All configs after save:', configurations.map(c => ({ id: c.id, brand: c.brand, model: c.model, generation: c.generation })));
         } else {
             console.error('Configuration not found with id:', id);
             alert('Error: Configuration not found. No changes were saved.');
@@ -607,7 +578,7 @@ window.addEventListener('load', () => {
         const modal = document.getElementById('editModal');
         if (!modal) return;
         
-        console.log('Force enabling modal inputs...');
+
         
         // Force modal to front
         modal.style.zIndex = '9999';
@@ -643,7 +614,7 @@ window.addEventListener('load', () => {
             input.onfocus = null;
             input.oninput = null;
             
-            console.log(`Enabled input: ${input.id} - disabled: ${input.disabled}, readonly: ${input.readOnly}`);
+
         });
         
         // Remove any potential blocking elements (second check)
@@ -654,7 +625,7 @@ window.addEventListener('load', () => {
             }
         });
         
-        console.log('Modal inputs force-enabled');
+
     }
 
     // Utility: Robust deep copy (uses structuredClone if available, else JSON fallback)

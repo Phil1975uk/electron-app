@@ -1,6 +1,6 @@
 {
   "id": "17539101760722701",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "cargo-options",
   "position": 1,
   "title": "Box with Tarpaulin – Weatherproof your load.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_cargo-options_Box_with_Tarpaulin___Weatherproof_your_load__17539101760722701.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/cargo-options/Packster_Packster2_cargo-options_box-with-tarpaulin-weatherproof-your-load.jpg",
-  "uploadDate": "2025-07-30T21:20:10.394Z",
+  "uploadDate": "2025-08-08T18:53:58.642Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:20:06.245Z",
-    "DateUploaded": "2025-07-30T21:20:06.245Z",
+    "DateCreated": "2025-08-08T18:53:54.380Z",
+    "DateUploaded": "2025-08-08T18:53:54.380Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,12 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T21:16:16.072Z",
+  "lastModified": "2025-08-08T18:50:44.927Z",
   "savedAt": "2025-07-30T21:16:16.072Z",
-  "originalHypaData": {}
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_cargo-options_Box_with_Tarpaulin___Weatherproof_your_load__17539101760722701.json"
 }

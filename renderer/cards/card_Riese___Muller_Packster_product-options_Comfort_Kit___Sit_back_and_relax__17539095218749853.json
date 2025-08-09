@@ -1,6 +1,6 @@
 {
   "id": "17539095218749853",
-  "sku": "F01201",
+  "sku": "F01652",
   "cardType": "product-options",
   "position": 1,
   "title": "Comfort Kit – Sit back and relax.",
@@ -14,31 +14,31 @@
     "variants": [
       {
         "name": "70 Touring",
-        "sku": "F01201"
+        "sku": "F01652"
       },
       {
         "name": "70 Family",
-        "sku": "F01200"
+        "sku": "F01651"
       },
       {
         "name": "70 Automatic",
-        "sku": "F01203"
+        "sku": "F01654"
       },
       {
         "name": "70 Vario",
-        "sku": "F01202"
+        "sku": "F01653"
       }
     ]
   },
   "filename": "card_Riese___Muller_Packster_product-options_Comfort_Kit___Sit_back_and_relax__17539095218749853.json",
   "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Packster/Packster2/product-options/Packster_Packster2_product-options_comfort-kit-sit-back-and-relax.jpg",
-  "uploadDate": "2025-07-30T21:20:57.445Z",
+  "uploadDate": "2025-08-08T18:59:15.375Z",
   "uploadMetadata": {
     "Model": "Packster",
     "Generation": "Packster2",
     "Variants": "70 Touring, 70 Family, 70 Automatic, 70 Vario",
-    "DateCreated": "2025-07-30T21:20:53.310Z",
-    "DateUploaded": "2025-07-30T21:20:53.310Z",
+    "DateCreated": "2025-08-08T18:59:10.973Z",
+    "DateUploaded": "2025-08-08T18:59:10.973Z",
     "ImageDescription": "Packster Packster2 - 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "UserComment": "Generation: Packster2, Variants: 70 Touring, 70 Family, 70 Automatic, 70 Vario",
     "Copyright": "E-Bike Barn",
@@ -46,7 +46,12 @@
   },
   "importedFromHypa": false,
   "hypaUpdated": false,
-  "lastModified": "2025-07-30T21:05:21.874Z",
+  "lastModified": "2025-08-08T18:46:51.826Z",
   "savedAt": "2025-07-30T21:05:21.874Z",
-  "originalHypaData": {}
+  "originalHypaData": {},
+  "validationInfo": {
+    "hasWarnings": false,
+    "warnings": []
+  },
+  "originalFilename": "card_Riese___Muller_Packster_product-options_Comfort_Kit___Sit_back_and_relax__17539095218749853.json"
 }
