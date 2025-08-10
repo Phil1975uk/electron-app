@@ -1,4 +1,4 @@
-// Import Analysis Dashboard
+﻿// Import Analysis Dashboard
 window.addEventListener('load', () => {
     // Data storage
     let configurations = [];
@@ -66,6 +66,9 @@ window.addEventListener('load', () => {
                 const hypaData = await hypaResponse.json();
                 originalHypaCsvData = hypaData.data || [];
                 originalHypaCsvHeaders = hypaData.headers || [];
+                // Expose for downstream access in selection rendering
+                window.originalHypaCsvData = originalHypaCsvData;
+                window.hypaCsvCacheData = originalHypaCsvData;
             }
 
             // Note: Cache clearing removed to preserve imported Hypa CSV data
@@ -142,7 +145,7 @@ window.addEventListener('load', () => {
             totalHypaExportedElement.textContent = '0';
         }
         
-        console.log('✅ Statistics updated');
+        console.log('âœ… Statistics updated');
     }
 
     function showAnalysisToast(message, type = 'info') {
@@ -156,12 +159,12 @@ window.addEventListener('load', () => {
         const exportBtn = document.getElementById('exportHypaBtn');
         if (exportBtn) {
             exportBtn.addEventListener('click', handleExportClick);
-            console.log('✅ Export button setup complete');
+            console.log('âœ… Export button setup complete');
         }
     }
 
     function handleExportClick() {
-        console.log('🚀 Export button clicked - starting simple export...');
+        console.log('ðŸš€ Export button clicked - starting simple export...');
         
         // Show the modal
         const modal = new bootstrap.Modal(document.getElementById('exportHypaModal'));
@@ -176,11 +179,11 @@ window.addEventListener('load', () => {
     }
 
     function runSimpleExport() {
-        console.log('🔍 Running simple export...');
+        console.log('ðŸ” Running simple export...');
         
         // Step 1: Prepare export data
         const exportData = prepareExportData();
-        console.log(`📊 Prepared ${exportData.length} items for export`);
+        console.log(`ðŸ“Š Prepared ${exportData.length} items for export`);
         
         // Step 2: Show cards in modal
         displayExportCards(exportData);
@@ -191,93 +194,57 @@ window.addEventListener('load', () => {
 
     function prepareExportData() {
         if (!cards || cards.length === 0) {
-            console.log('❌ No cards available for export');
+            console.log('âŒ No cards available for export');
             return [];
         }
 
-        console.log(`📋 Preparing ${cards.length} cards for export...`);
-        
-        // Get all unique SKUs from the cards
-        const allSkus = [];
-        console.log(`🔍 Analyzing ${cards.length} cards for SKUs...`);
-        
-        cards.forEach((card, index) => {
-            console.log(`📋 Card ${index + 1}:`, {
-                sku: card.sku,
-                cardType: card.cardType,
-                hasConfig: !!card.configuration,
-                hasVariants: !!(card.configuration && card.configuration.variants),
-                variantCount: card.configuration?.variants?.length || 0
-            });
-            
-            // Each card has its own SKU - add it to the list
-            if (card.sku && !allSkus.includes(card.sku)) {
-                allSkus.push(card.sku);
-                console.log(`  ✅ Added SKU: ${card.sku}`);
-            }
-        });
-        
-        console.log(`📋 Found ${allSkus.length} unique SKUs from cards:`, allSkus);
-        
-        // Initialize groups for each SKU
+        console.log(`ðŸ“‹ Preparing ${cards.length} cards for export (SKU-driven)...`);
+
+        // Group strictly by SKUs explicitly assigned to each card
         const groupedBySku = {};
-        allSkus.forEach(sku => {
-            groupedBySku[sku] = [];
-        });
-        
-        // Group cards by configuration (brand/model/generation) to identify shared cards
-        const cardsByConfig = {};
-        cards.forEach(card => {
-            if (card.configuration) {
-                const configKey = `${card.configuration.brand}-${card.configuration.model}-${card.configuration.generation}`;
-                if (!cardsByConfig[configKey]) {
-                    cardsByConfig[configKey] = [];
-                }
-                cardsByConfig[configKey].push(card);
-            }
-        });
-        
-        console.log('🔍 Cards grouped by configuration:', Object.keys(cardsByConfig));
-        
-        // Add cards to SKU groups
-        cards.forEach(card => {
-            const cardSku = card.sku;
-            if (cardSku && groupedBySku[cardSku]) {
-                // Add this card to its own SKU group
-                groupedBySku[cardSku].push(card);
-                
-                                // For shared cards (features, options, cargo), also add to other SKUs in same configuration
-                // Note: spec tables should remain individual per SKU, not shared
-                if (card.cardType === 'feature' || card.cardType === 'product-options' || card.cardType === 'cargo-options') {
-                    if (card.configuration) {
-                        const configKey = `${card.configuration.brand}-${card.configuration.model}-${card.configuration.generation}`;
-                        const configCards = cardsByConfig[configKey] || [];
-                        
-                        // Add this shared card to all SKUs in the same configuration
-                        configCards.forEach(configCard => {
-                            const configSku = configCard.sku;
-                            if (configSku && configSku !== cardSku && groupedBySku[configSku]) {
-                                // Create a copy of the card for this SKU
-                                const cardCopy = {
-                                    ...card,
-                                    sku: configSku,
-                                    // Keep original SKU for reference
-                                    originalSku: card.sku
-                                };
-                                groupedBySku[configSku].push(cardCopy);
-                            }
-                        });
+
+        cards.forEach((card, index) => {
+            const config = card.configuration || {};
+            const variants = Array.isArray(config.variants) ? config.variants : [];
+            const variantSkusMap = config.variantSkus || {};
+
+            // Derive target SKUs for this card
+            let targetSkus = [];
+
+            if (variants.length > 0) {
+                variants.forEach(variant => {
+                    if (typeof variant === 'object' && variant && variant.sku) {
+                        targetSkus.push(variant.sku);
+                    } else if (typeof variant === 'string' && variantSkusMap[variant]) {
+                        // Legacy format: variant is a name, look up SKU from mapping
+                        targetSkus.push(variantSkusMap[variant]);
                     }
-                }
-                
-                // Debug: Log spec table assignments
-                if (card.cardType === 'specification-table') {
-                    console.log(`🔍 Spec table for ${cardSku}: "${card.title}" - NOT duplicated`);
-                }
+                });
             }
+
+            // Fallback to card.sku if no variant SKUs were found
+            if (targetSkus.length === 0 && card.sku) {
+                targetSkus.push(card.sku);
+            }
+
+            // Deduplicate and sanitize
+            targetSkus = [...new Set(targetSkus.filter(Boolean))];
+
+            // Assign this card to each target SKU
+            targetSkus.forEach(sku => {
+                if (!groupedBySku[sku]) {
+                    groupedBySku[sku] = [];
+                }
+                const cardCopy = {
+                    ...card,
+                    sku: sku,
+                    originalSku: card.sku
+                };
+                groupedBySku[sku].push(cardCopy);
+            });
         });
 
-        // Convert to export format
+        // Convert to export format (one item per SKU actually referenced)
         const exportItems = Object.keys(groupedBySku).map(sku => ({
             sku: sku,
             cards: groupedBySku[sku],
@@ -288,24 +255,20 @@ window.addEventListener('load', () => {
         }));
 
         // Debug: Log card counts for each SKU
-        console.log('📊 Card counts by SKU:');
+        console.log('ðŸ“Š Card counts by SKU (SKU-driven):');
         exportItems.forEach(item => {
             console.log(`  ${item.sku}: ${item.cardCount} cards`);
-            if (item.generation === 'Packster2') {
-                console.log(`    Brand: ${item.brand}, Model: ${item.model}, Generation: ${item.generation}`);
-                console.log(`    Card types: ${item.cards.map(c => c.cardType).join(', ')}`);
-            }
         });
 
-        console.log(`✅ Created ${exportItems.length} SKU groups for export`);
-        
+        console.log(`âœ… Created ${exportItems.length} SKU groups for export (SKU-driven)`);
+
         // Debug: Show some sample data
         if (exportItems.length > 0) {
-            console.log('🔍 Sample export item:', exportItems[0]);
-            console.log('🔍 Sample card configuration:', exportItems[0].cards[0]?.configuration);
-            console.log('🔍 Sample card data:', exportItems[0].cards[0]);
+            console.log('ðŸ” Sample export item:', exportItems[0]);
+            console.log('ðŸ” Sample card configuration:', exportItems[0].cards[0]?.configuration);
+            console.log('ðŸ” Sample card data:', exportItems[0].cards[0]);
         }
-        
+
         return exportItems;
     }
 
@@ -359,11 +322,11 @@ window.addEventListener('load', () => {
     }
 
     function displayExportCards(exportData) {
-        console.log('🎨 Displaying export cards...');
+        console.log('ðŸŽ¨ Displaying export cards...');
         
         const container = document.getElementById('productCardsContainer');
         if (!container) {
-            console.error('❌ productCardsContainer not found');
+            console.error('âŒ productCardsContainer not found');
             return;
         }
 
@@ -376,7 +339,7 @@ window.addEventListener('load', () => {
             container.innerHTML += cardHtml;
         });
 
-        console.log(`✅ Displayed ${exportData.length} SKU cards`);
+        console.log(`âœ… Displayed ${exportData.length} SKU cards`);
         
         // Store export data globally for export function
         window.currentExportData = exportData;
@@ -387,7 +350,7 @@ window.addEventListener('load', () => {
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', updateExportSummary);
             });
-            console.log(`✅ Added change listeners to ${checkboxes.length} checkboxes`);
+            console.log(`âœ… Added change listeners to ${checkboxes.length} checkboxes`);
             
             // Initial summary update
             updateExportSummary();
@@ -396,11 +359,11 @@ window.addEventListener('load', () => {
         // Debug: Check if cards are actually visible
         setTimeout(() => {
             const skuCards = container.querySelectorAll('.sku-card');
-            console.log(`🔍 Found ${skuCards.length} SKU cards in DOM`);
+            console.log(`ðŸ” Found ${skuCards.length} SKU cards in DOM`);
             if (skuCards.length === 0) {
-                console.error('❌ No cards found in container!');
+                console.error('âŒ No cards found in container!');
             } else {
-                console.log('✅ Cards are visible in the interface');
+                console.log('âœ… Cards are visible in the interface');
             }
         }, 500);
     }
@@ -420,6 +383,28 @@ window.addEventListener('load', () => {
         
         // Create a descriptive title
         const descriptiveTitle = `${item.brand} ${item.model} ${item.generation} - ${variantName}`;
+
+                // Look up ID from imported Hypa CSV cache (if loaded) for display
+        // Fallback to 'New' if not found
+        let cachedIdDisplay = 'New';
+        let idStatus = 'missing';
+        try {
+            const cache = window.hypaCsvCacheData || window.originalHypaCsvData || [];
+            const refRow = Array.isArray(cache) ? cache.find(r => r.sku === item.sku) : null;
+            if (refRow && refRow.id != null && String(refRow.id).trim() !== '') {
+                cachedIdDisplay = String(refRow.id);
+                idStatus = 'found';
+            } else {
+                idStatus = 'missing';
+            }
+        } catch {
+            idStatus = 'error';
+        }
+        
+        // Add warning for missing IDs
+        const idDisplay = idStatus === 'missing' ? 
+            `<span class="text-warning" title="SKU not found in imported Hypa CSV - re-import complete data">ID: New ⚠️</span>` : 
+            `ID: ${cachedIdDisplay}`;
         
         return `
             <div class="card mb-3 sku-card" data-sku="${item.sku}">
@@ -427,7 +412,7 @@ window.addEventListener('load', () => {
                     <h6 class="mb-0">
                         <i class="fas fa-box me-2"></i>
                         <strong>${descriptiveTitle}</strong>
-                        <br><small class="text-muted">SKU: ${item.sku}</small>
+                        <br><small class="text-muted">SKU: ${item.sku} â€¢ ID: ${cachedIdDisplay}</small>
                     </h6>
                     <div class="form-check">
                         <input class="form-check-input sku-checkbox" type="checkbox" 
@@ -448,7 +433,7 @@ window.addEventListener('load', () => {
                         </div>
                         <div class="col-md-6">
                             <p><strong>Types:</strong> ${cardTypes}</p>
-                            <p><strong>Images:</strong> ${hasImages ? '✅ Yes' : '❌ No'}</p>
+                            <p><strong>Images:</strong> ${hasImages ? 'âœ… Yes' : 'âŒ No'}</p>
                             <p><strong>Status:</strong> <span class="badge bg-success">Ready</span></p>
                         </div>
                     </div>
@@ -458,7 +443,7 @@ window.addEventListener('load', () => {
     }
 
     function showSelectionStep() {
-        console.log('📋 Showing selection step...');
+        console.log('ðŸ“‹ Showing selection step...');
         
         // Hide other steps
         const analysisStep = document.getElementById('exportAnalysisStep');
@@ -468,19 +453,19 @@ window.addEventListener('load', () => {
         
         if (analysisStep) {
             analysisStep.style.display = 'none';
-            console.log('✅ Hidden analysis step');
+            console.log('âœ… Hidden analysis step');
         }
         if (comparisonStep) {
             comparisonStep.style.display = 'none';
-            console.log('✅ Hidden comparison step');
+            console.log('âœ… Hidden comparison step');
         }
         if (finalStep) {
             finalStep.style.display = 'none';
-            console.log('✅ Hidden final step');
+            console.log('âœ… Hidden final step');
         }
         if (selectionStep) {
             selectionStep.style.display = 'block';
-            console.log('✅ Showed selection step');
+            console.log('âœ… Showed selection step');
         }
         
         // Update progress
@@ -492,16 +477,16 @@ window.addEventListener('load', () => {
         if (container) {
             container.style.display = 'block';
             container.style.visibility = 'visible';
-            console.log('✅ Forced container visibility');
+            console.log('âœ… Forced container visibility');
         }
         
-        console.log('✅ Selection step displayed');
+        console.log('âœ… Selection step displayed');
         
         // Hide the "Continue to Selection" button since we're already in selection
         const continueBtn = document.getElementById('continueToSelectionBtn');
         if (continueBtn) {
             continueBtn.style.display = 'none';
-            console.log('✅ Hidden "Continue to Selection" button');
+            console.log('âœ… Hidden "Continue to Selection" button');
         }
         
         // Setup search and filter functionality
@@ -518,17 +503,17 @@ window.addEventListener('load', () => {
             exportBtn.id = 'continueToExportBtn';
             exportBtn.innerHTML = '<i class="fas fa-download me-1"></i>Continue to Export';
             exportBtn.onclick = function() {
-                console.log('🧪 Continue to Export clicked');
+                console.log('ðŸ§ª Continue to Export clicked');
                 exportSelectedCards();
             };
             modalFooter.appendChild(exportBtn);
-            console.log('✅ Added "Continue to Export" button');
+            console.log('âœ… Added "Continue to Export" button');
         }
     }
 
     // Global test function
     window.testSimpleExport = function() {
-        console.log('🧪 Testing simple export...');
+        console.log('ðŸ§ª Testing simple export...');
         runSimpleExport();
     };
 
@@ -592,7 +577,7 @@ window.addEventListener('load', () => {
             hypaCsvFileInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
                 if (file) {
-                    console.log('📁 Hypa CSV file selected:', file.name);
+                    console.log('ðŸ“ Hypa CSV file selected:', file.name);
                     confirmHypaImportBtn.disabled = false;
                     confirmHypaImportBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Import Hypa CSV';
                     confirmHypaImportBtn.onclick = () => importHypaCsv(file);
@@ -613,7 +598,7 @@ window.addEventListener('load', () => {
     }
     
     async function importHypaCsv(file) {
-        console.log('🚀 Starting Hypa CSV import...');
+        console.log('ðŸš€ Starting Hypa CSV import...');
         
         // Show progress indicator
         const importBtn = document.getElementById('confirmHypaImportBtn');
@@ -635,7 +620,7 @@ window.addEventListener('load', () => {
             
             if (response.ok) {
                 const result = await response.json();
-                console.log('✅ Hypa CSV import successful:', result);
+                console.log('âœ… Hypa CSV import successful:', result);
                 
                 // Update progress
                 importBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing data...';
@@ -692,7 +677,7 @@ window.addEventListener('load', () => {
                 
             } else {
                 const error = await response.json();
-                console.error('❌ Hypa CSV import failed:', error);
+                console.error('âŒ Hypa CSV import failed:', error);
                 showAnalysisToast('Import failed: ' + (error.message || 'Unknown error'), 'error');
                 
                 // Add to import history as error
@@ -711,7 +696,7 @@ window.addEventListener('load', () => {
                 importBtn.innerHTML = originalText;
             }
         } catch (error) {
-            console.error('❌ Error importing Hypa CSV:', error);
+            console.error('âŒ Error importing Hypa CSV:', error);
             showAnalysisToast('Import failed: ' + error.message, 'error');
             
             // Reset button on error
@@ -729,7 +714,7 @@ window.addEventListener('load', () => {
             bigcommerceCsvFileInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
                 if (file) {
-                    console.log('📁 BigCommerce CSV file selected:', file.name);
+                    console.log('ðŸ“ BigCommerce CSV file selected:', file.name);
                     uploadAndValidateBigCommerceBtn.disabled = false;
                     uploadAndValidateBigCommerceBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload & Validate';
                 } else {
@@ -747,10 +732,10 @@ window.addEventListener('load', () => {
 
     // Test function that shows cards directly on the page (bypasses modal)
     window.testDirectCards = function() {
-        console.log('🧪 Testing direct card display...');
+        console.log('ðŸ§ª Testing direct card display...');
         
         const exportData = prepareExportData();
-        console.log(`📊 Prepared ${exportData.length} items for display`);
+        console.log(`ðŸ“Š Prepared ${exportData.length} items for display`);
         
         // Create a simple container on the page
         let testContainer = document.getElementById('testCardsContainer');
@@ -768,7 +753,7 @@ window.addEventListener('load', () => {
             testContainer.innerHTML += cardHtml;
         });
         
-        console.log(`✅ Displayed ${exportData.length} cards in test container`);
+        console.log(`âœ… Displayed ${exportData.length} cards in test container`);
     };
 
 
@@ -847,7 +832,7 @@ window.addEventListener('load', () => {
         const skuCards = document.querySelectorAll('.sku-card');
         let visibleCount = 0;
         
-        console.log(`🔍 Processing ${skuCards.length} cards for search: "${searchTerm}"`);
+        console.log(`ðŸ” Processing ${skuCards.length} cards for search: "${searchTerm}"`);
         
         skuCards.forEach(card => {
             const sku = card.getAttribute('data-sku') || '';
@@ -863,8 +848,8 @@ window.addEventListener('load', () => {
             
             // Debug: Log what we're searching in
             if (searchTerm === 'packster2') {
-                console.log(`🔍 Debug for Packster2 - SKU: ${sku}, Brand: ${brand}, Model: ${model}, Generation: ${generation}`);
-                console.log(`🔍 Full card text: ${cardText}`);
+                console.log(`ðŸ” Debug for Packster2 - SKU: ${sku}, Brand: ${brand}, Model: ${model}, Generation: ${generation}`);
+                console.log(`ðŸ” Full card text: ${cardText}`);
             }
             
             // Check if search term matches any part
@@ -877,7 +862,7 @@ window.addEventListener('load', () => {
             
             // Debug for packster2 search
             if (searchTerm === 'packster2') {
-                console.log(`🔍 Card ${sku}: cardText.includes="${cardText.includes(searchTerm)}", sku.includes="${sku.toLowerCase().includes(searchTerm)}", brand.includes="${brand.includes(searchTerm)}", model.includes="${model.includes(searchTerm)}", generation.includes="${generation.includes(searchTerm)}"`);
+                console.log(`ðŸ” Card ${sku}: cardText.includes="${cardText.includes(searchTerm)}", sku.includes="${sku.toLowerCase().includes(searchTerm)}", brand.includes="${brand.includes(searchTerm)}", model.includes="${model.includes(searchTerm)}", generation.includes="${generation.includes(searchTerm)}"`);
             }
             
             // Apply filter logic
@@ -904,7 +889,7 @@ window.addEventListener('load', () => {
             }
         });
         
-        console.log(`✅ Filtered to ${visibleCount} visible cards`);
+        console.log(`âœ… Filtered to ${visibleCount} visible cards`);
     }
 
     function showAllCards() {
@@ -912,16 +897,16 @@ window.addEventListener('load', () => {
         skuCards.forEach(card => {
             card.style.display = 'block';
         });
-        console.log(`✅ Showed all ${skuCards.length} cards`);
+        console.log(`âœ… Showed all ${skuCards.length} cards`);
     }
 
     async function exportSelectedCards() {
-        console.log('🚀 Starting export of selected cards...');
+        console.log('ðŸš€ Starting export of selected cards...');
         
         // Show progress indicator
         const exportBtn = document.getElementById('confirmExportBtn');
         if (!exportBtn) {
-            console.error('❌ Export button not found');
+            console.error('âŒ Export button not found');
             showAnalysisToast('Export button not found. Please refresh the page.', 'error');
             return;
         }
@@ -946,7 +931,7 @@ window.addEventListener('load', () => {
             }
         });
         
-        console.log(`📋 Found ${selectedCards.length} selected SKUs for export`);
+        console.log(`ðŸ“‹ Found ${selectedCards.length} selected SKUs for export`);
         
         if (selectedCards.length === 0) {
                 showAnalysisToast('No cards selected for export. Please select at least one SKU.', 'error');
@@ -984,7 +969,7 @@ window.addEventListener('load', () => {
                 exportBtn.classList.add('btn-success');
             }
         
-        console.log('✅ Export completed successfully');
+        console.log('âœ… Export completed successfully');
             showAnalysisToast(`Successfully exported ${selectedCards.length} SKUs to CSV file!`, 'success');
             
             // Auto-close modal after 2 seconds
@@ -1006,7 +991,7 @@ window.addEventListener('load', () => {
             }, 2000);
             
         } catch (error) {
-            console.error('❌ Export failed:', error);
+            console.error('âŒ Export failed:', error);
             showAnalysisToast('Export failed: ' + error.message, 'error');
             
             // Reset button on error
@@ -1018,10 +1003,9 @@ window.addEventListener('load', () => {
     }
 
     async function generateHypaCsv(selectedCards) {
-        console.log('📊 Generating Hypa CSV format...');
+        console.log('ðŸ“Š Generating Hypa CSV format...');
         
-        // Load HTML templates
-        const templates = await loadHtmlTemplates();
+        // We will request processed templates per card from the backend (master preferred)
         
         // CSV header - Hypa format with shared namespace keys
         const headers = [
@@ -1081,31 +1065,46 @@ window.addEventListener('load', () => {
         // Load the reference CSV to get the correct IDs
         const referenceCsv = await loadReferenceCsv();
         const validSkus = getValidSkus(referenceCsv);
+
+        // Build a fast SKU->ID lookup with normalization (trim, strip quotes)
+        const normalizeSku = (s) => (s == null ? '' : String(s).trim().replace(/^\"|\"$/g, ''));
+        const skuToId = new Map();
+        (referenceCsv || []).forEach(row => {
+            const key = normalizeSku(row.sku);
+            const idVal = row.id != null ? String(row.id).trim() : '';
+            if (key) {
+                skuToId.set(key, idVal);
+            }
+        });
         
         // Debug: Log what SKUs are being selected vs what's in the reference CSV
-        console.log('🔍 Selected SKUs:', selectedCards.map(s => s.sku));
-        console.log('🔍 Valid SKUs from reference CSV:', validSkus);
+        console.log('ðŸ” Selected SKUs:', selectedCards.map(s => s.sku));
+        console.log('ðŸ” Valid SKUs from reference CSV:', validSkus);
         
         // Use all selected cards - generate new IDs for those not in reference CSV
         const validSelectedCards = selectedCards;
-        console.log(`📊 Exporting ${validSelectedCards.length} SKUs (including new ones)`);
+        console.log(`ðŸ“Š Exporting ${validSelectedCards.length} SKUs (including new ones)`);
+
+        // Prepare next ID generator to ensure uniqueness for new SKUs
+        const existingIds = (referenceCsv || []).map(row => parseInt(row.id, 10)).filter(n => Number.isFinite(n));
+        let nextId = (existingIds.length > 0 ? Math.max(...existingIds) : 0) + 1;
         
-        validSelectedCards.forEach(skuData => {
-            console.log(`🔍 Processing SKU: ${skuData.sku} with ${skuData.cards.length} cards`);
+        for (const skuData of validSelectedCards) {
+            console.log(`ðŸ” Processing SKU: ${skuData.sku} with ${skuData.cards.length} cards`);
             
-            // Find the correct numeric ID from imported Hypa CSV for this SKU
-            const referenceRow = referenceCsv.find(row => row.sku === skuData.sku);
+            // Find the correct numeric ID from imported Hypa CSV for this SKU (normalized match)
+            const normalized = normalizeSku(skuData.sku);
+            const matchedId = skuToId.get(normalized);
             let numericId;
             
-            if (referenceRow) {
+            if (matchedId != null && matchedId !== '') {
                 // Use existing ID from reference CSV
-                numericId = referenceRow.id;
-                console.log(`🔍 Using existing numeric ID ${numericId} for SKU ${skuData.sku}`);
+                numericId = matchedId;
+                console.log(`ðŸ” Using existing numeric ID ${numericId} for SKU ${skuData.sku}`);
             } else {
-                // Generate new ID for new SKU
-                const maxId = Math.max(...referenceCsv.map(row => parseInt(row.id) || 0), 0);
-                numericId = maxId + 1;
-                console.log(`🔍 Generated new numeric ID ${numericId} for new SKU ${skuData.sku} (not found in cache)`);
+                // Generate new ID for new SKU, ensuring uniqueness across this export
+                numericId = nextId++;
+                console.log(`ðŸ” Generated new numeric ID ${numericId} for new SKU ${skuData.sku} (not found in cache)`);
             }
             
             // Create a row with all columns initialized to empty
@@ -1140,55 +1139,51 @@ window.addEventListener('load', () => {
             });
             
             // Map cards to the correct columns
-            cardsByType['feature'].forEach((card, index) => {
-                if (index < 10) { // feature-1 to feature-10
-                    const columnIndex = 2 + index; // 2 is the first feature column
-                const value = generateCardHtml(card, templates);
-                    row[columnIndex] = `"${value.replace(/"/g, '""')}"`; // Escape quotes in HTML
-                }
-            });
+            for (let index = 0; index < Math.min(cardsByType['feature'].length, 10); index++) {
+                const card = cardsByType['feature'][index];
+                const columnIndex = 2 + index; // first feature column
+                const value = await generateProcessedCardHtml(card);
+                row[columnIndex] = `"${value.replace(/"/g, '""')}"`;
+            }
             
-            cardsByType['product-options'].forEach((card, index) => {
-                if (index < 12) { // option-1 to option-12
-                    const columnIndex = 12 + index; // 12 is the first option column
-                    const value = generateCardHtml(card, templates);
-                    row[columnIndex] = `"${value.replace(/"/g, '""')}"`; // Escape quotes in HTML
-                }
-            });
+            for (let index = 0; index < Math.min(cardsByType['product-options'].length, 12); index++) {
+                const card = cardsByType['product-options'][index];
+                const columnIndex = 12 + index; // first option column
+                const value = await generateProcessedCardHtml(card);
+                row[columnIndex] = `"${value.replace(/"/g, '""')}"`;
+            }
             
-            cardsByType['specification-table'].forEach((card, index) => {
-                if (index < 1) { // Only one spec-table column
-                    const columnIndex = 24; // spec-table column
-                    const value = generateCardHtml(card, templates);
-                    row[columnIndex] = `"${value.replace(/"/g, '""')}"`; // Escape quotes in HTML
-                }
-            });
+            if (cardsByType['specification-table'].length > 0) {
+                const specCard = cardsByType['specification-table'][0];
+                const columnIndex = 24;
+                // For specification tables, export raw HTML content from card
+                const raw = specCard.htmlContent || specCard.content || specCard.description || '';
+                row[columnIndex] = `"${(raw || '').replace(/"/g, '""')}"`;
+            }
             
-            cardsByType['cargo-options'].forEach((card, index) => {
-                if (index < 12) { // cargo-option-1 to cargo-option-12
-                    const columnIndex = 25 + index; // 25 is the first cargo-option column
-                    const value = generateCardHtml(card, templates);
-                    row[columnIndex] = `"${value.replace(/"/g, '""')}"`; // Escape quotes in HTML
-                }
-            });
+            for (let index = 0; index < Math.min(cardsByType['cargo-options'].length, 12); index++) {
+                const card = cardsByType['cargo-options'][index];
+                const columnIndex = 25 + index; // first cargo-option column
+                const value = await generateProcessedCardHtml(card);
+                row[columnIndex] = `"${value.replace(/"/g, '""')}"`;
+            }
             
-            cardsByType['weather-protection'].forEach((card, index) => {
-                if (index < 12) { // weather-option-1 to weather-option-12
-                    const columnIndex = 37 + index; // 37 is the first weather-option column
-                    const value = generateCardHtml(card, templates);
-                    row[columnIndex] = `"${value.replace(/"/g, '""')}"`; // Escape quotes in HTML
-                }
-            });
+            for (let index = 0; index < Math.min(cardsByType['weather-protection'].length, 12); index++) {
+                const card = cardsByType['weather-protection'][index];
+                const columnIndex = 37 + index; // first weather-option column
+                const value = await generateProcessedCardHtml(card);
+                row[columnIndex] = `"${value.replace(/"/g, '""')}"`;
+            }
             
             csvRows.push(row.join(','));
-        });
+        }
         
-        console.log(`✅ Generated CSV with ${csvRows.length - 1} rows`);
+        console.log(`âœ… Generated CSV with ${csvRows.length - 1} rows`);
         return csvRows.join('\n');
     }
 
     async function loadHtmlTemplates() {
-        console.log('📋 Loading HTML templates...');
+        console.log('ðŸ“‹ Loading HTML templates...');
         
         const templates = {};
         const templateFiles = {
@@ -1203,12 +1198,12 @@ window.addEventListener('load', () => {
                 const response = await fetch(`/reference-templates/${filename}`);
                 if (response.ok) {
                     templates[cardType] = await response.text();
-                    console.log(`✅ Loaded template for ${cardType}`);
+                    console.log(`âœ… Loaded template for ${cardType}`);
                 } else {
-                    console.warn(`⚠️ Could not load template for ${cardType}`);
+                    console.warn(`âš ï¸ Could not load template for ${cardType}`);
                 }
             } catch (error) {
-                console.error(`❌ Error loading template for ${cardType}:`, error);
+                console.error(`âŒ Error loading template for ${cardType}:`, error);
             }
         }
         
@@ -1221,19 +1216,15 @@ window.addEventListener('load', () => {
             const response = await fetch('/api/hypa-csv-cache');
             if (response.ok) {
                 const cacheData = await response.json();
-                if (cacheData.data && cacheData.data.length > 0) {
-                    console.log(`📋 Loaded ${cacheData.data.length} rows from imported Hypa CSV cache`);
-                    return cacheData.data;
+                const rows = Array.isArray(cacheData?.data) ? cacheData.data : [];
+                console.log(`ðŸ“‹ Loaded ${rows.length} rows from imported Hypa CSV cache`);
+                return rows;
             } else {
-                    console.warn('⚠️ No imported Hypa CSV data found in cache');
-                    return [];
-                }
-            } else {
-                console.warn('⚠️ Could not load Hypa CSV cache');
+                console.warn('âš ï¸ Could not load Hypa CSV cache');
                 return [];
             }
         } catch (error) {
-            console.error('❌ Error loading Hypa CSV cache:', error);
+            console.error('âŒ Error loading Hypa CSV cache:', error);
             return [];
         }
     }
@@ -1262,7 +1253,7 @@ window.addEventListener('load', () => {
     function getValidSkus(referenceCsv) {
         // Extract unique SKUs from reference CSV
         const validSkus = [...new Set(referenceCsv.map(row => row.sku))];
-        console.log('📋 Valid SKUs from imported Hypa CSV:', validSkus);
+        console.log('ðŸ“‹ Valid SKUs from imported Hypa CSV:', validSkus);
         return validSkus;
     }
 
@@ -1286,42 +1277,41 @@ window.addEventListener('load', () => {
         }
         
         // No match found - this SKU/key combination doesn't exist in reference
-        console.warn(`⚠️ No matching ID found for ${sku}:${key} - skipping this card`);
+        console.warn(`âš ï¸ No matching ID found for ${sku}:${key} - skipping this card`);
         return null; // Return null to indicate this should be skipped
     }
 
-    function generateCardHtml(card, templates) {
-        const cardType = card.cardType;
-        const template = templates[cardType];
-        
-        console.log(`🔍 Processing card type: ${cardType}`);
-        console.log(`🔍 Template available: ${!!template}`);
-        
-        if (!template) {
-            console.warn(`⚠️ No template found for card type: ${cardType}`);
-            return card.description || '';
+    async function generateProcessedCardHtml(card) {
+        // Prefer server-side processed template using active template
+        try {
+            const cardData = {
+                title: card.title || '',
+                subtitle: card.subtitle || '',
+                description: card.description || card.content || '',
+                content: card.description || card.content || '',
+                imageUrl: card.webdavPath
+                    ? (function() {
+                        let path = card.webdavPath.replace(/^\/dav/, '/product_images');
+                        path = path.replace(/\/product_images\/product_images\//, '/product_images/');
+                        return 'https://store-c8jhcan2jv.mybigcommerce.com' + path;
+                    })()
+                    : (card.imageUrl || ''),
+                price: card.price || ''
+            };
+            const res = await fetch(`/api/template/${encodeURIComponent(card.cardType)}/process`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ templateName: 'master', cardData })
+            });
+            if (res.ok) {
+                const json = await res.json();
+                if (json && json.processedTemplate) return json.processedTemplate;
+            }
+        } catch (e) {
+            console.warn('Template processing failed, fallback to reference template or raw content:', e.message);
         }
-        
-        // Extract data from card
-        const cardData = {
-            title: card.title || '',
-            subtitle: card.subtitle || '',
-            content: card.description || '',
-            imageUrl: card.imageUrl || '',
-            price: card.price || ''
-        };
-        
-        console.log(`🔍 Card data:`, cardData);
-        
-        // Replace placeholders in template
-        let html = template;
-        Object.entries(cardData).forEach(([key, value]) => {
-            const placeholder = `{${key}}`;
-            html = html.replace(new RegExp(placeholder, 'g'), value);
-        });
-        
-        console.log(`✅ Generated HTML for ${cardType} card: ${card.title}`);
-        return html;
+        // Fallback to raw content
+        return card.description || card.content || '';
     }
 
     function updateExportSummary() {
@@ -1356,64 +1346,64 @@ window.addEventListener('load', () => {
         if (summaryUpdated) summaryUpdated.textContent = '0 SKUs (0 cards)';
         if (summaryRemove) summaryRemove.textContent = '0 SKUs (0 cards)';
         
-        console.log(`📊 Updated summary: ${selectedSkuCount} SKUs selected (${selectedCardCount} total cards) out of ${totalSkuCount} SKUs (${totalCardCount} total cards)`);
+        console.log(`ðŸ“Š Updated summary: ${selectedSkuCount} SKUs selected (${selectedCardCount} total cards) out of ${totalSkuCount} SKUs (${totalCardCount} total cards)`);
     }
 
     // Other missing functions (stubs for now)
     window.generateDeleteCsv = function() {
-        console.log('🧪 Generate delete CSV clicked');
+        console.log('ðŸ§ª Generate delete CSV clicked');
         alert('Delete CSV generation not implemented yet');
     };
 
     window.generateReplaceCsv = function() {
-        console.log('🧪 Generate replace CSV clicked');
+        console.log('ðŸ§ª Generate replace CSV clicked');
         alert('Replace CSV generation not implemented yet');
     };
 
     window.exportToHypaFormat = function() {
-        console.log('🧪 Export to Hypa format clicked');
+        console.log('ðŸ§ª Export to Hypa format clicked');
         alert('Export to Hypa format not implemented yet');
     };
 
     window.exportCardsToSimpleCsv = function() {
-        console.log('🧪 Export cards to simple CSV clicked');
+        console.log('ðŸ§ª Export cards to simple CSV clicked');
         alert('Export to simple CSV not implemented yet');
     };
 
     window.showPlaceholderCardSummary = function() {
-        console.log('🧪 Show placeholder card summary clicked');
+        console.log('ðŸ§ª Show placeholder card summary clicked');
         alert('Placeholder card summary not implemented yet');
     };
 
     // Additional missing functions
     window.exportCardsToFile = function() {
-        console.log('🧪 Export cards to file clicked');
+        console.log('ðŸ§ª Export cards to file clicked');
         alert('Export cards to file not implemented yet');
     };
 
     window.migrateAndUpdateCards = function() {
-        console.log('🧪 Migrate and update cards clicked');
+        console.log('ðŸ§ª Migrate and update cards clicked');
         alert('Migrate and update cards not implemented yet');
     };
 
     window.cleanupBadCards = function() {
-        console.log('🧪 Cleanup bad cards clicked');
+        console.log('ðŸ§ª Cleanup bad cards clicked');
         alert('Cleanup bad cards not implemented yet');
     };
 
     window.restoreImportState = function() {
-        console.log('🧪 Restore import state clicked');
+        console.log('ðŸ§ª Restore import state clicked');
         alert('Restore import state not implemented yet');
     };
 
     window.testHypaFlow = function() {
-        console.log('🧪 Test Hypa flow clicked');
+        console.log('ðŸ§ª Test Hypa flow clicked');
         alert('Test Hypa flow not implemented yet');
     };
 
     // Function to check if all required functions are available
     window.checkAllFunctions = function() {
-        console.log('🔍 Checking all required functions...');
+        console.log('ðŸ” Checking all required functions...');
         
         const requiredFunctions = [
             'clearAllCaches',
@@ -1444,9 +1434,9 @@ window.addEventListener('load', () => {
         });
         
         if (missingFunctions.length === 0) {
-            console.log('✅ All required functions are available!');
+            console.log('âœ… All required functions are available!');
         } else {
-            console.log('❌ Missing functions:', missingFunctions);
+            console.log('âŒ Missing functions:', missingFunctions);
         }
         
         return missingFunctions.length === 0;
@@ -1454,7 +1444,7 @@ window.addEventListener('load', () => {
 
     // Debug function to check card visibility
     window.debugCardVisibility = function() {
-        console.log('🔍 Debugging card visibility...');
+        console.log('ðŸ” Debugging card visibility...');
         
         const skuCards = document.querySelectorAll('.sku-card');
         console.log(`Total cards found: ${skuCards.length}`);
@@ -1472,13 +1462,13 @@ window.addEventListener('load', () => {
 
     // Function to manually refresh the summary
     window.refreshSummary = function() {
-        console.log('🔄 Manually refreshing summary...');
+        console.log('ðŸ”„ Manually refreshing summary...');
         updateExportSummary();
     };
 
     // Debug function to show card content
     window.debugCardContent = function() {
-        console.log('🔍 Debugging card content...');
+        console.log('ðŸ” Debugging card content...');
         
         const skuCards = document.querySelectorAll('.sku-card');
         console.log(`Found ${skuCards.length} cards`);
@@ -1843,3 +1833,4 @@ window.addEventListener('load', () => {
         showBigcommerceStep(3);
     }
 }); 
+

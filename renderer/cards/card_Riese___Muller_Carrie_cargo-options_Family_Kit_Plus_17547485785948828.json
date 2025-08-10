@@ -1,0 +1,48 @@
+{
+  "id": "17547485785948828",
+  "sku": "F01572",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Family Kit Plus",
+  "description": "The Family Kit Plus includes the Flex Box with zip door, a child seat with headrest, a protective child cover, and a carrier supporting up to 27 kg. The sturdy bench seat fits either one taller child or two smaller kids (up to age 7), securely fastened with five-point seat belts. The comfy back cushion folds away when the box closes—unless the headrest is attached. Kids can easily get in and out through the zip door.\n\nThe child cover shields your little passengers from wind, rain, and sun. It features an extra cover panel to darken the viewing window or serve as a rear rain shield—all made without fiberglass rods or PVC film for eco-friendliness.\n\nWhen not carrying passengers, the Flex Box offers ample room for groceries or gear. A rain cover keeps your load dry, and the lockable box protects your belongings.\n\nPlease follow local regulations for transporting children on bikes.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01572/121_18_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "932.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_cargo-options_Family_Kit_Plus_17547485785948828.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit-plus.jpg",
+  "uploadDate": "2025-08-09T14:10:39.717Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:10:35.094Z",
+    "DateUploaded": "2025-08-09T14:10:35.094Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T14:09:38.594Z",
+  "savedAt": "2025-08-09T14:09:38.594Z",
+  "originalHypaData": {}
+}

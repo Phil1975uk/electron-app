@@ -1,0 +1,48 @@
+{
+  "id": "17547483158358230",
+  "sku": "F01572",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Cargo Kit",
+  "description": "The Cargo Kit pairs the versatile Flex Box with a sturdy carrier that holds up to 27 kg. When fully opened, the Flex Box expands to 145 litres—enough for three drinks crates. Collapsed, it comfortably fits one crate plus plenty of room for groceries or sports gear. A rain cover keeps your load dry and stows neatly inside using handy lashing straps. Plus, the lockable box keeps your belongings safe and secure wherever you go.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01572/121_12_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "392.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_cargo-options_Cargo_Kit_17547483158358230.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_cargo-kit.jpg",
+  "uploadDate": "2025-08-09T14:10:22.125Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:10:13.859Z",
+    "DateUploaded": "2025-08-09T14:10:13.859Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T14:05:15.835Z",
+  "savedAt": "2025-08-09T14:05:15.835Z",
+  "originalHypaData": {}
+}

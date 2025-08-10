@@ -1,0 +1,48 @@
+{
+  "id": "17547480683957942",
+  "sku": "F01572",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Kiox 300",
+  "description": "Take your ride – and your training – to the next level with the Kiox 300. Designed for performance-minded riders, it tracks your fitness data in real time, helping you train smarter and reach your goals faster. Pair it via Bluetooth to a compatible heart rate monitor for deeper insights, or connect to your smartphone for map-free navigation on the go. All controls are at your fingertips with the intuitive LED Remote mounted right on your handlebar.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01572/26_7_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_Kiox_300_17547480683957942.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_kiox-300.jpg",
+  "uploadDate": "2025-08-09T14:11:24.384Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:11:19.974Z",
+    "DateUploaded": "2025-08-09T14:11:19.974Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T14:01:08.395Z",
+  "savedAt": "2025-08-09T14:01:08.395Z",
+  "originalHypaData": {}
+}

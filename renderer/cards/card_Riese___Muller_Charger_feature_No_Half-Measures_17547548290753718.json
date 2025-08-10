@@ -1,0 +1,71 @@
+{
+  "id": "17547548290753718",
+  "sku": "F01540",
+  "cardType": "feature",
+  "position": 1,
+  "title": "No Half-Measures",
+  "description": "The Charger5 is built to impress and perform. Whether you’re tackling long rides or speeding through the city, its super-rigid diamond frame, suspension fork, and seatpost deliver smooth, confident handling every time. Sleek polished welds and a color-matched aluminum battery cover add style to its standout design.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/ac/b9/acb9f3a5-358c-4c35-99f1-6654b8f4d022/my2026_charger5_hlf_1_1600x1067_web.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Charger",
+    "generation": "Charger5",
+    "variants": [
+      {
+        "name": "rohloff HS",
+        "sku": "F01540"
+      },
+      {
+        "name": "rohloff",
+        "sku": "F01539"
+      },
+      {
+        "name": "pinion HS",
+        "sku": "F01531"
+      },
+      {
+        "name": "pinion",
+        "sku": "F01530"
+      },
+      {
+        "name": "automatic",
+        "sku": "F01542"
+      },
+      {
+        "name": "vario HS",
+        "sku": "F01537"
+      },
+      {
+        "name": "vario",
+        "sku": "F01536"
+      },
+      {
+        "name": "touring HS",
+        "sku": "F01534"
+      },
+      {
+        "name": "touring",
+        "sku": "F01533"
+      },
+      {
+        "name": "vario CORE",
+        "sku": "F01538"
+      },
+      {
+        "name": "touring CORE",
+        "sku": "F01535"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Charger_feature_No_Half-Measures_17547548290753718.json",
+  "webdavPath": "",
+  "uploadDate": "",
+  "uploadMetadata": {},
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T15:53:49.075Z",
+  "savedAt": "2025-08-09T15:53:49.075Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

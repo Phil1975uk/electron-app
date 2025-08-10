@@ -208,31 +208,90 @@ function startServer() {
       const csvContent = req.file.buffer.toString('utf8');
       const lines = csvContent.split('\n');
       
+      console.log(`[import-hypa-csv] Raw CSV content length: ${csvContent.length} characters`);
+      console.log(`[import-hypa-csv] Lines found: ${lines.length}`);
+      
       if (lines.length < 2) {
         return res.status(400).json({ success: false, error: 'CSV file is empty or invalid' });
       }
 
-      // Parse headers
-      const headers = lines[0].split(',').map(h => h.trim());
-      console.log('[import-hypa-csv] Headers:', headers);
-
-      // Parse data rows
-      const data = [];
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (line) {
-          const values = line.split(',').map(v => v.trim());
-          if (values.length >= headers.length) {
-            const row = {};
-            headers.forEach((header, index) => {
-              row[header] = values[index] || '';
-            });
-            data.push(row);
+      // Function to properly parse CSV line with quoted fields
+      const parseCSVLine = (line) => {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        let i = 0;
+        
+        while (i < line.length) {
+          const char = line[i];
+          
+          if (char === '"') {
+            if (inQuotes && line[i + 1] === '"') {
+              // Escaped quote
+              current += '"';
+              i += 2;
+            } else {
+              // Toggle quote state
+              inQuotes = !inQuotes;
+              i++;
+            }
+          } else if (char === ',' && !inQuotes) {
+            // End of field
+            result.push(current.trim());
+            current = '';
+            i++;
+          } else {
+            current += char;
+            i++;
           }
         }
+        
+        // Add the last field
+        result.push(current.trim());
+        return result;
+      };
+      
+      // Parse headers with proper CSV handling
+      const headers = parseCSVLine(lines[0]);
+      console.log('[import-hypa-csv] Headers:', headers);
+
+      // Parse data rows with proper CSV handling
+      const data = [];
+      let skippedLines = 0;
+      let totalLines = lines.length - 1; // Exclude header
+      
+      for (let i = 1; i < lines.length; i++) {
+        const originalLine = lines[i];
+        const line = originalLine.trim();
+        
+        if (!line) {
+          skippedLines++;
+          continue;
+        }
+        
+        const values = parseCSVLine(line);
+        // Create row even if values.length < headers.length (handle trailing empty fields)
+        const row = {};
+        headers.forEach((header, index) => {
+          row[header] = values[index] || '';
+        });
+        data.push(row);
       }
+      
+      console.log(`[import-hypa-csv] Total lines in CSV: ${lines.length} (including header)`);
+      console.log(`[import-hypa-csv] Data lines processed: ${totalLines}`);
+      console.log(`[import-hypa-csv] Lines skipped (empty): ${skippedLines}`);
+      console.log(`[import-hypa-csv] Rows successfully parsed: ${data.length}`);
 
       console.log('[import-hypa-csv] Parsed', data.length, 'data rows');
+      
+      // Log some sample data for debugging
+      if (data.length > 0) {
+        console.log('[import-hypa-csv] Sample rows:');
+        data.slice(0, 3).forEach((row, index) => {
+          console.log(`  Row ${index + 1}: SKU=${row.sku}, ID=${row.id}`);
+        });
+      }
 
       // Save to cache
       const cachePath = path.join(__dirname, 'renderer', 'data', 'hypaCsvCache.json');

@@ -1,0 +1,39 @@
+{
+  "id": "17547474726263490",
+  "sku": "F01572",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Built for the Future: Sustainable, Repairable, Ready for Anything",
+  "description": "The Carrie2 is designed with circular principles in mind. Its minimalist frame – made from 80% recycled aluminium – is powder-coated for durability and reduced resource use. Every accessory, from the weatherproof child cover to the versatile Cargo bag, is easy to dismantle, clean, and repair, ensuring a long life and minimal waste.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/55/f6/55f6b52e-6c77-4fd7-bed4-63f1077c0dc7/26_hfl_gif_carrie_basisbox_zubehoer_1600x1067.gif",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_feature_Built_for_the_Future__Sustainable__Repairable__Ready_for_Anything_17547474726263490.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_built-for-the-future-sustainable-repairable-ready-for-anything.gif",
+  "uploadDate": "2025-08-09T14:10:53.839Z",
+  "uploadMetadata": null,
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T13:51:12.626Z",
+  "savedAt": "2025-08-09T13:51:12.626Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

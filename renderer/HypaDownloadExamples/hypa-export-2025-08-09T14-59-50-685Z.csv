@@ -1,0 +1,1973 @@
+id,sku,shared.feature-1-card,shared.feature-2-card,shared.feature-3-card,shared.feature-4-card,shared.feature-5-card,shared.feature-6-card,shared.feature-7-card,shared.feature-8-card,shared.feature-9-card,shared.feature-10-card,shared.option-1-card,shared.option-2-card,shared.option-3-card,shared.option-4-card,shared.option-5-card,shared.option-6-card,shared.option-7-card,shared.option-8-card,shared.option-9-card,shared.option-10-card,shared.option-11-card,shared.option-12-card,shared.spec-table,shared.cargo-option-1-card,shared.cargo-option-2-card,shared.cargo-option-3-card,shared.cargo-option-4-card,shared.cargo-option-5-card,shared.cargo-option-6-card,shared.cargo-option-7-card,shared.cargo-option-8-card,shared.cargo-option-9-card,shared.cargo-option-10-card,shared.cargo-option-11-card,shared.cargo-option-12-card,shared.weather-option-1-card,shared.weather-option-2-card,shared.weather-option-3-card,shared.weather-option-4-card,shared.weather-option-5-card,shared.weather-option-6-card,shared.weather-option-7-card,shared.weather-option-8-card,shared.weather-option-9-card,shared.weather-option-10-card,shared.weather-option-11-card,shared.weather-option-12-card
+1,F01572,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>A bike for anytime, anywhere.</h2>
+    <h3></h3>
+    <p>At just 209 cm long, the Carrie2 is easy to park and nimble in tight spaces. Its slim box lets you weave through the city like a regular bike, while the powerful drive keeps you feeling light and agile, even when fully loaded.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_a-bike-for-anytime-anywhere.jpg"" alt=""A bike for anytime, anywhere."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_a-bike-for-anytime-anywhere.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Built for the Future: Sustainable, Repairable, Ready for Anything</h2>
+    <h3></h3>
+    <p>The Carrie2 is designed with circular principles in mind. Its minimalist frame – made from 80% recycled aluminium – is powder-coated for durability and reduced resource use. Every accessory, from the weatherproof child cover to the versatile Cargo bag, is easy to dismantle, clean, and repair, ensuring a long life and minimal waste.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_built-for-the-future-sustainable-repairable-ready-for-anything.gif"" alt=""Built for the Future: Sustainable, Repairable, Ready for Anything"" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_built-for-the-future-sustainable-repairable-ready-for-anything.gif"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Connected e-bike.</h2>
+    <h3></h3>
+    <p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Flex Box: Compact, Expandable, and Versatile</h2>
+    <h3></h3>
+    <p>The Flex Box lives up to its name: compact when collapsed, spacious enough for up to three crates when extended. A zippered door makes access easy for children or pets, and it can be locked for security. Add flexibility with the Family, Dog, or Cargo kit.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_flex-box-compact-expandable-and-versatile.jpg"" alt=""Flex Box: Compact, Expandable, and Versatile"" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_flex-box-compact-expandable-and-versatile.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>The Carrie2: ideal for anyone who needs to move lots, but has limited space.</h2>
+    <h3></h3>
+    <p><br></p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_the-carrie2-ideal-for-anyone-who-needs-to-move-lots-but-has-limited-space.jpg"" alt=""The Carrie2: ideal for anyone who needs to move lots, but has limited space."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_the-carrie2-ideal-for-anyone-who-needs-to-move-lots-but-has-limited-space.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>",,,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_725-wh-battery-upgrade.jpg"" alt=""725 Wh Battery Upgrade"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_725-wh-battery-upgrade.jpg"" alt=""725 Wh Battery Upgrade"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">725 Wh Battery Upgrade</div>
+      <div style=""margin-bottom: 0.5rem;"">187.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_kiox-300.jpg"" alt=""Kiox 300"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_kiox-300.jpg"" alt=""Kiox 300"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Kiox 300</div>
+      <div style=""margin-bottom: 0.5rem;"">47.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_offroad-kit.jpg"" alt=""Offroad Kit"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_offroad-kit.jpg"" alt=""Offroad Kit"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Offroad Kit</div>
+      <div style=""margin-bottom: 0.5rem;"">47.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_rx-chip-for-rx-services.jpg"" alt=""RX Chip for RX Services"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_rx-chip-for-rx-services.jpg"" alt=""RX Chip for RX Services"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">RX Chip for RX Services</div>
+      <div style=""margin-bottom: 0.5rem;"">122.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_suspension-seatpost-with-cover.jpg"" alt=""Suspension Seatpost with cover"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_suspension-seatpost-with-cover.jpg"" alt=""Suspension Seatpost with cover"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Suspension Seatpost with cover</div>
+      <div style=""margin-bottom: 0.5rem;"">140.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>",,,,,,,,"<div class=""module container-center m30-layer-content background-grey"" data-layer-target=""specifications-table-2"">
+                                                
+<div class=""grid text-spaces"">
+
+    <p class=""addition s-12 m-12 l-12"">Components</p>
+    <h2 class=""s-12 m-12 l-12"">
+        The Carrie2 automatic in detail
+    </h2>
+
+    
+    <div class=""s-12 m-12 l-12"">
+        <div class=""specs specs--basic"">
+            <div class=""specs__table"">
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Frame colour
+                            </span>
+                            <span class=""specs__value"">
+                                anise*; aqua*; coral*; shadow*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Suspension fork
+                            </span>
+                            <span class=""specs__value"">
+                                SR Suntour Mobie A32 CGO, 20"", 50mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Headset
+                            </span>
+                            <span class=""specs__value"">
+                                Acros AZX-221, block lock; TH No. 9, semi-integrated
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Seatpost
+                            </span>
+                            <span class=""specs__value"">
+                                JD/Riese &amp; Müller, Alu, 34,9 x 430mm; By.Schulz G.2 ST*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Seatclamp
+                            </span>
+                            <span class=""specs__value"">
+                                JD, 40,0 mm, QR
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tires
+                            </span>
+                            <span class=""specs__value"">
+                                Schwalbe Big Ben Plus 55-406 Reflex; Schwalbe Super Moto-X 62-406; Schwalbe 20"" Smart Sam Cargo 60-406 Reflex*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tubes
+                            </span>
+                            <span class=""specs__value"">
+                                Schwalbe AV7
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rims
+                            </span>
+                            <span class=""specs__value"">
+                                Mach1 Trucky30 20"" CNC
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Spokes
+                            </span>
+                            <span class=""specs__value"">
+                                Sapim Leader 2,0 mm, Inox, black
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Front hub
+                            </span>
+                            <span class=""specs__value"">
+                                Novatec Disc 32H
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rear hub
+                            </span>
+                            <span class=""specs__value"">
+                                Enviolo Heavy Duty, Disc, 36H
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Battery
+                            </span>
+                            <span class=""specs__value"">
+                                Akku Bosch PowerPack Frame 545; Akku Bosch PowerPack Frame 725*; Akku Bosch PowerPack Frame 800*; Bosch PowerPack Frame 400Wh*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Motor
+                            </span>
+                            <span class=""specs__value"">
+                                Bosch Performance Line PX/Sport, 25 km/h/20mph+
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Display
+                            </span>
+                            <span class=""specs__value"">
+                                Bosch Purion 200; Bosch Kiox 300*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Crankset
+                            </span>
+                            <span class=""specs__value"">
+                                Samox, 165 mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain ring
+                            </span>
+                            <span class=""specs__value"">
+                                63T
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain guard
+                            </span>
+                            <span class=""specs__value"">
+                                Chain guard
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain
+                            </span>
+                            <span class=""specs__value"">
+                                Gates drive belt CDX
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Pinion
+                            </span>
+                            <span class=""specs__value"">
+                                24T, for Gates drive belt CDX
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Saddle
+                            </span>
+                            <span class=""specs__value"">
+                                Selle Royal Essenza Moderate
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Pedals
+                            </span>
+                            <span class=""specs__value"">
+                                M-Wave Steady Flat; VP-538*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Shifting system
+                            </span>
+                            <span class=""specs__value"">
+                                Enviolo Automatiq; Enviolo Automatiq 3.1
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Handlebar
+                            </span>
+                            <span class=""specs__value"">
+                                Satori Horizon, 31,8 mm, 9°, B=620 mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Stem
+                            </span>
+                            <span class=""specs__value"">
+                                Riese &amp; Müller, adjustable height and angle
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Grips
+                            </span>
+                            <span class=""specs__value"">
+                                Herrmans Grips Line
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Brakes
+                            </span>
+                            <span class=""specs__value"">
+                                Magura MT4, disc brake
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Front light
+                            </span>
+                            <span class=""specs__value"">
+                                Supernova mini 2
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tail light
+                            </span>
+                            <span class=""specs__value"">
+                                Supernova TL3 Z
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Mudguards
+                            </span>
+                            <span class=""specs__value"">
+                                SKS A65R; SKS A69R
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Luggage rack
+                            </span>
+                            <span class=""specs__value"">
+                                Riese &amp; Müller*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rubber
+                            </span>
+                            <span class=""specs__value"">
+                                Bibia*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Bell
+                            </span>
+                            <span class=""specs__value"">
+                                Billy
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Kickstand
+                            </span>
+                            <span class=""specs__value"">
+                                Kickstand Riese &amp; Müller
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Lock
+                            </span>
+                            <span class=""specs__value"">
+                                ABUS Adaptor Chain 2.0 130 cm; ABUS Shield X+
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                RX Hardware
+                            </span>
+                            <span class=""specs__value"">
+                                RX Chip (für RX Services)*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Frame size [cm]
+                            </span>
+                            <span class=""specs__value"">
+                                universal*
+                            </span>
+                        </div>
+                    </div>
+                
+            </div>
+
+            <div class=""specs__footer"">
+                <small>
+                    <p>The specification table indicates all available components for this model – not just the basic equipment. Some of the options listed are only available for a surcharge. For more information, see the Configurator. Riese&nbsp;&amp;&nbsp;Müller reserves the right to make technical modifications as well as changes to the shape, colour and/or weight within reasonable limits.</p>
+
+                    
+                        <p>* May differ depending on the availability in your country, design or configuration of the model.</p>
+                    
+                </small>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+
+                                            </div>","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Cargo Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">392.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_cargo-kit.jpg"" alt=""Cargo Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Dog Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">438.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_dog-kit.jpg"" alt=""Dog Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Family Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">606.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit.jpg"" alt=""Family Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Family Kit Plus</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">932.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit-plus.jpg"" alt=""Family Kit Plus"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ",,,,,,,,,,,,,,,,,,,,
+1,F01571,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>A bike for anytime, anywhere.</h2>
+    <h3></h3>
+    <p>At just 209 cm long, the Carrie2 is easy to park and nimble in tight spaces. Its slim box lets you weave through the city like a regular bike, while the powerful drive keeps you feeling light and agile, even when fully loaded.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_a-bike-for-anytime-anywhere.jpg"" alt=""A bike for anytime, anywhere."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_a-bike-for-anytime-anywhere.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Built for the Future: Sustainable, Repairable, Ready for Anything</h2>
+    <h3></h3>
+    <p>The Carrie2 is designed with circular principles in mind. Its minimalist frame – made from 80% recycled aluminium – is powder-coated for durability and reduced resource use. Every accessory, from the weatherproof child cover to the versatile Cargo bag, is easy to dismantle, clean, and repair, ensuring a long life and minimal waste.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_built-for-the-future-sustainable-repairable-ready-for-anything.gif"" alt=""Built for the Future: Sustainable, Repairable, Ready for Anything"" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_built-for-the-future-sustainable-repairable-ready-for-anything.gif"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Connected e-bike.</h2>
+    <h3></h3>
+    <p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Flex Box: Compact, Expandable, and Versatile</h2>
+    <h3></h3>
+    <p>The Flex Box lives up to its name: compact when collapsed, spacious enough for up to three crates when extended. A zippered door makes access easy for children or pets, and it can be locked for security. Add flexibility with the Family, Dog, or Cargo kit.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_flex-box-compact-expandable-and-versatile.jpg"" alt=""Flex Box: Compact, Expandable, and Versatile"" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_flex-box-compact-expandable-and-versatile.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>The Carrie2: ideal for anyone who needs to move lots, but has limited space.</h2>
+    <h3></h3>
+    <p><br></p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_the-carrie2-ideal-for-anyone-who-needs-to-move-lots-but-has-limited-space.jpg"" alt=""The Carrie2: ideal for anyone who needs to move lots, but has limited space."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_the-carrie2-ideal-for-anyone-who-needs-to-move-lots-but-has-limited-space.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>",,,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_725-wh-battery-upgrade.jpg"" alt=""725 Wh Battery Upgrade"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_725-wh-battery-upgrade.jpg"" alt=""725 Wh Battery Upgrade"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">725 Wh Battery Upgrade</div>
+      <div style=""margin-bottom: 0.5rem;"">187.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_kiox-300.jpg"" alt=""Kiox 300"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_kiox-300.jpg"" alt=""Kiox 300"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Kiox 300</div>
+      <div style=""margin-bottom: 0.5rem;"">47.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_offroad-kit.jpg"" alt=""Offroad Kit"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_offroad-kit.jpg"" alt=""Offroad Kit"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Offroad Kit</div>
+      <div style=""margin-bottom: 0.5rem;"">47.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_rx-chip-for-rx-services.jpg"" alt=""RX Chip for RX Services"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_rx-chip-for-rx-services.jpg"" alt=""RX Chip for RX Services"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">RX Chip for RX Services</div>
+      <div style=""margin-bottom: 0.5rem;"">122.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_suspension-seatpost-with-cover.jpg"" alt=""Suspension Seatpost with cover"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_suspension-seatpost-with-cover.jpg"" alt=""Suspension Seatpost with cover"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Suspension Seatpost with cover</div>
+      <div style=""margin-bottom: 0.5rem;"">140.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>",,,,,,,,"<div class=""module container-center m30-layer-content background-grey"" data-layer-target=""specifications-table-1"">
+                                                
+<div class=""grid text-spaces"">
+
+    <p class=""addition s-12 m-12 l-12"">Components</p>
+    <h2 class=""s-12 m-12 l-12"">
+        The Carrie2 vario in detail
+    </h2>
+
+    
+    <div class=""s-12 m-12 l-12"">
+        <div class=""specs specs--basic"">
+            <div class=""specs__table"">
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Frame colour
+                            </span>
+                            <span class=""specs__value"">
+                                anise*; aqua*; coral*; shadow*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Suspension fork
+                            </span>
+                            <span class=""specs__value"">
+                                SR Suntour Mobie A32 CGO, 20"", 50mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Headset
+                            </span>
+                            <span class=""specs__value"">
+                                Acros AZX-221, block lock; TH No. 9, semi-integrated
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Seatpost
+                            </span>
+                            <span class=""specs__value"">
+                                JD/Riese &amp; Müller, Alu, 34,9 x 430mm; By.Schulz G.2 ST*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Seatclamp
+                            </span>
+                            <span class=""specs__value"">
+                                JD, 40,0 mm, QR
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tires
+                            </span>
+                            <span class=""specs__value"">
+                                Schwalbe Big Ben Plus 55-406 Reflex; Schwalbe Super Moto-X 62-406; Schwalbe 20"" Smart Sam Cargo 60-406 Reflex*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tubes
+                            </span>
+                            <span class=""specs__value"">
+                                Schwalbe AV7
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rims
+                            </span>
+                            <span class=""specs__value"">
+                                Mach1 Trucky30 20"" CNC
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Spokes
+                            </span>
+                            <span class=""specs__value"">
+                                Sapim Leader 2,0 mm, Inox, black
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Front hub
+                            </span>
+                            <span class=""specs__value"">
+                                Novatec Disc 32H
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rear hub
+                            </span>
+                            <span class=""specs__value"">
+                                Enviolo Heavy Duty, Disc, 36H
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Battery
+                            </span>
+                            <span class=""specs__value"">
+                                Akku Bosch PowerPack Frame 545; Akku Bosch PowerPack Frame 725*; Akku Bosch PowerPack Frame 800*; Bosch PowerPack Frame 400Wh*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Motor
+                            </span>
+                            <span class=""specs__value"">
+                                Bosch Performance Line PX/Sport, 25 km/h/20mph+
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Display
+                            </span>
+                            <span class=""specs__value"">
+                                Bosch Purion 200; Bosch Kiox 300*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Crankset
+                            </span>
+                            <span class=""specs__value"">
+                                Samox, 165 mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain ring
+                            </span>
+                            <span class=""specs__value"">
+                                63T
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain guard
+                            </span>
+                            <span class=""specs__value"">
+                                Chain guard
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain
+                            </span>
+                            <span class=""specs__value"">
+                                Gates drive belt CDX
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Pinion
+                            </span>
+                            <span class=""specs__value"">
+                                24T, for Gates drive belt CDX
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Saddle
+                            </span>
+                            <span class=""specs__value"">
+                                Selle Royal Essenza Moderate
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Pedals
+                            </span>
+                            <span class=""specs__value"">
+                                M-Wave Steady Flat; VP-538*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Shifter
+                            </span>
+                            <span class=""specs__value"">
+                                Enviolo grip shift Twist Pro, continuous
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Handlebar
+                            </span>
+                            <span class=""specs__value"">
+                                Satori Horizon, 31,8 mm, 9°, B=620 mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Stem
+                            </span>
+                            <span class=""specs__value"">
+                                Riese &amp; Müller, adjustable height and angle
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Grips
+                            </span>
+                            <span class=""specs__value"">
+                                Herrmans Grips Line
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Brakes
+                            </span>
+                            <span class=""specs__value"">
+                                Magura MT4, disc brake
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Front light
+                            </span>
+                            <span class=""specs__value"">
+                                Supernova mini 2
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tail light
+                            </span>
+                            <span class=""specs__value"">
+                                Supernova TL3 Z
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Mudguards
+                            </span>
+                            <span class=""specs__value"">
+                                SKS A65R; SKS A69R
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Luggage rack
+                            </span>
+                            <span class=""specs__value"">
+                                Riese &amp; Müller*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rubber
+                            </span>
+                            <span class=""specs__value"">
+                                Bibia*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Bell
+                            </span>
+                            <span class=""specs__value"">
+                                Billy
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Kickstand
+                            </span>
+                            <span class=""specs__value"">
+                                Kickstand Riese &amp; Müller
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Lock
+                            </span>
+                            <span class=""specs__value"">
+                                ABUS Adaptor Chain 2.0 130 cm; ABUS Shield X+
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                RX Hardware
+                            </span>
+                            <span class=""specs__value"">
+                                RX Chip (für RX Services)*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Frame size [cm]
+                            </span>
+                            <span class=""specs__value"">
+                                universal*
+                            </span>
+                        </div>
+                    </div>
+                
+            </div>
+
+            <div class=""specs__footer"">
+                <small>
+                    <p>The specification table indicates all available components for this model – not just the basic equipment. Some of the options listed are only available for a surcharge. For more information, see the Configurator. Riese&nbsp;&amp;&nbsp;Müller reserves the right to make technical modifications as well as changes to the shape, colour and/or weight within reasonable limits.</p>
+
+                    
+                        <p>* May differ depending on the availability in your country, design or configuration of the model.</p>
+                    
+                </small>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+
+                                            </div>","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Cargo Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">392.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_cargo-kit.jpg"" alt=""Cargo Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Dog Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">438.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_dog-kit.jpg"" alt=""Dog Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Family Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">606.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit.jpg"" alt=""Family Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Family Kit Plus</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">932.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit-plus.jpg"" alt=""Family Kit Plus"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ",,,,,,,,,,,,,,,,,,,,
+1,F01570,"<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>A bike for anytime, anywhere.</h2>
+    <h3></h3>
+    <p>At just 209 cm long, the Carrie2 is easy to park and nimble in tight spaces. Its slim box lets you weave through the city like a regular bike, while the powerful drive keeps you feeling light and agile, even when fully loaded.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_a-bike-for-anytime-anywhere.jpg"" alt=""A bike for anytime, anywhere."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_a-bike-for-anytime-anywhere.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Built for the Future: Sustainable, Repairable, Ready for Anything</h2>
+    <h3></h3>
+    <p>The Carrie2 is designed with circular principles in mind. Its minimalist frame – made from 80% recycled aluminium – is powder-coated for durability and reduced resource use. Every accessory, from the weatherproof child cover to the versatile Cargo bag, is easy to dismantle, clean, and repair, ensuring a long life and minimal waste.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_built-for-the-future-sustainable-repairable-ready-for-anything.gif"" alt=""Built for the Future: Sustainable, Repairable, Ready for Anything"" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_built-for-the-future-sustainable-repairable-ready-for-anything.gif"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Connected e-bike.</h2>
+    <h3></h3>
+    <p>RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_connected-e-bike.jpg"" alt=""Connected e-bike."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_connected-e-bike.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>Flex Box: Compact, Expandable, and Versatile</h2>
+    <h3></h3>
+    <p>The Flex Box lives up to its name: compact when collapsed, spacious enough for up to three crates when extended. A zippered door makes access easy for children or pets, and it can be locked for security. Add flexibility with the Family, Dog, or Cargo kit.</p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_flex-box-compact-expandable-and-versatile.jpg"" alt=""Flex Box: Compact, Expandable, and Versatile"" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_flex-box-compact-expandable-and-versatile.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>","<!-- Product feature card container -->
+
+<div style=""display: flex; align-items: center; gap: 20px; max-width: 1200px; margin: 10px auto 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; flex-wrap: wrap;"">
+    <!-- Text content -->
+    
+    <div style=""flex: 1; min-width: 300px;"">
+    <h2>The Carrie2: ideal for anyone who needs to move lots, but has limited space.</h2>
+    <h3></h3>
+    <p><br></p>
+    </div>
+    <!-- Image -->
+    
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    <div class=""se-component se-image-container __se__float-""><figure style=""width: 400px;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_the-carrie2-ideal-for-anyone-who-needs-to-move-lots-but-has-limited-space.jpg"" alt=""The Carrie2: ideal for anyone who needs to move lots, but has limited space."" style=""max-width: 100%; height: auto; display: block; border-radius: 5px; width: 400px;"" data-proportion=""true"" width=""400"" height=""auto"" data-size=""400px,auto"" data-align="""" data-index=""2"" data-file-name=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_the-carrie2-ideal-for-anyone-who-needs-to-move-lots-but-has-limited-space.jpg"" data-file-size=""0"" origin-size=""1600,1067"" data-origin=""400px,auto"">
+    </figure>
+    </div>
+    <div style=""flex: 0 0 auto; max-width: 400px; min-width: 250px;"">
+    </div>
+    </div>",,,,,,"<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_725-wh-battery-upgrade.jpg"" alt=""725 Wh Battery Upgrade"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_725-wh-battery-upgrade.jpg"" alt=""725 Wh Battery Upgrade"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">725 Wh Battery Upgrade</div>
+      <div style=""margin-bottom: 0.5rem;"">187.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_kiox-300.jpg"" alt=""Kiox 300"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_kiox-300.jpg"" alt=""Kiox 300"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Kiox 300</div>
+      <div style=""margin-bottom: 0.5rem;"">47.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_offroad-kit.jpg"" alt=""Offroad Kit"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_offroad-kit.jpg"" alt=""Offroad Kit"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Offroad Kit</div>
+      <div style=""margin-bottom: 0.5rem;"">47.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_rx-chip-for-rx-services.jpg"" alt=""RX Chip for RX Services"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_rx-chip-for-rx-services.jpg"" alt=""RX Chip for RX Services"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">RX Chip for RX Services</div>
+      <div style=""margin-bottom: 0.5rem;"">122.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>","<!-- Example of another card -->
+
+<div class=""swiper-slide"">
+  <div class=""se-component se-image-container __se__float- __se__float-none""><figure>
+  <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_suspension-seatpost-with-cover.jpg"" alt=""Suspension Seatpost with cover"" data-proportion=""true"" data-align=""none"" data-file-name=""Load_Load4_product-options_additional-chain-lock-with-vaude-bag.jpeg"" data-file-size=""0"" data-origin="","" data-size="","" data-rotate="""" data-rotatex="""" data-rotatey="""" style="""" width="""" height="""" data-percentage=""auto,auto"" data-index=""0"">
+  </figure>
+  </div>
+  <div class=""card"">
+  <div class=""card-info"" style=""border: 1px solid #d1d5db; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto;"">
+    <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_suspension-seatpost-with-cover.jpg"" alt=""Suspension Seatpost with cover"" style=""width: 100%; height: 160px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;"">
+    <div style=""padding: 1rem; border-top: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-start;"">
+      <div style=""font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222;"">Suspension Seatpost with cover</div>
+      <div style=""margin-bottom: 0.5rem;"">140.00</div>
+      <div class=""card-description"" style=""margin-top:0.5rem; font-size:0.97rem; color:#444;"">{description}</div>
+    </div>
+  </div>
+  </div>
+  </div>",,,,,,,,"<div class=""module container-center m30-layer-content background-grey"" data-layer-target=""specifications-table-0"">
+                                                
+<div class=""grid text-spaces"">
+
+    <p class=""addition s-12 m-12 l-12"">Components</p>
+    <h2 class=""s-12 m-12 l-12"">
+        The Carrie2 city in detail
+    </h2>
+
+    
+    <div class=""s-12 m-12 l-12"">
+        <div class=""specs specs--basic"">
+            <div class=""specs__table"">
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Frame colour
+                            </span>
+                            <span class=""specs__value"">
+                                anise*; aqua*; coral*; shadow*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Suspension fork
+                            </span>
+                            <span class=""specs__value"">
+                                SR Suntour Mobie A32 CGO, 20"", 50mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Headset
+                            </span>
+                            <span class=""specs__value"">
+                                Acros AZX-221, block lock; TH No. 9, semi-integrated
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Seatpost
+                            </span>
+                            <span class=""specs__value"">
+                                JD/Riese &amp; Müller, Alu, 34,9 x 430mm; By.Schulz G.2 ST*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Seatclamp
+                            </span>
+                            <span class=""specs__value"">
+                                JD, 40,0 mm, QR
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tires
+                            </span>
+                            <span class=""specs__value"">
+                                Schwalbe Big Ben Plus 55-406 Reflex; Schwalbe Super Moto-X 62-406; Schwalbe 20"" Smart Sam Cargo 60-406 Reflex*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tubes
+                            </span>
+                            <span class=""specs__value"">
+                                Schwalbe AV7
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rims
+                            </span>
+                            <span class=""specs__value"">
+                                Mach1 Trucky30 20"" CNC
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Spokes
+                            </span>
+                            <span class=""specs__value"">
+                                Sapim Leader 2,0 mm, Inox, black
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Front hub
+                            </span>
+                            <span class=""specs__value"">
+                                Novatec Disc 32H
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rear hub
+                            </span>
+                            <span class=""specs__value"">
+                                Shimano Nexus Inter-5E, 5-speed, free-wheel, Disc, 36L
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Battery
+                            </span>
+                            <span class=""specs__value"">
+                                Akku Bosch PowerPack Frame 545; Akku Bosch PowerPack Frame 725*; Akku Bosch PowerPack Frame 800*; Bosch PowerPack Frame 400Wh*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Motor
+                            </span>
+                            <span class=""specs__value"">
+                                Bosch Performance Line PX/Sport, 25 km/h/20mph+
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Display
+                            </span>
+                            <span class=""specs__value"">
+                                Bosch Purion 200; Bosch Kiox 300*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Crankset
+                            </span>
+                            <span class=""specs__value"">
+                                Samox, 165 mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain ring
+                            </span>
+                            <span class=""specs__value"">
+                                50T
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain guard
+                            </span>
+                            <span class=""specs__value"">
+                                Chain guard
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Chain
+                            </span>
+                            <span class=""specs__value"">
+                                KMC X1
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Saddle
+                            </span>
+                            <span class=""specs__value"">
+                                Selle Royal Essenza Moderate
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Pedals
+                            </span>
+                            <span class=""specs__value"">
+                                M-Wave Steady Flat; VP-538*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Shifter
+                            </span>
+                            <span class=""specs__value"">
+                                Shimano Nexus grip shift, 5-speed
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Handlebar
+                            </span>
+                            <span class=""specs__value"">
+                                Satori Horizon, 31,8 mm, 9°, B=620 mm
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Stem
+                            </span>
+                            <span class=""specs__value"">
+                                Riese &amp; Müller, adjustable height and angle
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Grips
+                            </span>
+                            <span class=""specs__value"">
+                                Herrmans Grips Line
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Brakes
+                            </span>
+                            <span class=""specs__value"">
+                                Magura MT4, disc brake
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Front light
+                            </span>
+                            <span class=""specs__value"">
+                                Supernova mini 2
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Tail light
+                            </span>
+                            <span class=""specs__value"">
+                                Supernova TL3 Z
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Mudguards
+                            </span>
+                            <span class=""specs__value"">
+                                SKS A65R; SKS A69R
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Luggage rack
+                            </span>
+                            <span class=""specs__value"">
+                                Riese &amp; Müller*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Rubber
+                            </span>
+                            <span class=""specs__value"">
+                                Bibia*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Bell
+                            </span>
+                            <span class=""specs__value"">
+                                Billy
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Kickstand
+                            </span>
+                            <span class=""specs__value"">
+                                Kickstand Riese &amp; Müller
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Lock
+                            </span>
+                            <span class=""specs__value"">
+                                ABUS Adaptor Chain 2.0 130 cm; ABUS Shield X+
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                RX Hardware
+                            </span>
+                            <span class=""specs__value"">
+                                RX Chip (für RX Services)*
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class=""specs__item"">
+                        <div class=""specs__item-inner"">
+                            <span class=""specs__name"">
+                                Frame size [cm]
+                            </span>
+                            <span class=""specs__value"">
+                                universal*
+                            </span>
+                        </div>
+                    </div>
+                
+            </div>
+
+            <div class=""specs__footer"">
+                <small>
+                    <p>The specification table indicates all available components for this model – not just the basic equipment. Some of the options listed are only available for a surcharge. For more information, see the Configurator. Riese&nbsp;&amp;&nbsp;Müller reserves the right to make technical modifications as well as changes to the shape, colour and/or weight within reasonable limits.</p>
+
+                    
+                        <p>* May differ depending on the availability in your country, design or configuration of the model.</p>
+                    
+                </small>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+
+                                            </div>","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Cargo Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">392.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_cargo-kit.jpg"" alt=""Cargo Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Dog Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">438.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_dog-kit.jpg"" alt=""Dog Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Family Kit</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">606.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit.jpg"" alt=""Family Kit"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ","<div class=""card-info"" style=""border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);"">
+  <div style=""display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;"">
+    <div style=""flex: 1 1 55%;"">
+      <h2 style=""font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;"">Family Kit Plus</h2>
+      <h3 style=""font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;""></h3>
+      <p style=""font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;"">{description}</p>
+      <span style=""font-size: 1rem; font-weight: 600; color: #059669;"">932.00</span>
+    </div>
+    <div style=""flex: 1 1 40%; aspect-ratio: 16 / 10;"">
+      <img src=""https://store-c8jhcan2jv.mybigcommerce.com/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit-plus.jpg"" alt=""Family Kit Plus"" style=""width: 100%; height: 100%; object-fit: cover;"">
+    </div>
+  </div>
+</div> ",,,,,,,,,,,,,,,,,,,,

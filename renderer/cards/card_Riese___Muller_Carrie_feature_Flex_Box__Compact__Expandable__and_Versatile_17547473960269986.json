@@ -1,0 +1,49 @@
+{
+  "id": "17547473960269986",
+  "sku": "F01572",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Flex Box: Compact, Expandable, and Versatile",
+  "description": "The Flex Box lives up to its name: compact when collapsed, spacious enough for up to three crates when extended. A zippered door makes access easy for children or pets, and it can be locked for security. Add flexibility with the Family, Dog, or Cargo kit.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/dc/93/dc936f6d-b6fb-4576-aa32-aa394626e3b4/my2026_carrie2_hlf_2_1600x1067_web_neu.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_feature_Flex_Box__Compact__Expandable__and_Versatile_17547473960269986.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_flex-box-compact-expandable-and-versatile.jpg",
+  "uploadDate": "2025-08-09T14:11:06.785Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:11:01.731Z",
+    "DateUploaded": "2025-08-09T14:11:01.731Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T13:49:56.026Z",
+  "savedAt": "2025-08-09T13:49:56.026Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

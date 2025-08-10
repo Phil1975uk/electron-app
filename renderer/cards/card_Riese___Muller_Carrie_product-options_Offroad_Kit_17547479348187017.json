@@ -1,0 +1,48 @@
+{
+  "id": "17547479348187017",
+  "sku": "F01572",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "Offroad Kit",
+  "description": "Take your e-bike adventures off the beaten track with the ultimate Offroad Kit. Outfitted with premium Schwalbe Smart Sam Cargo tires, this setup is built for serious loads and unbeatable puncture protection. The closed central tread rolls smoothly on hard surfaces, while the aggressive block tread on the edges digs in for grip through puddles, loose terrain, and sharp bends. Wide, flat VP 538 pedals keep your footing secure no matter how rough the trail gets.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01572/117_17_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "47.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_Offroad_Kit_17547479348187017.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_offroad-kit.jpg",
+  "uploadDate": "2025-08-09T14:11:30.235Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:11:25.478Z",
+    "DateUploaded": "2025-08-09T14:11:25.478Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T13:58:54.818Z",
+  "savedAt": "2025-08-09T13:58:54.818Z",
+  "originalHypaData": {}
+}

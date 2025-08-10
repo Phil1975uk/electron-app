@@ -1,0 +1,48 @@
+{
+  "id": "17547484225239638",
+  "sku": "F01572",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Dog Kit",
+  "description": "The Dog Kit includes the Flex Box with zip door, a comfy mat, and an adjustable strap to keep your furry friend secure. The mat covers the entire base, offering a cozy spot to rest, while the strap clips safely to your dog’s collar or harness. Your dog can easily hop in and out through the zippered door. When not carrying your pet, the Flex Box still provides ample space for groceries or gear. A rain cover keeps everything dry, and the whole box locks up to keep your belongings safe.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01572/121_14_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "438.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_cargo-options_Dog_Kit_17547484225239638.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_dog-kit.jpg",
+  "uploadDate": "2025-08-09T14:10:28.364Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:10:23.786Z",
+    "DateUploaded": "2025-08-09T14:10:23.786Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T14:07:02.523Z",
+  "savedAt": "2025-08-09T14:07:02.523Z",
+  "originalHypaData": {}
+}

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Export Manager - Handles all export-related functionality
  * Separated from import-analysis.js for better organization and debugging
  */
@@ -19,34 +19,34 @@ class ExportManager {
      * Initialize the export selection interface
      */
     initExportSelection() {
-        console.log('🚀 Initializing export selection...');
+        console.log('ðŸš€ Initializing export selection...');
         console.log('Window allExportResults:', window.allExportResults ? window.allExportResults.length : 'undefined');
         
         try {
             this.buildExportSelectionCards();
-            console.log('✅ buildExportSelectionCards() completed');
+            console.log('âœ… buildExportSelectionCards() completed');
         } catch (error) {
-            console.error('❌ Error in buildExportSelectionCards():', error);
+            console.error('âŒ Error in buildExportSelectionCards():', error);
             throw error;
         }
         
         try {
             this.attachSimpleFilterListeners();
-            console.log('✅ attachSimpleFilterListeners() completed');
+            console.log('âœ… attachSimpleFilterListeners() completed');
         } catch (error) {
-            console.error('❌ Error in attachSimpleFilterListeners():', error);
+            console.error('âŒ Error in attachSimpleFilterListeners():', error);
             throw error;
         }
         
         try {
             this.updateExportSummary();
-            console.log('✅ updateExportSummary() completed');
+            console.log('âœ… updateExportSummary() completed');
         } catch (error) {
-            console.error('❌ Error in updateExportSummary():', error);
+            console.error('âŒ Error in updateExportSummary():', error);
             throw error;
         }
         
-        console.log('✅ Export selection initialized');
+        console.log('âœ… Export selection initialized');
     }
 
     /**
@@ -188,9 +188,9 @@ class ExportManager {
     getExportableItems() {
         const items = [];
         
-        console.log('🔍 Getting exportable items...');
-        console.log('🔍 window.allExportResults:', window.allExportResults);
-        console.log('🔍 window.exportComparisonResults:', window.exportComparisonResults);
+        console.log('ðŸ” Getting exportable items...');
+        console.log('ðŸ” window.allExportResults:', window.allExportResults);
+        console.log('ðŸ” window.exportComparisonResults:', window.exportComparisonResults);
         
         // Get items from window.allExportResults (from export comparison)
         if (window.allExportResults && Array.isArray(window.allExportResults)) {
@@ -209,13 +209,13 @@ class ExportManager {
                 };
             });
             items.push(...transformedItems);
-            console.log('✅ Found items in window.allExportResults');
+            console.log('âœ… Found items in window.allExportResults');
         } else {
-            console.warn('❌ No export results available in window.allExportResults');
+            console.warn('âŒ No export results available in window.allExportResults');
             
             // Try to get from exportComparisonResults as fallback
             if (window.exportComparisonResults) {
-                console.log('🔍 Trying window.exportComparisonResults as fallback...');
+                console.log('ðŸ” Trying window.exportComparisonResults as fallback...');
                 const results = window.exportComparisonResults;
                 const allResults = [...(results.new || []), ...(results.updated || []), ...(results.keep || []), ...(results.remove || []), ...(results.excluded || [])];
                 
@@ -233,9 +233,9 @@ class ExportManager {
                     };
                 });
                 items.push(...transformedItems);
-                console.log(`✅ Found ${allResults.length} items in window.exportComparisonResults`);
+                console.log(`âœ… Found ${allResults.length} items in window.exportComparisonResults`);
             } else {
-                console.error('❌ No export results available anywhere. Please run export analysis first.');
+                console.error('âŒ No export results available anywhere. Please run export analysis first.');
             }
         }
 
@@ -243,8 +243,8 @@ class ExportManager {
         
         // Debug: Log first few items to see their structure
         if (items.length > 0) {
-            console.log('🔍 First item structure:', items[0]);
-            console.log('🔍 Item actions:', [...new Set(items.map(item => item.action))]);
+            console.log('ðŸ” First item structure:', items[0]);
+            console.log('ðŸ” Item actions:', [...new Set(items.map(item => item.action))]);
         }
         
         // Debug: Check for Charger4 items in the raw data
@@ -253,7 +253,7 @@ class ExportManager {
             const model = config.model || item.model;
             return model && model.toLowerCase().includes('charger4');
         });
-        console.log(`🔍 Raw data contains ${charger4Items.length} Charger4 items`);
+        console.log(`ðŸ” Raw data contains ${charger4Items.length} Charger4 items`);
         
         // Debug: Log Charger4 items by card type
         const charger4ByType = {};
@@ -264,7 +264,7 @@ class ExportManager {
             }
             charger4ByType[cardType].push(item);
         });
-        console.log('🔍 Charger4 items by card type:', charger4ByType);
+        console.log('ðŸ” Charger4 items by card type:', charger4ByType);
         
         // Debug: Log Charger4 items by action (new, update, keep, remove, excluded)
         const charger4ByAction = {};
@@ -275,18 +275,18 @@ class ExportManager {
             }
             charger4ByAction[action].push(item);
         });
-        console.log('🔍 Charger4 items by action:', charger4ByAction);
+        console.log('ðŸ” Charger4 items by action:', charger4ByAction);
         
         // Debug: Log unique models for Charger4 items
         const charger4Models = [...new Set(charger4Items.map(item => {
             const config = item.configuration || {};
             return config.model || item.model;
         }))];
-        console.log(`🔍 Charger4 models found:`, charger4Models);
+        console.log(`ðŸ” Charger4 models found:`, charger4Models);
         
         // Debug: Log unique SKUs for Charger4 items
         const charger4Skus = [...new Set(charger4Items.map(item => item.sku))];
-        console.log(`🔍 Charger4 SKUs found:`, charger4Skus);
+        console.log(`ðŸ” Charger4 SKUs found:`, charger4Skus);
         
         return items;
     }
@@ -305,7 +305,7 @@ class ExportManager {
             return (model && model.toLowerCase().includes('charger')) || 
                    (generation && generation.toLowerCase().includes('charger4'));
         }).length;
-        console.log(`🔍 Initial Charger4 count: ${initialCharger4Count}`);
+        console.log(`ðŸ” Initial Charger4 count: ${initialCharger4Count}`);
 
         // Apply search filter
         const searchFilter = document.getElementById('productSearchFilter')?.value?.toLowerCase();
@@ -334,7 +334,7 @@ class ExportManager {
                        configBrand.includes(searchFilter);
             });
             const afterSearch = filtered.length;
-            console.log(`🔍 Search filter "${searchFilter}": ${beforeSearch} → ${afterSearch} items`);
+            console.log(`ðŸ” Search filter "${searchFilter}": ${beforeSearch} â†’ ${afterSearch} items`);
             
             // Debug: Log Charger4 count after search
             const charger4AfterSearch = filtered.filter(item => {
@@ -344,7 +344,7 @@ class ExportManager {
                 return (model && model.toLowerCase().includes('charger')) || 
                        (generation && generation.toLowerCase().includes('charger4'));
             }).length;
-            console.log(`🔍 Charger4 count after search: ${charger4AfterSearch}`);
+            console.log(`ðŸ” Charger4 count after search: ${charger4AfterSearch}`);
         }
 
         // Apply action filter
@@ -353,7 +353,7 @@ class ExportManager {
             const beforeAction = filtered.length;
             filtered = filtered.filter(item => item.action === showFilter);
             const afterAction = filtered.length;
-            console.log(`🔍 Action filter "${showFilter}": ${beforeAction} → ${afterAction} items`);
+            console.log(`ðŸ” Action filter "${showFilter}": ${beforeAction} â†’ ${afterAction} items`);
             
             // Debug: Log Charger4 count after action filter
             const charger4AfterAction = filtered.filter(item => {
@@ -363,7 +363,7 @@ class ExportManager {
                 return (model && model.toLowerCase().includes('charger')) || 
                        (generation && generation.toLowerCase().includes('charger4'));
             }).length;
-            console.log(`🔍 Charger4 count after action filter: ${charger4AfterAction}`);
+            console.log(`ðŸ” Charger4 count after action filter: ${charger4AfterAction}`);
         }
 
         return filtered;
@@ -383,7 +383,7 @@ class ExportManager {
             return (model && model.toLowerCase().includes('charger')) || 
                    (generation && generation.toLowerCase().includes('charger4'));
         });
-        console.log(`🔍 Found ${charger4Items.length} Charger4 items in total`);
+        console.log(`ðŸ” Found ${charger4Items.length} Charger4 items in total`);
         
         items.forEach(item => {
             // Extract configuration data
@@ -395,7 +395,7 @@ class ExportManager {
             // Debug: Log Charger4 items specifically
             if ((model && model.toLowerCase().includes('charger')) || 
                 (generation && generation.toLowerCase().includes('charger4'))) {
-                console.log(`🔍 Charger4 item:`, {
+                console.log(`ðŸ” Charger4 item:`, {
                     sku: item.sku,
                     cardType: item.cardType,
                     position: item.position,
@@ -467,8 +467,8 @@ class ExportManager {
             const item = groupedBySku[sku];
             return item.model && item.model.toLowerCase().includes('charger4');
         });
-        console.log(`🔍 Final Charger4 SKUs:`, charger4Skus);
-        console.log(`🔍 Charger4 SKU details:`, charger4Skus.map(sku => ({
+        console.log(`ðŸ” Final Charger4 SKUs:`, charger4Skus);
+        console.log(`ðŸ” Charger4 SKU details:`, charger4Skus.map(sku => ({
             sku: sku,
             product: groupedBySku[sku]
         })));
@@ -625,9 +625,22 @@ class ExportManager {
     /**
      * Prepare selected items for CSV export - organize by SKU with proper column mapping
      */
-    prepareForCsvExport() {
+        prepareForCsvExport() {
         const selectedItems = this.getSelectedItems();
         console.log(`Preparing ${selectedItems.length} selected items for CSV export`);
+        
+        // Create SKU-to-ID lookup from imported Hypa CSV data
+        const skuToIdMap = {};
+        if (window.originalHypaCsvData && Array.isArray(window.originalHypaCsvData)) {
+            window.originalHypaCsvData.forEach(row => {
+                if (row.sku && row.id) {
+                    skuToIdMap[row.sku] = row.id;
+                }
+            });
+            console.log(`Created SKU-to-ID mapping for ${Object.keys(skuToIdMap).length} SKUs`);
+        } else {
+            console.warn('No imported Hypa CSV data available for ID mapping');
+        }
         
         // Group selected items by SKU
         const groupedBySku = this.groupBySku(selectedItems);
@@ -638,8 +651,15 @@ class ExportManager {
         Object.values(groupedBySku).forEach(skuGroup => {
             console.log(`Processing SKU ${skuGroup.sku} with ${skuGroup.cards.length} cards`);
             
-            // Create base row with SKU info
+            // Look up the ID for this SKU
+            const productId = skuToIdMap[skuGroup.sku];
+            if (!productId) {
+                console.warn(`No ID found for SKU ${skuGroup.sku} - this may cause import issues`);
+            }
+            
+            // Create base row with SKU and ID info
             const csvRow = {
+                id: productId || '',
                 sku: skuGroup.sku,
                 brand: skuGroup.brand,
                 model: skuGroup.model,
@@ -683,6 +703,7 @@ class ExportManager {
             // Debug logging for Charger4
             if (skuGroup.model && skuGroup.model.toLowerCase().includes('charger4')) {
                 console.log(`🔍 CSV Row for ${skuGroup.sku}:`, {
+                    id: productId,
                     sku: skuGroup.sku,
                     cardCounts: {
                         feature: cardsByType.feature.length,
@@ -788,7 +809,7 @@ class ExportManager {
         console.log('Current SKU cards:', this.currentSkuCards ? this.currentSkuCards.length : 0);
         console.log('Export summary:', this.exportSummary);
         console.log('Selected items:', this.getSelectedItems().length);
-        console.log('🔍 Window state:');
+        console.log('ðŸ” Window state:');
         console.log('window.allExportResults:', window.allExportResults ? window.allExportResults.length : 'undefined');
         console.log('window.exportComparisonResults:', window.exportComparisonResults);
         console.log('window.exportManager:', window.exportManager);
@@ -799,31 +820,31 @@ class ExportManager {
      * Test function to verify the export manager is working
      */
     test() {
-        console.log('🧪 Testing Export Manager...');
+        console.log('ðŸ§ª Testing Export Manager...');
         
         // Test 1: Check if we can get exportable items
         const items = this.getExportableItems();
-        console.log('✅ Test 1 - Exportable items:', items.length);
+        console.log('âœ… Test 1 - Exportable items:', items.length);
         
         // Test 2: Check if we can apply filters
         const filtered = this.applyFilters(items);
-        console.log('✅ Test 2 - Filtered items:', filtered.length);
+        console.log('âœ… Test 2 - Filtered items:', filtered.length);
         
         // Test 3: Check if we can group items
         const grouped = this.groupBySku(filtered);
-        console.log('✅ Test 3 - Grouped SKUs:', Object.keys(grouped).length);
+        console.log('âœ… Test 3 - Grouped SKUs:', Object.keys(grouped).length);
         
         // Test 4: Check if we can get selected items
         const selected = this.getSelectedItems();
-        console.log('✅ Test 4 - Selected items:', selected.length);
+        console.log('âœ… Test 4 - Selected items:', selected.length);
         
-        console.log('🎉 Export Manager tests completed!');
+        console.log('ðŸŽ‰ Export Manager tests completed!');
         return true;
     }
 
     // Simple test function that can be called from console
     quickTest() {
-        console.log('🔍 Quick test of export manager...');
+        console.log('ðŸ” Quick test of export manager...');
         console.log('Export manager available:', !!window.exportManager);
         console.log('allExportResults available:', !!window.allExportResults);
         console.log('allExportResults length:', window.allExportResults ? window.allExportResults.length : 'N/A');
@@ -836,10 +857,10 @@ class ExportManager {
                 const model = config.model || card.model;
                 return model && model.toLowerCase().includes('charger4');
             });
-            console.log('🔍 Original cards contains', charger4Cards.length, 'Charger4 cards');
+            console.log('ðŸ” Original cards contains', charger4Cards.length, 'Charger4 cards');
             
             const charger4OptionCards = charger4Cards.filter(card => card.cardType === 'product-options');
-            console.log('🔍 Original cards contains', charger4OptionCards.length, 'Charger4 option cards');
+            console.log('ðŸ” Original cards contains', charger4OptionCards.length, 'Charger4 option cards');
         }
         
         return true;
@@ -847,7 +868,7 @@ class ExportManager {
 
     // Debug function to check why only spec tables are showing
     debugExportCompleteness() {
-        console.log('🔍 Debugging export completeness...');
+        console.log('ðŸ” Debugging export completeness...');
         
         // Get all cards from window.cards
         const allCards = window.cards || [];
@@ -892,12 +913,12 @@ class ExportManager {
             }
         });
         
-        console.log('🔍 Completeness by card type:', completenessByType);
+        console.log('ðŸ” Completeness by card type:', completenessByType);
         
         // Show details for incomplete cards
         Object.entries(completenessByType).forEach(([cardType, data]) => {
             if (data.incomplete.length > 0) {
-                console.log(`❌ ${cardType} cards with issues:`);
+                console.log(`âŒ ${cardType} cards with issues:`);
                 data.incomplete.forEach(({ card, missingFields }) => {
                     console.log(`  - ${card.title || card.id}: missing ${missingFields.join(', ')}`);
                     if (missingFields.includes('image not uploaded to WebDAV')) {
@@ -914,7 +935,7 @@ class ExportManager {
 
     // Debug function to check image status for cards
     debugImageStatus() {
-        console.log('🔍 Debugging image status for cards...');
+        console.log('ðŸ” Debugging image status for cards...');
         
         // Get all cards from window.cards
         const allCards = window.cards || [];
@@ -931,7 +952,7 @@ class ExportManager {
         // Check image status for each card
         charger4Cards.forEach(card => {
             const cardType = card.cardType || card.type || 'unknown';
-            console.log(`\n🔍 Card: ${card.title || card.id} (${cardType})`);
+            console.log(`\nðŸ” Card: ${card.title || card.id} (${cardType})`);
             
             if (!card.imageUrl) {
                 console.log(`  Image Status: No Image`);
@@ -948,10 +969,10 @@ class ExportManager {
                 // Test if image exists at WebDAV URL
                 const img = new Image();
                 img.onload = () => {
-                    console.log(`    ✅ WebDAV image accessible`);
+                    console.log(`    âœ… WebDAV image accessible`);
                 };
                 img.onerror = () => {
-                    console.log(`    ❌ WebDAV image NOT accessible`);
+                    console.log(`    âŒ WebDAV image NOT accessible`);
                 };
                 img.src = webdavUrl + '?cb=' + Date.now();
                 
@@ -969,12 +990,12 @@ window.exportManager = new ExportManager();
     // Test the export manager on load
     window.addEventListener('load', () => {
         if (window.exportManager) {
-            console.log('🚀 Export Manager loaded successfully');
-            console.log('🔍 Export Manager instance:', window.exportManager);
+            console.log('ðŸš€ Export Manager loaded successfully');
+            console.log('ðŸ” Export Manager instance:', window.exportManager);
             
             // Add a global debug function
             window.debugExportManager = () => {
-                console.log('🔍 Debugging Export Manager...');
+                console.log('ðŸ” Debugging Export Manager...');
                 console.log('window.exportManager:', window.exportManager);
                 console.log('window.allExportResults:', window.allExportResults);
                 console.log('window.exportComparisonResults:', window.exportComparisonResults);
@@ -989,7 +1010,7 @@ window.exportManager = new ExportManager();
                     });
                     
                     // Test getExportableItems
-                    console.log('🔍 Testing getExportableItems...');
+                    console.log('ðŸ” Testing getExportableItems...');
                     const items = window.exportManager.getExportableItems();
                     console.log('Items returned:', items.length);
                     if (items.length > 0) {
@@ -997,61 +1018,61 @@ window.exportManager = new ExportManager();
                     }
                     
                     // Test buildExportSelectionCards
-                    console.log('🔍 Testing buildExportSelectionCards...');
+                    console.log('ðŸ” Testing buildExportSelectionCards...');
                     try {
                         window.exportManager.buildExportSelectionCards();
-                        console.log('✅ buildExportSelectionCards completed');
+                        console.log('âœ… buildExportSelectionCards completed');
                     } catch (error) {
-                        console.error('❌ Error in buildExportSelectionCards:', error);
+                        console.error('âŒ Error in buildExportSelectionCards:', error);
                     }
                 }
             };
             
             // Add a test function to run comparison and then export
             window.testExportFlow = async () => {
-                console.log('🧪 Testing export flow...');
+                console.log('ðŸ§ª Testing export flow...');
                 
                 // First, run the comparison
                 if (typeof performExportComparison === 'function') {
-                    console.log('🔍 Running performExportComparison...');
+                    console.log('ðŸ” Running performExportComparison...');
                     await performExportComparison();
-                    console.log('✅ Comparison completed');
+                    console.log('âœ… Comparison completed');
                 } else {
-                    console.error('❌ performExportComparison function not found');
+                    console.error('âŒ performExportComparison function not found');
                 }
                 
                 // Then try to show export selection
                 if (typeof showExportSelection === 'function') {
-                    console.log('🔍 Running showExportSelection...');
+                    console.log('ðŸ” Running showExportSelection...');
                     showExportSelection();
-                    console.log('✅ Export selection completed');
+                    console.log('âœ… Export selection completed');
                 } else {
-                    console.error('❌ showExportSelection function not found');
+                    console.error('âŒ showExportSelection function not found');
                 }
             };
             
             // Add a simple test to check if cards are loaded
             window.testCardsLoaded = () => {
-                console.log('🧪 Testing if cards are loaded...');
+                console.log('ðŸ§ª Testing if cards are loaded...');
                 console.log('window.cards:', window.cards);
                 console.log('cards.length:', window.cards ? window.cards.length : 'undefined');
                 
                 if (window.cards && window.cards.length > 0) {
-                    console.log('✅ Cards are loaded!');
+                    console.log('âœ… Cards are loaded!');
                     console.log('First card:', window.cards[0]);
                     console.log('Card types:', [...new Set(window.cards.map(c => c.cardType))]);
                     console.log('SKUs:', [...new Set(window.cards.map(c => c.sku))].slice(0, 5));
                 } else {
-                    console.log('❌ No cards loaded');
+                    console.log('âŒ No cards loaded');
                 }
             };
             
             // Uncomment the line below to run tests
             // window.exportManager.test();
         } else {
-            console.error('❌ Export Manager failed to load');
+            console.error('âŒ Export Manager failed to load');
         }
     });
 
 // Also log when the script loads
-console.log('📦 Export Manager script loaded'); 
+console.log('ðŸ“¦ Export Manager script loaded'); 

@@ -1,0 +1,48 @@
+{
+  "id": "17547480235707251",
+  "sku": "F01572",
+  "cardType": "product-options",
+  "position": 1,
+  "title": "725 Wh Battery Upgrade",
+  "description": "Upgrade from the 545Wh battery to the 725Wh battery for extended range and fun!",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01572/73_10_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "187.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_product-options_725_Wh_Battery_Upgrade_17547480235707251.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/product-options/Carrie_Carrie2_product-options_725-wh-battery-upgrade.jpg",
+  "uploadDate": "2025-08-09T14:11:18.391Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:11:13.944Z",
+    "DateUploaded": "2025-08-09T14:11:13.944Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T14:00:23.570Z",
+  "savedAt": "2025-08-09T14:00:23.570Z",
+  "originalHypaData": {}
+}

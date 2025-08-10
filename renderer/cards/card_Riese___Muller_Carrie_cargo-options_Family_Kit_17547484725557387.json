@@ -1,0 +1,48 @@
+{
+  "id": "17547484725557387",
+  "sku": "F01572",
+  "cardType": "cargo-options",
+  "position": 1,
+  "title": "Family Kit",
+  "description": "The Family Kit includes the Flex Box with zip door, a versatile child seat with headrest, and a carrier supporting up to 27 kg. The sturdy bench seat fits either one tall child or two smaller kids (up to age 7), secured with five-point seat belts. The comfy back cushion folds away when the box closes—unless the headrest is attached. Kids can easily get in and out through the zip door. When not carrying passengers, the Flex Box provides plenty of room for groceries or gear. A rain cover keeps everything dry, and the lockable box protects your belongings. Please follow local regulations for transporting children on bikes.",
+  "imageUrl": "https://assets.r-m.de/cms/media/bikes/F01572/121_13_detail.jpg.695x464_q80_upscale.jpg",
+  "price": "606.00",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_cargo-options_Family_Kit_17547484725557387.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/cargo-options/Carrie_Carrie2_cargo-options_family-kit.jpg",
+  "uploadDate": "2025-08-09T14:10:34.151Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:10:29.564Z",
+    "DateUploaded": "2025-08-09T14:10:29.564Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T14:07:52.555Z",
+  "savedAt": "2025-08-09T14:07:52.555Z",
+  "originalHypaData": {}
+}

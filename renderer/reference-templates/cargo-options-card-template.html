@@ -1,43 +1,14 @@
-<!-- Product feature card container -->
-<div class="product-feature-card">
-  <!-- Text content -->
-  <div class="feature-content">
-    <h2>Double child seat</h2>
-
-    <h3>£187.00</h3>
-
-    <p>
-      The double child seat with adjustable sitting and sleeping position holds
-      two children age seven or younger. Five-point belts ensure maximum safety.
-      Our child seats with continuous headrest are made of 100% recycled
-      material. The headrest can be folded down into the box if required.
-      Alternatively, you can transport larger loads by folding up the seat part
-      of the double child seat. Please observe national regulations for the
-      transport of children on bikes before using.
-    </p>
-  </div>
-
-  <!-- Image -->
-  <div class="se-component se-image-container __se__float- __se__float-none">
-    <figure>
-      <img
-        src="https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/70-18-detail.jpg.695x464-q80-upscale.jpg?t=1713439539"
-        alt="Packster2 70 Double child seat"
-        data-proportion="true"
-        data-align="none"
-        data-index="0"
-        data-file-name="70-18-detail.jpg.695x464-q80-upscale.jpg?t=1713439539"
-        data-file-size="0"
-        data-origin=","
-        data-size=","
-        data-rotate=""
-        data-rotatex=""
-        data-rotatey=""
-        style=""
-        width=""
-        height=""
-        data-percentage="auto,auto"
-      />
-    </figure>
+<!-- Cargo Option Card (reference template with placeholders) -->
+<div class="card-info" style="border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #ffffff; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);">
+  <div style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+    <div style="flex: 1 1 55%;">
+      <h2 style="font-size: 1rem; font-weight: 500; margin: 0 0 0.25rem 0; color: #111827; letter-spacing: -0.025em;">{title}</h2>
+      <h3 style="font-size: 0.875rem; font-weight: 500; margin: 0 0 0.75rem 0; color: #374151;">{subtitle}</h3>
+      <p style="font-size: 0.75rem; line-height: 1.4; margin: 0 0 1rem 0; color: #4b5563;">{content}</p>
+      <span style="font-size: 1rem; font-weight: 600; color: #059669;">{priceWithSymbol}</span>
+    </div>
+    <div style="flex: 1 1 40%; aspect-ratio: 16 / 10;">
+      <img src="{imageUrl}" alt="{title}" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
   </div>
 </div>

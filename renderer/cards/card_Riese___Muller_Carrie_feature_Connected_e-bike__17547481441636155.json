@@ -1,0 +1,49 @@
+{
+  "id": "17547481441636155",
+  "sku": "F01572",
+  "cardType": "feature",
+  "position": 1,
+  "title": "Connected e-bike.",
+  "description": "RX Connect takes your riding experience to a new level. You can completely secure your bike with the optionally integrated RX Chip and matching RX Service. Activate ConnectRide Free in the first year free of charge: the RX Connect app shows the location of your bike, offers a digital motion alarm and automatically records rides with extensive riding statistics. To benefit permanently from this offer, you can then take advantage of the paid ConnectRide service.",
+  "imageUrl": "https://assets.r-m.de/cms/media/filer_public/8d/1d/8d1d37f1-91bf-4c30-953d-597987e450df/my2025_rx-connect.jpg",
+  "price": "",
+  "configuration": {
+    "brand": "Riese & Muller",
+    "model": "Carrie",
+    "generation": "Carrie2",
+    "variants": [
+      {
+        "name": "automatic",
+        "sku": "F01572"
+      },
+      {
+        "name": "vario",
+        "sku": "F01571"
+      },
+      {
+        "name": "city",
+        "sku": "F01570"
+      }
+    ]
+  },
+  "filename": "card_Riese___Muller_Carrie_feature_Connected_e-bike__17547481441636155.json",
+  "webdavPath": "/dav/product_images/product_modules/Riese%20%26%20Muller/Carrie/Carrie2/feature/Carrie_Carrie2_feature_connected-e-bike.jpg",
+  "uploadDate": "2025-08-09T14:11:00.601Z",
+  "uploadMetadata": {
+    "Model": "Carrie",
+    "Generation": "Carrie2",
+    "Variants": "automatic, vario, city",
+    "DateCreated": "2025-08-09T14:10:54.959Z",
+    "DateUploaded": "2025-08-09T14:10:54.959Z",
+    "ImageDescription": "Carrie Carrie2 - automatic, vario, city",
+    "UserComment": "Generation: Carrie2, Variants: automatic, vario, city",
+    "Copyright": "E-Bike Barn",
+    "Software": "card-creator-desktop"
+  },
+  "importedFromHypa": false,
+  "hypaUpdated": false,
+  "lastModified": "2025-08-09T14:02:24.163Z",
+  "savedAt": "2025-08-09T14:02:24.163Z",
+  "originalHypaData": {},
+  "subtitle": ""
+}

@@ -4,15 +4,19 @@
       "id": 1751272330421.7112,
       "brand": "Riese & Muller",
       "model": "Transporter",
-      "generation": "Transporter2",
+      "generation": "Transporter2 65",
       "variants": [
         {
-          "name": "65 Touring",
+          "name": "touring",
           "sku": "F01242"
         },
         {
-          "name": "65 Vario",
+          "name": "vario",
           "sku": "F01243"
+        },
+        {
+          "name": "silent",
+          "sku": "F01379"
         }
       ]
     },
@@ -135,8 +139,12 @@
       "generation": "Nevo4",
       "variants": [
         {
-          "name": "Touring",
+          "name": "touring",
           "sku": "F01160"
+        },
+        {
+          "name": "vario",
+          "sku": "F01161"
         }
       ]
     },
@@ -147,32 +155,48 @@
       "generation": "Nevo4",
       "variants": [
         {
-          "name": "Gt Touring",
+          "name": "GT touring",
           "sku": "F01162"
         },
         {
-          "name": "Gt Vario",
+          "name": "GT vario",
           "sku": "F01164"
         },
         {
-          "name": "Gt Automatic",
+          "name": "GT automatic",
           "sku": "F01166"
         },
         {
-          "name": "Gt Touring Hs",
+          "name": "GT touring HS",
           "sku": "F01163"
         },
         {
-          "name": "Gt Vario Hs",
+          "name": "GT vario HS",
           "sku": "F01165"
         },
         {
-          "name": "Gt Rohloff",
+          "name": "GT rohloff",
           "sku": "F01167"
         },
         {
-          "name": "Gt Rohloff Hs",
+          "name": "GT rohloff HS",
           "sku": "F01168"
+        },
+        {
+          "name": "GT vario (47cm Stock Bike)",
+          "sku": "F01165_0501101639"
+        },
+        {
+          "name": "GT vario (43cm Stock Bike)",
+          "sku": "F01164_0444101709"
+        },
+        {
+          "name": "GT vario (47cm Stock Bike)",
+          "sku": "F01164_"
+        },
+        {
+          "name": "GT touring (51cm STock Bike)",
+          "sku": "F01162_16060142111308"
         }
       ]
     },
@@ -599,7 +623,7 @@
           "sku": "F01240"
         },
         {
-          "name": "Vario New",
+          "name": "Vario (New)",
           "sku": "F01466"
         }
       ]
@@ -635,15 +659,15 @@
       "generation": "Cruiser2",
       "variants": [
         {
-          "name": "Rucktritt",
+          "name": "rucktritt",
           "sku": "F01260"
         },
         {
-          "name": "Silent",
+          "name": "silent",
           "sku": "F00937"
         },
         {
-          "name": "Vario",
+          "name": "vario",
           "sku": "F00938"
         }
       ]
@@ -652,19 +676,23 @@
       "id": 1751272330421.8423,
       "brand": "Riese & Muller",
       "model": "Cruiser",
-      "generation": "Cruiser2",
+      "generation": "Cruiser2 Mixte",
       "variants": [
         {
-          "name": "Mixte Rucktritt",
+          "name": "rucktritt",
           "sku": "F00939"
         },
         {
-          "name": "Mixte Silent",
+          "name": "silent",
           "sku": "F00940"
         },
         {
-          "name": "Mixte Vario",
+          "name": "vario",
           "sku": "F00941"
+        },
+        {
+          "name": "silent (Stock Bike)",
+          "sku": "F01265_1004020708"
         }
       ]
     },
@@ -675,15 +703,15 @@
       "generation": "Cruiser",
       "variants": [
         {
-          "name": "Rucktritt",
+          "name": "rucktritt",
           "sku": "F00700"
         },
         {
-          "name": "Silent",
+          "name": "silent",
           "sku": "F00701"
         },
         {
-          "name": "Vario",
+          "name": "vario",
           "sku": "F00703"
         }
       ]
@@ -692,31 +720,19 @@
       "id": 1751272330421.4688,
       "brand": "Riese & Muller",
       "model": "Cruiser",
-      "generation": "Cruiser",
+      "generation": "Cruiser Mixte",
       "variants": [
         {
-          "name": "Mixte Rucktritt",
+          "name": "rucktritt",
           "sku": "F00704"
         },
         {
-          "name": "Mixte Silent",
+          "name": "silent",
           "sku": "F00705"
         },
         {
-          "name": "Mixte Vario",
+          "name": "vario",
           "sku": "F00707"
-        }
-      ]
-    },
-    {
-      "id": 1751272330421.1055,
-      "brand": "Riese & Muller",
-      "model": "Nevo",
-      "generation": "Nevo4",
-      "variants": [
-        {
-          "name": "Vario",
-          "sku": "F01161"
         }
       ]
     },
@@ -799,16 +815,20 @@
       "generation": "Culture",
       "variants": [
         {
-          "name": "Touring",
+          "name": "touring",
           "sku": "F01270"
         },
         {
-          "name": "Silent",
+          "name": "silent",
           "sku": "F01271"
         },
         {
-          "name": "Vario",
+          "name": "vario",
           "sku": "F01272"
+        },
+        {
+          "name": "touring (stock bike)",
+          "sku": "F01270_1005010708"
         }
       ]
     },
@@ -816,19 +836,23 @@
       "id": 1751272330422.9253,
       "brand": "Riese & Muller",
       "model": "Culture",
-      "generation": "Culture",
+      "generation": "Culture Mixte",
       "variants": [
         {
-          "name": "Mixte Touring",
+          "name": "touring",
           "sku": "F01275"
         },
         {
-          "name": "Mixte Silent",
+          "name": "silent",
           "sku": "F01276"
         },
         {
-          "name": "Mixte Vario",
+          "name": "vario",
           "sku": "F01277"
+        },
+        {
+          "name": "silent (Stock Bike)",
+          "sku": "F01276_0301071108"
         }
       ]
     },
@@ -869,46 +893,38 @@
       ]
     },
     {
-      "id": 1751272330422.2175,
-      "brand": "Riese & Muller",
-      "model": "Roaster",
-      "generation": "Roaster4",
-      "variants": [
-        {
-          "name": "Mixte Vario",
-          "sku": "F01136"
-        }
-      ]
-    },
-    {
       "id": 1751272330422.5752,
       "brand": "Riese & Muller",
       "model": "Delite",
       "generation": "Delite4",
       "variants": [
         {
-          "name": "Gt Touring",
+          "name": "Gt touring",
           "sku": "F01150"
         },
         {
-          "name": "Gt Touring Hs",
+          "name": "Gt touring Hs",
           "sku": "F01151"
         },
         {
-          "name": "Gt Vario",
+          "name": "Gt vario",
           "sku": "F1152"
         },
         {
-          "name": "Gt Vario Hs",
+          "name": "Gt vario Hs",
           "sku": "F01153"
         },
         {
-          "name": "Gt Rohloff",
+          "name": "Gt rohloff",
           "sku": "F01154"
         },
         {
-          "name": "Gt Rohloff Hs",
+          "name": "Gt rohloff Hs",
           "sku": "F01155"
+        },
+        {
+          "name": "GT rohloff HS (Stock Bike)",
+          "sku": "F01155_040111101608"
         }
       ]
     },
@@ -943,19 +959,19 @@
       "generation": "Roadster4",
       "variants": [
         {
-          "name": "Touring",
+          "name": "touring",
           "sku": "F01130"
         },
         {
-          "name": "Touring Hs",
+          "name": "touring HS",
           "sku": "F01131"
         },
         {
-          "name": "Vario",
+          "name": "vario",
           "sku": "F01132"
         },
         {
-          "name": "Vario Hs",
+          "name": "vario HS",
           "sku": "F01133"
         }
       ]
@@ -964,19 +980,23 @@
       "id": 1751272330422.263,
       "brand": "Riese & Muller",
       "model": "Roadster",
-      "generation": "Roadster4",
+      "generation": "Roadster4 Mixte",
       "variants": [
         {
-          "name": "Mixte Touring",
+          "name": "touring",
           "sku": "F01134"
         },
         {
-          "name": "Mixte Touring Hs",
+          "name": "touring HS",
           "sku": "F01135"
         },
         {
-          "name": "Mixte Vario Hs",
+          "name": "vario HS",
           "sku": "F01137"
+        },
+        {
+          "name": "vario",
+          "sku": "F01136"
         }
       ]
     },
@@ -987,20 +1007,24 @@
       "generation": "Swing4",
       "variants": [
         {
-          "name": "Automatic",
+          "name": "automatic",
           "sku": "F01147"
         },
         {
-          "name": "Rucktritt",
+          "name": "rucktritt",
           "sku": "F01144"
         },
         {
-          "name": "Silent",
+          "name": "silent",
           "sku": "F01145"
         },
         {
-          "name": "Vario",
+          "name": "vario",
           "sku": "F01146"
+        },
+        {
+          "name": "silent (46cm Stock Bike)",
+          "sku": "F01145_1205020835"
         }
       ]
     },
@@ -1011,36 +1035,40 @@
       "generation": "Multicharger2",
       "variants": [
         {
-          "name": "Gt Touring",
+          "name": "GT touring",
           "sku": "F01176"
         },
         {
-          "name": "Gt Touring Hs",
+          "name": "GT touring HS",
           "sku": "F01177"
         },
         {
-          "name": "Gt Vario",
+          "name": "GT vario",
           "sku": "F01178"
         },
         {
-          "name": "Gt Vario Hs",
+          "name": "GT vario HS",
           "sku": "F01179"
         },
         {
-          "name": "Gt Automatic",
+          "name": "GT automatic",
           "sku": "F01180"
         },
         {
-          "name": "Gt Rohloff",
+          "name": "GT rohloff",
           "sku": "F01181"
         },
         {
-          "name": "Gt Rohloff Hs",
+          "name": "GT rohloff HS",
           "sku": "F01182"
         },
         {
-          "name": "Gt Family",
+          "name": "GT family",
           "sku": "F01175"
+        },
+        {
+          "name": "EASY",
+          "sku": "F01678"
         }
       ]
     },
@@ -1048,39 +1076,43 @@
       "id": 1751272330422.92,
       "brand": "Riese & Muller",
       "model": "Multicharger",
-      "generation": "Multicharger2",
+      "generation": "Multicharger2 Mixte",
       "variants": [
         {
-          "name": "Mixte Gt Family",
+          "name": "GT family",
           "sku": "F01183"
         },
         {
-          "name": "Mixte Gt Touring",
+          "name": "GT touring",
           "sku": "F01184"
         },
         {
-          "name": "Mixte Gt Touring Hs 1",
+          "name": "GT touring HS",
           "sku": "F01185"
         },
         {
-          "name": "Mixte Gt Vario",
+          "name": "GT vario",
           "sku": "F01186"
         },
         {
-          "name": "Mixte Gt Vario Hs",
+          "name": "GT vario HS",
           "sku": "F01187"
         },
         {
-          "name": "Mixte Gt Rohloff",
+          "name": "GT rohloff",
           "sku": "F01189"
         },
         {
-          "name": "Mixte Gt Rohloff Hs",
+          "name": "GT rohloff HS",
           "sku": "F01190"
         },
         {
-          "name": "Mixte Gt Automatic",
+          "name": "GT automatic",
           "sku": "F01188"
+        },
+        {
+          "name": "GT vario (STock Bike)",
+          "sku": "F01186_1104030817120743"
         }
       ]
     },
@@ -1115,16 +1147,20 @@
       "generation": "Homage5",
       "variants": [
         {
-          "name": "Gt Touring",
-          "sku": "F01522"
+          "name": "touring",
+          "sku": "F01660"
         },
         {
-          "name": "Gt Vario",
-          "sku": "F01524"
+          "name": "vario",
+          "sku": "F01662"
         },
         {
-          "name": "Gt Rohloff",
-          "sku": "F01526"
+          "name": "rohloff",
+          "sku": "F01664"
+        },
+        {
+          "name": "rohloff HS",
+          "sku": "F01665"
         }
       ]
     },
@@ -1147,12 +1183,12 @@
       "generation": "Homage5",
       "variants": [
         {
-          "name": "Gt Pinion",
-          "sku": "F01520"
+          "name": "pinion",
+          "sku": "F01658"
         },
         {
-          "name": "Gt Pinion Hs",
-          "sku": "F01521"
+          "name": "pinion HS",
+          "sku": "F01659"
         }
       ]
     },
@@ -1193,6 +1229,26 @@
         {
           "name": "Gt Pinion Hs",
           "sku": "F01316"
+        },
+        {
+          "name": "GT rohloff HS",
+          "sku": "F01625"
+        },
+        {
+          "name": "GT rohloff",
+          "sku": "F01624"
+        },
+        {
+          "name": "GT vario",
+          "sku": "F01622"
+        },
+        {
+          "name": "GT touring",
+          "sku": "F01620"
+        },
+        {
+          "name": "GT pinion (Stock Bike)",
+          "sku": "F01315-1"
         }
       ]
     },
@@ -1203,20 +1259,24 @@
       "generation": "Superdelite5",
       "variants": [
         {
-          "name": "Gt Touring",
-          "sku": "F01436."
+          "name": "touring",
+          "sku": "F01670"
         },
         {
-          "name": "Gt Touring 6bxy",
-          "sku": "F01436"
+          "name": "rohloff",
+          "sku": "F01674"
         },
         {
-          "name": "Gt Vario",
-          "sku": "F01438"
+          "name": "vario",
+          "sku": "F01672"
         },
         {
-          "name": "Gt Rohloff",
-          "sku": "F01440"
+          "name": "rohloff HS",
+          "sku": "F01675"
+        },
+        {
+          "name": "rohloff (Stock Bike)",
+          "sku": "F01440-1"
         }
       ]
     },
@@ -1337,6 +1397,318 @@
         {
           "name": "GT vario SELECT",
           "sku": "F01287"
+        }
+      ]
+    },
+    {
+      "id": 1754736887286,
+      "brand": "Riese & Muller",
+      "model": "Carrie",
+      "generation": "Carrie2",
+      "variants": [
+        {
+          "name": "automatic",
+          "sku": "F01572"
+        },
+        {
+          "name": "vario",
+          "sku": "F01571"
+        },
+        {
+          "name": "city",
+          "sku": "F01570"
+        }
+      ]
+    },
+    {
+      "id": 1754737202904,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger5 Mixte",
+      "variants": [
+        {
+          "name": "rohloff HS",
+          "sku": "F01560"
+        },
+        {
+          "name": "rohloff",
+          "sku": "F01559"
+        },
+        {
+          "name": "pinion HS",
+          "sku": "F01551"
+        },
+        {
+          "name": "pinion",
+          "sku": "F01550"
+        },
+        {
+          "name": "automatic",
+          "sku": "F01562"
+        },
+        {
+          "name": "vario HS",
+          "sku": "F01557"
+        },
+        {
+          "name": "vario",
+          "sku": "F01556"
+        },
+        {
+          "name": "touring HS",
+          "sku": "F01554"
+        },
+        {
+          "name": "touring",
+          "sku": "F01553"
+        },
+        {
+          "name": "vario CORE",
+          "sku": "F01558"
+        },
+        {
+          "name": "touring CORE",
+          "sku": "F01555"
+        }
+      ]
+    },
+    {
+      "id": 1754737347431,
+      "brand": "Riese & Muller",
+      "model": "Charger",
+      "generation": "Charger5",
+      "variants": [
+        {
+          "name": "rohloff HS",
+          "sku": "F01540"
+        },
+        {
+          "name": "rohloff",
+          "sku": "F01539"
+        },
+        {
+          "name": "pinion HS",
+          "sku": "F01531"
+        },
+        {
+          "name": "pinion",
+          "sku": "F01530"
+        },
+        {
+          "name": "automatic",
+          "sku": "F01542"
+        },
+        {
+          "name": "vario HS",
+          "sku": "F01537"
+        },
+        {
+          "name": "vario",
+          "sku": "F01536"
+        },
+        {
+          "name": "touring HS",
+          "sku": "F01534"
+        },
+        {
+          "name": "touring",
+          "sku": "F01533"
+        },
+        {
+          "name": "vario CORE",
+          "sku": "F01538"
+        },
+        {
+          "name": "touring CORE",
+          "sku": "F01535"
+        }
+      ]
+    },
+    {
+      "id": 1754742405697,
+      "brand": "Riese & Muller",
+      "model": "Load",
+      "generation": "Load5",
+      "variants": [
+        {
+          "name": "60 vario",
+          "sku": "F01632"
+        },
+        {
+          "name": "60 touring",
+          "sku": "F01630"
+        },
+        {
+          "name": "60 rohloff",
+          "sku": "F01633"
+        }
+      ]
+    },
+    {
+      "id": 1754742654944,
+      "brand": "Riese & Muller",
+      "model": "Load",
+      "generation": "Load5",
+      "variants": [
+        {
+          "name": "75 touring",
+          "sku": "F01637"
+        },
+        {
+          "name": "75 vario",
+          "sku": "F01639"
+        },
+        {
+          "name": "75 rohloff",
+          "sku": "F01640"
+        }
+      ]
+    },
+    {
+      "id": 1754743860137,
+      "brand": "Riese & Muller",
+      "model": "Multicharger",
+      "generation": "Multicharger3",
+      "variants": [
+        {
+          "name": "rohloff HS",
+          "sku": "F01687"
+        },
+        {
+          "name": "rohloff",
+          "sku": "F01686"
+        },
+        {
+          "name": "automatic",
+          "sku": "F01685"
+        },
+        {
+          "name": "vario HS",
+          "sku": "F01684"
+        },
+        {
+          "name": "vario",
+          "sku": "F01683"
+        },
+        {
+          "name": "touring HS",
+          "sku": "F01682"
+        },
+        {
+          "name": "touring",
+          "sku": "F01681"
+        },
+        {
+          "name": "FAMILY",
+          "sku": "F01680"
+        }
+      ]
+    },
+    {
+      "id": 1754744610369,
+      "brand": "Riese & Muller",
+      "model": "Multicharger",
+      "generation": "Multicharger3 Mixte",
+      "variants": [
+        {
+          "name": "rohloff HS",
+          "sku": "F01697"
+        },
+        {
+          "name": "rohloff",
+          "sku": "F01696"
+        },
+        {
+          "name": "automatic",
+          "sku": "F01695"
+        },
+        {
+          "name": "vario HS",
+          "sku": "F01694"
+        },
+        {
+          "name": "vario",
+          "sku": "F01693"
+        },
+        {
+          "name": "touring HS",
+          "sku": "F01692"
+        },
+        {
+          "name": "touring",
+          "sku": "F01691"
+        },
+        {
+          "name": "FAMILY",
+          "sku": "F01690"
+        }
+      ]
+    },
+    {
+      "id": 1754744711289,
+      "brand": "Riese & Muller",
+      "model": "Multitinker",
+      "generation": "Multitinker2",
+      "variants": [
+        {
+          "name": "vario",
+          "sku": "F01646"
+        },
+        {
+          "name": "silent",
+          "sku": "F01647"
+        },
+        {
+          "name": "touring",
+          "sku": "F01645"
+        },
+        {
+          "name": "FAMILY",
+          "sku": "F01648"
+        }
+      ]
+    },
+    {
+      "id": 1754746060650,
+      "brand": "Riese & Muller",
+      "model": "Swing",
+      "generation": "Swing5",
+      "variants": [
+        {
+          "name": "rucktritt",
+          "sku": "F01580"
+        },
+        {
+          "name": "silent",
+          "sku": "F01581"
+        },
+        {
+          "name": "vario",
+          "sku": "F01582"
+        },
+        {
+          "name": "automatic",
+          "sku": "F01583"
+        }
+      ]
+    },
+    {
+      "id": 1754746376129,
+      "brand": "Riese & Muller",
+      "model": "Transporter",
+      "generation": "Transporter2 85",
+      "variants": [
+        {
+          "name": "touring",
+          "sku": "F01247"
+        },
+        {
+          "name": "vario",
+          "sku": "F00947"
+        },
+        {
+          "name": "silent",
+          "sku": "F01383"
         }
       ]
     }

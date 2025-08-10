@@ -1,11 +1,12 @@
 <!-- Product feature card container -->
 
-<div
+  <div
   style="
     display: flex;
     align-items: center;
     gap: 20px;
-    max-width: 1498px;
+    width: 100%;
+    max-width: 100%;
     margin: 10px auto 0 auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -17,9 +18,9 @@
   <!-- Text content -->
 
   <div style="flex: 1; min-width: 300px">
-    <h2>Premium Safety System</h2>
-    <h3>Advanced Protection Technology</h3>
-    <p>Our integrated safety system provides maximum protection with adjustable backrest, reinforced safety harness, and weather-resistant materials. Designed for ultimate comfort and security in all conditions.</p>
+    <h2>{title}</h2>
+    <h3>{subtitle}</h3>
+    <p>{content}</p>
   </div>
   <!-- Image -->
 
@@ -27,8 +28,8 @@
   <div class="se-component se-image-container __se__float-">
     <figure style="width: 400px">
       <img
-        src="https://cdn11.bigcommerce.com/s-c8jhcan2jv/images/stencil/original/image-manager/safety-system-detail.jpg.695x464-q80-upscale.jpg?t=1713439539"
-        alt="Premium Safety System"
+        src="{imageUrl}"
+        alt="{title}"
         style="
           max-width: 100%;
           height: auto;
@@ -42,7 +43,7 @@
         data-size="400px,auto"
         data-align=""
         data-index="2"
-        data-file-name="safety-system-detail.jpg.695x464-q80-upscale.jpg?t=1713439539"
+        data-file-name="{imageUrl}"
         data-file-size="0"
         origin-size="1600,1067"
         data-origin="400px,auto"
